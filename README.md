@@ -1,2 +1,0 @@
-# maizuruprogramming.github.io
-まいかつ
