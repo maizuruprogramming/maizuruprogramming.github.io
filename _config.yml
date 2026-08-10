@@ -1,0 +1,13 @@
+title: "Yasuhito Inoue"
+name: "Yasuhito Inoue"
+description: "Personal Homepage"
+
+remote_theme: "mmistakes/minimal-mistakes"
+
+plugins:
+  - jekyll-include-cache
+
+locale: "ja-JP"
+
+author:
+  name: "Yasuhito Inoue"
