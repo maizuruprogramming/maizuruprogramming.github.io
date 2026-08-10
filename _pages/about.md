@@ -3,6 +3,10 @@ permalink: /about/
 title: "About"
 ---
 
-Tempor velit sint sunt ipsum tempor enim ad qui ullamco. Est dolore anim ad velit duis dolore minim sunt aliquip amet commodo labore. Ut eu pariatur aute ea aute excepteur laborum. Esse ea esse excepteur minim mollit qui cillum excepteur ex dolore magna. Labore deserunt fugiat incididunt incididunt sint ea. Consequat dolore aute laboris quis proident quis non et est consectetur ex eiusmod sit culpa.
+舞鶴高専プログラミングラボのホームページです．
 
-Cupidatat ea do et in excepteur in. Ad nostrud ut est esse eu duis ea sunt eiusmod. Aliquip tempor veniam sint elit fugiat. Velit incididunt laboris amet incididunt labore dolore irure velit excepteur commodo deserunt laborum. Consectetur eu fugiat veniam veniam Lorem labore magna eiusmod. Ea occaecat reprehenderit pariatur consectetur minim labore ut aliquip.
+舞鶴高専では，2021年より，舞鶴市周辺の小・中学生のプログラミング技術やプレゼンテーション能力の向上などを目指し，プログラミングコンテストを開催してきました．
+
+その活動の中で，「プログラミングラボ」として，プログラミングコンテストの支援を行ってきました．
+
+2026年からは，舞鶴市内のクラブ活動の外部委託「まいかつ」の一環として，活動していくことになりました．
