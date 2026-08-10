@@ -13,7 +13,7 @@ title: "About"
 
 2026年より，舞鶴市内のクラブ活動の外部委託「[まいかつ][maikatsu]」の一環としても，活動していくことになりました．(現在，準備中です！)
 
-![舞鶴高専杯プログラミングコンテスト]({{site.baseurl}}/images/2026_maikatsu.png)
+![まいかつ]({{site.baseurl}}/images/2026_maikatsu.png)
 
 [proconmaizuru]: https://sites.google.com/view/maizuru-programming-contest/
 [u15プロコン]: https://u15-procon.maizuru-ct.ac.jp/
