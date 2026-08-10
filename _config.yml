@@ -62,7 +62,10 @@ author:
   avatar : "/assets/images/profile.jpg"
   bio    : "2026年9月より，本格的に活動開始！"
   links:
-    - label: "Website"
+    - label: "まいかつ（舞鶴市まいかつ推進課）"
+      icon: "fas fa-fw fa-link"
+      url: "https://www.city.maizuru.kyoto.jp/soshiki/20-9-0-0-0_4.html"
+    - label: "舞鶴高専"
       icon: "fas fa-fw fa-link"
       url: "https://www.maizuru-ct.ac.jp/"
  #   - label: "Twitter"
