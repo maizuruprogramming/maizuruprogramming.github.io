@@ -11,8 +11,8 @@ title: "About"
 
 2025年は，[U-15プログラミングコンテスト舞鶴大会][u15プロコン]と併催しました．
 
-2026年より，舞鶴市内のクラブ活動の外部委託「[まいかつ][https://www.city.maizuru.kyoto.jp/soshiki/20-9-0-0-0_4.html]」の一環としても，活動していくことになりました．
+2026年より，舞鶴市内のクラブ活動の外部委託「[まいかつ][maikatsu]」の一環としても，活動していくことになりました．
 
 [proconmaizuru]: https://sites.google.com/view/maizuru-programming-contest/
 [u15プロコン]: https://u15-procon.maizuru-ct.ac.jp/
-[まいかつ]: https://www.city.maizuru.kyoto.jp/soshiki/20-9-0-0-0_4.html
+[maikatsu]: https://www.city.maizuru.kyoto.jp/soshiki/20-9-0-0-0_4.html
