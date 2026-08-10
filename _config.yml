@@ -11,3 +11,16 @@ locale: "ja-JP"
 
 author:
   name: "Yasuhito Inoue"
+  avatar: "/assets/images/profile.jpg"
+  bio: "AI Engineer"
+  location: "Japan"
+  email: "example@example.com"
+
+  links:
+    - label: GitHub
+      icon: "fab fa-github"
+      url: "https://github.com/yourname"
+
+    - label: LinkedIn
+      icon: "fab fa-linkedin"
+      url: "https://linkedin.com/in/yourname"
