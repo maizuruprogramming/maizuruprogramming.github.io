@@ -17,4 +17,4 @@ title: "About"
 
 [proconmaizuru]: https://sites.google.com/view/maizuru-programming-contest/
 [u15プロコン]: https://u15-procon.maizuru-ct.ac.jp/
-[maikatsu]: https://www.city.maizuru.kyoto.jp/soshiki/20-9-0-0-0_4.html
+[maikatsu]: https://maikatsu.jp/
