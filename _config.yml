@@ -59,7 +59,7 @@ plugins:
 
 author:
   name   : "舞鶴高専プログラミングラボ"
-  avatar : "/assets/images/profile.jpg"
+  avatar : "/assets/images/profile.png"
   bio    : "2026年9月より，本格的に活動開始！"
   links:
     - label: "まいかつ（舞鶴市まいかつ推進課）"
