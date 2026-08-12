@@ -1,9 +1,9 @@
 main:
-  - title: "Posts"
+  - title: "活動報告"
     url: /posts/
-  - title: "Categories"
+  - title: "カテゴリー"
     url: /categories/
-  - title: "Tags"
+  - title: "タグ"
     url: /tags/
-  - title: "About"
+  - title: "私たちについて"
     url: /about/
