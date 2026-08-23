@@ -5,7 +5,7 @@ main:
     url: /categories/
   - title: "タグ"
     url: /tags/
-  - title: "私たちについて"
-    url: /about/
   - title: "規約"
     url: /kiyaku/
+  - title: "私たちについて"
+    url: /about/
