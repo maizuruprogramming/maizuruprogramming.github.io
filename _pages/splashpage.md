@@ -8,7 +8,7 @@ header:
   overlay_filter: "0.5"
   overlay_image: /assets/images/unsplash-image-1.jpg
   actions:
-    - label: "Home"
+    - label: "活動報告"
       url: "https://maizuruprogramming.github.io/"
   caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
 excerpt: "2026年9月に創立．現在準備中"
@@ -16,11 +16,11 @@ intro:
   - excerpt: 'Nullam suscipit et nam, tellus velit pellentesque at malesuada, enim eaque. Quis nulla, netus tempor in diam gravida tincidunt, *proin faucibus* voluptate felis id sollicitudin. Centered with `type="center"`'
 
 feature_row2:
-  - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
-    alt: "placeholder image 2"
-    title: "Placeholder Image Left Aligned"
-    excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
-    url: "#test-link"
+  - image_path: /assets/images/2026_maikatsu.png
+    alt: "まいかつ"
+    title: "まいかつ"
+    excerpt: '2026年9月から開始となる舞鶴市の地域クラブ活動です'
+    url: "https://maikatsu.jp/"
     btn_label: "Read More"
     btn_class: "btn--primary"
 feature_row3:
