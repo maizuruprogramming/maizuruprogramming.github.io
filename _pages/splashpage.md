@@ -21,23 +21,23 @@ feature_row2:
     title: "まいかつ"
     excerpt: '2026年9月から開始となる舞鶴市の地域クラブ活動です'
     url: "https://maikatsu.jp/"
-    btn_label: "Read More"
+    btn_label: "まいかつ"
     btn_class: "btn--primary"
 feature_row3:
   - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
-    alt: "placeholder image 2"
-    title: "Placeholder Image Left Aligned"
+    alt: "舞鶴高専杯プログラミングコンテスト"
+    title: "舞鶴高専杯プログラミングコンテスト"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
     url: "#test-link"
-    btn_label: "Read More"
+    btn_label: "舞鶴高専杯プログラミングコンテスト"
     btn_class: "btn--primary"
 feature_row4:
   - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
-    alt: "placeholder image 2"
+    alt: "U-15プログラミングコンテスト舞鶴大会"
     title: "Placeholder Image Left Aligned"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
     url: "#test-link"
-    btn_label: "Read More"
+    btn_label: "U-15プログラミングコンテスト舞鶴大会"
     btn_class: "btn--primary"
 
 ---
