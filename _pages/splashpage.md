@@ -8,12 +8,10 @@ header:
   overlay_filter: "0.5"
   overlay_image: /assets/images/unsplash-image-1.jpg
   actions:
-    - label: "活動報告"
-      url: "https://maizuruprogramming.github.io/"
+    - label: "活動について"
+      url: "https://maizuruprogramming.github.io/about/"
   caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
 excerpt: "2026年9月に創立．現在準備中"
-intro: 
-  - excerpt: 'Nullam suscipit et nam, tellus velit pellentesque at malesuada, enim eaque. Quis nulla, netus tempor in diam gravida tincidunt, *proin faucibus* voluptate felis id sollicitudin. Centered with `type="center"`'
 
 feature_row2:
   - image_path: /assets/images/2026_maikatsu.png
