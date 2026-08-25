@@ -1,0 +1,11 @@
+main:
+  - title: "活動報告"
+    url: /posts/
+  - title: "カテゴリー"
+    url: /categories/
+  - title: "タグ"
+    url: /tags/
+  - title: "規約"
+    url: /kiyaku/
+  - title: "私たちについて"
+    url: /about/
