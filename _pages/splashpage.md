@@ -26,7 +26,7 @@ feature_row3:
     alt: "舞鶴高専杯プログラミングコンテスト"
     title: "舞鶴高専杯プログラミングコンテスト"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
-    url: "#test-link"
+    url: "https://sites.google.com/view/maizuru-programming-contest/"
     btn_label: "舞鶴高専杯プログラミングコンテスト"
     btn_class: "btn--primary"
 feature_row4:
@@ -34,7 +34,7 @@ feature_row4:
     alt: "U-15プログラミングコンテスト舞鶴大会"
     title: "Placeholder Image Left Aligned"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
-    url: "#test-link"
+    url: "https://u15-procon.maizuru-ct.ac.jp/"
     btn_label: "U-15プログラミングコンテスト舞鶴大会"
     btn_class: "btn--primary"
 
