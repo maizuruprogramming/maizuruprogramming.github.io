@@ -11,13 +11,13 @@ header:
     - label: "活動について"
       url: "https://maizuruprogramming.github.io/about/"
   caption: "Photo credit: Yasuhito INOUE"
-excerpt: "2026年9月に創立．現在準備中"
+excerpt: "2026年9月に創立．現在準備中！"
 
 feature_row2:
   - image_path: /assets/images/2026_maikatsu.png
     alt: "まいかつ"
     title: "まいかつ"
-    excerpt: '2026年9月から開始となる舞鶴市の地域クラブ活動です'
+    excerpt: '2026年9月から開始となる舞鶴市の地域クラブ活動です．'
     url: "https://maikatsu.jp/"
     btn_label: "まいかつ"
     btn_class: "btn--primary"
@@ -32,7 +32,7 @@ feature_row3:
 feature_row4:
   - image_path: /assets/images/splash02.png
     alt: "U-15プログラミングコンテスト舞鶴大会"
-    title: "Placeholder Image Left Aligned"
+    title: "U-15プログラミングコンテスト舞鶴大会"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
     url: "https://u15-procon.maizuru-ct.ac.jp/"
     btn_label: "U-15プログラミングコンテスト舞鶴大会"
