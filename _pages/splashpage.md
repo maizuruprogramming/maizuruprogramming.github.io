@@ -25,7 +25,7 @@ feature_row3:
   - image_path: /assets/images/splash01.png
     alt: "舞鶴高専杯プログラミングコンテスト"
     title: "舞鶴高専杯プログラミングコンテスト"
-    excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
+    excerpt: '2021年より，小中学生のプログラミング技術の向上のために開催しています．'
     url: "https://sites.google.com/view/maizuru-programming-contest/"
     btn_label: "舞鶴高専杯プログラミングコンテスト"
     btn_class: "btn--primary"
@@ -33,7 +33,7 @@ feature_row4:
   - image_path: /assets/images/splash02.png
     alt: "U-15プログラミングコンテスト舞鶴大会"
     title: "U-15プログラミングコンテスト舞鶴大会"
-    excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
+    excerpt: 'U-15プログラミングコンテスト舞鶴大会は、小中学生を対象にしたITイベントです。CHaserを使ったと競技部門を開催し、創造力と論理力を育みます。'
     url: "https://u15-procon.maizuru-ct.ac.jp/"
     btn_label: "U-15プログラミングコンテスト舞鶴大会"
     btn_class: "btn--primary"
