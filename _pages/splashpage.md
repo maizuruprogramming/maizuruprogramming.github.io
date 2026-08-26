@@ -10,7 +10,7 @@ header:
   actions:
     - label: "活動について"
       url: "https://maizuruprogramming.github.io/about/"
-  caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
+  caption: "Photo credit: Yasuhito INOUE)"
 excerpt: "2026年9月に創立．現在準備中"
 
 feature_row2:
