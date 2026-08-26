@@ -1,11 +1,12 @@
+# main links
 main:
-  - title: "活動報告"
-    url: /posts/
-  - title: "カテゴリー"
-    url: /categories/
-  - title: "タグ"
-    url: /tags/
-  - title: "規約"
-    url: /kiyaku/
-  - title: "私たちについて"
-    url: /about/
+  - title: "Quick-Start Guide"
+    url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+  # - title: "About"
+  #   url: https://mmistakes.github.io/minimal-mistakes/about/
+  # - title: "Sample Posts"
+  #   url: /year-archive/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
