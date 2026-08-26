@@ -13,7 +13,27 @@ header:
 excerpt: "2026年9月に創立．現在準備中！"
 intro:
   - excerpt: 'Nullam suscipit et nam, tellus velit pellentesque at malesuada, enim eaque. Quis nulla, netus tempor in diam gravida tincidunt, *proin faucibus* voluptate felis id sollicitudin. Centered with `type="center"`'
-feature_row2:
+feature_row:
+  - image_path: /assets/images/2026_maikatsu.png
+    image_caption: "Image courtesy of [Unsplash](https://unsplash.com/)"
+    alt: "placeholder image 1"
+    title: "Placeholder 1"
+    excerpt: "This is some sample content that goes here with **Markdown** formatting."
+  - image_path: /assets/images/splash01.png
+    alt: "placeholder image 2"
+    title: "舞鶴高専杯プログラミングコンテスト"
+    excerpt: "2021年より，小中学生のプログラミング技術の向上のために開催しています．"
+    url: "https://sites.google.com/view/maizuru-programming-contest/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/splash02.png
+    title: "U-15プログラミングコンテスト舞鶴大会"
+    excerpt: "-15プログラミングコンテスト舞鶴大会は、小中学生を対象にしたITイベントです。CHaserを使ったと競技部門を開催し、創造力と論理力を育みます。"
+    url: "https://u15-procon.maizuru-ct.ac.jp/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
+
+  feature_row2:
   - image_path: /assets/images/2026_maikatsu.png
     alt: "まいかつ"
     title: "まいかつ"
@@ -40,6 +60,9 @@ feature_row4:
 ---
 
 {% include feature_row id="intro" type="center" %}
+
+{% include feature_row id="feature_row"}
+
 {% include feature_row id="feature_row2" type="left" %}
 {% include feature_row id="feature_row3" type="left" %}
 {% include feature_row id="feature_row4" type="left" %}
