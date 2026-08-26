@@ -22,7 +22,7 @@ feature_row2:
     btn_label: "まいかつ"
     btn_class: "btn--primary"
 feature_row3:
-  - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
+  - image_path: /assets/images/splash01.png
     alt: "舞鶴高専杯プログラミングコンテスト"
     title: "舞鶴高専杯プログラミングコンテスト"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
@@ -30,7 +30,7 @@ feature_row3:
     btn_label: "舞鶴高専杯プログラミングコンテスト"
     btn_class: "btn--primary"
 feature_row4:
-  - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
+  - image_path: /assets/images/splash02.png
     alt: "U-15プログラミングコンテスト舞鶴大会"
     title: "Placeholder Image Left Aligned"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
