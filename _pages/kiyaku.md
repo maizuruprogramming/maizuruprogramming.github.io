@@ -5,4 +5,7 @@ layout: home
 author_profile: true
 ---
 
-規約
+###　規約
+<iframe src="{{ '/assets/pdf/規約.pdf' | relative_url }}" width="100%" height="600px" style="border: none;">
+  <p>お使いのブラウザはPDF表示に対応していません。<a href="{{ '/assets/pdf/規約.pdf' | relative_url }}">こちらからPDFをダウンロード</a>してください。</p>
+</iframe>
