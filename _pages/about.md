@@ -1,7 +1,7 @@
 ---
 permalink: /about/
 title: "舞鶴高専プログラミングラボについて"
-layout: home
+layout: single
 author_profile: true
 ---
 
