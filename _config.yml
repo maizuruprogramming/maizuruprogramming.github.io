@@ -117,16 +117,16 @@ author:
   name             : "舞鶴高専プログラミングラボ"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "舞鶴工業高等専門学校"
-  location         : "舞鶴工業高等専門学校"
+  location         : "Maizuru, Kyoto"
   email            :
   # fediverse      : "@you@instance.social"  # used for fediverse:creator meta tag
   links:
     - label: "Email"
       icon: "fas fa-fw fa-square-envelope"
       # url: "mailto:your.name@email.com"
-    - label: "Website"
+    - label: "まいかつ"
       icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
+      url: "https://maikatsu.jp/"
     - label: "Twitter"
       icon: "fab fa-fw fa-square-x-twitter"
       # url: "https://twitter.com/"
