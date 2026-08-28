@@ -65,7 +65,7 @@ feature_row4:
 <h3>最近の活動</h3>
 
 <div class="grid__wrapper">
-  {% for post in site.posts limit:3 %}
+  {% for post in site.posts <limit:4></limit:4> %}
     {% include archive-single.html type="grid" %}
   {% endfor %}
 </div>
