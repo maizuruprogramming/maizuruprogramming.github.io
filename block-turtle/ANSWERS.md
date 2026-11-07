@@ -7,12 +7,13 @@
 
 # 日本語の こたえ
 
-このファイルには、3つのアプリの解答をまとめています。
+このファイルには、4つのアプリの解答をまとめています。
 どの解答も、左が組むブロック、右が実行した結果の画像です。
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
+- 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
 
 ## 📖 先生モード（こたえをブロックで読み込む）
 
@@ -22,6 +23,7 @@ URL の最後に `?sensei` を付けて開くと、ヘッダーに「📖 こた
 https://<ユーザー名>.github.io/<リポジトリ名>/index.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/maze.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/space.html?sensei
+https://<ユーザー名>.github.io/<リポジトリ名>/craft.html?sensei
 ```
 
 ボタンを押すと、選んでいるおだい（ステージ）の解答ブロックが読み込まれます。「▶ じっこう」で動きを確かめられるので、授業での解説に使えます。
@@ -212,14 +214,64 @@ https://<ユーザー名>.github.io/<リポジトリ名>/space.html?sensei
 
 ---
 
+# 🧱 こわして つくる ぼうけん
+
+つるはしで石ブロックを「こわす」と、そのブロックが持ち物に入ります。持っているブロックを水の上に「おく」と、橋になって渡れます。たからばこに着くとクリアです。
+- 黒いかたい岩はこわせません（「この いわは かたくて こわせない！」）
+- 石ブロックや水に、そのまま進むと失敗します（「ぶつかった！」「みずに おちちゃった！」）
+- ブロックを持っていないときに「おく」を使うと失敗します。持っている数は、盤面の上の「もっている ブロック」に表示されます
+
+| ステージ | 学べること | 解答のブロック数 |
+|---|---|---|
+| 1 こわして すすもう | 「こわす」という動作 | 5 |
+| 2 はしを かけよう | こわす → 持つ → おく、という手順 | 6 |
+| 3 くりかえして こわそう | くりかえし | 4（めやす 4） |
+| 4 ながい はし | 持っている数を使い切るくりかえし | 4（めやす 4） |
+| 5 もし いしが あったら | 条件分岐（前を調べる） | 4（めやす 4） |
+| 6 いしと みず | 2つの条件分岐、持っている数の増え減り | 6（めやす 6） |
+| 7 うずまきの どうくつ | 条件つきのくりかえし＋3つの条件分岐 | 8（めやす 8） |
+
+### ステージ1　こわして すすもう
+![ステージ1 のこたえ](images/answers/craft1.png)
+
+### ステージ2　はしを かけよう
+![ステージ2 のこたえ](images/answers/craft2.png)
+最初はブロックを持っていません。先に石をこわしてから水に置く、という順番に気づけるかがポイントです。
+
+### ステージ3　くりかえして こわそう
+![ステージ3 のこたえ](images/answers/craft3.png)
+
+### ステージ4　ながい はし
+![ステージ4 のこたえ](images/answers/craft4.png)
+最初からブロックを3こ持っています。3回置くと、ちょうど0こになります。
+
+### ステージ5　もし いしが あったら
+![ステージ5 のこたえ](images/answers/craft5.png)
+「もし」を使わずに「こわす → すすむ」をくりかえすと、石のないマスで失敗します。
+
+### ステージ6　いしと みず
+![ステージ6 のこたえ](images/answers/craft6.png)
+石をこわすと持ち物が1こ増え、水に置くと1こ減ります（0 → 1 → 0 → 1）。
+
+### ステージ7　うずまきの どうくつ
+![ステージ7 のこたえ](images/answers/craft7.png)
+くりかえすたびに、まず前が石ならこわし、水なら橋を置きます。そのあと前に進めれば進み、進めなければ（かたい岩や外の壁なら）右を向きます。
+ステージ6のプログラムのままだと、曲がり角で進めずに「ゴールに つかなかったよ」になります。
+
+### じゆうモード
+ランダムな世界です。水の数（3こ）と同じ数のブロックを持ってスタートするので、どの世界でもクリアできます。決まった解答はないので、先生モードの「こたえ」は読み込めません。
+
+---
+
 # English answers
 
-This section has the answers for the three apps. In every image, the blocks are on the left and the result is on the right.
+This section has the answers for the four apps. In every image, the blocks are on the left and the result is on the right.
 These images show the English block labels. To see the same blocks in the app, switch the language with **⚙ Settings → 🌐**.
 
 - 🐢 **Block Drawing** (index.html): challenges ①–⑨
 - ⛏ **Block Maze** (maze.html): stages 1–8
 - 🚀 **Space Star Hunt** (space.html): stages 1–7
+- 🧱 **Break & Build Quest** (craft.html): stages 1–7
 
 ## 📖 Teacher mode (load the answer blocks)
 
@@ -229,6 +281,7 @@ Add `?sensei` to the end of the URL. A "📖 Answer" button appears in the heade
 https://<user>.github.io/<repository>/index.html?sensei&lang=en
 https://<user>.github.io/<repository>/maze.html?sensei&lang=en
 https://<user>.github.io/<repository>/space.html?sensei&lang=en
+https://<user>.github.io/<repository>/craft.html?sensei&lang=en
 ```
 
 Press the button to load the answer blocks for the selected challenge or stage. Then press "▶ Run" to show how it works in class.
@@ -391,3 +444,52 @@ With the Stage 6 program, the astronaut keeps going around in the same place and
 
 ### Free mode
 The Stage 7 program clears any space.
+
+---
+
+# 🧱 Break & Build Quest
+
+Use the pickaxe to **break** a stone block, and the block goes into your inventory. **Place** a block on water to make a bridge you can walk on. Reach the treasure chest to clear the stage.
+- Dark, hard rock cannot be broken ("This rock is too hard to break!")
+- Walking straight into stone or water is a mistake ("You bumped into…", "Splash!")
+- Using "place" when you have no blocks is a mistake. The number of blocks you have is shown above the board ("Blocks you have")
+
+| Stage | What students learn | Blocks in the answer |
+|---|---|---|
+| 1 Break and go | The "break" action | 5 |
+| 2 Build a bridge | The steps: break → hold → place | 6 |
+| 3 Break with a loop | Loops | 4 (target 4) |
+| 4 A long bridge | A loop that uses up the blocks you have | 4 (target 4) |
+| 5 If there is stone | Conditions (checking the front) | 4 (target 4) |
+| 6 Stone and water | Two conditions; the block count going up and down | 6 (target 6) |
+| 7 Spiral cave | Repeat until + three conditions | 8 (target 8) |
+
+### Stage 1: Break and go
+![Stage 1 answer](images/answers/en/craft1.png)
+
+### Stage 2: Build a bridge
+![Stage 2 answer](images/answers/en/craft2.png)
+You start with no blocks. The key is noticing that you must break the stone first, then place the block on the water.
+
+### Stage 3: Break with a loop
+![Stage 3 answer](images/answers/en/craft3.png)
+
+### Stage 4: A long bridge
+![Stage 4 answer](images/answers/en/craft4.png)
+You start with 3 blocks. After placing 3, you have exactly 0 left.
+
+### Stage 5: If there is stone
+![Stage 5 answer](images/answers/en/craft5.png)
+Without "if", repeating "break → move" fails on a square with no stone.
+
+### Stage 6: Stone and water
+![Stage 6 answer](images/answers/en/craft6.png)
+Breaking stone adds 1 block, and placing on water uses 1 (0 → 1 → 0 → 1).
+
+### Stage 7: Spiral cave
+![Stage 7 answer](images/answers/en/craft7.png)
+Each time through the loop: if the front is stone, break it; if it is water, place a bridge. Then move if the front is an open path; otherwise (hard rock or the outer wall) turn right.
+With the Stage 6 program, the explorer cannot get around the corners and ends with "You didn't reach the goal."
+
+### Free mode
+Random worlds. You start with as many blocks as there are water squares (3), so every world can be cleared. There is no fixed answer, so the teacher-mode "Answer" button does not load one.

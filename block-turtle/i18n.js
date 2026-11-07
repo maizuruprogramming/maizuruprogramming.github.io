@@ -120,6 +120,7 @@
     { href: 'index.html',    icon: '🐢', ja: 'おえかき',   en: 'Drawing' },
     { href: 'maze.html',     icon: '⛏', ja: 'めいろ',     en: 'Maze' },
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
+    { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
     { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' }
   ];
   window.buildNav = function (nav) {

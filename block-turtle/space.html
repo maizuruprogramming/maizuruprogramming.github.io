@@ -666,13 +666,14 @@ function showClearDialog() {
   clearDialog.classList.add('show');
   document.getElementById('dlgYes').focus();
 }
-function hideClearDialog() { clearDialog.classList.remove('show'); }
+let dialogTimer = null;
+function hideClearDialog() { clearTimeout(dialogTimer); dialogTimer = null; clearDialog.classList.remove('show'); }
 
 function markCleared() {
   cleared[levelIndex] = true;
   store.set('-cleared', cleared);
   refreshLevelList();
-  if (levelIndex < LEVELS.length - 1) setTimeout(showClearDialog, 2200);   // ロケットが とんでから
+  if (levelIndex < LEVELS.length - 1) dialogTimer = setTimeout(showClearDialog, 2200);   // ロケットが とんでから
 }
 
 /* ========== 10. じっこう ========== */
