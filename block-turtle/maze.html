@@ -78,9 +78,7 @@
   <button id="run"></button>
   <button id="reset" class="sub"></button>
   <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
-  <button id="soundBtn" class="sub" style="background:#5a5a5a;"></button>
-  <button id="nextPerson" class="sub" style="background:#b0392f;"></button>
-  <button id="langBtn" class="sub" style="background:#3c5aa6;"></button>
+  <button id="fnBtn" class="sub2" style="background:#3c5aa6;"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -150,7 +148,7 @@ const STR = {
     freeGoal: '🎉 ゴール！ 🎲で べつの めいろでも ためしてみよう',
     overLimit: (n, lim) => `ゴール！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
     stageClear: '🎉 ステージ クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
-    armed: 'もういちど？', armedMsg: '⚠ もういちど 🔄 を おすと、ぜんぶ リセットするよ',
+    armedItem: 'もういちど おすと リセット', armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ',
     resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
   },
   en: {
@@ -169,13 +167,12 @@ const STR = {
     freeGoal: '🎉 Goal! Try another maze with 🎲',
     overLimit: (n, lim) => `Goal! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
     stageClear: '🎉 Stage clear!', retry: 'Try again! Fix your blocks and press ▶ Run.',
-    armed: 'Again?', armedMsg: '⚠ Press 🔄 again to reset everything.',
+    armedItem: 'Tap again to reset', armedMsg: '⚠ Tap "Next player" again to reset everything.',
     resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
   }
 };
 const t = makeT(STR);
 const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
-const nextPersonBtnEl = () => document.getElementById('nextPerson');
 
 /* ========== 1. オリジナルのブロック ========== */
 const DIRS = [[t('dirF'), 'F'], [t('dirR'), 'R'], [t('dirL'), 'L']];
@@ -709,10 +706,6 @@ const Sound = {
   }
 };
 
-const soundBtn = document.getElementById('soundBtn');
-const showSound = () => { setLabel(soundBtn, Sound.muted ? '🔇' : '🔊', Sound.muted ? t('soundOff') : t('soundOn')); };
-showSound();
-soundBtn.addEventListener('click', () => { Sound.unlock(); Sound.toggle(); showSound(); if (!Sound.muted) Sound.turnRight(); });
 
 function finish(result, moves, code) {
   const lv = LEVELS[levelIndex];
@@ -800,25 +793,13 @@ window.addEventListener('resize', () => Blockly.svgResize(workspace));
 setLabel(document.getElementById('run'), '▶', t('run'));
 setLabel(document.getElementById('reset'), '↺', t('reset'));
 setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
-setLabel(nextPersonBtnEl(), '🔄', t('nextPerson'));
 buildNav(document.getElementById('nav'));
-langButton(document.getElementById('langBtn'));
 applyI18n(t);
 
 setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
 
 // つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムめいろを けして ステージ1へ
-const nextPersonBtn = document.getElementById('nextPerson');
-let nextPersonArmed = null;
-nextPersonBtn.addEventListener('click', () => {
-  if (!nextPersonArmed) {   // 2かい おして かくにん（まちがえて けさないように）
-    setLabel(nextPersonBtn, '⚠', t('armed'));
-    msg.className = 'ng'; msg.textContent = t('armedMsg');
-    nextPersonArmed = setTimeout(() => { setLabel(nextPersonBtn, '🔄', t('nextPerson')); nextPersonArmed = null; }, 4000);
-    return;
-  }
-  clearTimeout(nextPersonArmed); nextPersonArmed = null;
-  setLabel(nextPersonBtn, '🔄', t('nextPerson'));
+function resetForNextPerson() {
   try {
     Object.keys(localStorage)
       .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
@@ -830,7 +811,30 @@ nextPersonBtn.addEventListener('click', () => {
   workspace.scrollCenter && workspace.scrollCenter();
   msg.className = 'ok';
   msg.textContent = t('resetDone');
-});
+}
+
+// ⚙ きのう メニュー：おと・ことば・つぎの ひとへ（リセット）
+let resetArmed = null;
+const fnMenu = FnMenu(document.getElementById('fnBtn'), [
+  { icon: () => Sound.muted ? '🔇' : '🔊',
+    label: () => Sound.muted ? t('soundOff') : t('soundOn'),
+    onClick: (m) => { Sound.unlock(); Sound.toggle(); m.render(); if (!Sound.muted) Sound.turnRight(); } },
+  langMenuItem(),
+  { icon: () => resetArmed ? '⚠' : '🔄',
+    label: () => resetArmed ? t('armedItem') : t('nextPerson'),
+    warn: () => !!resetArmed,
+    onClick: (m) => {
+      if (!resetArmed) {   // 2かい おして かくにん（まちがえて けさないように）
+        msg.className = 'ng'; msg.textContent = t('armedMsg');
+        resetArmed = setTimeout(() => { resetArmed = null; m.render(); }, 4000);
+        m.render();
+        return;
+      }
+      clearTimeout(resetArmed); resetArmed = null;
+      m.close();
+      resetForNextPerson();
+    } }
+]);
 
 
 // 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる

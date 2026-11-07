@@ -30,7 +30,6 @@
   button:hover, select:hover { filter: brightness(1.15); }
   button:active { border-color: #15183a #8a90d0 #8a90d0 #15183a; }
   #run { background: #1f9e6e; }
-  #nextPerson { background: #a8324a; }
   main { display: flex; height: calc(100% - 56px); }
   #blocklyDiv { flex: 1 1 60%; min-width: 0; }
   #stage { flex: 0 0 auto; padding: 12px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; overflow-y: auto; }
@@ -76,9 +75,7 @@
   <button id="run"></button>
   <button id="reset" class="sub"></button>
   <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
-  <button id="soundBtn" class="sub"></button>
-  <button id="nextPerson" class="sub"></button>
-  <button id="langBtn" class="sub" style="background:#5b4bd6;"></button>
+  <button id="fnBtn" class="sub2" style="background:#5b4bd6;"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -148,7 +145,7 @@ const STR = {
     freeGoal: '🚀 はっしゃ！ 🎲で べつの うちゅうでも ためしてみよう',
     overLimit: (n, lim) => `クリア！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
     stageClear: '🚀 ミッション クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
-    armed: 'もういちど？', armedMsg: '⚠ もういちど 🔄 を おすと、ぜんぶ リセットするよ',
+    armedItem: 'もういちど おすと リセット', armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ',
     resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
   },
   en: {
@@ -173,7 +170,7 @@ const STR = {
     freeGoal: '🚀 Lift-off! Try another space with 🎲',
     overLimit: (n, lim) => `Cleared! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
     stageClear: '🚀 Mission complete!', retry: 'Try again! Fix your blocks and press ▶ Run.',
-    armed: 'Again?', armedMsg: '⚠ Press 🔄 again to reset everything.',
+    armedItem: 'Tap again to reset', armedMsg: '⚠ Tap "Next player" again to reset everything.',
     resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
   }
 };
@@ -619,10 +616,6 @@ const Sound = {
                 this.notes([[262, 2.3, 1.0], [330, 2.3, 1.0], [392, 2.3, 1.0]], 'triangle', 0.4); },
   toggle() { this.muted = !this.muted; store.set('-muted', this.muted); return this.muted; }
 };
-const soundBtn = document.getElementById('soundBtn');
-const showSound = () => { setLabel(soundBtn, Sound.muted ? '🔇' : '🔊', Sound.muted ? t('soundOff') : t('soundOn')); };
-showSound();
-soundBtn.addEventListener('click', () => { Sound.unlock(); Sound.toggle(); showSound(); if (!Sound.muted) Sound.pick(); });
 
 /* ========== 9. ステージの きりかえ ========== */
 const msg = document.getElementById('msg');
@@ -802,9 +795,7 @@ window.addEventListener('resize', () => Blockly.svgResize(workspace));
 setLabel(document.getElementById('run'), '▶', t('run'));
 setLabel(document.getElementById('reset'), '↺', t('reset'));
 setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
-setLabel(document.getElementById('nextPerson'), '🔄', t('nextPerson'));
 buildNav(document.getElementById('nav'));
-langButton(document.getElementById('langBtn'));
 applyI18n(t);
 
 setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
@@ -819,17 +810,7 @@ answerBtn.addEventListener('click', () => {
 });
 
 // つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムうちゅうを けして ステージ1へ
-const nextPersonBtn = document.getElementById('nextPerson');
-let nextPersonArmed = null;
-nextPersonBtn.addEventListener('click', () => {
-  if (!nextPersonArmed) {
-    setLabel(nextPersonBtn, '⚠', t('armed'));
-    msg.className = 'ng'; msg.textContent = t('armedMsg');
-    nextPersonArmed = setTimeout(() => { setLabel(nextPersonBtn, '🔄', t('nextPerson')); nextPersonArmed = null; }, 4000);
-    return;
-  }
-  clearTimeout(nextPersonArmed); nextPersonArmed = null;
-  setLabel(nextPersonBtn, '🔄', t('nextPerson'));
+function resetForNextPerson() {
   try {
     Object.keys(localStorage)
       .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
@@ -839,7 +820,30 @@ nextPersonBtn.addEventListener('click', () => {
   loading = true; workspace.clear(); loading = false;
   setLevel(0);
   msg.className = 'ok'; msg.textContent = t('resetDone');
-});
+}
+
+// ⚙ きのう メニュー：おと・ことば・つぎの ひとへ（リセット）
+let resetArmed = null;
+const fnMenu = FnMenu(document.getElementById('fnBtn'), [
+  { icon: () => Sound.muted ? '🔇' : '🔊',
+    label: () => Sound.muted ? t('soundOff') : t('soundOn'),
+    onClick: (m) => { Sound.unlock(); Sound.toggle(); m.render(); if (!Sound.muted) Sound.pick(); } },
+  langMenuItem(),
+  { icon: () => resetArmed ? '⚠' : '🔄',
+    label: () => resetArmed ? t('armedItem') : t('nextPerson'),
+    warn: () => !!resetArmed,
+    onClick: (m) => {
+      if (!resetArmed) {   // 2かい おして かくにん（まちがえて けさないように）
+        msg.className = 'ng'; msg.textContent = t('armedMsg');
+        resetArmed = setTimeout(() => { resetArmed = null; m.render(); }, 4000);
+        m.render();
+        return;
+      }
+      clearTimeout(resetArmed); resetArmed = null;
+      m.close();
+      resetForNextPerson();
+    } }
+]);
 </script>
 </body>
 </html>

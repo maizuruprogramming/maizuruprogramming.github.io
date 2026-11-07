@@ -79,7 +79,7 @@
 <header>
   <h1><span class="ico">🐟</span><span class="lbl" data-i18n="appTitle"></span></h1>
   <nav class="nav" id="nav"></nav>
-  <button id="langBtn" class="sub blue"></button>
+  <button id="fnBtn" class="sub2 blue"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -814,7 +814,7 @@ function startMakeView() {
 
 // ことば・ヘッダー
 buildNav(document.getElementById('nav'));
-langButton(document.getElementById('langBtn'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem()]);   // ⚙ きのう メニュー（ことば）
 applyI18n(t);
 document.getElementById('delMode').textContent = t('delMode', false);
 

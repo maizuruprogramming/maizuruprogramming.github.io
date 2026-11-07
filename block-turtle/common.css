@@ -10,6 +10,17 @@ header .nav a { white-space: nowrap; }
 header button { flex: none; white-space: nowrap; }
 .ico + .lbl { margin-left: .3em; }
 
+/* ⚙ きのう メニュー */
+.fnMenu { position: fixed; z-index: 300; display: none; min-width: 260px; padding: 6px;
+  background: #2b2f3a; border: 3px solid #000; box-shadow: 0 8px 22px rgba(0,0,0,.45); font-family: inherit; }
+.fnMenu.show { display: block; }
+.fnMenu .fnItem { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin: 4px 0; padding: 8px 14px;
+  font: inherit; font-size: 17px; color: #fff; text-shadow: none; text-align: left; cursor: pointer;
+  background: #3d4352; border: 2px solid #59607a; border-radius: 6px; outline: none; filter: none; }
+.fnMenu .fnItem:hover, .fnMenu .fnItem:focus-visible { background: #50597a; border-color: #8a93c0; }
+.fnMenu .fnItem.warn { background: #a8324a; border-color: #ff8a9a; }
+.fnMenu .fnIco { font-size: 22px; width: 1.3em; text-align: center; }
+
 /* はば 1440px いか：アプリの リンクは アイコンだけ */
 @media (max-width: 1440px) {
   header .nav .lbl { display: none; }
@@ -20,9 +31,9 @@ header button { flex: none; white-space: nowrap; }
   header button.sub .lbl { display: none; }
   header button.sub { padding-left: 10px; padding-right: 10px; }
 }
-/* はば 860px いか：タイトルも アイコンだけ */
+/* はば 860px いか：タイトルと ⚙きのう も アイコンだけ */
 @media (max-width: 860px) {
-  header h1 .lbl { display: none; }
+  header h1 .lbl, header button.sub2 .lbl { display: none; }
   header { gap: 6px !important; }
   header button { padding-left: 9px; padding-right: 9px; }
 }

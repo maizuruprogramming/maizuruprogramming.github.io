@@ -16,7 +16,7 @@
   header h1 { font-size: 20px; margin: 0; }
   header .nav a { color: #fff; font-size: 14px; }
   header button.sub { background: #fff; color: #333; }
-  #langBtn { background: #e3ecfa; color: #234; }
+  #fnBtn { background: #e3ecfa; color: #234; }
   button { font: inherit; font-size: 16px; padding: 6px 14px; border: none; border-radius: 10px; cursor: pointer; }
   #run   { background: #ffcc33; color: #333; font-weight: bold; }
   #clear { background: #fff; color: #333; }
@@ -47,7 +47,7 @@
   <button id="run"></button>
   <button id="clear" class="sub"></button>
   <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;color:#fff;"></button>
-  <button id="langBtn" class="sub"></button>
+  <button id="fnBtn" class="sub2"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -533,7 +533,7 @@ setLabel(document.getElementById('run'), '▶', t('run'));
 setLabel(document.getElementById('clear'), '🧽', t('clear'));
 setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
 buildNav(document.getElementById('nav'));
-langButton(document.getElementById('langBtn'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem()]);   // ⚙ きのう メニュー（ことば）
 applyI18n(t);
 
 document.getElementById('run').addEventListener('click', run);

@@ -58,6 +58,63 @@
     btn.addEventListener('click', function () { window.setLang(lang === 'ja' ? 'en' : 'ja'); });
   };
 
+
+  /* -------------------------------------------------------------------
+     ⚙「きのう」メニュー：おと・ことば・リセット などを 1つの ボタンに まとめる
+     items: [{ icon: () => '🔊', label: () => 'おと：オン', onClick: (menu) => {...}, warn: () => false }]
+     menu.render() で ひょうじを なおす、menu.close() で とじる
+     ------------------------------------------------------------------- */
+  window.FnMenu = function (btn, items) {
+    window.setLabel(btn, '⚙', lang === 'ja' ? 'きのう' : 'Settings');
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    var box = document.createElement('div');
+    box.className = 'fnMenu'; box.setAttribute('role', 'menu');
+    document.body.appendChild(box);   // ヘッダーの そとに おく（きれないように）
+    var menu = {
+      render: function () {
+        box.innerHTML = '';
+        items.forEach(function (it) {
+          var b = document.createElement('button');
+          b.className = 'fnItem' + (it.warn && it.warn() ? ' warn' : '');
+          b.setAttribute('role', 'menuitem');
+          var i = document.createElement('span'); i.className = 'fnIco'; i.textContent = it.icon();
+          var l = document.createElement('span'); l.textContent = it.label();
+          b.appendChild(i); b.appendChild(l);
+          b.addEventListener('click', function (e) { e.stopPropagation(); it.onClick(menu); });
+          box.appendChild(b);
+        });
+      },
+      open: function () {
+        menu.render();
+        var r = btn.getBoundingClientRect();
+        box.style.top = (r.bottom + 6) + 'px';
+        box.style.right = Math.max(6, window.innerWidth - r.right) + 'px';
+        box.classList.add('show'); btn.setAttribute('aria-expanded', 'true');
+        var first = box.querySelector('button'); if (first) first.focus();
+      },
+      close: function () { box.classList.remove('show'); btn.setAttribute('aria-expanded', 'false'); },
+      isOpen: function () { return box.classList.contains('show'); },
+      el: box
+    };
+    btn.addEventListener('click', function (e) { e.stopPropagation(); menu.isOpen() ? menu.close() : menu.open(); });
+    document.addEventListener('pointerdown', function (e) {
+      if (menu.isOpen() && !box.contains(e.target) && !btn.contains(e.target)) menu.close();
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.isOpen()) { menu.close(); btn.focus(); } });
+    window.addEventListener('resize', function () { menu.close(); });
+    return menu;
+  };
+
+  // メニューの「ことば」の こうもく
+  window.langMenuItem = function () {
+    return {
+      icon: function () { return '🌐'; },
+      label: function () { return lang === 'ja' ? 'English（えいご）に する' : '日本語 (Japanese)'; },
+      onClick: function () { window.setLang(lang === 'ja' ? 'en' : 'ja'); }
+    };
+  };
+
   // ヘッダーの アプリ リンク（いまの ページいがい）
   var APPS = [
     { href: 'index.html',    icon: '🐢', ja: 'おえかき',   en: 'Drawing' },

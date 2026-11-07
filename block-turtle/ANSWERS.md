@@ -1,6 +1,13 @@
-# こたえ（先生・保護者向け）
+# こたえ ／ Answer Key（先生・保護者向け / for teachers and parents）
 
-このファイルには、2つのアプリの解答をまとめています。
+- [日本語の こたえ](#日本語の-こたえ)
+- [English answers](#english-answers)
+
+---
+
+# 日本語の こたえ
+
+このファイルには、3つのアプリの解答をまとめています。
 どの解答も、左が組むブロック、右が実行した結果の画像です。
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
@@ -201,3 +208,186 @@ https://<ユーザー名>.github.io/<リポジトリ名>/space.html?sensei
 
 ### じゆうモード
 ステージ7と同じプログラムで、どの宇宙でもクリアできます。
+
+
+---
+
+# English answers
+
+This section has the answers for the three apps. In every image, the blocks are on the left and the result is on the right.
+These images show the English block labels. To see the same blocks in the app, switch the language with **⚙ Settings → 🌐**.
+
+- 🐢 **Block Drawing** (index.html): challenges ①–⑨
+- ⛏ **Block Maze** (maze.html): stages 1–8
+- 🚀 **Space Star Hunt** (space.html): stages 1–7
+
+## 📖 Teacher mode (load the answer blocks)
+
+Add `?sensei` to the end of the URL. A "📖 Answer" button appears in the header.
+
+```
+https://<user>.github.io/<repository>/index.html?sensei&lang=en
+https://<user>.github.io/<repository>/maze.html?sensei&lang=en
+https://<user>.github.io/<repository>/space.html?sensei&lang=en
+```
+
+Press the button to load the answer blocks for the selected challenge or stage. Then press "▶ Run" to show how it works in class.
+Loading an answer replaces the blocks the student had built for that challenge or stage.
+
+---
+
+# 🐢 Block Drawing
+
+When you choose a challenge, a light gray model drawing appears.
+After "▶ Run" finishes, the app compares your lines with the model and checks the answer automatically.
+Only the shape and position of the lines are checked. Colors and pen sizes can be anything.
+The turtle starts in the center, facing up.
+
+| # | Challenge | What students learn |
+|---|---|---|
+| ① | Hexagon | Repeat; exterior angle = 360 ÷ number of corners |
+| ② | Star | A shape that turns around twice (720°) |
+| ③ | Circle | Making a circle from many short lines |
+| ④ | Window | A loop inside a loop (nested loops) |
+| ⑤ | Flower | Nested loops + rotation symmetry |
+| ⑥ | Square spiral | Using a variable (counter) as a length |
+| ⑦ | Polygons in a row | Variable + math block (360 ÷ n) |
+| ⑧ | Snowflake | Breaking a task into steps; "coming back to the start" |
+| ⑨ | Star spiral | Variable × math + turning |
+
+### ① Hexagon ★
+![① Hexagon answer](images/answers/en/odai1.png)
+
+### ② Star ★★
+![② Star answer](images/answers/en/odai2.png)
+The turtle turns around twice (720°) in 5 repeats, so each turn is 720 ÷ 5 = 144°.
+
+### ③ Circle ★★
+![③ Circle answer](images/answers/en/odai3.png)
+
+### ④ Window ★★★
+![④ Window answer](images/answers/en/odai4.png)
+
+### ⑤ Flower ★★★
+![⑤ Flower answer](images/answers/en/odai5.png)
+
+### ⑥ Square spiral ★★★★
+![⑥ Square spiral answer](images/answers/en/odai6.png)
+
+### ⑦ Polygons in a row ★★★★
+![⑦ Polygons in a row answer](images/answers/en/odai7.png)
+Make the variable n with "Create variable…" in the Variables category.
+
+### ⑧ Snowflake ★★★★★
+![⑧ Snowflake answer](images/answers/en/odai8.png)
+The key is to put both the position and the direction back after drawing each branch.
+
+### ⑨ Star spiral ★★★★★
+![⑨ Star spiral answer](images/answers/en/odai9.png)
+Put "set pen color to random" inside the loop to make it colorful.
+
+---
+
+# ⛏ Block Maze
+
+"Forward" is the way the explorer's helmet light is shining.
+In stages 4–7, the "target" is the number of blocks used (number inputs are not counted).
+
+| Stage | What students learn | Blocks in the answer |
+|---|---|---|
+| 1 Go straight | Putting steps in order (sequence) | 4 |
+| 2 Let's turn | Thinking about direction | 5 |
+| 3 A long path | Building a long sequence | 12 |
+| 4 Use a loop | Loops | 5 (target 5) |
+| 5 Climb the stairs | Finding a pattern | 5 (target 5) |
+| 6 If… | Conditions; repeat until | 4 (target 4) |
+| 7 Right? Left? | Nested conditions | 6 (target 6) |
+| 8 Any maze! | Generalizing (an algorithm) | 7 |
+
+### Stage 1: Go straight
+![Stage 1 answer](images/answers/en/maze1.png)
+
+### Stage 2: Let's turn
+![Stage 2 answer](images/answers/en/maze2.png)
+"Turn" changes only the direction. The explorer stays on the same square.
+
+### Stage 3: A long path
+![Stage 3 answer](images/answers/en/maze3.png)
+This takes 12 blocks. Noticing "this is long and tiring" leads to loops in the next stage.
+
+### Stage 4: Use a loop
+![Stage 4 answer](images/answers/en/maze4.png)
+
+### Stage 5: Climb the stairs
+![Stage 5 answer](images/answers/en/maze5.png)
+The explorer reaches the goal in the middle of the 4th repeat, and the program stops there. Repeating 5 times is also correct.
+
+### Stage 6: If…
+![Stage 6 answer](images/answers/en/maze6.png)
+The spiral path only turns right, so "if the front is blocked, turn right" is enough.
+
+### Stage 7: Right? Left?
+![Stage 7 answer](images/answers/en/maze7.png)
+With the Stage 6 program, the explorer reaches a dead end after turning right. It keeps going around in the same place and stops with "Too many moves".
+
+### Stage 8: Any maze! (the right-hand rule)
+![Stage 8 answer](images/answers/en/maze8.png)
+This is the "right-hand rule": walk with your right hand touching the wall. In these mazes, the start and the goal both touch the outer wall, so it always reaches the goal.
+We checked it on 900 random mazes, and it reached the goal every time.
+
+Swapping every "right" and "left" (the left-hand rule) also works. The Stage 7 program can get stuck going around in circles in some mazes. Talking about why it fails is a good class discussion.
+
+### Free mode
+The Stage 8 program reaches the goal in any maze.
+
+---
+
+# 🚀 Space Star Hunt
+
+The astronaut must pick up every star ⭐ and then board the rocket 🚀.
+- Passing over the rocket before collecting all the stars does not end the mission. The astronaut keeps going
+- Using "pick up star" on a square with no star is a mistake ("There is no star here!")
+
+| Stage | What students learn | Blocks in the answer |
+|---|---|---|
+| 1 Pick up a star | Sequence + the "pick up" action | 5 |
+| 2 Turn and collect | Direction and order | 8 |
+| 3 Collect with a loop | Loops | 4 (target 4) |
+| 4 Star stairs | Finding a pattern to repeat | 6 (target 6) |
+| 5 If there is a star | Conditions (checking the current square) | 4 (target 4) |
+| 6 Until mission complete | Repeat until + conditions | 6 (target 6) |
+| 7 Any space! | Generalizing (right-hand rule + check and pick up) | 9 |
+
+### Stage 1: Pick up a star
+![Stage 1 answer](images/answers/en/space1.png)
+
+### Stage 2: Turn and collect
+![Stage 2 answer](images/answers/en/space2.png)
+
+### Stage 3: Collect with a loop
+![Stage 3 answer](images/answers/en/space3.png)
+After the 3rd pick-up, one more step reaches the rocket.
+
+### Stage 4: Star stairs
+![Stage 4 answer](images/answers/en/space4.png)
+The astronaut reaches the rocket in the middle of the 4th repeat, and the mission is complete at that moment.
+
+### Stage 5: If there is a star
+![Stage 5 answer](images/answers/en/space5.png)
+Without "if", repeating "move → pick up" fails on a square with no star.
+This stage shows why it is important to check first and then act.
+
+### Stage 6: Until mission complete
+![Stage 6 answer](images/answers/en/space6.png)
+Each time through the loop, the astronaut first checks for a star, then moves. The spiral only turns right, so "if the front is blocked, turn right" is enough.
+
+### Stage 7: Any space!
+![Stage 7 answer](images/answers/en/space7.png)
+This is the right-hand rule from Maze Stage 8, plus "if there is a star here, pick it up".
+Even if the astronaut passes the rocket before getting every star, it keeps following the walls. In the end it picks up all the stars and comes back to the rocket.
+The random spaces used for the test always put the stars on squares that the right-hand rule walks over. We checked this answer on 1,000 random spaces, and it cleared every one.
+
+With the Stage 6 program, the astronaut keeps going around in the same place and stops with "Too many moves".
+
+### Free mode
+The Stage 7 program clears any space.
