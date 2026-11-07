@@ -8,7 +8,8 @@
 <script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
-<script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>  <!-- 📜 しゅうりょうしょう -->  <!-- にほんご／English と Blockly の ことば -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="common.css">
@@ -92,7 +93,7 @@ const STR = {
     overLimit: (n, lim) => `ゴール！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
     stageClear: '🎉 たからばこ ゲット！ ステージ クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
     armedItem: 'もういちど おすと リセット', armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ',
-    resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう',
+    certItem: 'しゅうりょうしょうを みる', resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう',
     noAnswer: 'じゆうモードには こたえが ないよ'
   },
   en: {
@@ -115,7 +116,7 @@ const STR = {
     overLimit: (n, lim) => `Goal! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
     stageClear: '🎉 Treasure found! Stage clear!', retry: 'Try again! Fix your blocks and press ▶ Run.',
     armedItem: 'Tap again to reset', armedMsg: '⚠ Tap "Next player" again to reset everything.',
-    resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.',
+    certItem: 'View certificate', resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.',
     noAnswer: 'Free mode has no answer.'
   }
 };
@@ -619,10 +620,24 @@ function showClearDialog() {
 let dialogTimer = null;
 function hideClearDialog() { clearTimeout(dialogTimer); dialogTimer = null; clearDialog.classList.remove('show'); }
 
+// ぜんぶの ステージ（じゆうモード いがい）を クリアしたか
+function allStagesCleared() { return LEVELS.every((lv, i) => lv.mode === 'free' || cleared[i]); }
+
+// 📜 しゅうりょうしょう（とじたら、つぎの ステージの かくにんを だす）
+function showCertificate(thenNext) {
+  Certificate.show({ app: t('appTitle'), icons: ['🧱', '⛏'],
+    onClose: thenNext && levelIndex < LEVELS.length - 1 ? showClearDialog : null });
+}
+
 function markCleared() {
+  const wasAll = allStagesCleared();
   cleared[levelIndex] = true;
   store.set('-cleared', cleared);
   refreshLevelList();
+  if (!wasAll && allStagesCleared()) {   // いま ぜんぶ クリアに なった！
+    dialogTimer = setTimeout(() => showCertificate(true), 1400);
+    return;
+  }
   if (levelIndex < LEVELS.length - 1) dialogTimer = setTimeout(showClearDialog, 1400);
 }
 
@@ -728,6 +743,7 @@ function resetForNextPerson() {
       .forEach((k) => localStorage.removeItem(k));
   } catch (_) {}
   cleared = [];
+  Certificate.clearName();
   loading = true; workspace.clear(); loading = false;
   setLevel(0);
   msg.className = 'ok'; msg.textContent = t('resetDone');
@@ -742,6 +758,8 @@ FnMenu(document.getElementById('fnBtn'), [
   langMenuItem(),
   nightMenuItem(),
   calmMenuItem(),
+  { icon: () => '📜', label: () => t('certItem'), visible: allStagesCleared,
+    onClick: (m) => { m.close(); showCertificate(false); } },
   { icon: () => resetArmed ? '⚠' : '🔄',
     label: () => resetArmed ? t('armedItem') : t('nextPerson'),
     warn: () => !!resetArmed,

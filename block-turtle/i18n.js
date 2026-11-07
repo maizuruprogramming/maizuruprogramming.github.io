@@ -75,6 +75,7 @@
       render: function () {
         box.innerHTML = '';
         items.forEach(function (it) {
+          if (it.visible && !it.visible()) return;
           var b = document.createElement('button');
           b.className = 'fnItem' + (it.warn && it.warn() ? ' warn' : '');
           b.setAttribute('role', 'menuitem');
