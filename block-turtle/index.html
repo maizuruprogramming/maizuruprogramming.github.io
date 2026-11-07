@@ -530,7 +530,7 @@ setLabel(document.getElementById('run'), '▶', t('run'));
 setLabel(document.getElementById('clear'), '🧽', t('clear'));
 setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
 buildNav(document.getElementById('nav'));
-FnMenu(document.getElementById('fnBtn'), [langMenuItem()]);   // ⚙ きのう メニュー（ことば）
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);   // ⚙ きのう メニュー（ことば）
 applyI18n(t);
 
 document.getElementById('run').addEventListener('click', run);

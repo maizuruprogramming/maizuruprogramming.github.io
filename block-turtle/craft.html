@@ -740,6 +740,8 @@ FnMenu(document.getElementById('fnBtn'), [
     label: () => Sound.muted ? t('soundOff') : t('soundOn'),
     onClick: (m) => { Sound.unlock(); Sound.toggle(); m.render(); if (!Sound.muted) Sound.place(); } },
   langMenuItem(),
+  nightMenuItem(),
+  calmMenuItem(),
   { icon: () => resetArmed ? '⚠' : '🔄',
     label: () => resetArmed ? t('armedItem') : t('nextPerson'),
     warn: () => !!resetArmed,

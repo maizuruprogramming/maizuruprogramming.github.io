@@ -806,7 +806,7 @@ function startMakeView() {
 
 // ことば・ヘッダー
 buildNav(document.getElementById('nav'));
-FnMenu(document.getElementById('fnBtn'), [langMenuItem()]);   // ⚙ きのう メニュー（ことば）
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);   // ⚙ きのう メニュー（ことば）
 applyI18n(t);
 document.getElementById('delMode').textContent = t('delMode', false);
 

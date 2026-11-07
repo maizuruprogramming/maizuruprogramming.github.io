@@ -115,6 +115,42 @@
     };
   };
 
+
+  /* -------------------------------------------------------------------
+     みための せってい：🌙 ナイトモード ／ 🎨 おちついた いろ
+     5つの アプリで きょうつう。ページを ひらいた すぐに あてるので ちらつかない
+     ------------------------------------------------------------------- */
+  var look = { night: false, calm: false };
+  try { look.night = localStorage.getItem('block-night') === '1'; look.calm = localStorage.getItem('block-calm') === '1'; } catch (e) {}
+  function applyLook() {
+    document.documentElement.classList.toggle('theme-night', look.night);
+    document.documentElement.classList.toggle('theme-calm', look.calm);
+  }
+  function saveLook() {
+    try { localStorage.setItem('block-night', look.night ? '1' : '0'); localStorage.setItem('block-calm', look.calm ? '1' : '0'); } catch (e) {}
+  }
+  applyLook();
+  window.nightMenuItem = function () {
+    return {
+      icon: function () { return look.night ? '☀️' : '🌙'; },
+      label: function () {
+        return lang === 'ja' ? (look.night ? 'ふつうの あかるさに もどす' : 'ナイトモードに する')
+                             : (look.night ? 'Back to day mode' : 'Night mode');
+      },
+      onClick: function (m) { look.night = !look.night; saveLook(); applyLook(); m.render(); }
+    };
+  };
+  window.calmMenuItem = function () {
+    return {
+      icon: function () { return look.calm ? '🌈' : '🎨'; },
+      label: function () {
+        return lang === 'ja' ? (look.calm ? 'もとの いろに もどす' : 'おちついた いろに する')
+                             : (look.calm ? 'Back to normal colors' : 'Calm colors');
+      },
+      onClick: function (m) { look.calm = !look.calm; saveLook(); applyLook(); m.render(); }
+    };
+  };
+
   // ヘッダーの アプリ リンク（いまの ページいがい）
   var APPS = [
     { href: 'index.html',    icon: '🐢', ja: 'おえかき',   en: 'Drawing' },
