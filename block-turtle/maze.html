@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ブロックでめいろ</title>
+<!-- Blockly 本体・標準ブロック・JavaScript変換・日本語メッセージ（CDN） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/msg/ja.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  /* ===== ドット絵（ブロック）ふうの みため ===== */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: "DotGothic16", "MS Gothic", monospace; color: #3f3f3f;
+    background-color: #3a2a1c;
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,.18) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.18) 75%),
+      linear-gradient(45deg, rgba(0,0,0,.18) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.18) 75%);
+    background-size: 32px 32px; background-position: 0 0, 16px 16px; }
+  header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 8px 14px 0;
+    background: linear-gradient(#5fa83a 0 10px, #4e8a2e 10px 14px, #866043 14px); border-bottom: 4px solid #2a1d12; }
+  header h1 { font-size: 22px; margin: 0; color: #fff; text-shadow: 3px 3px 0 #3f3f3f; font-weight: normal; }
+  header a { color: #ffff55; font-size: 15px; margin-right: auto; margin-left: 8px; text-shadow: 2px 2px 0 #3f3f3f; }
+  /* いしの ボタン */
+  button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: pointer; border-radius: 0;
+    color: #fff; text-shadow: 2px 2px 0 #3f3f3f; background: #7d7d7d;
+    border: 3px solid; border-color: #b5b5b5 #3a3a3a #3a3a3a #b5b5b5; outline: 2px solid #000; outline-offset: -1px; }
+  button:hover, select:hover { background: #8a95c9; }
+  button:active { border-color: #3a3a3a #b5b5b5 #b5b5b5 #3a3a3a; }
+  #run { background: #4f9a2d; }
+  #run:hover { background: #63b83b; }
+  main { display: flex; height: calc(100% - 56px); }
+  #blocklyDiv { flex: 1 1 60%; min-width: 0; }
+  #stage { flex: 0 0 auto; padding: 12px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; overflow-y: auto; }
+  #board { image-rendering: pixelated; border: 4px solid #000; box-shadow: 0 0 0 4px #5a5a5a; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; color: #fff; text-shadow: 2px 2px 0 #000; }
+  /* インベントリふうの パネル */
+  .panel { width: 400px; background: #c6c6c6; padding: 10px 12px;
+    border: 4px solid; border-color: #fff #555 #555 #fff; outline: 2px solid #000; }
+  #levelSelect { width: 100%; }
+  #levelSelect option, #rockCount option { color: #222; text-shadow: none; background: #ddd; }
+  #lessonText { margin: 8px 0 6px; line-height: 1.7; }
+  #limitText { font-size: 14px; color: #7a2aa0; }
+  #hintBtn { font-size: 14px; padding: 3px 10px; background: #3c5aa6; }
+  #hintText { display: none; margin-top: 6px; padding: 6px 8px; background: #8b8b8b; color: #fff; text-shadow: 1px 1px 0 #333; line-height: 1.7;
+    border: 3px solid; border-color: #555 #fff #fff #555; }
+  #randomRow { display: none; }
+  #next { display: none; background: #4f9a2d; }
+  #msg { min-height: 1.6em; font-size: 20px; text-align: center; max-width: 400px; color: #fff; text-shadow: 2px 2px 0 #000; }
+  #msg.ok { color: #55ff55; }
+  #msg.ng { color: #ff5555; }
+  #info { font-size: 14px; color: #ddd; text-shadow: 1px 1px 0 #000; text-align: center; max-width: 400px; line-height: 1.6; }
+  .blocklyText, .blocklyFlyoutLabelText { font-family: "DotGothic16", monospace !important; }
+  @media (max-width: 900px) {
+    main { flex-direction: column; height: auto; }
+    #blocklyDiv { height: 60vh; flex: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>⛏ ブロックでめいろ</h1>
+  <a href="index.html" style="margin-right:0">🐢 おえかきへ</a>
+  <a href="aquarium.html">🐟 すいぞくかんへ</a>
+  <button id="run">▶ じっこう</button>
+  <button id="reset">↺ もどす</button>
+  <button id="answerBtn" style="display:none;background:#8e24aa;">📖 こたえ</button>
+</header>
+<main>
+  <div id="blocklyDiv"></div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText"></div>
+      <div id="limitText"></div>
+      <button id="hintBtn">💡 ヒント</button>
+      <div id="hintText"></div>
+    </div>
+    <div class="row" id="randomRow">
+      <select id="rockCount">
+        <option value="4">かんたん（いわ 4こ）</option>
+        <option value="6" selected>ふつう（いわ 6こ）</option>
+        <option value="8">むずかしい（いわ 8こ）</option>
+      </select>
+      <button id="newMaze">🎲 あたらしい めいろ</button>
+    </div>
+    <canvas id="board" width="400" height="400"></canvas>
+    <div class="row">
+      <label>はやさ <input id="speed" type="range" min="1" max="10" value="4"></label>
+    </div>
+    <div id="msg"></div>
+    <button id="next">つぎの ステージへ ▶</button>
+    <div id="info"></div>
+  </div>
+</main>
+
+<script>
+// ひょうじを ひらがなに そろえる（標準ブロックの ことば）
+Object.assign(Blockly.Msg, {
+  CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
+  CONTROLS_REPEAT_INPUT_DO: '',
+  CONTROLS_FOR_TITLE: '%1 を %2 から %3 まで %4 ずつ かぞえる',
+  NEW_VARIABLE: 'へんすうを つくる',
+  NEW_VARIABLE_TITLE: 'あたらしい へんすうの なまえ：'
+});
+
+/* ========== 1. オリジナルのブロック ========== */
+const DIRS = [['まえ', 'F'], ['みぎ', 'R'], ['ひだり', 'L']];
+
+Blockly.common.defineBlocksWithJsonArray([
+  { type: 'maze_forward', message0: 'まえに すすむ',
+    previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
+  { type: 'maze_right', message0: 'みぎを むく ↻',
+    previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
+  { type: 'maze_left', message0: 'ひだりを むく ↺',
+    previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
+  { type: 'maze_until_goal', message0: 'ゴールに つくまで くりかえす',
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    previousStatement: null, nextStatement: null, colour: '#8b5a2b' },
+  { type: 'maze_if', message0: 'もし %1 が あいていたら',
+    args0: [{ type: 'field_dropdown', name: 'DIR', options: DIRS }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    previousStatement: null, nextStatement: null, colour: '#3c5aa6' },
+  { type: 'maze_ifelse', message0: 'もし %1 が あいていたら',
+    args0: [{ type: 'field_dropdown', name: 'DIR', options: DIRS }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    message2: 'そうでなければ %1', args2: [{ type: 'input_statement', name: 'ELSE' }],
+    previousStatement: null, nextStatement: null, colour: '#3c5aa6' }
+]);
+
+/* ========== 2. ブロック → JavaScript ========== */
+const gen = javascript.javascriptGenerator;
+gen.STATEMENT_PREFIX = 'highlight(%1);\n';   // いま うごいている ブロックを光らせる
+gen.addReservedWords('highlight');
+
+gen.forBlock['maze_forward'] = () => 'forward();\n';
+gen.forBlock['maze_right']   = () => 'turnRight();\n';
+gen.forBlock['maze_left']    = () => 'turnLeft();\n';
+gen.forBlock['maze_until_goal'] = (b, g) =>
+  `while (!atGoal()) {\n  loopGuard();\n${g.statementToCode(b, 'DO')}}\n`;
+gen.forBlock['maze_if'] = (b, g) =>
+  `if (isOpen('${b.getFieldValue('DIR')}')) {\n${g.statementToCode(b, 'DO')}}\n`;
+gen.forBlock['maze_ifelse'] = (b, g) =>
+  `if (isOpen('${b.getFieldValue('DIR')}')) {\n${g.statementToCode(b, 'DO')}} else {\n${g.statementToCode(b, 'ELSE')}}\n`;
+
+/* ========== 3. チュートリアルの ステージ ==========
+   map の きごう：S=スタート  G=ゴール  #=いわ  .=みち
+   dir（さいしょの むき）：0=うえ 1=みぎ 2=した 3=ひだり
+   blocks：つかえる ブロック   limit：めやすの ブロックすう
+   mode：'test' は ランダムな めいろ 30こで テスト、'free' は じゆうに あそぶ */
+const MOVE = ['maze_forward', 'maze_right', 'maze_left'];
+const ALL  = [...MOVE, 'controls_repeat_ext', 'maze_until_goal', 'maze_if', 'maze_ifelse'];
+
+const LEVELS = [
+  { title: 'ステージ1　まっすぐ すすもう',
+    text: 'ロボットを ゴールの ダイヤ 💎 まで うごかそう。「まえに すすむ」ブロックを ひだりから ひっぱってきて、たてに つなげてね。',
+    hint: 'ゴールまで なんマス あるかな？ その かずだけ「まえに すすむ」を つなげよう。',
+    map: ['#####', '#####', 'S...G', '#####', '#####'], dir: 1, blocks: ['maze_forward'] },
+  { title: 'ステージ2　まがってみよう',
+    text: 'とちゅうで まがるよ。たんけんかの ライト（きいろい ひかり）が てらしている ほうが「まえ」だよ。',
+    hint: '2マス すすんだら「みぎを むく」。むきを かえても マスは うごかないよ。',
+    map: ['S..##', '##.##', '##G##', '#####', '#####'], dir: 1, blocks: MOVE },
+  { title: 'ステージ3　ながい みち',
+    text: 'ながい みちを すすもう。たんけんかに なったつもりで、どっちに まがるか かんがえよう。',
+    hint: '4マス すすむ → みぎを むく → 2マス すすむ → みぎを むく → 4マス すすむ',
+    map: ['S....', '####.', 'G....', '#####', '#####'], dir: 1, blocks: MOVE },
+  { title: 'ステージ4　くりかえしを つかおう',
+    text: 'おなじ ブロックを なんども ならべるのは たいへん。「〇かい くりかえす」の なかに ブロックを いれると、まとめて くりかえせるよ。',
+    hint: '「4かい くりかえす（まえに すすむ）」→「みぎを むく」→「4かい くりかえす（まえに すすむ）」',
+    map: ['S....', '####.', '####.', '####.', '####G'], dir: 1, blocks: [...MOVE, 'controls_repeat_ext'], limit: 5 },
+  { title: 'ステージ5　かいだんを のぼろう',
+    text: 'かいだんの かたちを よく みてみよう。おなじ うごきの セットが くりかえされて いるよ。',
+    hint: '「すすむ → みぎを むく → すすむ → ひだりを むく」が 1セット。これを なんかい くりかえす？',
+    map: ['###.G', '##..#', '#..##', '..###', 'S####'], dir: 0, blocks: [...MOVE, 'controls_repeat_ext'], limit: 5 },
+  { title: 'ステージ6　もし〜なら',
+    text: '「ゴールに つくまで くりかえす」と「もし まえが あいていたら」を つかってみよう。たんけんかが じぶんで まえを みて、すすむか まがるかを きめるよ。',
+    hint: 'ゴールに つくまで くりかえす：もし まえ が あいていたら「すすむ」、そうでなければ「みぎを むく」',
+    map: ['S....', '####.', '..G#.', '.###.', '.....'], dir: 1,
+    blocks: [...MOVE, 'maze_until_goal', 'maze_ifelse'], limit: 4 },
+  { title: 'ステージ7　みぎ？ ひだり？',
+    text: 'こんどは みぎにも ひだりにも まがるよ。まえが ふさがっていたら、みぎを しらべて、それも だめなら ひだりを むこう。',
+    hint: '「そうでなければ」の なかに、もう1つ「もし みぎ が あいていたら」を いれよう。',
+    map: ['S....', '####.', '.....', '.####', '....G'], dir: 1,
+    blocks: [...MOVE, 'maze_until_goal', 'maze_ifelse'], limit: 6 },
+  { title: 'ステージ8　どんな めいろでも ゴール！',
+    text: 'さいごの ちょうせん！ じっこうすると、ランダムな めいろ 30こで プログラムを テストするよ。ぜんぶ ゴールできたら クリア！',
+    hint: '「みぎての ほうそく」：みぎてを かべに つけたまま あるくと、かならず ゴールに つくよ。みぎが あいていたら、まず みぎを むいて すすもう。',
+    mode: 'test', blocks: ALL },
+  { title: 'じゆうモード　ランダムめいろ',
+    text: 'ランダムな めいろで じゆうに あそぼう。🎲で あたらしい めいろが でるよ。',
+    hint: '', mode: 'free', blocks: ALL }
+];
+/* ---------- ステージの こたえ（ブロック）：先生モード（URLに ?sensei）で よみこめる ---------- */
+const A = (() => {
+  const chain = (list) => list.reduceRight((next, b) => next ? { ...b, next: { block: next } } : b, null);
+  return {
+    f: () => ({ type: 'maze_forward' }),
+    r: () => ({ type: 'maze_right' }),
+    l: () => ({ type: 'maze_left' }),
+    repeat: (n, body) => ({ type: 'controls_repeat_ext',
+      inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: n } } }, DO: { block: chain(body) } } }),
+    untilGoal: (body) => ({ type: 'maze_until_goal', inputs: { DO: { block: chain(body) } } }),
+    ifElse: (dir, yes, no) => ({ type: 'maze_ifelse', fields: { DIR: dir },
+      inputs: { DO: { block: chain(yes) }, ELSE: { block: chain(no) } } }),
+    program: (body) => ({ blocks: { languageVersion: 0, blocks: [{ ...chain(body), x: 30, y: 30 }] } })
+  };
+})();
+{ // こたえの データ（ここだけで つかう みじかい なまえ）
+const f = A.f, r = A.r, l = A.l;
+const RIGHT_HAND = [A.untilGoal([A.ifElse('R', [r(), f()], [A.ifElse('F', [f()], [l()])])])];
+
+const ANSWER_BLOCKS = [
+  A.program([f(), f(), f(), f()]),
+  A.program([f(), f(), r(), f(), f()]),
+  A.program([f(), f(), f(), f(), r(), f(), f(), r(), f(), f(), f(), f()]),
+  A.program([A.repeat(4, [f()]), r(), A.repeat(4, [f()])]),
+  A.program([A.repeat(4, [f(), r(), f(), l()])]),
+  A.program([A.untilGoal([A.ifElse('F', [f()], [r()])])]),
+  A.program([A.untilGoal([A.ifElse('F', [f()], [A.ifElse('R', [r()], [l()])])])]),
+  A.program(RIGHT_HAND),
+  A.program(RIGHT_HAND)
+];
+LEVELS.forEach((lv, i) => { lv.answer = ANSWER_BLOCKS[i]; });
+}
+
+
+/* ========== 4. ワークスペース ========== */
+const flyout = (types) => ({
+  kind: 'flyoutToolbox',
+  contents: types.map((t) => t === 'controls_repeat_ext'
+    ? { kind: 'block', type: t, inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: 4 } } } } }
+    : { kind: 'block', type: t })
+});
+
+// ブロックふうの テーマ（つちの ワークスペース・ドットフォント）
+const craftTheme = Blockly.Theme.defineTheme('craft', {
+  base: Blockly.Themes.Classic,
+  blockStyles: {
+    loop_blocks: { colourPrimary: '#8b5a2b', colourSecondary: '#a8743f', colourTertiary: '#5e3b1a' },
+    math_blocks: { colourPrimary: '#6b6b6b', colourSecondary: '#8a8a8a', colourTertiary: '#444444' }
+  },
+  componentStyles: {
+    workspaceBackgroundColour: '#4a3726',
+    toolboxBackgroundColour: '#5a5a5a',
+    flyoutBackgroundColour: '#6e6e6e',
+    flyoutOpacity: 1,
+    scrollbarColour: '#c6c6c6',
+    insertionMarkerColour: '#ffff55'
+  },
+  fontStyle: { family: 'DotGothic16, monospace', size: 12 }
+});
+
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: flyout(ALL), renderer: 'geras', theme: craftTheme, trashcan: true,
+  grid: { spacing: 24, length: 24, colour: '#3f2e1f', snap: true },
+  zoom: { controls: true, wheel: true, startScale: 1.0 },
+  move: { scrollbars: true, drag: true, wheel: false }
+});
+
+const SAVE_KEY = 'block-maze';
+const store = {
+  get(k)    { try { return JSON.parse(localStorage.getItem(SAVE_KEY + k)); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+
+let levelIndex = 0, loading = false;
+workspace.addChangeListener((e) => {
+  if (e.isUiEvent || loading) return;
+  store.set('-ws-' + levelIndex, Blockly.serialization.workspaces.save(workspace));
+  updateInfo();
+});
+
+/* ========== 5. めいろ ========== */
+const N = 5, CELL = 80;
+const DR = [-1, 0, 1, 0], DC = [0, 1, 0, -1];   // 0:うえ 1:みぎ 2:した 3:ひだり
+let rocks = [], START = { r: 0, c: 0, dir: 1 }, GOAL = { r: 4, c: 4 };
+
+function inside(r, c) { return r >= 0 && r < N && c >= 0 && c < N; }
+function free(r, c)   { return inside(r, c) && !rocks[r][c]; }
+
+function loadMap(map, dir) {
+  rocks = map.map((row, r) => [...row].map((ch, c) => {
+    if (ch === 'S') START = { r, c, dir };
+    if (ch === 'G') GOAL = { r, c };
+    return ch === '#';
+  }));
+}
+
+// スタートから ゴールまで いけるか（はばゆうせん たんさく）
+function solvable(rk) {
+  const ok = (r, c) => inside(r, c) && !rk[r][c];
+  const seen = Array.from({ length: N }, () => Array(N).fill(false));
+  const q = [[0, 0]]; seen[0][0] = true;
+  while (q.length) {
+    const [r, c] = q.shift();
+    if (r === N - 1 && c === N - 1) return true;
+    for (let d = 0; d < 4; d++) {
+      const nr = r + DR[d], nc = c + DC[d];
+      if (ok(nr, nc) && !seen[nr][nc]) { seen[nr][nc] = true; q.push([nr, nc]); }
+    }
+  }
+  return false;
+}
+
+// ランダムな めいろ（スタート ひだりうえ・みぎむき、ゴール みぎした）
+function randomRocks(k) {
+  let rk;
+  do {
+    rk = Array.from({ length: N }, () => Array(N).fill(false));
+    const cells = [];
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+      const nearStart = (r + c <= 1);
+      if (!nearStart && !(r === N - 1 && c === N - 1)) cells.push([r, c]);
+    }
+    for (let i = 0; i < k; i++) {
+      const [r, c] = cells.splice(Math.floor(Math.random() * cells.length), 1)[0];
+      rk[r][c] = true;
+    }
+  } while (!solvable(rk));
+  return rk;
+}
+
+function setRandomMaze(rk) {
+  rocks = rk; START = { r: 0, c: 0, dir: 1 }; GOAL = { r: N - 1, c: N - 1 };
+  store.set('-random', rk);
+  resetRobot();
+}
+
+/* ========== 6. プログラムを しらべて、うごきの きろくを つくる ========== */
+const MAX_MOVES = 200, MAX_LOOPS = 1000;
+class Stop { constructor(kind, text) { this.kind = kind; this.text = text; } }
+
+function simulate(code) {
+  const s = { ...START };
+  const frames = [];
+  let blockId = null, loops = 0;
+  const rec = (event) => {
+    frames.push({ r: s.r, c: s.c, dir: s.dir, id: blockId, event });
+    if (frames.length > MAX_MOVES) throw new Stop('ng', 'うごきが おおすぎるよ（' + MAX_MOVES + 'かいまで）');
+  };
+  const api = {
+    highlight: (id) => { blockId = id; },
+    forward: () => {
+      const nr = s.r + DR[s.dir], nc = s.c + DC[s.dir];
+      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', '💥 ぶつかっちゃった！'); }
+      s.r = nr; s.c = nc; rec('move');
+      if (s.r === GOAL.r && s.c === GOAL.c) throw new Stop('ok', 'goal');
+    },
+    turnRight: () => { s.dir = (s.dir + 1) % 4; rec('turn'); },
+    turnLeft:  () => { s.dir = (s.dir + 3) % 4; rec('turn'); },
+    isOpen: (which) => {
+      const d = (s.dir + { F: 0, R: 1, L: 3 }[which]) % 4;
+      return free(s.r + DR[d], s.c + DC[d]);
+    },
+    atGoal: () => s.r === GOAL.r && s.c === GOAL.c,
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', 'くりかえしが おわらないよ'); }
+  };
+  let result;
+  try {
+    new Function(...Object.keys(api), code)(...Object.values(api));
+    result = new Stop('ng', 'ゴールに つかなかったよ');
+  } catch (e) {
+    result = e instanceof Stop ? e : new Stop('ng', '⚠ ' + e.message);
+  }
+  return { frames, result };
+}
+
+/* ========== 7. えを かく（ドット絵） ==========
+   1マスを 16×16 ドットで かき、5ばいに ひろげて ひょうじする */
+const ctx = document.getElementById('board').getContext('2d');
+ctx.imageSmoothingEnabled = false;
+const PX = CELL / 16;
+let robot = { ...START }, trail = [], crashed = false, timer = null;
+
+// マスごとに いつも おなじに なる らんすう（もようが ちらつかないように）
+function rand(r, c, i) {
+  let h = (r * 73856093) ^ (c * 19349663) ^ (i * 83492791);
+  h = (h ^ (h >>> 13)) * 1274126177;
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function dot(x, y, px, py, color) { ctx.fillStyle = color; ctx.fillRect(x + px * PX, y + py * PX, PX, PX); }
+function noiseTile(x, y, r, c, salt, colors) {
+  for (let py = 0; py < 16; py++) for (let px = 0; px < 16; px++)
+    dot(x, y, px, py, colors[Math.floor(rand(r * 16 + py, c * 16 + px, salt) * colors.length)]);
+}
+
+// くさの じめん
+function grassTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 1, ['#5fa83a', '#5fa83a', '#58a034', '#6cbb45', '#4e9a2f']);
+  for (let k = 0; k < 4; k++) dot(x, y, Math.floor(rand(r, c, 10 + k) * 16), Math.floor(rand(r, c, 20 + k) * 16), '#7fd055');
+}
+// とおった みち（つち）
+function dirtTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 2, ['#8b5a2b', '#7a4e25', '#966434', '#8b5a2b', '#6e4520']);
+}
+// いしブロック（いわ）：まるい いしを ならべた もよう
+function stoneTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 3, ['#7f7f7f', '#8a8a8a', '#757575', '#828282']);
+  const stones = [[1, 1, 6, 5], [8, 0, 7, 4], [0, 7, 4, 4], [5, 6, 6, 5], [12, 5, 4, 6], [1, 12, 7, 4], [9, 12, 6, 4]];
+  for (const [sx, sy, w, h] of stones) {
+    for (let i = 0; i < w; i++) { dot(x, y, sx + i, sy + h - 1, '#555555'); dot(x, y, sx + i, sy, '#a5a5a5'); }
+    for (let j = 0; j < h; j++) { dot(x, y, sx + w - 1, sy + j, '#555555'); }
+  }
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(x, y + CELL - PX * 2, CELL, PX * 2);   // したに かげ
+}
+// スタート：もくざいの いた
+function plankTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 4, ['#b8945f', '#ae8a55', '#c19d68']);
+  for (let row = 3; row < 16; row += 4) for (let px = 0; px < 16; px++) dot(x, y, px, row, '#7a5a30');
+  [[3, 0], [11, 4], [6, 8], [13, 12]].forEach(([px, py]) => { for (let j = 0; j < 3; j++) dot(x, y, px, py + j, '#7a5a30'); });
+}
+// ゴール：ダイヤの こうせき
+const GEM = [
+  '................', '..DD........dd..', '.DdkD......DdD..', '..Dk.........k..', '........DD......',
+  '.......DddD.....', '......DdkkD.....', '.......Dkk......', '..k.....D.......', '.DD.........DD..',
+  'DddD.......DdkD.', '.Dkk........Dk..', '..k....DD.......', '......DdkD......', '.......Dk.......', '................'];
+function diamondTile(x, y, r, c) {
+  stoneTile(x, y, r, c);
+  const col = { D: '#4ee8e0', d: '#d3fffb', k: '#1b9e98' };
+  GEM.forEach((row, py) => [...row].forEach((ch, px) => { if (col[ch]) dot(x, y, px, py, col[ch]); }));
+}
+
+// たんけんか（オリジナル キャラ）：うえむきで かいて、むきに あわせて まわす
+const HERO = [
+  '................', '................', '......LLLL......', '....hhLLLLhh....',
+  '....hHHHHHHh....', '....hHHHHHHh....', '....hHHHHHHh....', '..BBhHHHHHHhBB..',
+  '.SBBhHHHHHHhBBS.', '.SBBhhhhhhhhBBS.', '.SBBBBBBBBBBBBS.', '.SBBBBBBBBBBBBS.',
+  '..BBBBBBBBBBBB..', '..bbbbbbbbbbbb..', '................', '................'];
+function drawHero() {
+  const cx = robot.c * CELL + CELL / 2, cy = robot.r * CELL + CELL / 2;
+  const col = crashed
+    ? { L: '#fff59d', h: '#8b0000', H: '#e53935', B: '#e53935', b: '#8b0000', S: '#e0b48a' }
+    : { L: '#fff59d', h: '#c66a00', H: '#ff9800', B: '#3f8fd2', b: '#2c6aa0', S: '#e0b48a' };
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(robot.dir * Math.PI / 2);
+  ctx.fillStyle = 'rgba(255,245,157,.45)';            // ライトの ひかり（まえの むき）
+  ctx.beginPath(); ctx.moveTo(-PX * 2, -PX * 6); ctx.lineTo(PX * 2, -PX * 6);
+  ctx.lineTo(PX * 5, -CELL * 0.75); ctx.lineTo(-PX * 5, -CELL * 0.75); ctx.fill();
+  HERO.forEach((row, py) => [...row].forEach((ch, px) => {
+    if (col[ch]) { ctx.fillStyle = col[ch]; ctx.fillRect((px - 8) * PX, (py - 8) * PX, PX, PX); }
+  }));
+  ctx.restore();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, 400, 400);
+  const walked = new Set(trail.map(([r, c]) => r + ',' + c));
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+    const x = c * CELL, y = r * CELL;
+    if (rocks[r][c]) stoneTile(x, y, r, c);
+    else if (r === GOAL.r && c === GOAL.c) diamondTile(x, y, r, c);
+    else if (r === START.r && c === START.c) plankTile(x, y, r, c);
+    else if (walked.has(r + ',' + c)) dirtTile(x, y, r, c);
+    else grassTile(x, y, r, c);
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1;
+  for (let i = 1; i < N; i++) {
+    ctx.beginPath(); ctx.moveTo(i * CELL + .5, 0); ctx.lineTo(i * CELL + .5, 400); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, i * CELL + .5); ctx.lineTo(400, i * CELL + .5); ctx.stroke();
+  }
+  drawHero();
+}
+
+/* ========== 8. ステージの きりかえ ========== */
+const msg = document.getElementById('msg');
+const levelSelect = document.getElementById('levelSelect');
+const nextBtn = document.getElementById('next');
+let cleared = store.get('-cleared') || [];
+
+function refreshLevelList() {
+  levelSelect.innerHTML = '';
+  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + lv.title, i)));
+  levelSelect.value = levelIndex;
+}
+
+function setLevel(i) {
+  levelIndex = i;
+  const lv = LEVELS[i];
+  store.set('-level', i);
+  refreshLevelList();
+  document.getElementById('lessonText').textContent = lv.text;
+  document.getElementById('limitText').textContent = lv.limit ? `🎯 めやす：ブロック ${lv.limit}こ いないで クリア` : '';
+  const hint = document.getElementById('hintText');
+  hint.textContent = lv.hint; hint.style.display = 'none';
+  document.getElementById('hintBtn').style.display = lv.hint ? '' : 'none';
+  document.getElementById('randomRow').style.display = lv.mode ? 'flex' : 'none';
+
+  // つかえる ブロックと、この ステージで くんでいた プログラムを よみこむ
+  loading = true;
+  workspace.updateToolbox(flyout(lv.blocks));
+  workspace.clear();
+  const saved = store.get('-ws-' + i);
+  if (saved) { try { Blockly.serialization.workspaces.load(saved, workspace); } catch (_) {} }
+  loading = false;
+
+  if (lv.mode) {
+    const rk = store.get('-random');
+    if (Array.isArray(rk) && rk.length === N && solvable(rk)) setRandomMaze(rk);
+    else setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value)));
+  } else {
+    loadMap(lv.map, lv.dir);
+    resetRobot();
+  }
+  updateInfo();
+}
+
+function markCleared() {
+  cleared[levelIndex] = true;
+  store.set('-cleared', cleared);
+  refreshLevelList();
+  if (levelIndex < LEVELS.length - 1) nextBtn.style.display = 'inline-block';
+}
+
+/* ========== 9. じっこう ========== */
+function resetRobot() {
+  if (timer) clearTimeout(timer);
+  timer = null;
+  robot = { ...START }; trail = [[START.r, START.c]]; crashed = false;
+  msg.textContent = ''; msg.className = '';
+  nextBtn.style.display = 'none';
+  workspace.highlightBlock(null);
+  draw();
+}
+
+function blockCount() {
+  return workspace.getAllBlocks(false).filter((b) => !b.isShadow()).length;
+}
+
+function updateInfo(moves) {
+  document.getElementById('info').textContent =
+    `つかった ブロック：${blockCount()}こ` + (moves != null ? ` ／ うごいた かず：${moves}かい` : '');
+}
+
+// ステージ8：ランダムな めいろ 30こで テスト
+function testOnRandomMazes(code, times) {
+  const keep = { rocks, START, GOAL };
+  const k = Number(document.getElementById('rockCount').value);
+  let ok = 0;
+  START = { r: 0, c: 0, dir: 1 }; GOAL = { r: N - 1, c: N - 1 };
+  for (let t = 0; t < times; t++) {
+    rocks = randomRocks(k);
+    if (simulate(code).result.kind === 'ok') ok++;
+  }
+  ({ rocks, START, GOAL } = keep);
+  return ok;
+}
+
+function finish(result, moves, code) {
+  const lv = LEVELS[levelIndex];
+  updateInfo(moves);
+  if (result.kind !== 'ok') {
+    msg.className = 'ng'; msg.textContent = result.text;
+    return;
+  }
+  msg.className = 'ok';
+  const n = blockCount();
+  if (lv.mode === 'test') {
+    const ok = testOnRandomMazes(code, 30);
+    if (ok === 30) { msg.textContent = '🏆 30こ ぜんぶ ゴール！ チュートリアル クリア！'; markCleared(); }
+    else { msg.className = 'ng'; msg.textContent = `このめいろは ゴール！ でも テストは 30こ中 ${ok}こ。どんな めいろでも いける くふうを しよう`; }
+  } else if (lv.mode === 'free') {
+    msg.textContent = '🎉 ゴール！ 🎲で べつの めいろでも ためしてみよう';
+  } else if (lv.limit && n > lv.limit) {
+    msg.textContent = `ゴール！ でも ブロックが ${n}こ。${lv.limit}こ いかに できるかな？`;
+  } else {
+    msg.textContent = '🎉 ステージ クリア！';
+    markCleared();
+  }
+}
+
+function run() {
+  resetRobot();
+  const code = gen.workspaceToCode(workspace);
+  const { frames, result } = simulate(code);
+  let i = 0;
+  const tick = () => {
+    if (i < frames.length) {
+      const f = frames[i++];
+      robot = { r: f.r, c: f.c, dir: f.dir };
+      if (f.event === 'move') trail.push([f.r, f.c]);
+      if (f.event === 'crash') crashed = true;
+      workspace.highlightBlock(f.id);
+      draw();
+      const speed = Number(document.getElementById('speed').value);
+      timer = setTimeout(tick, 650 - speed * 60);
+    } else {
+      timer = null;
+      workspace.highlightBlock(null);
+      finish(result, frames.filter((f) => f.event !== 'crash').length, code);
+    }
+  };
+  tick();
+}
+
+document.getElementById('run').addEventListener('click', run);
+document.getElementById('reset').addEventListener('click', resetRobot);
+document.getElementById('newMaze').addEventListener('click', () =>
+  setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value))));
+document.getElementById('rockCount').addEventListener('change', () =>
+  setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value))));
+levelSelect.addEventListener('change', () => setLevel(Number(levelSelect.value)));
+nextBtn.addEventListener('click', () => setLevel(levelIndex + 1));
+document.getElementById('hintBtn').addEventListener('click', () => {
+  const h = document.getElementById('hintText');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+});
+window.addEventListener('resize', () => Blockly.svgResize(workspace));
+
+setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
+
+// 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる
+const answerBtn = document.getElementById('answerBtn');
+if (new URLSearchParams(location.search).has('sensei')) answerBtn.style.display = '';
+answerBtn.addEventListener('click', () => {
+  resetRobot();
+  workspace.clear();
+  Blockly.serialization.workspaces.load(LEVELS[levelIndex].answer, workspace);
+  msg.className = ''; msg.textContent = '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう';
+});
+</script>
+</body>
+</html>
