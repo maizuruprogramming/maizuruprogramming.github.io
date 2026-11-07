@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>うちゅうで ほしあつめ</title>
+<title>うちゅうで ほしあつめ / Space Star Hunt</title>
 <!-- Blockly 本体・標準ブロック・JavaScript変換・日本語メッセージ（CDN） -->
 <script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
-<script src="https://unpkg.com/blockly@11/msg/ja.js"></script>
+<script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <style>
@@ -67,18 +67,18 @@
     #blocklyDiv { height: 60vh; flex: none; }
   }
 </style>
+<link rel="stylesheet" href="common.css">
 </head>
 <body>
 <header>
-  <h1>🚀 うちゅうで ほしあつめ</h1>
-  <a href="maze.html">⛏ めいろ</a>
-  <a href="index.html">🐢 おえかき</a>
-  <a href="aquarium.html" class="spacer">🐟 すいぞくかん</a>
-  <button id="run">▶ じっこう</button>
-  <button id="reset">↺ もどす</button>
-  <button id="answerBtn" style="display:none;background:#8e24aa;">📖 こたえ</button>
-  <button id="soundBtn"></button>
-  <button id="nextPerson">🔄 つぎの ひとへ</button>
+  <h1><span class="ico">🚀</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
+  <button id="soundBtn" class="sub"></button>
+  <button id="nextPerson" class="sub"></button>
+  <button id="langBtn" class="sub" style="background:#5b4bd6;"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -87,21 +87,21 @@
       <select id="levelSelect"></select>
       <div id="lessonText"></div>
       <div id="limitText"></div>
-      <button id="hintBtn">💡 ヒント</button>
+      <button id="hintBtn" data-i18n="hintBtn"></button>
       <div id="hintText"></div>
     </div>
     <div class="row" id="randomRow">
       <select id="rockCount">
-        <option value="4">かんたん（いんせき 4こ）</option>
-        <option value="6" selected>ふつう（いんせき 6こ）</option>
-        <option value="8">むずかしい（いんせき 8こ）</option>
+        <option value="4" data-i18n="easy"></option>
+        <option value="6" selected data-i18n="normal"></option>
+        <option value="8" data-i18n="hard"></option>
       </select>
-      <button id="newMaze">🎲 あたらしい うちゅう</button>
+      <button id="newMaze" data-i18n="newMaze"></button>
     </div>
     <div id="starCount"></div>
     <canvas id="board" width="400" height="400"></canvas>
     <div class="row">
-      <label>はやさ <input id="speed" type="range" min="1" max="10" value="4"></label>
+      <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
     </div>
     <div id="msg"></div>
     <div id="info"></div>
@@ -110,41 +110,95 @@
 
 <div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
   <div class="panel box">
-    <div class="title">🚀 ミッション クリア！</div>
-    <div class="question" id="dlgQuestion">つぎの ステージに いきますか？</div>
+    <div class="title" data-i18n="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
     <div class="btns">
-      <button id="dlgYes">はい</button>
-      <button id="dlgNo">いいえ</button>
+      <button id="dlgYes" data-i18n="yes"></button>
+      <button id="dlgNo" data-i18n="no"></button>
     </div>
   </div>
 </div>
 
 <script>
 // ひょうじを ひらがなに そろえる（標準ブロックの ことば）
-Object.assign(Blockly.Msg, {
-  CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
-  CONTROLS_REPEAT_INPUT_DO: ''
-});
+if (LANG === 'ja') Object.assign(Blockly.Msg, { CONTROLS_REPEAT_TITLE: '%1 かい くりかえす', CONTROLS_REPEAT_INPUT_DO: '' });
+else Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
+
+/* ========== 0. ことば（にほんご ／ English） ========== */
+const STR = {
+  ja: {
+    appTitle: 'うちゅうで ほしあつめ', run: 'じっこう', reset: 'もどす', answer: 'こたえ', nextPerson: 'つぎの ひとへ',
+    soundOn: 'おと：オン', soundOff: 'おと：オフ', hintBtn: '💡 ヒント', speed: 'はやさ',
+    easy: 'かんたん（いんせき 4こ）', normal: 'ふつう（いんせき 6こ）', hard: 'むずかしい（いんせき 8こ）', newMaze: '🎲 あたらしい うちゅう',
+    dlgTitle: '🚀 ミッション クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
+    dirF: 'まえ', dirR: 'みぎ', dirL: 'ひだり',
+    bForward: 'まえに すすむ', bRight: 'みぎを むく ↻', bLeft: 'ひだりを むく ↺', bPick: '⭐ ほしを ひろう',
+    bIfStar: 'もし ここに ⭐ ほしが あったら', bUntil: '🚀 ミッション クリアまで くりかえす',
+    bIf: 'もし %1 が あいていたら', bElse: 'そうでなければ %1',
+    tooManyMoves: (n) => `うごきが おおすぎるよ（${n}かいまで）`, crash: '💥 いんせきに ぶつかっちゃった！',
+    noStar: '❓ ここには ほしが ないよ！', endless: 'くりかえしが おわらないよ',
+    starsLeft: (n) => `ロケットに ついたけど、ほしが あと ${n}こ のこっているよ`,
+    goRocket: 'ほしは ぜんぶ あつめたよ！ あとは ロケットへ',
+    noRocket: (n) => `ロケットに つかなかったよ（ほし のこり ${n}こ）`,
+    got: (g, n) => `⭐ あつめた ほし：${g} / ${n}`, allGot: (g, n) => `⭐ ${g} / ${n}　ぜんぶ あつめた！ ロケットへ 🚀`,
+    limit: (n) => `🎯 めやす：ブロック ${n}こ いないで クリア`,
+    used: (n) => `つかった ブロック：${n}こ`, moves: (n) => ` ／ うごいた かず：${n}かい`,
+    grand: '🏆 30こ ぜんぶ クリア！ うちゅう たんけん マスター！',
+    testPartial: (ok) => `この うちゅうは クリア！ でも テストは 30こ中 ${ok}こ。どんな うちゅうでも いける くふうを しよう`,
+    freeGoal: '🚀 はっしゃ！ 🎲で べつの うちゅうでも ためしてみよう',
+    overLimit: (n, lim) => `クリア！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
+    stageClear: '🚀 ミッション クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
+    armed: 'もういちど？', armedMsg: '⚠ もういちど 🔄 を おすと、ぜんぶ リセットするよ',
+    resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
+  },
+  en: {
+    appTitle: 'Space Star Hunt', run: 'Run', reset: 'Restart', answer: 'Answer', nextPerson: 'Next player',
+    soundOn: 'Sound: On', soundOff: 'Sound: Off', hintBtn: '💡 Hint', speed: 'Speed',
+    easy: 'Easy (4 asteroids)', normal: 'Normal (6 asteroids)', hard: 'Hard (8 asteroids)', newMaze: '🎲 New space',
+    dlgTitle: '🚀 Mission complete!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
+    dirF: 'front', dirR: 'right', dirL: 'left',
+    bForward: 'move forward', bRight: 'turn right ↻', bLeft: 'turn left ↺', bPick: '⭐ pick up star',
+    bIfStar: 'if there is a ⭐ star here', bUntil: '🚀 repeat until mission complete',
+    bIf: 'if %1 is open', bElse: 'else %1',
+    tooManyMoves: (n) => `Too many moves (max ${n})`, crash: '💥 Bump! You hit an asteroid.',
+    noStar: '❓ There is no star here!', endless: 'The loop never ends!',
+    starsLeft: (n) => `You reached the rocket, but ${n} star${n > 1 ? 's are' : ' is'} left.`,
+    goRocket: 'You have all the stars! Now go to the rocket.',
+    noRocket: (n) => `You didn't reach the rocket (${n} star${n > 1 ? 's' : ''} left).`,
+    got: (g, n) => `⭐ Stars collected: ${g} / ${n}`, allGot: (g, n) => `⭐ ${g} / ${n}  All collected! Go to the rocket 🚀`,
+    limit: (n) => `🎯 Target: clear with ${n} blocks or fewer`,
+    used: (n) => `Blocks used: ${n}`, moves: (n) => ` / Moves: ${n}`,
+    grand: '🏆 All 30 cleared! Space explorer master!',
+    testPartial: (ok) => `Cleared here! But only ${ok} of 30 tests passed. Make it work in any space!`,
+    freeGoal: '🚀 Lift-off! Try another space with 🎲',
+    overLimit: (n, lim) => `Cleared! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
+    stageClear: '🚀 Mission complete!', retry: 'Try again! Fix your blocks and press ▶ Run.',
+    armed: 'Again?', armedMsg: '⚠ Press 🔄 again to reset everything.',
+    resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
+  }
+};
+const t = makeT(STR);
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
 
 /* ========== 1. オリジナルのブロック ========== */
-const DIRS = [['まえ', 'F'], ['みぎ', 'R'], ['ひだり', 'L']];
+const DIRS = [[t('dirF'), 'F'], [t('dirR'), 'R'], [t('dirL'), 'L']];
 const COL = { move: '#2a8fbd', pick: '#c99a06', loop: '#7b52c7', iff: '#c2185b' };
 
 Blockly.common.defineBlocksWithJsonArray([
-  { type: 'sp_forward', message0: 'まえに すすむ', previousStatement: null, nextStatement: null, colour: COL.move },
-  { type: 'sp_right', message0: 'みぎを むく ↻', previousStatement: null, nextStatement: null, colour: COL.move },
-  { type: 'sp_left', message0: 'ひだりを むく ↺', previousStatement: null, nextStatement: null, colour: COL.move },
-  { type: 'sp_pickup', message0: '⭐ ほしを ひろう', previousStatement: null, nextStatement: null, colour: COL.pick },
-  { type: 'sp_if_star', message0: 'もし ここに ⭐ ほしが あったら',
+  { type: 'sp_forward', message0: t('bForward'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'sp_right', message0: t('bRight'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'sp_left', message0: t('bLeft'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'sp_pickup', message0: t('bPick'), previousStatement: null, nextStatement: null, colour: COL.pick },
+  { type: 'sp_if_star', message0: t('bIfStar'),
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
     previousStatement: null, nextStatement: null, colour: COL.pick },
-  { type: 'sp_until_mission', message0: '🚀 ミッション クリアまで くりかえす',
+  { type: 'sp_until_mission', message0: t('bUntil'),
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
     previousStatement: null, nextStatement: null, colour: COL.loop },
-  { type: 'sp_ifelse', message0: 'もし %1 が あいていたら',
+  { type: 'sp_ifelse', message0: t('bIf'),
     args0: [{ type: 'field_dropdown', name: 'DIR', options: DIRS }],
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
-    message2: 'そうでなければ %1', args2: [{ type: 'input_statement', name: 'ELSE' }],
+    message2: t('bElse'), args2: [{ type: 'input_statement', name: 'ELSE' }],
     previousStatement: null, nextStatement: null, colour: COL.iff }
 ]);
 
@@ -169,36 +223,44 @@ const ALL  = [...MOVE, 'sp_pickup', 'controls_repeat_ext', 'sp_if_star', 'sp_unt
 
 const LEVELS = [
   { title: 'ステージ1　ほしを ひろおう',
+    en: { title: 'Stage 1: Pick up a star', text: 'Pick up every star ⭐, then board the rocket 🚀! Use "pick up star" on a star square.', hint: 'Forward 2 → pick up star → forward 2' },
     text: 'ほし ⭐ を ぜんぶ ひろってから、ロケット 🚀 に のりこもう！ ほしの マスで「ほしを ひろう」を つかうよ。',
     hint: '2マス すすむ → ほしを ひろう → 2マス すすむ',
     map: ['#####', '#####', 'S.*.G', '#####', '#####'], dir: 1, blocks: ['sp_forward', 'sp_pickup'] },
   { title: 'ステージ2　まがって あつめよう',
+    en: { title: 'Stage 2: Turn and collect', text: 'There are 2 stars. Be careful where you turn.', hint: 'Forward 2 and pick up → forward 1 → turn right → forward 1 and pick up → forward 1' },
     text: 'ほしが 2こ あるよ。まがる ところに きを つけよう。',
     hint: '2マス すすんで ひろう → 1マス すすむ → みぎを むく → 1マス すすんで ひろう → 1マス すすむ',
     map: ['S.*.#', '###*#', '###G#', '#####', '#####'], dir: 1, blocks: [...MOVE, 'sp_pickup'] },
   { title: 'ステージ3　くりかえしで あつめよう',
+    en: { title: 'Stage 3: Collect with a loop', text: 'The stars are in a row. Put "move → pick up" into a loop.', hint: '"repeat 3 (move forward → pick up star)" → "move forward"' },
     text: 'ほしが ならんでいるよ。「すすむ → ひろう」を くりかえしで まとめよう。',
     hint: '「3かい くりかえす（まえに すすむ → ほしを ひろう）」→「まえに すすむ」',
     map: ['#####', '#####', 'S***G', '#####', '#####'], dir: 1, blocks: [...MOVE, 'sp_pickup', 'controls_repeat_ext'], limit: 4 },
   { title: 'ステージ4　ほしの かいだん',
+    en: { title: 'Stage 4: Star stairs', text: 'There are stars on the stairs. Find the set of moves that repeats.', hint: 'Repeat "forward → turn right → forward → pick up → turn left". You finish when you reach the rocket.' },
     text: 'かいだんの とちゅうに ほしが あるよ。くりかえす セットを みつけよう。',
     hint: '「すすむ → みぎを むく → すすむ → ひろう → ひだりを むく」を くりかえす。さいごは ロケットに ついた ところで おわるよ。',
     map: ['###.G', '##.*#', '#.*##', '.*###', 'S####'], dir: 0, blocks: [...MOVE, 'sp_pickup', 'controls_repeat_ext'], limit: 6 },
   { title: 'ステージ5　もし ほしが あったら',
+    en: { title: 'Stage 5: If there is a star', text: 'Some squares have stars and some don\'t. Picking up where there is no star is a mistake! Let the explorer check first.', hint: '"repeat 4: move forward → if there is a star here, pick it up"' },
     text: 'ほしが ある マスと ない マスが あるよ。ない ところで「ひろう」と しっぱい！ たんけんかに しらべさせよう。',
     hint: '「4かい くりかえす：まえに すすむ → もし ここに ほしが あったら ひろう」',
     map: ['#####', '#####', 'S*.*G', '#####', '#####'], dir: 1,
     blocks: [...MOVE, 'sp_pickup', 'controls_repeat_ext', 'sp_if_star'], limit: 4 },
   { title: 'ステージ6　ミッション クリアまで',
+    en: { title: 'Stage 6: Until mission complete', text: 'Stars are scattered around a spiral. Use "repeat until mission complete" and check as you go.', hint: 'Inside the loop: if there is a star, pick it up → if front is open, move forward, else turn right' },
     text: 'うずまきの うちゅうに ほしが ちらばっているよ。「ミッション クリアまで くりかえす」で、しらべながら すすもう。',
     hint: 'くりかえしの なかで：もし ほしが あったら ひろう → もし まえが あいていたら すすむ、そうでなければ みぎを むく',
     map: ['S..*.', '####.', '.*G#.', '.###*', '.*...'], dir: 1,
     blocks: [...MOVE, 'sp_pickup', 'sp_if_star', 'sp_until_mission', 'sp_ifelse'], limit: 6 },
   { title: 'ステージ7　どんな うちゅうでも！',
+    en: { title: 'Stage 7: Any space!', text: 'Final challenge! Your program is tested in 30 random spaces. Collect all the stars and board the rocket to clear!', hint: 'Use the "right-hand rule" to follow the walls, and pick up stars when you find them. It\'s OK to pass the rocket — keep walking until you have every star.' },
     text: 'さいごの ちょうせん！ ランダムな うちゅう 30こで テストするよ。ほしを ぜんぶ あつめて ロケットに のれたら クリア！',
     hint: '「みぎての ほうそく」で かべに そって すすみながら、ほしが あったら ひろおう。ロケットを とおりすぎても だいじょうぶ。ほしを ぜんぶ ひろうまで あるきつづけよう。',
     mode: 'test', blocks: ALL },
   { title: 'じゆうモード　ランダムうちゅう',
+    en: { title: 'Free mode: Random space', text: 'Play freely in random spaces. 🎲 makes a new space.', hint: '' },
     text: 'ランダムな うちゅうで じゆうに あそぼう。🎲で あたらしい うちゅうが でるよ。',
     hint: '', mode: 'free', blocks: ALL }
 ];
@@ -346,7 +408,7 @@ function setRandomSpace(sp) {
 
 /* ========== 6. プログラムを しらべて、うごきの きろくを つくる ========== */
 const MAX_MOVES = 400, MAX_LOOPS = 2000;
-class Stop { constructor(kind, text) { this.kind = kind; this.text = text; } }
+class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; this.why = why; } }
 
 function simulate(code) {
   const s = { ...START };
@@ -356,13 +418,13 @@ function simulate(code) {
   const atGoal = () => s.r === GOAL.r && s.c === GOAL.c;
   const rec = (event, extra) => {
     frames.push({ r: s.r, c: s.c, dir: s.dir, id: blockId, event, ...extra });
-    if (frames.length > MAX_MOVES) throw new Stop('ng', 'うごきが おおすぎるよ（' + MAX_MOVES + 'かいまで）');
+    if (frames.length > MAX_MOVES) throw new Stop('ng', t('tooManyMoves', MAX_MOVES));
   };
   const api = {
     highlight: (id) => { blockId = id; },
     forward: () => {
       const nr = s.r + DR[s.dir], nc = s.c + DC[s.dir];
-      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', '💥 いんせきに ぶつかっちゃった！'); }
+      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', t('crash'), 'crash'); }
       s.r = nr; s.c = nc; rec('move');
       if (atGoal() && left.size === 0) throw new Stop('ok', 'goal');
     },
@@ -370,7 +432,7 @@ function simulate(code) {
     turnLeft:  () => { s.dir = (s.dir + 3) % 4; rec('turn'); },
     pickUp: () => {
       const k = key(s.r, s.c);
-      if (!left.has(k)) { rec('miss'); throw new Stop('ng', '❓ ここには ほしが ないよ！'); }
+      if (!left.has(k)) { rec('miss'); throw new Stop('ng', t('noStar'), 'miss'); }
       left.delete(k); rec('pick', { star: k, remain: left.size });
     },
     hasStar: () => left.has(key(s.r, s.c)),
@@ -379,15 +441,15 @@ function simulate(code) {
       return free(s.r + DR[d], s.c + DC[d]);
     },
     missionDone: () => atGoal() && left.size === 0,
-    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', 'くりかえしが おわらないよ'); }
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', t('endless')); }
   };
   let result;
   try {
     new Function(...Object.keys(api), code)(...Object.values(api));
     if (atGoal() && left.size === 0) result = new Stop('ok', 'goal');
-    else if (atGoal()) result = new Stop('ng', `ロケットに ついたけど、ほしが あと ${left.size}こ のこっているよ`);
-    else if (left.size === 0) result = new Stop('ng', 'ほしは ぜんぶ あつめたよ！ あとは ロケットへ');
-    else result = new Stop('ng', `ロケットに つかなかったよ（ほし のこり ${left.size}こ）`);
+    else if (atGoal()) result = new Stop('ng', t('starsLeft', left.size));
+    else if (left.size === 0) result = new Stop('ng', t('goRocket'));
+    else result = new Stop('ng', t('noRocket', left.size));
   } catch (e) {
     result = e instanceof Stop ? e : new Stop('ng', '⚠ ' + e.message);
   }
@@ -507,7 +569,7 @@ function draw() {
   drawAstronaut();
   // あつめた ほしの かず
   const total = stars.length, got = total - shownStars.size, sc = document.getElementById('starCount');
-  sc.textContent = got === total ? `⭐ ${got} / ${total}　ぜんぶ あつめた！ ロケットへ 🚀` : `⭐ あつめた ほし：${got} / ${total}`;
+  sc.textContent = got === total ? t('allGot', got, total) : t('got', got, total);
   sc.className = got === total ? 'done' : '';
 }
 // ほしの きらきらを うごかす
@@ -558,7 +620,7 @@ const Sound = {
   toggle() { this.muted = !this.muted; store.set('-muted', this.muted); return this.muted; }
 };
 const soundBtn = document.getElementById('soundBtn');
-const showSound = () => { soundBtn.textContent = Sound.muted ? '🔇 おと：オフ' : '🔊 おと：オン'; };
+const showSound = () => { setLabel(soundBtn, Sound.muted ? '🔇' : '🔊', Sound.muted ? t('soundOff') : t('soundOn')); };
 showSound();
 soundBtn.addEventListener('click', () => { Sound.unlock(); Sound.toggle(); showSound(); if (!Sound.muted) Sound.pick(); });
 
@@ -570,7 +632,7 @@ let cleared = store.get('-cleared') || [];
 
 function refreshLevelList() {
   levelSelect.innerHTML = '';
-  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + lv.title, i)));
+  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + L(lv, 'title'), i)));
   levelSelect.value = levelIndex;
 }
 
@@ -579,11 +641,11 @@ function setLevel(i) {
   const lv = LEVELS[i];
   store.set('-level', i);
   refreshLevelList();
-  document.getElementById('lessonText').textContent = lv.text;
-  document.getElementById('limitText').textContent = lv.limit ? `🎯 めやす：ブロック ${lv.limit}こ いないで クリア` : '';
+  document.getElementById('lessonText').textContent = L(lv, 'text');
+  document.getElementById('limitText').textContent = lv.limit ? t('limit', lv.limit) : '';
   const hint = document.getElementById('hintText');
-  hint.textContent = lv.hint; hint.style.display = 'none';
-  document.getElementById('hintBtn').style.display = lv.hint ? '' : 'none';
+  hint.textContent = L(lv, 'hint'); hint.style.display = 'none';
+  document.getElementById('hintBtn').style.display = L(lv, 'hint') ? '' : 'none';
   document.getElementById('randomRow').style.display = lv.mode ? 'flex' : 'none';
 
   loading = true;
@@ -607,7 +669,7 @@ function setLevel(i) {
 function showClearDialog() {
   const next = LEVELS[levelIndex + 1];
   document.getElementById('dlgQuestion').innerHTML =
-    `つぎの ステージに いきますか？<br><span style="font-size:15px">（${next.title}）</span>`;
+    `${t('dlgQuestion')}<br><span style="font-size:15px">${LANG === 'en' ? '(' : '（'}${L(next, 'title')}${LANG === 'en' ? ')' : '）'}</span>`;
   clearDialog.classList.add('show');
   document.getElementById('dlgYes').focus();
 }
@@ -635,7 +697,7 @@ function resetRobot() {
 function blockCount() { return workspace.getAllBlocks(false).filter((b) => !b.isShadow()).length; }
 function updateInfo(moves) {
   document.getElementById('info').textContent =
-    `つかった ブロック：${blockCount()}こ` + (moves != null ? ` ／ うごいた かず：${moves}かい` : '');
+    t('used', blockCount()) + (moves != null ? t('moves', moves) : '');
 }
 
 // ステージ7：ランダムな うちゅう 30こで テスト
@@ -665,7 +727,7 @@ function finish(result, moves, code) {
   updateInfo(moves);
   if (result.kind !== 'ok') {
     msg.className = 'ng'; msg.textContent = result.text;
-    if (!/ぶつかっ|ないよ！/.test(result.text)) Sound.fail();
+    if (result.why !== 'crash' && result.why !== 'miss') Sound.fail();
     return;
   }
   launchRocket();
@@ -673,14 +735,14 @@ function finish(result, moves, code) {
   const n = blockCount();
   if (lv.mode === 'test') {
     const ok = testOnRandomSpaces(code, 30);
-    if (ok === 30) { msg.textContent = '🏆 30こ ぜんぶ クリア！ うちゅう たんけん マスター！'; markCleared(); Sound.grandClear(); }
-    else { msg.className = 'ng'; msg.textContent = `この うちゅうは クリア！ でも テストは 30こ中 ${ok}こ。どんな うちゅうでも いける くふうを しよう`; Sound.goalSoSo(); }
+    if (ok === 30) { msg.textContent = t('grand'); markCleared(); Sound.grandClear(); }
+    else { msg.className = 'ng'; msg.textContent = t('testPartial', ok); Sound.goalSoSo(); }
   } else if (lv.mode === 'free') {
-    msg.textContent = '🚀 はっしゃ！ 🎲で べつの うちゅうでも ためしてみよう'; Sound.clear();
+    msg.textContent = t('freeGoal'); Sound.clear();
   } else if (lv.limit && n > lv.limit) {
-    msg.textContent = `クリア！ でも ブロックが ${n}こ。${lv.limit}こ いかに できるかな？`; Sound.goalSoSo();
+    msg.textContent = t('overLimit', n, lv.limit); Sound.goalSoSo();
   } else {
-    msg.textContent = '🚀 ミッション クリア！'; markCleared(); Sound.clear();
+    msg.textContent = t('stageClear'); markCleared(); Sound.clear();
   }
 }
 
@@ -729,12 +791,21 @@ document.getElementById('hintBtn').addEventListener('click', () => {
 document.getElementById('dlgYes').addEventListener('click', () => { hideClearDialog(); setLevel(levelIndex + 1); });
 document.getElementById('dlgNo').addEventListener('click', () => {
   hideClearDialog(); resetRobot();
-  msg.className = 'ok'; msg.textContent = 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね';
+  msg.className = 'ok'; msg.textContent = t('retry');
 });
 document.addEventListener('keydown', (e) => {
   if (clearDialog.classList.contains('show') && e.key === 'Escape') document.getElementById('dlgNo').click();
 });
 window.addEventListener('resize', () => Blockly.svgResize(workspace));
+
+// ヘッダー：ボタンの ことば・アプリの リンク・ことばの きりかえ
+setLabel(document.getElementById('run'), '▶', t('run'));
+setLabel(document.getElementById('reset'), '↺', t('reset'));
+setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
+setLabel(document.getElementById('nextPerson'), '🔄', t('nextPerson'));
+buildNav(document.getElementById('nav'));
+langButton(document.getElementById('langBtn'));
+applyI18n(t);
 
 setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
 
@@ -744,7 +815,7 @@ if (new URLSearchParams(location.search).has('sensei')) answerBtn.style.display 
 answerBtn.addEventListener('click', () => {
   resetRobot(); workspace.clear();
   Blockly.serialization.workspaces.load(LEVELS[levelIndex].answer, workspace);
-  msg.className = ''; msg.textContent = '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう';
+  msg.className = ''; msg.textContent = t('answerLoaded');
 });
 
 // つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムうちゅうを けして ステージ1へ
@@ -752,12 +823,13 @@ const nextPersonBtn = document.getElementById('nextPerson');
 let nextPersonArmed = null;
 nextPersonBtn.addEventListener('click', () => {
   if (!nextPersonArmed) {
-    nextPersonBtn.textContent = '⚠ もういちど おすと リセット';
-    nextPersonArmed = setTimeout(() => { nextPersonBtn.textContent = '🔄 つぎの ひとへ'; nextPersonArmed = null; }, 4000);
+    setLabel(nextPersonBtn, '⚠', t('armed'));
+    msg.className = 'ng'; msg.textContent = t('armedMsg');
+    nextPersonArmed = setTimeout(() => { setLabel(nextPersonBtn, '🔄', t('nextPerson')); nextPersonArmed = null; }, 4000);
     return;
   }
   clearTimeout(nextPersonArmed); nextPersonArmed = null;
-  nextPersonBtn.textContent = '🔄 つぎの ひとへ';
+  setLabel(nextPersonBtn, '🔄', t('nextPerson'));
   try {
     Object.keys(localStorage)
       .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
@@ -766,7 +838,7 @@ nextPersonBtn.addEventListener('click', () => {
   cleared = [];
   loading = true; workspace.clear(); loading = false;
   setLevel(0);
-  msg.className = 'ok'; msg.textContent = '✨ リセットしたよ。つぎの ひと、がんばってね！';
+  msg.className = 'ok'; msg.textContent = t('resetDone');
 });
 </script>
 </body>

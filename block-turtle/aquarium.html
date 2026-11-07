@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>おさかな すいぞくかん</title>
-<!-- Blockly（ブロック）と 日本語メッセージ -->
+<title>おさかな すいぞくかん / Fish Aquarium</title>
+<!-- Blockly（ブロック） -->
 <script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
-<script src="https://unpkg.com/blockly@11/msg/ja.js"></script>
+<script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
 <!-- Firebase の せってい（からっぽなら ローカルモード） -->
 <script src="firebase-config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,13 +73,13 @@
     #side { width: 100%; }
   }
 </style>
+<link rel="stylesheet" href="common.css">
 </head>
 <body>
 <header>
-  <h1>🐟 おさかな すいぞくかん</h1>
-  <a href="index.html">🐢 おえかき</a>
-  <a href="maze.html">⛏ めいろ</a>
-  <a href="space.html" class="spacer">🚀 うちゅう</a>
+  <h1><span class="ico">🐟</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="langBtn" class="sub blue"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -87,38 +87,37 @@
     <div id="modeBanner"></div>
 
     <div class="panel" id="teacher">
-      <h2>👩‍🏫 せんせい：へやの じゅんび</h2>
-      <button class="blue" id="newRoom">あたらしい へやを つくる</button>
+      <h2 data-i18n="tTitle"></h2>
+      <button class="blue" id="newRoom" data-i18n="newRoom"></button>
       <div id="roomCode"></div>
       <div class="links" id="roomLinks"></div>
       <div id="teacherMsg" class="note"></div>
     </div>
 
     <div class="panel">
-      <h2>① おさかなを かこう（みぎむきに かいてね）</h2>
+      <h2 data-i18n="step1"></h2>
       <div id="editorRow">
         <canvas id="editor" width="320" height="320"></canvas>
         <div id="palette"></div>
       </div>
       <div class="tools">
-        <button id="clearPx">🧽 ぜんぶ けす</button>
-        <button id="flipPx">↔ はんてん</button>
-        <button id="samplePx">🐠 おてほん</button>
+        <button id="clearPx" data-i18n="clearPx"></button>
+        <button id="flipPx" data-i18n="flipPx"></button>
+        <button id="samplePx" data-i18n="samplePx"></button>
       </div>
     </div>
 
     <div class="panel">
-      <h2>② ためしに およがせよう</h2>
+      <h2 data-i18n="step2"></h2>
       <canvas id="preview" width="480" height="270"></canvas>
-      <div class="note">ひだりの ブロックで およぎかたを きめよう。<br>
-        「はじまったら」の したに つないだ ブロックが、さいごまで いくと また はじめから ずっと くりかえされるよ。</div>
+      <div class="note" data-i18n-html="step2note"></div>
     </div>
 
     <div class="panel">
-      <h2>③ すいぞくかんに いれよう</h2>
+      <h2 data-i18n="step3"></h2>
       <div id="sendRow">
-        <label>へやの ばんごう <input type="text" id="roomInput" maxlength="6" autocomplete="off"></label>
-        <button class="go" id="send">🌊 すいぞくかんに いれる</button>
+        <label><span data-i18n="roomNo"></span> <input type="text" id="roomInput" maxlength="6" autocomplete="off"></label>
+        <button class="go" id="send" data-i18n="send"></button>
       </div>
       <div id="sendMsg"></div>
     </div>
@@ -129,9 +128,9 @@
   <canvas id="tank"></canvas>
   <div id="tankBar">
     <span id="tankInfo"></span>
-    <button class="owner red" id="delMode">🗑 けすモード：オフ</button>
-    <button class="owner red" id="clearAll">ぜんぶ けす</button>
-    <button id="fullBtn">⛶ ぜんがめん</button>
+    <button class="owner red" id="delMode"></button>
+    <button class="owner red" id="clearAll" data-i18n="clearAll"></button>
+    <button id="fullBtn" data-i18n="full"></button>
   </div>
   <div id="banner"></div>
   <div id="tankNotice"></div>
@@ -175,35 +174,93 @@ const store = {
 };
 
 /* =====================================================================
+   0.5 ことば（にほんご ／ English）
+   ===================================================================== */
+const STR = {
+  ja: {
+    appTitle: 'おさかな すいぞくかん', tTitle: '👩‍🏫 せんせい：へやの じゅんび', newRoom: 'あたらしい へやを つくる',
+    step1: '① おさかなを かこう（みぎむきに かいてね）', clearPx: '🧽 ぜんぶ けす', flipPx: '↔ はんてん', samplePx: '🐠 おてほん',
+    step2: '② ためしに およがせよう',
+    step2note: 'ひだりの ブロックで およぎかたを きめよう。<br>「はじまったら」の したに つないだ ブロックが、さいごまで いくと また はじめから ずっと くりかえされるよ。',
+    step3: '③ すいぞくかんに いれよう', roomNo: 'へやの ばんごう', send: '🌊 すいぞくかんに いれる',
+    full: '⛶ ぜんがめん', clearAll: 'ぜんぶ けす', sure: 'ほんとうに けす？', delMode: (on) => `🗑 けすモード：${on ? 'オン' : 'オフ'}`,
+    eraser: 'けしゴム',
+    catMove: 'うごき', catLook: 'ようす', catLoop: 'くりかえし', catNum: 'かず',
+    bStart: '🐟 はじまったら', bForward: 'まえに %1 すすむ', bRight: 'みぎに %1 ど まわる ↻', bLeft: 'ひだりに %1 ど まわる ↺',
+    bRandom: 'ランダムに むきを かえる', bPoint: '%1 を むく', dRight: 'みぎ ▶', dLeft: 'ひだり ◀', dUp: 'うえ ▲', dDown: 'した ▼',
+    bBounce: 'かべに ついたら はねかえる', bWait: '%1 びょう まつ', bSpeed: 'はやさを %1 にする（1〜10）', bSize: 'おおきさを %1 % にする',
+    roomFail: 'へやを つくれませんでした', fbFail: '⚠ Firebase に つながりません：',
+    roomMissing: (r) => `へや「${r}」は みつかりません`, tankInfo: (r, n) => `へや：${r}　🐟 ${n}ひき`,
+    waiting: 'まだ おさかなが いないよ<br>みんなの おさかなを まっています…', newFriend: '🐟 あたらしい なかまが きたよ！',
+    delFail: 'けせませんでした：',
+    localBanner: 'いまは <b>この きかい だけの すいぞくかん</b>（ローカルモード）です。<br>すいぞくかんの がめんは <a href="aquarium.html?view=tank">こちら</a>（べつの タブで ひらいてね）。',
+    needRoom: 'へやの ばんごうを いれてね', needDraw: 'おさかなを かいてね', tooBig: 'ブロックが おおすぎるよ。すこし へらしてね',
+    limitFish: (n) => `この へやには もう ${n}ひき いれたよ`,
+    roomNotFound: (r) => `へや「${r}」は みつからないよ。ばんごうを たしかめてね`,
+    sent: (n) => `🎉 すいぞくかんに はいったよ！（${n}ひきめ）`, sendFail: '⚠ おくれませんでした：',
+    linkTank: 'すいぞくかん（おおきな がめんで ひらく）', linkKids: 'こどもに くばる URL',
+    localOneRoom: 'ローカルモードでは へやは 1つ（LOCAL）だけです。',
+    roomMade: 'へやを つくりました。けす そうさは、へやを つくった この ブラウザから できます。'
+  },
+  en: {
+    appTitle: 'Fish Aquarium', tTitle: '👩‍🏫 Teacher: set up a room', newRoom: 'Make a new room',
+    step1: '① Draw your fish (facing right)', clearPx: '🧽 Clear all', flipPx: '↔ Flip', samplePx: '🐠 Example',
+    step2: '② Test how it swims',
+    step2note: 'Use the blocks on the left to decide how your fish swims.<br>The blocks under "when started" run to the end, then start again from the top — forever.',
+    step3: '③ Put it in the aquarium', roomNo: 'Room code', send: '🌊 Put in the aquarium',
+    full: '⛶ Full screen', clearAll: 'Clear all', sure: 'Are you sure?', delMode: (on) => `🗑 Delete mode: ${on ? 'On' : 'Off'}`,
+    eraser: 'Eraser',
+    catMove: 'Move', catLook: 'Looks', catLoop: 'Loops', catNum: 'Numbers',
+    bStart: '🐟 when started', bForward: 'move forward %1', bRight: 'turn right %1 degrees ↻', bLeft: 'turn left %1 degrees ↺',
+    bRandom: 'turn to a random direction', bPoint: 'point %1', dRight: 'right ▶', dLeft: 'left ◀', dUp: 'up ▲', dDown: 'down ▼',
+    bBounce: 'bounce off walls', bWait: 'wait %1 seconds', bSpeed: 'set speed to %1 (1–10)', bSize: 'set size to %1 %',
+    roomFail: 'Could not make a room.', fbFail: '⚠ Cannot connect to Firebase: ',
+    roomMissing: (r) => `Room "${r}" was not found.`, tankInfo: (r, n) => `Room: ${r}   🐟 ${n} fish`,
+    waiting: 'No fish yet.<br>Waiting for everyone\'s fish…', newFriend: '🐟 A new friend has arrived!',
+    delFail: 'Could not delete: ',
+    localBanner: 'This is a <b>this-device-only aquarium</b> (local mode).<br>Open the aquarium screen <a href="aquarium.html?view=tank">here</a> (in another tab).',
+    needRoom: 'Please enter the room code.', needDraw: 'Please draw a fish.', tooBig: 'Too many blocks. Please use fewer.',
+    limitFish: (n) => `You have already put ${n} fish in this room.`,
+    roomNotFound: (r) => `Room "${r}" was not found. Please check the code.`,
+    sent: (n) => `🎉 Your fish is in the aquarium! (fish #${n})`, sendFail: '⚠ Could not send: ',
+    linkTank: 'Aquarium (open on the big screen)', linkKids: 'URL for students',
+    localOneRoom: 'In local mode there is only one room (LOCAL).',
+    roomMade: 'Room created. You can delete fish only from this browser (the one that made the room).'
+  }
+};
+const t = makeT(STR);
+
+/* =====================================================================
    1. ブロック
    ===================================================================== */
-Object.assign(Blockly.Msg, {
+if (LANG === 'ja') Object.assign(Blockly.Msg, {
   CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
   CONTROLS_REPEAT_INPUT_DO: '',
   MATH_RANDOM_INT_TITLE: '%1 から %2 の ランダムな かず'
 });
+else Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
 
 const MOVE = '#2f8fc4', LOOK = '#c2185b', START = '#e68a00';
 Blockly.common.defineBlocksWithJsonArray([
-  { type: 'fish_start', message0: '🐟 はじまったら', nextStatement: null, colour: START },
-  { type: 'fish_forward', message0: 'まえに %1 すすむ', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_start', message0: t('bStart'), nextStatement: null, colour: START },
+  { type: 'fish_forward', message0: t('bForward'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_turn_right', message0: 'みぎに %1 ど まわる ↻', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_turn_right', message0: t('bRight'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_turn_left', message0: 'ひだりに %1 ど まわる ↺', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_turn_left', message0: t('bLeft'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_random_turn', message0: 'ランダムに むきを かえる',
+  { type: 'fish_random_turn', message0: t('bRandom'),
     previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_point', message0: '%1 を むく',
-    args0: [{ type: 'field_dropdown', name: 'DIR', options: [['みぎ ▶', '0'], ['ひだり ◀', '180'], ['うえ ▲', '270'], ['した ▼', '90']] }],
+  { type: 'fish_point', message0: t('bPoint'),
+    args0: [{ type: 'field_dropdown', name: 'DIR', options: [[t('dRight'), '0'], [t('dLeft'), '180'], [t('dUp'), '270'], [t('dDown'), '90']] }],
     previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_bounce', message0: 'かべに ついたら はねかえる',
+  { type: 'fish_bounce', message0: t('bBounce'),
     previousStatement: null, nextStatement: null, colour: MOVE },
-  { type: 'fish_wait', message0: '%1 びょう まつ', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_wait', message0: t('bWait'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: '#8b5a2b' },
-  { type: 'fish_speed', message0: 'はやさを %1 にする（1〜10）', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_speed', message0: t('bSpeed'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: LOOK },
-  { type: 'fish_size', message0: 'おおきさを %1 % にする', args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+  { type: 'fish_size', message0: t('bSize'), args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
     inputsInline: true, previousStatement: null, nextStatement: null, colour: LOOK }
 ]);
 
@@ -211,7 +268,7 @@ const num = (v) => ({ shadow: { type: 'math_number', fields: { NUM: v } } });
 const toolbox = {
   kind: 'categoryToolbox',
   contents: [
-    { kind: 'category', name: 'うごき', colour: MOVE, contents: [
+    { kind: 'category', name: t('catMove'), colour: MOVE, contents: [
       { kind: 'block', type: 'fish_forward', inputs: { N: num(100) } },
       { kind: 'block', type: 'fish_turn_right', inputs: { N: num(45) } },
       { kind: 'block', type: 'fish_turn_left', inputs: { N: num(45) } },
@@ -219,15 +276,15 @@ const toolbox = {
       { kind: 'block', type: 'fish_point' },
       { kind: 'block', type: 'fish_bounce' }
     ]},
-    { kind: 'category', name: 'ようす', colour: LOOK, contents: [
+    { kind: 'category', name: t('catLook'), colour: LOOK, contents: [
       { kind: 'block', type: 'fish_speed', inputs: { N: num(5) } },
       { kind: 'block', type: 'fish_size', inputs: { N: num(150) } }
     ]},
-    { kind: 'category', name: 'くりかえし', colour: '#8b5a2b', contents: [
+    { kind: 'category', name: t('catLoop'), colour: '#8b5a2b', contents: [
       { kind: 'block', type: 'controls_repeat_ext', inputs: { TIMES: num(4) } },
       { kind: 'block', type: 'fish_wait', inputs: { N: num(1) } }
     ]},
-    { kind: 'category', name: 'かず', colour: '#5b67a5', contents: [
+    { kind: 'category', name: t('catNum'), colour: '#5b67a5', contents: [
       { kind: 'block', type: 'math_number' },
       { kind: 'block', type: 'math_random_int', inputs: { FROM: num(1), TO: num(100) } }
     ]}
@@ -508,7 +565,7 @@ class FirebaseBackend {
         return code;
       } catch (_) { /* もう ある ばんごう → つくりなおす */ }
     }
-    throw new Error('へやを つくれませんでした');
+    throw new Error(t('roomFail'));
   }
   async roomExists(room) { return (await this.db$.get(this.ref(`rooms/${room}/owner`))).exists(); }
   async isOwner(room) { return (await this.db$.get(this.ref(`rooms/${room}/owner`))).val() === this.uid; }
@@ -542,23 +599,23 @@ async function startTankView() {
   const banner = document.getElementById('banner');
   const room = (params.get('room') || '').toUpperCase() || 'LOCAL';
 
-  try { await ready; } catch (e) { notice.textContent = '⚠ Firebase に つながりません：' + e.message; return; }
+  try { await ready; } catch (e) { notice.textContent = t('fbFail') + e.message; return; }
   if (backend.mode === 'local') document.getElementById('tankBar').classList.add('isOwner');
   else {
-    if (!(await backend.roomExists(room))) { notice.textContent = `へや「${room}」は みつかりません`; return; }
+    if (!(await backend.roomExists(room))) { notice.textContent = t('roomMissing', room); return; }
     if (await backend.isOwner(room)) document.getElementById('tankBar').classList.add('isOwner');
   }
 
   let first = true, bannerTimer = null;
   const showCount = () => {
-    info.textContent = `へや：${room}　🐟 ${tank.fish.size}ひき`;
-    notice.innerHTML = tank.fish.size ? '' : 'まだ おさかなが いないよ<br>みんなの おさかなを まっています…';
+    info.textContent = t('tankInfo', room, tank.fish.size);
+    notice.innerHTML = tank.fish.size ? '' : t('waiting');
   };
   backend.watch(room, (id, f) => {
     tank.add(id, f.px, f.prog);
     showCount();
     if (!first) {
-      banner.textContent = '🐟 あたらしい なかまが きたよ！'; banner.style.opacity = 1;
+      banner.textContent = t('newFriend'); banner.style.opacity = 1;
       clearTimeout(bannerTimer); bannerTimer = setTimeout(() => (banner.style.opacity = 0), 2500);
     }
   }, (id) => { tank.remove(id); showCount(); });
@@ -570,23 +627,23 @@ async function startTankView() {
   let delMode = false;
   delBtn.addEventListener('click', () => {
     delMode = !delMode; tank.opts.highlightDelete = delMode;
-    delBtn.textContent = `🗑 けすモード：${delMode ? 'オン' : 'オフ'}`;
+    delBtn.textContent = t('delMode', delMode);
   });
   canvas.addEventListener('click', (e) => {
     if (!delMode) return;
     const [wx, wy] = tank.toWorld(e.offsetX, e.offsetY);
     const f = tank.hit(wx, wy);
-    if (f) backend.removeFish(room, f.id).catch((err) => alertBar('けせませんでした：' + err.message));
+    if (f) backend.removeFish(room, f.id).catch((err) => alertBar(t('delFail') + err.message));
   });
   const clearBtn = document.getElementById('clearAll');
   let armed = null;
   clearBtn.addEventListener('click', () => {
     if (!armed) {   // 2かい おして かくにん
-      clearBtn.textContent = 'ほんとうに けす？'; armed = setTimeout(() => { clearBtn.textContent = 'ぜんぶ けす'; armed = null; }, 3000);
+      clearBtn.textContent = t('sure'); armed = setTimeout(() => { clearBtn.textContent = t('clearAll'); armed = null; }, 3000);
       return;
     }
-    clearTimeout(armed); armed = null; clearBtn.textContent = 'ぜんぶ けす';
-    backend.clear(room).catch((err) => alertBar('けせませんでした：' + err.message));
+    clearTimeout(armed); armed = null; clearBtn.textContent = t('clearAll');
+    backend.clear(room).catch((err) => alertBar(t('delFail') + err.message));
   });
   document.getElementById('fullBtn').addEventListener('click', () => {
     if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {});
@@ -662,7 +719,7 @@ function startMakeView() {
     const b = document.createElement('button');
     b.className = 'sw' + (k === 0 ? ' eraser' : '') + (k === color ? ' on' : '');
     if (col) b.style.background = col;
-    b.title = k === 0 ? 'けしゴム' : col;
+    b.title = k === 0 ? t('eraser') : col;
     b.addEventListener('click', () => { color = k; pal.querySelectorAll('.sw').forEach((s) => s.classList.remove('on')); b.classList.add('on'); });
     pal.append(b);
   });
@@ -703,29 +760,28 @@ function startMakeView() {
     const banner = document.getElementById('modeBanner');
     if (backend.mode === 'local') {
       banner.style.display = 'block';
-      banner.innerHTML = 'いまは <b>この きかい だけの すいぞくかん</b>（ローカルモード）です。<br>' +
-        'すいぞくかんの がめんは <a href="aquarium.html?view=tank">こちら</a>（べつの タブで ひらいてね）。';
+      banner.innerHTML = t('localBanner');
       roomInput.value = 'LOCAL'; roomInput.disabled = true;
     }
-  }).catch((e) => say('⚠ Firebase に つながりません：' + e.message));
+  }).catch((e) => say(t('fbFail') + e.message));
 
   document.getElementById('send').addEventListener('click', async () => {
     const room = roomInput.value.trim().toUpperCase();
-    if (!room) return say('へやの ばんごうを いれてね');
-    if (px.every((v) => v === '0')) return say('おさかなを かいてね');
+    if (!room) return say(t('needRoom'));
+    if (px.every((v) => v === '0')) return say(t('needDraw'));
     const prog = JSON.stringify(programJson());
-    if (prog.length > 8000) return say('ブロックが おおすぎるよ。すこし へらしてね');
+    if (prog.length > 8000) return say(t('tooBig'));
     const sent = store.get('sent-' + room) || 0;
-    if (sent >= MAX_FISH_PER_DEVICE) return say(`この へやには もう ${MAX_FISH_PER_DEVICE}ひき いれたよ`);
+    if (sent >= MAX_FISH_PER_DEVICE) return say(t('limitFish', MAX_FISH_PER_DEVICE));
     try {
       await ready;
-      if (!(await backend.roomExists(room))) return say(`へや「${room}」は みつからないよ。ばんごうを たしかめてね`);
+      if (!(await backend.roomExists(room))) return say(t('roomNotFound', room));
       await backend.addFish(room, { px: px.join(''), prog });
       store.set('room', room);
       store.set('sent-' + room, sent + 1);
-      say(`🎉 すいぞくかんに はいったよ！（${sent + 1}ひきめ）`, true);
+      say(t('sent', sent + 1), true);
     } catch (e) {
-      say('⚠ おくれませんでした：' + e.message);
+      say(t('sendFail') + e.message);
     }
   });
 
@@ -736,8 +792,8 @@ function startMakeView() {
     const show = (code) => {
       document.getElementById('roomCode').textContent = code;
       document.getElementById('roomLinks').innerHTML =
-        `<b>すいぞくかん（おおきな がめんで ひらく）</b><a href="${base}?view=tank&room=${code}" target="_blank">${base}?view=tank&room=${code}</a>` +
-        `<b>こどもに くばる URL</b><a href="${base}?room=${code}" target="_blank">${base}?room=${code}</a>`;
+        `<b>${t('linkTank')}</b><a href="${base}?view=tank&room=${code}" target="_blank">${base}?view=tank&room=${code}</a>` +
+        `<b>${t('linkKids')}</b><a href="${base}?room=${code}" target="_blank">${base}?room=${code}</a>`;
     };
     const last = store.get('teacher-room');
     if (last) show(last);
@@ -749,12 +805,18 @@ function startMakeView() {
         store.set('teacher-room', code);
         show(code);
         tm.textContent = backend.mode === 'local'
-          ? 'ローカルモードでは へやは 1つ（LOCAL）だけです。'
-          : 'へやを つくりました。けす そうさは、へやを つくった この ブラウザから できます。';
+          ? t('localOneRoom')
+          : t('roomMade');
       } catch (e) { tm.textContent = '⚠ ' + e.message; }
     });
   }
 }
+
+// ことば・ヘッダー
+buildNav(document.getElementById('nav'));
+langButton(document.getElementById('langBtn'));
+applyI18n(t);
+document.getElementById('delMode').textContent = t('delMode', false);
 
 if (IS_TANK) startTankView(); else startMakeView();
 </script>

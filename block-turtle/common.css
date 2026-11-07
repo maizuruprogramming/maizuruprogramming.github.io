@@ -1,0 +1,28 @@
+/* =====================================================================
+   4つの アプリで きょうつうの ヘッダー
+   iPad など はばの せまい がめんでも 1ぎょうに おさまるように、
+   だんだん ことばを かくして アイコンだけに する
+   ===================================================================== */
+header { flex-wrap: nowrap; overflow: hidden; white-space: nowrap; }
+header h1 { flex: none; white-space: nowrap; }
+header .nav { display: flex; gap: 12px; align-items: center; margin-right: auto; margin-left: 6px; flex: none; }
+header .nav a { white-space: nowrap; }
+header button { flex: none; white-space: nowrap; }
+.ico + .lbl { margin-left: .3em; }
+
+/* はば 1440px いか：アプリの リンクは アイコンだけ */
+@media (max-width: 1440px) {
+  header .nav .lbl { display: none; }
+  header .nav a { font-size: 22px; text-decoration: none; padding: 0 2px; }
+}
+/* はば 1240px いか：「じっこう」いがいの ボタンも アイコンだけ */
+@media (max-width: 1240px) {
+  header button.sub .lbl { display: none; }
+  header button.sub { padding-left: 10px; padding-right: 10px; }
+}
+/* はば 860px いか：タイトルも アイコンだけ */
+@media (max-width: 860px) {
+  header h1 .lbl { display: none; }
+  header { gap: 6px !important; }
+  header button { padding-left: 9px; padding-right: 9px; }
+}

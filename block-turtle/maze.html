@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ブロックでめいろ</title>
+<title>ブロックでめいろ / Block Maze</title>
 <!-- Blockly 本体・標準ブロック・JavaScript変換・日本語メッセージ（CDN） -->
 <script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
 <script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
-<script src="https://unpkg.com/blockly@11/msg/ja.js"></script>
+<script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <style>
@@ -23,7 +23,7 @@
   header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 8px 14px 0;
     background: linear-gradient(#5fa83a 0 10px, #4e8a2e 10px 14px, #866043 14px); border-bottom: 4px solid #2a1d12; }
   header h1 { font-size: 22px; margin: 0; color: #fff; text-shadow: 3px 3px 0 #3f3f3f; font-weight: normal; }
-  header a { color: #ffff55; font-size: 15px; margin-right: auto; margin-left: 8px; text-shadow: 2px 2px 0 #3f3f3f; }
+  header a { color: #ffff55; font-size: 15px; text-shadow: 2px 2px 0 #3f3f3f; }
   /* いしの ボタン */
   button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: pointer; border-radius: 0;
     color: #fff; text-shadow: 2px 2px 0 #3f3f3f; background: #7d7d7d;
@@ -69,18 +69,18 @@
     #blocklyDiv { height: 60vh; flex: none; }
   }
 </style>
+<link rel="stylesheet" href="common.css">
 </head>
 <body>
 <header>
-  <h1>⛏ ブロックでめいろ</h1>
-  <a href="index.html" style="margin-right:0">🐢 おえかきへ</a>
-  <a href="aquarium.html" style="margin-right:0">🐟 すいぞくかんへ</a>
-  <a href="space.html">🚀 うちゅうへ</a>
-  <button id="run">▶ じっこう</button>
-  <button id="reset">↺ もどす</button>
-  <button id="answerBtn" style="display:none;background:#8e24aa;">📖 こたえ</button>
-  <button id="soundBtn" style="background:#5a5a5a;"></button>
-  <button id="nextPerson" style="background:#b0392f;">🔄 つぎの ひとへ</button>
+  <h1><span class="ico">⛏</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
+  <button id="soundBtn" class="sub" style="background:#5a5a5a;"></button>
+  <button id="nextPerson" class="sub" style="background:#b0392f;"></button>
+  <button id="langBtn" class="sub" style="background:#3c5aa6;"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -89,20 +89,20 @@
       <select id="levelSelect"></select>
       <div id="lessonText"></div>
       <div id="limitText"></div>
-      <button id="hintBtn">💡 ヒント</button>
+      <button id="hintBtn" data-i18n="hintBtn"></button>
       <div id="hintText"></div>
     </div>
     <div class="row" id="randomRow">
       <select id="rockCount">
-        <option value="4">かんたん（いわ 4こ）</option>
-        <option value="6" selected>ふつう（いわ 6こ）</option>
-        <option value="8">むずかしい（いわ 8こ）</option>
+        <option value="4" data-i18n="easy"></option>
+        <option value="6" selected data-i18n="normal"></option>
+        <option value="8" data-i18n="hard"></option>
       </select>
-      <button id="newMaze">🎲 あたらしい めいろ</button>
+      <button id="newMaze" data-i18n="newMaze"></button>
     </div>
     <canvas id="board" width="400" height="400"></canvas>
     <div class="row">
-      <label>はやさ <input id="speed" type="range" min="1" max="10" value="4"></label>
+      <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
     </div>
     <div id="msg"></div>
     <div id="info"></div>
@@ -111,11 +111,11 @@
 
 <div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
   <div class="panel box">
-    <div class="title">🎉 ステージ クリア！</div>
-    <div class="question" id="dlgQuestion">つぎの ステージに いきますか？</div>
+    <div class="title" data-i18n="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
     <div class="btns">
-      <button id="dlgYes">はい</button>
-      <button id="dlgNo">いいえ</button>
+      <button id="dlgYes" data-i18n="yes"></button>
+      <button id="dlgNo" data-i18n="no"></button>
     </div>
   </div>
 </div>
@@ -123,35 +123,81 @@
 
 <script>
 // ひょうじを ひらがなに そろえる（標準ブロックの ことば）
-Object.assign(Blockly.Msg, {
-  CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
-  CONTROLS_REPEAT_INPUT_DO: '',
-  CONTROLS_FOR_TITLE: '%1 を %2 から %3 まで %4 ずつ かぞえる',
-  NEW_VARIABLE: 'へんすうを つくる',
-  NEW_VARIABLE_TITLE: 'あたらしい へんすうの なまえ：'
-});
+if (LANG === 'ja') {
+  Object.assign(Blockly.Msg, {
+    CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
+    CONTROLS_REPEAT_INPUT_DO: ''
+  });
+} else {
+  Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
+}
+
+/* ========== 0. ことば（にほんご ／ English） ========== */
+const STR = {
+  ja: {
+    appTitle: 'ブロックでめいろ', run: 'じっこう', reset: 'もどす', answer: 'こたえ', nextPerson: 'つぎの ひとへ',
+    soundOn: 'おと：オン', soundOff: 'おと：オフ', hintBtn: '💡 ヒント', speed: 'はやさ',
+    easy: 'かんたん（いわ 4こ）', normal: 'ふつう（いわ 6こ）', hard: 'むずかしい（いわ 8こ）', newMaze: '🎲 あたらしい めいろ',
+    dlgTitle: '🎉 ステージ クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
+    dirF: 'まえ', dirR: 'みぎ', dirL: 'ひだり',
+    bForward: 'まえに すすむ', bRight: 'みぎを むく ↻', bLeft: 'ひだりを むく ↺', bUntilGoal: 'ゴールに つくまで くりかえす',
+    bIf: 'もし %1 が あいていたら', bElse: 'そうでなければ %1',
+    tooManyMoves: (n) => `うごきが おおすぎるよ（${n}かいまで）`, crash: '💥 ぶつかっちゃった！', endless: 'くりかえしが おわらないよ',
+    noGoal: 'ゴールに つかなかったよ', limit: (n) => `🎯 めやす：ブロック ${n}こ いないで クリア`,
+    used: (n) => `つかった ブロック：${n}こ`, moves: (n) => ` ／ うごいた かず：${n}かい`,
+    grand: '🏆 30こ ぜんぶ ゴール！ チュートリアル クリア！',
+    testPartial: (ok) => `このめいろは ゴール！ でも テストは 30こ中 ${ok}こ。どんな めいろでも いける くふうを しよう`,
+    freeGoal: '🎉 ゴール！ 🎲で べつの めいろでも ためしてみよう',
+    overLimit: (n, lim) => `ゴール！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
+    stageClear: '🎉 ステージ クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
+    armed: 'もういちど？', armedMsg: '⚠ もういちど 🔄 を おすと、ぜんぶ リセットするよ',
+    resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
+  },
+  en: {
+    appTitle: 'Block Maze', run: 'Run', reset: 'Restart', answer: 'Answer', nextPerson: 'Next player',
+    soundOn: 'Sound: On', soundOff: 'Sound: Off', hintBtn: '💡 Hint', speed: 'Speed',
+    easy: 'Easy (4 rocks)', normal: 'Normal (6 rocks)', hard: 'Hard (8 rocks)', newMaze: '🎲 New maze',
+    dlgTitle: '🎉 Stage clear!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
+    dirF: 'front', dirR: 'right', dirL: 'left',
+    bForward: 'move forward', bRight: 'turn right ↻', bLeft: 'turn left ↺', bUntilGoal: 'repeat until goal',
+    bIf: 'if %1 is open', bElse: 'else %1',
+    tooManyMoves: (n) => `Too many moves (max ${n})`, crash: '💥 Bump! You hit a rock.', endless: 'The loop never ends!',
+    noGoal: "You didn't reach the goal.", limit: (n) => `🎯 Target: clear with ${n} blocks or fewer`,
+    used: (n) => `Blocks used: ${n}`, moves: (n) => ` / Moves: ${n}`,
+    grand: '🏆 All 30 mazes cleared! Tutorial complete!',
+    testPartial: (ok) => `Goal reached here! But only ${ok} of 30 tests passed. Make it work for any maze!`,
+    freeGoal: '🎉 Goal! Try another maze with 🎲',
+    overLimit: (n, lim) => `Goal! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
+    stageClear: '🎉 Stage clear!', retry: 'Try again! Fix your blocks and press ▶ Run.',
+    armed: 'Again?', armedMsg: '⚠ Press 🔄 again to reset everything.',
+    resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
+  }
+};
+const t = makeT(STR);
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
+const nextPersonBtnEl = () => document.getElementById('nextPerson');
 
 /* ========== 1. オリジナルのブロック ========== */
-const DIRS = [['まえ', 'F'], ['みぎ', 'R'], ['ひだり', 'L']];
+const DIRS = [[t('dirF'), 'F'], [t('dirR'), 'R'], [t('dirL'), 'L']];
 
 Blockly.common.defineBlocksWithJsonArray([
-  { type: 'maze_forward', message0: 'まえに すすむ',
+  { type: 'maze_forward', message0: t('bForward'),
     previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
-  { type: 'maze_right', message0: 'みぎを むく ↻',
+  { type: 'maze_right', message0: t('bRight'),
     previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
-  { type: 'maze_left', message0: 'ひだりを むく ↺',
+  { type: 'maze_left', message0: t('bLeft'),
     previousStatement: null, nextStatement: null, colour: '#4f8f2f' },
-  { type: 'maze_until_goal', message0: 'ゴールに つくまで くりかえす',
+  { type: 'maze_until_goal', message0: t('bUntilGoal'),
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
     previousStatement: null, nextStatement: null, colour: '#8b5a2b' },
-  { type: 'maze_if', message0: 'もし %1 が あいていたら',
+  { type: 'maze_if', message0: t('bIf'),
     args0: [{ type: 'field_dropdown', name: 'DIR', options: DIRS }],
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
     previousStatement: null, nextStatement: null, colour: '#3c5aa6' },
-  { type: 'maze_ifelse', message0: 'もし %1 が あいていたら',
+  { type: 'maze_ifelse', message0: t('bIf'),
     args0: [{ type: 'field_dropdown', name: 'DIR', options: DIRS }],
     message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
-    message2: 'そうでなければ %1', args2: [{ type: 'input_statement', name: 'ELSE' }],
+    message2: t('bElse'), args2: [{ type: 'input_statement', name: 'ELSE' }],
     previousStatement: null, nextStatement: null, colour: '#3c5aa6' }
 ]);
 
@@ -180,40 +226,49 @@ const ALL  = [...MOVE, 'controls_repeat_ext', 'maze_until_goal', 'maze_if', 'maz
 
 const LEVELS = [
   { title: 'ステージ1　まっすぐ すすもう',
+    en: { title: 'Stage 1: Go straight', text: 'Move the explorer to the diamond 💎. Drag "move forward" blocks from the left and stack them.', hint: 'How many squares to the goal? Stack that many "move forward" blocks.' },
     text: 'たんけんかを ゴールの ダイヤ 💎 まで うごかそう。「まえに すすむ」ブロックを ひだりから ひっぱってきて、たてに つなげてね。',
     hint: 'ゴールまで なんマス あるかな？ その かずだけ「まえに すすむ」を つなげよう。',
     map: ['#####', '#####', 'S...G', '#####', '#####'], dir: 1, blocks: ['maze_forward'] },
   { title: 'ステージ2　まがってみよう',
+    en: { title: 'Stage 2: Let\'s turn', text: 'You turn on the way. "Forward" is where the explorer\'s light (yellow beam) is shining.', hint: 'After 2 squares, "turn right". Turning does not move you to another square.' },
     text: 'とちゅうで まがるよ。たんけんかの ライト（きいろい ひかり）が てらしている ほうが「まえ」だよ。',
     hint: '2マス すすんだら「みぎを むく」。むきを かえても マスは うごかないよ。',
     map: ['S..##', '##.##', '##G##', '#####', '#####'], dir: 1, blocks: MOVE },
   { title: 'ステージ3　ながい みち',
+    en: { title: 'Stage 3: A long path', text: 'Walk the long path. Pretend you are the explorer and think about which way to turn.', hint: 'Forward 4 → turn right → forward 2 → turn right → forward 4' },
     text: 'ながい みちを すすもう。たんけんかに なったつもりで、どっちに まがるか かんがえよう。',
     hint: '4マス すすむ → みぎを むく → 2マス すすむ → みぎを むく → 4マス すすむ',
     map: ['S....', '####.', 'G....', '#####', '#####'], dir: 1, blocks: MOVE },
   { title: 'ステージ4　くりかえしを つかおう',
+    en: { title: 'Stage 4: Use a loop', text: 'Stacking the same block again and again is hard work. Put blocks inside "repeat" to repeat them.', hint: '"repeat 4 (move forward)" → "turn right" → "repeat 4 (move forward)"' },
     text: 'おなじ ブロックを なんども ならべるのは たいへん。「〇かい くりかえす」の なかに ブロックを いれると、まとめて くりかえせるよ。',
     hint: '「4かい くりかえす（まえに すすむ）」→「みぎを むく」→「4かい くりかえす（まえに すすむ）」',
     map: ['S....', '####.', '####.', '####.', '####G'], dir: 1, blocks: [...MOVE, 'controls_repeat_ext'], limit: 5 },
   { title: 'ステージ5　かいだんを のぼろう',
+    en: { title: 'Stage 5: Climb the stairs', text: 'Look closely at the stairs. The same set of moves repeats.', hint: 'One set is "forward → turn right → forward → turn left". How many times should it repeat?' },
     text: 'かいだんの かたちを よく みてみよう。おなじ うごきの セットが くりかえされて いるよ。',
     hint: '「すすむ → みぎを むく → すすむ → ひだりを むく」が 1セット。これを なんかい くりかえす？',
     map: ['###.G', '##..#', '#..##', '..###', 'S####'], dir: 0, blocks: [...MOVE, 'controls_repeat_ext'], limit: 5 },
   { title: 'ステージ6　もし〜なら',
+    en: { title: 'Stage 6: If…', text: 'Try "repeat until goal" and "if front is open". The explorer looks ahead and decides to move or turn by itself.', hint: 'Repeat until goal: if front is open "move forward", else "turn right".' },
     text: '「ゴールに つくまで くりかえす」と「もし まえが あいていたら」を つかってみよう。たんけんかが じぶんで まえを みて、すすむか まがるかを きめるよ。',
     hint: 'ゴールに つくまで くりかえす：もし まえ が あいていたら「すすむ」、そうでなければ「みぎを むく」',
     map: ['S....', '####.', '..G#.', '.###.', '.....'], dir: 1,
     blocks: [...MOVE, 'maze_until_goal', 'maze_ifelse'], limit: 4 },
   { title: 'ステージ7　みぎ？ ひだり？',
+    en: { title: 'Stage 7: Right? Left?', text: 'Now you turn both right and left. If the front is blocked, check the right. If that is blocked too, turn left.', hint: 'Put another "if right is open" inside "else".' },
     text: 'こんどは みぎにも ひだりにも まがるよ。まえが ふさがっていたら、みぎを しらべて、それも だめなら ひだりを むこう。',
     hint: '「そうでなければ」の なかに、もう1つ「もし みぎ が あいていたら」を いれよう。',
     map: ['S....', '####.', '.....', '.####', '....G'], dir: 1,
     blocks: [...MOVE, 'maze_until_goal', 'maze_ifelse'], limit: 6 },
   { title: 'ステージ8　どんな めいろでも ゴール！',
+    en: { title: 'Stage 8: Any maze!', text: 'Final challenge! Your program is tested on 30 random mazes. Reach the goal in all of them to clear!', hint: 'The "right-hand rule": keep your right hand on the wall and you always reach the goal. If the right is open, turn right first, then move.' },
     text: 'さいごの ちょうせん！ じっこうすると、ランダムな めいろ 30こで プログラムを テストするよ。ぜんぶ ゴールできたら クリア！',
     hint: '「みぎての ほうそく」：みぎてを かべに つけたまま あるくと、かならず ゴールに つくよ。みぎが あいていたら、まず みぎを むいて すすもう。',
     mode: 'test', blocks: ALL },
   { title: 'じゆうモード　ランダムめいろ',
+    en: { title: 'Free mode: Random maze', text: 'Play freely with random mazes. 🎲 makes a new maze.', hint: '' },
     text: 'ランダムな めいろで じゆうに あそぼう。🎲で あたらしい めいろが でるよ。',
     hint: '', mode: 'free', blocks: ALL }
 ];
@@ -355,7 +410,7 @@ function setRandomMaze(rk) {
 
 /* ========== 6. プログラムを しらべて、うごきの きろくを つくる ========== */
 const MAX_MOVES = 200, MAX_LOOPS = 1000;
-class Stop { constructor(kind, text) { this.kind = kind; this.text = text; } }
+class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; this.why = why; } }
 
 function simulate(code) {
   const s = { ...START };
@@ -363,13 +418,13 @@ function simulate(code) {
   let blockId = null, loops = 0;
   const rec = (event) => {
     frames.push({ r: s.r, c: s.c, dir: s.dir, id: blockId, event });
-    if (frames.length > MAX_MOVES) throw new Stop('ng', 'うごきが おおすぎるよ（' + MAX_MOVES + 'かいまで）');
+    if (frames.length > MAX_MOVES) throw new Stop('ng', t('tooManyMoves', MAX_MOVES));
   };
   const api = {
     highlight: (id) => { blockId = id; },
     forward: () => {
       const nr = s.r + DR[s.dir], nc = s.c + DC[s.dir];
-      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', '💥 ぶつかっちゃった！'); }
+      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', t('crash'), 'crash'); }
       s.r = nr; s.c = nc; rec('move');
       if (s.r === GOAL.r && s.c === GOAL.c) throw new Stop('ok', 'goal');
     },
@@ -380,12 +435,12 @@ function simulate(code) {
       return free(s.r + DR[d], s.c + DC[d]);
     },
     atGoal: () => s.r === GOAL.r && s.c === GOAL.c,
-    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', 'くりかえしが おわらないよ'); }
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', t('endless')); }
   };
   let result;
   try {
     new Function(...Object.keys(api), code)(...Object.values(api));
-    result = new Stop('ng', 'ゴールに つかなかったよ');
+    result = new Stop('ng', t('noGoal'));
   } catch (e) {
     result = e instanceof Stop ? e : new Stop('ng', '⚠ ' + e.message);
   }
@@ -496,7 +551,7 @@ const clearDialog = document.getElementById('clearDialog');
 function showClearDialog() {
   const next = LEVELS[levelIndex + 1];
   document.getElementById('dlgQuestion').innerHTML =
-    `つぎの ステージに いきますか？<br><span style="font-size:15px">（${next.title}）</span>`;
+    `${t('dlgQuestion')}<br><span style="font-size:15px">${LANG === 'en' ? '(' : '（'}${L(next, 'title')}${LANG === 'en' ? ')' : '）'}</span>`;
   clearDialog.classList.add('show');
   document.getElementById('dlgYes').focus();
 }
@@ -505,7 +560,7 @@ let cleared = store.get('-cleared') || [];
 
 function refreshLevelList() {
   levelSelect.innerHTML = '';
-  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + lv.title, i)));
+  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + L(lv, 'title'), i)));
   levelSelect.value = levelIndex;
 }
 
@@ -514,11 +569,11 @@ function setLevel(i) {
   const lv = LEVELS[i];
   store.set('-level', i);
   refreshLevelList();
-  document.getElementById('lessonText').textContent = lv.text;
-  document.getElementById('limitText').textContent = lv.limit ? `🎯 めやす：ブロック ${lv.limit}こ いないで クリア` : '';
+  document.getElementById('lessonText').textContent = L(lv, 'text');
+  document.getElementById('limitText').textContent = lv.limit ? t('limit', lv.limit) : '';
   const hint = document.getElementById('hintText');
-  hint.textContent = lv.hint; hint.style.display = 'none';
-  document.getElementById('hintBtn').style.display = lv.hint ? '' : 'none';
+  hint.textContent = L(lv, 'hint'); hint.style.display = 'none';
+  document.getElementById('hintBtn').style.display = L(lv, 'hint') ? '' : 'none';
   document.getElementById('randomRow').style.display = lv.mode ? 'flex' : 'none';
 
   // つかえる ブロックと、この ステージで くんでいた プログラムを よみこむ
@@ -564,7 +619,7 @@ function blockCount() {
 
 function updateInfo(moves) {
   document.getElementById('info').textContent =
-    `つかった ブロック：${blockCount()}こ` + (moves != null ? ` ／ うごいた かず：${moves}かい` : '');
+    t('used', blockCount()) + (moves != null ? t('moves', moves) : '');
 }
 
 // ステージ8：ランダムな めいろ 30こで テスト
@@ -655,7 +710,7 @@ const Sound = {
 };
 
 const soundBtn = document.getElementById('soundBtn');
-const showSound = () => { soundBtn.textContent = Sound.muted ? '🔇 おと：オフ' : '🔊 おと：オン'; };
+const showSound = () => { setLabel(soundBtn, Sound.muted ? '🔇' : '🔊', Sound.muted ? t('soundOff') : t('soundOn')); };
 showSound();
 soundBtn.addEventListener('click', () => { Sound.unlock(); Sound.toggle(); showSound(); if (!Sound.muted) Sound.turnRight(); });
 
@@ -664,23 +719,23 @@ function finish(result, moves, code) {
   updateInfo(moves);
   if (result.kind !== 'ok') {
     msg.className = 'ng'; msg.textContent = result.text;
-    if (!result.text.includes('ぶつかっ')) Sound.fail();   // ぶつかった ときは もう おとが なっている
+    if (result.why !== 'crash') Sound.fail();   // ぶつかった ときは もう おとが なっている
     return;
   }
   msg.className = 'ok';
   const n = blockCount();
   if (lv.mode === 'test') {
     const ok = testOnRandomMazes(code, 30);
-    if (ok === 30) { msg.textContent = '🏆 30こ ぜんぶ ゴール！ チュートリアル クリア！'; markCleared(); Sound.grandClear(); }
-    else { msg.className = 'ng'; msg.textContent = `このめいろは ゴール！ でも テストは 30こ中 ${ok}こ。どんな めいろでも いける くふうを しよう`; Sound.goalSoSo(); }
+    if (ok === 30) { msg.textContent = t('grand'); markCleared(); Sound.grandClear(); }
+    else { msg.className = 'ng'; msg.textContent = t('testPartial', ok); Sound.goalSoSo(); }
   } else if (lv.mode === 'free') {
-    msg.textContent = '🎉 ゴール！ 🎲で べつの めいろでも ためしてみよう';
+    msg.textContent = t('freeGoal');
     Sound.clear();
   } else if (lv.limit && n > lv.limit) {
-    msg.textContent = `ゴール！ でも ブロックが ${n}こ。${lv.limit}こ いかに できるかな？`;
+    msg.textContent = t('overLimit', n, lv.limit);
     Sound.goalSoSo();
   } else {
-    msg.textContent = '🎉 ステージ クリア！';
+    msg.textContent = t('stageClear');
     markCleared();
     Sound.clear();
   }
@@ -729,7 +784,7 @@ document.getElementById('dlgNo').addEventListener('click', () => {
   hideClearDialog();
   resetRobot();
   msg.className = 'ok';
-  msg.textContent = 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね';
+  msg.textContent = t('retry');
 });
 document.addEventListener('keydown', (e) => {
   if (!clearDialog.classList.contains('show')) return;
@@ -741,6 +796,15 @@ document.getElementById('hintBtn').addEventListener('click', () => {
 });
 window.addEventListener('resize', () => Blockly.svgResize(workspace));
 
+// ヘッダー：ボタンの ことば・アプリの リンク・ことばの きりかえ
+setLabel(document.getElementById('run'), '▶', t('run'));
+setLabel(document.getElementById('reset'), '↺', t('reset'));
+setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
+setLabel(nextPersonBtnEl(), '🔄', t('nextPerson'));
+buildNav(document.getElementById('nav'));
+langButton(document.getElementById('langBtn'));
+applyI18n(t);
+
 setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
 
 // つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムめいろを けして ステージ1へ
@@ -748,12 +812,13 @@ const nextPersonBtn = document.getElementById('nextPerson');
 let nextPersonArmed = null;
 nextPersonBtn.addEventListener('click', () => {
   if (!nextPersonArmed) {   // 2かい おして かくにん（まちがえて けさないように）
-    nextPersonBtn.textContent = '⚠ もういちど おすと リセット';
-    nextPersonArmed = setTimeout(() => { nextPersonBtn.textContent = '🔄 つぎの ひとへ'; nextPersonArmed = null; }, 4000);
+    setLabel(nextPersonBtn, '⚠', t('armed'));
+    msg.className = 'ng'; msg.textContent = t('armedMsg');
+    nextPersonArmed = setTimeout(() => { setLabel(nextPersonBtn, '🔄', t('nextPerson')); nextPersonArmed = null; }, 4000);
     return;
   }
   clearTimeout(nextPersonArmed); nextPersonArmed = null;
-  nextPersonBtn.textContent = '🔄 つぎの ひとへ';
+  setLabel(nextPersonBtn, '🔄', t('nextPerson'));
   try {
     Object.keys(localStorage)
       .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
@@ -764,7 +829,7 @@ nextPersonBtn.addEventListener('click', () => {
   setLevel(0);
   workspace.scrollCenter && workspace.scrollCenter();
   msg.className = 'ok';
-  msg.textContent = '✨ リセットしたよ。つぎの ひと、がんばってね！';
+  msg.textContent = t('resetDone');
 });
 
 
@@ -775,7 +840,7 @@ answerBtn.addEventListener('click', () => {
   resetRobot();
   workspace.clear();
   Blockly.serialization.workspaces.load(LEVELS[levelIndex].answer, workspace);
-  msg.className = ''; msg.textContent = '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう';
+  msg.className = ''; msg.textContent = t('answerLoaded');
 });
 </script>
 </body>
