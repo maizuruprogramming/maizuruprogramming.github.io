@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "まいかつ　舞鶴高専プログラミングラボ"
 layout: splash
@@ -37,3 +38,561 @@ intro:
   </div>
 
 </div>
+=======
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ブロックでおえかき / Block Drawing</title>
+<!-- Blockly 本体・標準ブロック・JavaScript変換（CDN） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
+<script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  /* ===== テーマ：そらと ノート（おえかき） ===== */
+  :root {
+    --page-bg: #2c4a73 repeating-conic-gradient(rgba(0,0,0,.12) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#9fd8ff 0 10px, #5aa9e8 10px 14px, #2f6db5 14px);
+    --hdr-border: #173a66; --title-shadow: #173a66; --link: #ffe680;
+    --btn: #5b7fb0; --btn-light: #a9c6ec; --btn-dark: #2a4570; --fn: #2f6db5;
+    --panel-bg: #f4efe0; --panel-light: #ffffff; --panel-dark: #9a8f70; --panel-text: #3a3a3a;
+    --hintbtn: #2f6db5; --hint-bg: #fff5cc; --hint-text: #3a3a3a; --board-ring: #9fb8d8; --dlg-title: #2e7d32;
+  }
+  /* おえかきの かみ（お手本・え・カメの 3まいを かさねる） */
+  #canvasWrap { position: relative; background: #fff; }
+  #canvasWrap canvas { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🐢</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="clear" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="blocklyDiv"></div>
+  <div id="stage">
+    <div id="odai" class="panel">
+      <select id="odaiSelect"></select>
+      <div id="odaiText" class="lessonText"></div>
+      <button id="hintBtn" data-i18n="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div id="canvasWrap" class="board">
+      <canvas id="guide"  width="400" height="400"></canvas>
+      <canvas id="paper"  width="400" height="400"></canvas>
+      <canvas id="turtle" width="400" height="400"></canvas>
+    </div>
+    <div class="row">
+      <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="21" value="6"></label>
+    </div>
+    <div id="msg"></div>
+  </div>
+</main>
+
+<script>
+
+/* ========== 0. ことば（にほんご ／ English） ========== */
+const STR = {
+  ja: {
+    appTitle: 'ブロックでおえかき', run: 'じっこう', clear: 'けす', answer: 'こたえ', hintBtn: '💡 ヒント', speed: 'はやさ',
+    catMove: 'うごき', catPen: 'ペン', catLoop: 'くりかえし', catNum: 'かず', catVar: 'へんすう',
+    bForward: 'まえに %1 ほ すすむ', bBack: 'うしろに %1 ほ さがる', bRight: 'みぎに %1 ど まわる', bLeft: 'ひだりに %1 ど まわる',
+    bHome: 'まんなかに もどる', bColor: 'ペンのいろを %1 にする', bWidth: 'ペンのふとさを %1 にする',
+    bPenUp: 'ペンを あげる（かかない）', bPenDown: 'ペンを おろす（かく）',
+    colors: ['くろ', 'あか', 'あお', 'みどり', 'きいろ', 'オレンジ', 'むらさき', 'ピンク', 'ランダム'],
+    tooMany: 'めいれいが おおすぎるよ。くりかえしの かいすうを へらしてみよう',
+    correct: '🎉 せいかい！ よくできました！',
+    close: (p, over) => `おしい！ お手本の ${p}% まで かけたよ` + (over ? '（はみだした せんが あるよ）' : ''),
+    wrong: 'お手本と ちがうみたい。ヒントを みてみよう',
+    noAnswer: 'じゆうに かこう には こたえが ないよ',
+    answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
+  },
+  en: {
+    appTitle: 'Block Drawing', run: 'Run', clear: 'Clear', answer: 'Answer', hintBtn: '💡 Hint', speed: 'Speed',
+    catMove: 'Move', catPen: 'Pen', catLoop: 'Loops', catNum: 'Numbers', catVar: 'Variables',
+    bForward: 'move forward %1 steps', bBack: 'move back %1 steps', bRight: 'turn right %1 degrees', bLeft: 'turn left %1 degrees',
+    bHome: 'go to the center', bColor: 'set pen color to %1', bWidth: 'set pen size to %1',
+    bPenUp: 'pen up (stop drawing)', bPenDown: 'pen down (draw)',
+    colors: ['black', 'red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'random'],
+    tooMany: 'Too many commands! Try fewer repeats.',
+    correct: '🎉 Correct! Great job!',
+    close: (p, over) => `Almost! You drew ${p}% of the model` + (over ? ' (some lines go outside it)' : ''),
+    wrong: 'It looks different from the model. Check the hint!',
+    noAnswer: 'Free drawing has no answer.',
+    answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
+  }
+};
+const t = makeT(STR);
+// 「〇ばんめの おだい」の ことば（英語が あれば 英語）
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
+
+// ひょうじを ひらがなに そろえる（標準ブロックの ことば）
+if (LANG === 'ja') {
+  Object.assign(Blockly.Msg, {
+    CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
+    CONTROLS_REPEAT_INPUT_DO: '',
+    CONTROLS_FOR_TITLE: '%1 を %2 から %3 まで %4 ずつ かぞえる',
+    NEW_VARIABLE: 'へんすうを つくる',
+    NEW_VARIABLE_TITLE: 'あたらしい へんすうの なまえ：'
+  });
+} else {
+  Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
+}
+
+/* ========== 1. オリジナルのブロックを定義する ========== */
+const COLORS = ['#222222', '#e53935', '#1e88e5', '#43a047', '#fdd835', '#fb8c00', '#8e24aa', '#ec407a', 'random']
+  .map((v, k) => [t('colors')[k], v]);
+
+Blockly.common.defineBlocksWithJsonArray([
+  { type: 'turtle_forward', message0: t('bForward'),
+    args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+    inputsInline: true, previousStatement: null, nextStatement: null, colour: 160 },
+  { type: 'turtle_back', message0: t('bBack'),
+    args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+    inputsInline: true, previousStatement: null, nextStatement: null, colour: 160 },
+  { type: 'turtle_right', message0: t('bRight'),
+    args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+    inputsInline: true, previousStatement: null, nextStatement: null, colour: 160 },
+  { type: 'turtle_left', message0: t('bLeft'),
+    args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+    inputsInline: true, previousStatement: null, nextStatement: null, colour: 160 },
+  { type: 'turtle_home', message0: t('bHome'),
+    previousStatement: null, nextStatement: null, colour: 160 },
+  { type: 'pen_color', message0: t('bColor'),
+    args0: [{ type: 'field_dropdown', name: 'C', options: COLORS }],
+    previousStatement: null, nextStatement: null, colour: 20 },
+  { type: 'pen_width', message0: t('bWidth'),
+    args0: [{ type: 'input_value', name: 'N', check: 'Number' }],
+    inputsInline: true, previousStatement: null, nextStatement: null, colour: 20 },
+  { type: 'pen_up',   message0: t('bPenUp'),
+    previousStatement: null, nextStatement: null, colour: 20 },
+  { type: 'pen_down', message0: t('bPenDown'),
+    previousStatement: null, nextStatement: null, colour: 20 }
+]);
+
+/* ========== 2. ブロック → JavaScript への変換ルール ========== */
+const gen = javascript.javascriptGenerator;
+const ORDER_NONE = (javascript.Order && javascript.Order.NONE) ?? 99;
+const num = (b, g) => g.valueToCode(b, 'N', ORDER_NONE) || '0';
+
+gen.forBlock['turtle_forward'] = (b, g) => `forward(${num(b, g)});\n`;
+gen.forBlock['turtle_back']    = (b, g) => `forward(-(${num(b, g)}));\n`;
+gen.forBlock['turtle_right']   = (b, g) => `turn(${num(b, g)});\n`;
+gen.forBlock['turtle_left']    = (b, g) => `turn(-(${num(b, g)}));\n`;
+gen.forBlock['turtle_home']    = ()     => `home();\n`;
+gen.forBlock['pen_color']      = (b)    => `penColor(${JSON.stringify(b.getFieldValue('C'))});\n`;
+gen.forBlock['pen_width']      = (b, g) => `penWidth(${num(b, g)});\n`;
+gen.forBlock['pen_up']         = ()     => `pen(false);\n`;
+gen.forBlock['pen_down']       = ()     => `pen(true);\n`;
+
+/* ========== 3. ツールボックス（左のブロック置き場） ========== */
+const n = (v) => ({ shadow: { type: 'math_number', fields: { NUM: v } } });
+const toolbox = {
+  kind: 'categoryToolbox',
+  contents: [
+    { kind: 'category', name: t('catMove'), colour: '160', contents: [
+      { kind: 'block', type: 'turtle_forward', inputs: { N: n(100) } },
+      { kind: 'block', type: 'turtle_back',    inputs: { N: n(50) } },
+      { kind: 'block', type: 'turtle_right',   inputs: { N: n(90) } },
+      { kind: 'block', type: 'turtle_left',    inputs: { N: n(90) } },
+      { kind: 'block', type: 'turtle_home' }
+    ]},
+    { kind: 'category', name: t('catPen'), colour: '20', contents: [
+      { kind: 'block', type: 'pen_color' },
+      { kind: 'block', type: 'pen_width', inputs: { N: n(5) } },
+      { kind: 'block', type: 'pen_up' },
+      { kind: 'block', type: 'pen_down' }
+    ]},
+    { kind: 'category', name: t('catLoop'), colour: '120', contents: [
+      { kind: 'block', type: 'controls_repeat_ext', inputs: { TIMES: n(4) } },
+      { kind: 'block', type: 'controls_for',
+        inputs: { FROM: n(1), TO: n(10), BY: n(1) } }
+    ]},
+    { kind: 'category', name: t('catNum'), colour: '230', contents: [
+      { kind: 'block', type: 'math_number' },
+      { kind: 'block', type: 'math_arithmetic',
+        inputs: { A: n(1), B: n(1) } },
+      { kind: 'block', type: 'math_random_int',
+        inputs: { FROM: n(1), TO: n(100) } }
+    ]},
+    { kind: 'category', name: t('catVar'), colour: '330', custom: 'VARIABLE' }
+  ]
+};
+
+/* ========== 4. ワークスペースを作る ========== */
+const paperTheme = Blockly.Theme.defineTheme('paper', {
+  base: Blockly.Themes.Classic,
+  componentStyles: {
+    workspaceBackgroundColour: '#e8eef7', toolboxBackgroundColour: '#2f4f7f', toolboxForegroundColour: '#ffffff',
+    flyoutBackgroundColour: '#c9d6ea', flyoutOpacity: 1, scrollbarColour: '#7f9cc7', insertionMarkerColour: '#2f6db5'
+  },
+  fontStyle: { family: 'DotGothic16, monospace', size: 12 }
+});
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox,
+  theme: paperTheme,
+  grid: { spacing: 24, length: 24, colour: '#d5deec', snap: true },
+  renderer: 'zelos',            // Scratch に近い見た目
+  trashcan: true,
+  zoom: { controls: true, wheel: true, startScale: 1.0 },
+  move: { scrollbars: true, drag: true, wheel: false }
+});
+
+// さいしょに置いておくサンプル（四角形）
+const SAMPLE = { blocks: { languageVersion: 0, blocks: [{
+  type: 'controls_repeat_ext', x: 40, y: 40,
+  inputs: {
+    TIMES: n(4),
+    DO: { block: {
+      type: 'turtle_forward', inputs: { N: n(100) },
+      next: { block: { type: 'turtle_right', inputs: { N: n(90) } } }
+    }}
+  }
+}]}};
+
+// 前回の作品をブラウザに保存・復元
+const SAVE_KEY = 'block-turtle-save';
+try {
+  const saved = localStorage.getItem(SAVE_KEY);
+  Blockly.serialization.workspaces.load(saved ? JSON.parse(saved) : SAMPLE, workspace);
+} catch (e) {
+  Blockly.serialization.workspaces.load(SAMPLE, workspace);
+}
+workspace.addChangeListener((e) => {
+  if (e.isUiEvent) return;
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(Blockly.serialization.workspaces.save(workspace))); } catch (_) {}
+});
+
+/* ========== 5. おだい（課題）のデータ ========== */
+// answer は「お手本」を作るためのプログラム（ブロックと同じ命令を使う）
+const CHALLENGES = [
+  { title: 'じゆうに かこう', text: 'すきな えを かいてみよう！', hint: '', answer: '',
+    en: { title: 'Free drawing', text: 'Draw anything you like!', hint: '' } },
+  { title: '① 六角形（ろっかくけい） ★',
+    text: '1つの へんが 80ほの 六角形を かこう。',
+    hint: '6かい くりかえすよ。まわる かくどは 360 ÷ 6 = ？',
+    answer: 'for(let k=0;k<6;k++){forward(80);turn(60);}',
+    en: { title: '① Hexagon ★', text: 'Draw a hexagon with sides of 80 steps.', hint: 'Repeat 6 times. How many degrees to turn? 360 ÷ 6 = ?' } },
+  { title: '② ほし ★★',
+    text: '1つの せんが 150ほの ほしを かこう。',
+    hint: '5かい くりかえすと、カメは 2しゅう（720ど）まわるよ。720 ÷ 5 = ？',
+    answer: 'for(let k=0;k<5;k++){forward(150);turn(144);}',
+    en: { title: '② Star ★★', text: 'Draw a star with lines of 150 steps.', hint: 'After 5 repeats the turtle turns around twice (720 degrees). 720 ÷ 5 = ?' } },
+  { title: '③ まる ★★',
+    text: '10ほ すすんで すこし まわる、を くりかえして まるを かこう。',
+    hint: '1しゅうは 360ど。10どずつ まわるなら なんかい くりかえす？',
+    answer: 'for(let k=0;k<36;k++){forward(10);turn(10);}',
+    en: { title: '③ Circle ★★', text: 'Draw a circle by repeating: move 10 steps, then turn a little.', hint: 'One full turn is 360 degrees. If you turn 10 degrees each time, how many repeats do you need?' } },
+  { title: '④ まど ★★★',
+    text: '1つの へんが 60ほの しかくを 4つ くっつけて、まどの かたちを かこう。',
+    hint: '「しかくを かく」を 4かい くりかえす。しかくを 1つ かいたら みぎに 90ど まわろう。くりかえしの なかに くりかえしを いれるよ。',
+    answer: 'for(let a=0;a<4;a++){for(let k=0;k<4;k++){forward(60);turn(90);}turn(90);}',
+    en: { title: '④ Window ★★★', text: 'Draw 4 squares (sides of 60 steps) next to each other to make a window.', hint: 'Repeat "draw a square" 4 times. After each square, turn right 90 degrees. Put a repeat inside a repeat!' } },
+  { title: '⑤ はな ★★★',
+    text: 'まるを まわしながら 6こ かいて、はなを かこう。（まるは 5ほ・10ど を 36かい）',
+    hint: 'まるを 1こ かいたら、360 ÷ 6 = 60ど まわる。これを 6かい くりかえす。',
+    answer: 'for(let a=0;a<6;a++){for(let k=0;k<36;k++){forward(5);turn(10);}turn(60);}',
+    en: { title: '⑤ Flower ★★★', text: 'Draw 6 circles, turning between them, to make a flower. (Circle: 5 steps and 10 degrees, 36 times)', hint: 'After each circle, turn 360 ÷ 6 = 60 degrees. Repeat this 6 times.' } },
+  { title: '⑥ しかくい うずまき ★★★★',
+    text: 'すすむ ながさを 10ほ、20ほ、30ほ…と 200ほまで のばしながら、みぎに 90どずつ まわろう。',
+    hint: '「くりかえし」の「i を 10 から 200 まで 10ずつ」を つかう。「すすむ」の かずに へんすう i を いれよう。',
+    answer: 'for(let i=10;i<=200;i+=10){forward(i);turn(90);}',
+    en: { title: '⑥ Square spiral ★★★★', text: 'Move 10, 20, 30 … up to 200 steps, turning right 90 degrees each time.', hint: 'Use the loop "count with i from 10 to 200 by 10". Put the variable i into the "move" block.' } },
+  { title: '⑦ ならんだ たかくけい ★★★★',
+    text: '三角形・四角形・五角形…八角形まで、1つの へんが 50ほの かたちを おなじ ばしょから かこう。',
+    hint: 'n を 3 から 8 まで かえながら、「n かい くりかえす：50ほ すすむ、360 ÷ n ど まわる」。けいさんブロックを つかおう。',
+    answer: 'for(let n=3;n<=8;n++){for(let k=0;k<n;k++){forward(50);turn(360/n);}}',
+    en: { title: '⑦ Polygons in a row ★★★★', text: 'From the same spot, draw a triangle, square, pentagon … up to an octagon, each with sides of 50 steps.', hint: 'Change n from 3 to 8: "repeat n times: move 50 steps, turn right 360 ÷ n degrees". Use the math block!' } },
+  { title: '⑧ ゆきの けっしょう ★★★★★',
+    text: '1本の えだを かいて もとの ばしょに もどり、60ど まわる。これを 6かい くりかえそう。',
+    hint: 'えだ：80ほ すすむ → 30ほ さがる → ひだり45ど → 25ほ すすむ → 25ほ さがる → みぎ90ど → 25ほ すすむ → 25ほ さがる → ひだり45ど → 50ほ さがる。',
+    answer: 'for(let a=0;a<6;a++){forward(80);forward(-30);turn(-45);forward(25);forward(-25);turn(90);forward(25);forward(-25);turn(-45);forward(-50);turn(60);}',
+    en: { title: '⑧ Snowflake ★★★★★', text: 'Draw one branch, come back to where you started, and turn 60 degrees. Repeat this 6 times.', hint: 'Branch: forward 80 → back 30 → left 45 → forward 25 → back 25 → right 90 → forward 25 → back 25 → left 45 → back 50.' } },
+  { title: '⑨ ほしの うずまき ★★★★★',
+    text: 'すすむ ながさを 4ほ、8ほ、12ほ…と 4ほずつ のばしながら（50かい）、みぎに 144どずつ まわろう。',
+    hint: 'i を 1 から 50 まで 1ずつ。すすむ ながさは i × 4 だよ。いろを「ランダム」に すると きれい！',
+    answer: 'for(let i=1;i<=50;i++){forward(i*4);turn(144);}',
+    en: { title: '⑨ Star spiral ★★★★★', text: 'Move 4, 8, 12 … steps (4 more each time, 50 times), turning right 144 degrees.', hint: 'Count i from 1 to 50 by 1. Move i × 4 steps. Try a "random" pen color!' } }
+];
+/* ---------- おだい の こたえ（ブロック）：先生モード（URLに ?sensei）で よみこめる ---------- */
+const A = (() => {
+  const val = (v) => typeof v === 'number'
+    ? { shadow: { type: 'math_number', fields: { NUM: v } } }
+    : { block: v, shadow: { type: 'math_number', fields: { NUM: 0 } } };
+  const chain = (list) => list.reduceRight((next, b) => next ? { ...b, next: { block: next } } : b, null);
+  const used = new Set();
+  return {
+    val, chain, used,
+    fwd:   (v) => ({ type: 'turtle_forward', inputs: { N: val(v) } }),
+    back:  (v) => ({ type: 'turtle_back',    inputs: { N: val(v) } }),
+    right: (v) => ({ type: 'turtle_right',   inputs: { N: val(v) } }),
+    left:  (v) => ({ type: 'turtle_left',    inputs: { N: val(v) } }),
+    color: (c) => ({ type: 'pen_color', fields: { C: c } }),
+    get:   (name) => { used.add(name); return { type: 'variables_get', fields: { VAR: { id: 'v_' + name } } }; },
+    calc:  (op, a, b) => ({ type: 'math_arithmetic', fields: { OP: op }, inputs: { A: val(a), B: val(b) } }),
+    repeat: (n, body) => ({ type: 'controls_repeat_ext', inputs: { TIMES: val(n), DO: { block: chain(body) } } }),
+    count: (name, from, to, by, body) => {
+      used.add(name);
+      return { type: 'controls_for', fields: { VAR: { id: 'v_' + name } },
+        inputs: { FROM: val(from), TO: val(to), BY: val(by), DO: { block: chain(body) } } };
+    },
+    // ワークスペースに よみこめる かたちに する
+    program: (body) => {
+      const vars = [...used].map((n) => ({ name: n, id: 'v_' + n }));
+      used.clear();
+      return { blocks: { languageVersion: 0, blocks: [{ ...chain(body), x: 30, y: 30 }] }, variables: vars };
+    }
+  };
+})();
+
+const ANSWER_BLOCKS = [
+  null,
+  A.program([A.repeat(6, [A.fwd(80), A.right(60)])]),
+  A.program([A.repeat(5, [A.fwd(150), A.right(144)])]),
+  A.program([A.repeat(36, [A.fwd(10), A.right(10)])]),
+  A.program([A.repeat(4, [A.repeat(4, [A.fwd(60), A.right(90)]), A.right(90)])]),
+  A.program([A.repeat(6, [A.repeat(36, [A.fwd(5), A.right(10)]), A.right(60)])]),
+  A.program([A.count('i', 10, 200, 10, [A.fwd(A.get('i')), A.right(90)])]),
+  A.program([A.count('n', 3, 8, 1, [
+    A.repeat(A.get('n'), [A.fwd(50), A.right(A.calc('DIVIDE', 360, A.get('n')))])])]),
+  A.program([A.repeat(6, [A.fwd(80), A.back(30), A.left(45), A.fwd(25), A.back(25), A.right(90),
+    A.fwd(25), A.back(25), A.left(45), A.back(50), A.right(60)])]),
+  A.program([A.count('i', 1, 50, 1, [A.color('random'), A.fwd(A.calc('MULTIPLY', A.get('i'), 4)), A.right(144)])])
+];
+CHALLENGES.forEach((c, i) => { c.blocks = ANSWER_BLOCKS[i]; });
+
+
+/* ========== 6. カメ（タートル）とおえかき ========== */
+const guide = document.getElementById('guide').getContext('2d');
+const paper = document.getElementById('paper').getContext('2d');
+const tctx  = document.getElementById('turtle').getContext('2d');
+const W = 400, H = 400;
+const MAX_CMDS = 20000;
+const msg = document.getElementById('msg');
+
+let turtle, queue = [], current = null, remain = 0, animId = null;
+let lastCmds = [];        // 今回 じっこう した めいれい（せいかいチェック用）
+
+function newTurtle() {
+  return { x: W / 2, y: H / 2, angle: 0, down: true, color: '#222222', width: 3 };
+}
+
+// プログラムを うごかして めいれいの リストを つくる
+function compile(code) {
+  const list = [];
+  const push = (c) => {
+    if (list.length >= MAX_CMDS) throw new Error(t('tooMany'));
+    list.push(c);
+  };
+  const api = {
+    forward:  (d) => push({ t: 'move', v: Number(d) || 0 }),
+    turn:     (a) => push({ t: 'turn', v: Number(a) || 0 }),
+    home:     ()  => push({ t: 'home' }),
+    penColor: (c) => push({ t: 'color', v: c }),
+    penWidth: (w) => push({ t: 'width', v: Math.max(1, Math.min(50, Number(w) || 1)) }),
+    pen:      (d) => push({ t: 'pen', v: d })
+  };
+  new Function(...Object.keys(api), code)(...Object.values(api));
+  return list;
+}
+
+function randomColor() {
+  return `hsl(${Math.floor(Math.random() * 360)}, 80%, 50%)`;
+}
+
+// 一瞬で終わる命令
+function applyInstant(tt, c) {
+  if (c.t === 'color') tt.color = c.v === 'random' ? randomColor() : c.v;
+  if (c.t === 'width') tt.width = c.v;
+  if (c.t === 'pen')   tt.down = c.v;
+  if (c.t === 'home')  { tt.x = W / 2; tt.y = H / 2; tt.angle = 0; }
+}
+
+function line(ctx, x1, y1, x2, y2, color, width) {
+  ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+}
+
+// めいれいを いっきに かく（お手本・チェック用）。style で いろ・ふとさを うわがき
+function drawInstant(ctx, cmds, style) {
+  const tt = newTurtle();
+  for (const c of cmds) {
+    if (c.t === 'move') {
+      const rad = tt.angle * Math.PI / 180;
+      const nx = tt.x + c.v * Math.sin(rad), ny = tt.y - c.v * Math.cos(rad);
+      if (tt.down) line(ctx, tt.x, tt.y, nx, ny, style.color, style.width);
+      tt.x = nx; tt.y = ny;
+    } else if (c.t === 'turn') {
+      tt.angle += c.v;
+    } else {
+      applyInstant(tt, c);
+    }
+  }
+}
+
+function drawTurtle() {
+  tctx.clearRect(0, 0, W, H);
+  tctx.save();
+  tctx.translate(turtle.x, turtle.y);
+  tctx.rotate(turtle.angle * Math.PI / 180);
+  tctx.fillStyle = '#2e7d32';
+  tctx.beginPath();
+  tctx.moveTo(0, -12); tctx.lineTo(9, 9); tctx.lineTo(-9, 9);
+  tctx.closePath(); tctx.fill();
+  tctx.restore();
+}
+
+// アニメーション：1フレームごとに少しずつ進める
+function step() {
+  const s = Number(document.getElementById('speed').value);
+  let budget = s >= 21 ? Infinity : s * 2;   // 1フレームで進む量（ほ・ど）
+
+  while (budget > 0 && (current || queue.length)) {
+    if (!current) {
+      current = queue.shift();
+      if (current.t !== 'move' && current.t !== 'turn') { applyInstant(turtle, current); current = null; continue; }
+      remain = Math.abs(current.v);
+      if (remain === 0) { current = null; continue; }
+    }
+    const d = Math.min(budget, remain);
+    const sign = Math.sign(current.v);
+    if (current.t === 'move') {
+      const rad = turtle.angle * Math.PI / 180;
+      const nx = turtle.x + sign * d * Math.sin(rad);
+      const ny = turtle.y - sign * d * Math.cos(rad);
+      if (turtle.down) line(paper, turtle.x, turtle.y, nx, ny, turtle.color, turtle.width);
+      turtle.x = nx; turtle.y = ny;
+    } else {
+      turtle.angle += sign * d;
+    }
+    remain -= d; budget -= d;
+    if (remain <= 0) current = null;
+  }
+  drawTurtle();
+  if (current || queue.length) {
+    animId = requestAnimationFrame(step);
+  } else {
+    animId = null;
+    checkAnswer();
+  }
+}
+
+/* ========== 7. おだい の ひょうじ と せいかいチェック ========== */
+let challenge = CHALLENGES[0];
+let goalCmds = [];
+
+function selectChallenge(i) {
+  challenge = CHALLENGES[i] || CHALLENGES[0];
+  document.getElementById('odaiText').textContent = L(challenge, 'text');
+  const hint = document.getElementById('hintText');
+  hint.textContent = L(challenge, 'hint');
+  hint.style.display = 'none';
+  document.getElementById('hintBtn').style.display = challenge.hint ? '' : 'none';
+  goalCmds = challenge.answer ? compile(challenge.answer) : [];
+  guide.clearRect(0, 0, W, H);
+  drawInstant(guide, goalCmds, { color: '#cfd8e3', width: 8 });   // お手本を うすく
+  clearAll();
+  try { localStorage.setItem(SAVE_KEY + '-odai', String(i)); } catch (_) {}
+}
+
+// 線の ピクセルを くらべる：お手本を ほぼ なぞれていて、よけいな線も なければ せいかい
+function coverage(thinCmds, thickCmds) {
+  const make = (cmds, width) => {
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+    drawInstant(ctx, cmds, { color: '#000', width });
+    return ctx.getImageData(0, 0, W, H).data;
+  };
+  const thin = make(thinCmds, 2), thick = make(thickCmds, 12);
+  let total = 0, hit = 0;
+  for (let p = 3; p < thin.length; p += 4) {
+    if (thin[p] > 0) { total++; if (thick[p] > 0) hit++; }
+  }
+  return total ? hit / total : 0;
+}
+
+function checkAnswer() {
+  if (!goalCmds.length || !lastCmds.length) return;
+  const a = coverage(goalCmds, lastCmds);   // お手本の どれだけを かけたか
+  const b = coverage(lastCmds, goalCmds);   // かいた線の どれだけが お手本の うえか
+  if (a >= 0.95 && b >= 0.95) {
+    msg.className = 'ok';
+    msg.textContent = t('correct');
+  } else if (a >= 0.6) {
+    msg.className = '';
+    msg.textContent = t('close', Math.floor(a * 100), b < 0.95);
+  } else {
+    msg.className = '';
+    msg.textContent = t('wrong');
+  }
+}
+
+function clearAll() {
+  if (animId) cancelAnimationFrame(animId);
+  animId = null; queue = []; current = null; lastCmds = [];
+  paper.clearRect(0, 0, W, H);
+  turtle = newTurtle();
+  drawTurtle();
+  msg.textContent = ''; msg.className = '';
+}
+
+function run() {
+  clearAll();
+  try {
+    lastCmds = compile(gen.workspaceToCode(workspace));
+    queue = lastCmds.slice();
+  } catch (e) {
+    msg.textContent = '⚠ ' + e.message;
+    return;
+  }
+  animId = requestAnimationFrame(step);
+}
+
+// おだいの えらぶ リストを つくる
+const odaiSelect = document.getElementById('odaiSelect');
+CHALLENGES.forEach((c, i) => odaiSelect.add(new Option(L(c, 'title'), i)));
+odaiSelect.addEventListener('change', () => selectChallenge(Number(odaiSelect.value)));
+document.getElementById('hintBtn').addEventListener('click', () => {
+  const h = document.getElementById('hintText');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+});
+
+// ヘッダー：ボタンの ことば・アプリの リンク・ことばの きりかえ
+setLabel(document.getElementById('run'), '▶', t('run'));
+setLabel(document.getElementById('clear'), '🧽', t('clear'));
+setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
+buildNav(document.getElementById('nav'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);   // ⚙ きのう メニュー（ことば）
+applyI18n(t);
+
+document.getElementById('run').addEventListener('click', run);
+document.getElementById('clear').addEventListener('click', clearAll);
+window.addEventListener('resize', () => Blockly.svgResize(workspace));
+
+let startOdai = 0;
+try { startOdai = Number(localStorage.getItem(SAVE_KEY + '-odai')) || 0; } catch (_) {}
+odaiSelect.value = startOdai;
+selectChallenge(startOdai);
+
+// 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる
+const answerBtn = document.getElementById('answerBtn');
+if (new URLSearchParams(location.search).has('sensei')) answerBtn.style.display = '';
+answerBtn.addEventListener('click', () => {
+  if (!challenge.blocks) { msg.textContent = t('noAnswer'); return; }
+  workspace.clear();
+  Blockly.serialization.workspaces.load(challenge.blocks, workspace);
+  msg.className = ''; msg.textContent = t('answerLoaded');
+});
+</script>
+</body>
+</html>
+>>>>>>> 6d36d40c3ba0d602622f4993edbed3cae7d491e9
