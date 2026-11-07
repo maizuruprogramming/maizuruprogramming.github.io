@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>かいせつ どうが / Explanation Videos</title>
+<script src="i18n.js"></script>  <!-- にほんご／English（ここでは Blockly は つかわない） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  /* ===== テーマ：えいがかん ===== */
+  :root {
+    --page-bg: #1b1b24 repeating-conic-gradient(rgba(0,0,0,.2) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#e0b64a 0 10px, #a8862e 10px 14px, #3a3040 14px);
+    --hdr-border: #0c0c10; --title-shadow: #000; --link: #ffd966; --fn: #6a4a8a;
+  }
+  html, body { height: auto; min-height: 100%; }
+  #wrap { max-width: 1240px; margin: 0 auto; padding: 16px; }
+  .app { margin-bottom: 26px; }
+  .app h2 { color: #fff; font-weight: normal; font-size: 24px; text-shadow: 2px 2px 0 #000; margin: 10px 0 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .card { width: auto; padding: 8px; }
+  .card video { width: 100%; display: block; background: #000; aspect-ratio: 16 / 9; }
+  .card .t { margin-top: 6px; font-size: 15px; line-height: 1.4; }
+  .card a { color: inherit; }
+  #note { color: #ddd; text-shadow: 1px 1px 0 #000; line-height: 1.7; margin: 4px 0 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🎬</span><span class="lbl" id="title"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<div id="wrap">
+  <div id="note"></div>
+  <div id="list"></div>
+</div>
+<script>
+// 動画の いちらん（videos/ja/〜.mp4、videos/en/〜.mp4）
+const APPS = [
+  { key: 'maze',  icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze', page: 'maze.html', titles: {
+      ja: ['まっすぐ すすもう', 'まがってみよう', 'ながい みち', 'くりかえしを つかおう', 'かいだんを のぼろう', 'もし〜なら', 'みぎ？ ひだり？', 'どんな めいろでも ゴール！'],
+      en: ['Go straight', "Let's turn", 'A long path', 'Use a loop', 'Climb the stairs', 'If…', 'Right? Left?', 'Any maze!'] } },
+  { key: 'space', icon: '🚀', ja: 'うちゅうで ほしあつめ', en: 'Space Star Hunt', page: 'space.html', titles: {
+      ja: ['ほしを ひろおう', 'まがって あつめよう', 'くりかえしで あつめよう', 'ほしの かいだん', 'もし ほしが あったら', 'ミッション クリアまで', 'どんな うちゅうでも！'],
+      en: ['Pick up a star', 'Turn and collect', 'Collect with a loop', 'Star stairs', 'If there is a star', 'Until mission complete', 'Any space!'] } },
+  { key: 'craft', icon: '🧱', ja: 'こわして つくる ぼうけん', en: 'Break & Build Quest', page: 'craft.html', titles: {
+      ja: ['こわして すすもう', 'はしを かけよう', 'くりかえして こわそう', 'ながい はし', 'もし いしが あったら', 'いしと みず', 'うずまきの どうくつ'],
+      en: ['Break and go', 'Build a bridge', 'Break with a loop', 'A long bridge', 'If there is stone', 'Stone and water', 'Spiral cave'] } }
+];
+const J = LANG === 'ja';
+document.getElementById('title').textContent = J ? 'かいせつ どうが' : 'Explanation Videos';
+document.title = J ? 'かいせつ どうが' : 'Explanation Videos';
+document.getElementById('note').textContent = J
+  ? 'ステージごとの かいせつ どうがです（じまく＋こうかおん、1ぽん 30〜60びょう）。▶ を おすと はじまります。'
+  : 'One short video for each stage (captions + sound effects, 30–60 seconds). Press ▶ to play.';
+const list = document.getElementById('list');
+for (const a of APPS) {
+  const sec = document.createElement('section'); sec.className = 'app';
+  const h = document.createElement('h2'); h.innerHTML = `${a.icon} <a href="${a.page}" style="color:inherit">${J ? a.ja : a.en}</a>`;
+  const grid = document.createElement('div'); grid.className = 'grid';
+  a.titles[LANG].forEach((t, i) => {
+    const n = String(i + 1).padStart(2, '0');
+    const card = document.createElement('div'); card.className = 'panel card';
+    const v = document.createElement('video');
+    v.src = `videos/${LANG}/${a.key}-${n}.mp4`; v.controls = true; v.preload = 'metadata'; v.playsInline = true;
+    const cap = document.createElement('div'); cap.className = 't';
+    cap.textContent = (J ? `ステージ${i + 1}　` : `Stage ${i + 1}: `) + t;
+    card.append(v, cap); grid.append(card);
+  });
+  sec.append(h, grid); list.append(sec);
+}
+buildNav(document.getElementById('nav'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);
+</script>
+</body>
+</html>

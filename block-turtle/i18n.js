@@ -14,7 +14,7 @@
   document.documentElement.lang = lang;
 
   // Blockly の ことばの ファイル（ページを よみこむ とちゅうで いれる）
-  document.write('<script src="https://unpkg.com/blockly@11/msg/' + lang + '.js"><\/script>');
+  if (window.Blockly) document.write('<script src="https://unpkg.com/blockly@11/msg/' + lang + '.js"><\/script>');
 
   // ことばを きりかえて よみなおす（くんだ ブロックは ブラウザに ほぞん されているので きえない）
   window.setLang = function (l) {
@@ -158,7 +158,8 @@
     { href: 'maze.html',     icon: '⛏', ja: 'めいろ',     en: 'Maze' },
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
     { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
-    { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' }
+    { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' },
+    { href: 'videos.html',   icon: '🎬', ja: 'どうが', en: 'Videos' }
   ];
   window.buildNav = function (nav) {
     var here = location.pathname.split('/').pop() || 'index.html';
