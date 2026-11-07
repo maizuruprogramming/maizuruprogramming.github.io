@@ -1,0 +1,29 @@
+{
+  "rules": {
+    "rooms": {
+      "$room": {
+        ".read": "auth != null && $room.matches(/^[A-Z2-9]{5}$/)",
+        "owner": {
+          ".write": "auth != null && !data.exists() && newData.val() === auth.uid && $room.matches(/^[A-Z2-9]{5}$/)"
+        },
+        "createdAt": {
+          ".write": "auth != null && !data.exists() && root.child('rooms').child($room).child('owner').val() === auth.uid",
+          ".validate": "newData.val() === now"
+        },
+        "fish": {
+          ".write": "auth != null && !newData.exists() && root.child('rooms').child($room).child('owner').val() === auth.uid",
+          "$fishId": {
+            ".write": "auth != null && ((!data.exists() && newData.exists() && root.child('rooms').child($room).child('owner').exists()) || (data.exists() && !newData.exists() && (root.child('rooms').child($room).child('owner').val() === auth.uid || data.child('by').val() === auth.uid)))",
+            ".validate": "newData.hasChildren(['px', 'prog', 'by', 't'])",
+            "px":   { ".validate": "newData.isString() && newData.val().matches(/^[0-9a-f]{256}$/)" },
+            "prog": { ".validate": "newData.isString() && newData.val().length <= 8000" },
+            "by":   { ".validate": "newData.val() === auth.uid" },
+            "t":    { ".validate": "newData.val() === now" },
+            "$other": { ".validate": false }
+          }
+        },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
