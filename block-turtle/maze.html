@@ -11,65 +11,16 @@
 <script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-<style>
-  /* ===== ドット絵（ブロック）ふうの みため ===== */
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; font-family: "DotGothic16", "MS Gothic", monospace; color: #3f3f3f;
-    background-color: #3a2a1c;
-    background-image:
-      linear-gradient(45deg, rgba(0,0,0,.18) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.18) 75%),
-      linear-gradient(45deg, rgba(0,0,0,.18) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.18) 75%);
-    background-size: 32px 32px; background-position: 0 0, 16px 16px; }
-  header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 8px 14px 0;
-    background: linear-gradient(#5fa83a 0 10px, #4e8a2e 10px 14px, #866043 14px); border-bottom: 4px solid #2a1d12; }
-  header h1 { font-size: 22px; margin: 0; color: #fff; text-shadow: 3px 3px 0 #3f3f3f; font-weight: normal; }
-  header a { color: #ffff55; font-size: 15px; text-shadow: 2px 2px 0 #3f3f3f; }
-  /* いしの ボタン */
-  button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: pointer; border-radius: 0;
-    color: #fff; text-shadow: 2px 2px 0 #3f3f3f; background: #7d7d7d;
-    border: 3px solid; border-color: #b5b5b5 #3a3a3a #3a3a3a #b5b5b5; outline: 2px solid #000; outline-offset: -1px; }
-  button:hover, select:hover { background: #8a95c9; }
-  button:active { border-color: #3a3a3a #b5b5b5 #b5b5b5 #3a3a3a; }
-  #run { background: #4f9a2d; }
-  #run:hover { background: #63b83b; }
-  main { display: flex; height: calc(100% - 56px); }
-  #blocklyDiv { flex: 1 1 60%; min-width: 0; }
-  #stage { flex: 0 0 auto; padding: 12px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; overflow-y: auto; }
-  #board { image-rendering: pixelated; border: 4px solid #000; box-shadow: 0 0 0 4px #5a5a5a; }
-  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; color: #fff; text-shadow: 2px 2px 0 #000; }
-  /* インベントリふうの パネル */
-  .panel { width: 400px; background: #c6c6c6; padding: 10px 12px;
-    border: 4px solid; border-color: #fff #555 #555 #fff; outline: 2px solid #000; }
-  #levelSelect { width: 100%; }
-  #levelSelect option, #rockCount option { color: #222; text-shadow: none; background: #ddd; }
-  #lessonText { margin: 8px 0 6px; line-height: 1.7; }
-  #limitText { font-size: 14px; color: #7a2aa0; }
-  #hintBtn { font-size: 14px; padding: 3px 10px; background: #3c5aa6; }
-  #hintText { display: none; margin-top: 6px; padding: 6px 8px; background: #8b8b8b; color: #fff; text-shadow: 1px 1px 0 #333; line-height: 1.7;
-    border: 3px solid; border-color: #555 #fff #fff #555; }
-  #randomRow { display: none; }
-  /* クリアした ときの かくにん ウィンドウ */
-  #clearDialog { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100;
-    align-items: center; justify-content: center; }
-  #clearDialog.show { display: flex; }
-  #clearDialog .box { width: 380px; max-width: 92vw; text-align: center; padding: 18px 20px 20px; }
-  #clearDialog .title { font-size: 26px; color: #2e7d32; margin-bottom: 6px; }
-  #clearDialog .question { font-size: 20px; margin: 10px 0 18px; line-height: 1.6; }
-  #clearDialog .btns { display: flex; gap: 16px; justify-content: center; }
-  #clearDialog .btns button { font-size: 20px; min-width: 110px; padding: 8px 16px; }
-  #dlgYes { background: #4f9a2d; }
-  #dlgNo  { background: #7d7d7d; }
-  #msg { min-height: 1.6em; font-size: 20px; text-align: center; max-width: 400px; color: #fff; text-shadow: 2px 2px 0 #000; }
-  #msg.ok { color: #55ff55; }
-  #msg.ng { color: #ff5555; }
-  #info { font-size: 14px; color: #ddd; text-shadow: 1px 1px 0 #000; text-align: center; max-width: 400px; line-height: 1.6; }
-  .blocklyText, .blocklyFlyoutLabelText { font-family: "DotGothic16", monospace !important; }
-  @media (max-width: 900px) {
-    main { flex-direction: column; height: auto; }
-    #blocklyDiv { height: 60vh; flex: none; }
-  }
-</style>
 <link rel="stylesheet" href="common.css">
+<style>
+  /* ===== テーマ：くさと つち（めいろ） ===== */
+  :root {
+    --page-bg: #3a2a1c repeating-conic-gradient(rgba(0,0,0,.18) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#5fa83a 0 10px, #4e8a2e 10px 14px, #866043 14px);
+    --hdr-border: #2a1d12; --title-shadow: #3f3f3f; --link: #ffff55; --fn: #3c5aa6;
+  }
+  #randomRow { display: none; }
+</style>
 </head>
 <body>
 <header>
@@ -77,15 +28,15 @@
   <nav class="nav" id="nav"></nav>
   <button id="run"></button>
   <button id="reset" class="sub"></button>
-  <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
-  <button id="fnBtn" class="sub2" style="background:#3c5aa6;"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
   <div id="stage">
     <div id="lesson" class="panel">
       <select id="levelSelect"></select>
-      <div id="lessonText"></div>
+      <div id="lessonText" class="lessonText"></div>
       <div id="limitText"></div>
       <button id="hintBtn" data-i18n="hintBtn"></button>
       <div id="hintText"></div>
@@ -98,7 +49,7 @@
       </select>
       <button id="newMaze" data-i18n="newMaze"></button>
     </div>
-    <canvas id="board" width="400" height="400"></canvas>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
     <div class="row">
       <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
     </div>

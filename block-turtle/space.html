@@ -11,62 +11,23 @@
 <script src="i18n.js"></script>  <!-- にほんご／English と Blockly の ことば -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
 <style>
-  /* ===== うちゅうの みため ===== */
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; font-family: "DotGothic16", "MS Gothic", monospace; color: #e8ecff;
-    background-color: #070a1f;
-    background-image: radial-gradient(circle at 20px 30px, #ffffff 1px, transparent 2px),
-                      radial-gradient(circle at 60px 70px, #9fb4ff 1px, transparent 2px);
-    background-size: 80px 80px, 120px 120px; }
-  header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 14px;
-    background: linear-gradient(90deg, #2b1055, #1a2a6c 60%, #0f3460); border-bottom: 4px solid #5b4bd6; }
-  header h1 { font-size: 22px; margin: 0; color: #fff; text-shadow: 3px 3px 0 #000; font-weight: normal; }
-  header a { color: #ffe066; font-size: 15px; text-shadow: 2px 2px 0 #000; }
-  header .spacer { margin-right: auto; }
-  button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: pointer; border-radius: 0;
-    color: #fff; text-shadow: 2px 2px 0 #000; background: #3a3f6b;
-    border: 3px solid; border-color: #8a90d0 #15183a #15183a #8a90d0; outline: 2px solid #000; outline-offset: -1px; }
-  button:hover, select:hover { filter: brightness(1.15); }
-  button:active { border-color: #15183a #8a90d0 #8a90d0 #15183a; }
-  #run { background: #1f9e6e; }
-  main { display: flex; height: calc(100% - 56px); }
-  #blocklyDiv { flex: 1 1 60%; min-width: 0; }
-  #stage { flex: 0 0 auto; padding: 12px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; overflow-y: auto; }
-  #board { image-rendering: pixelated; border: 4px solid #000; box-shadow: 0 0 0 4px #5b4bd6, 0 0 24px #5b4bd6aa; }
-  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; text-shadow: 2px 2px 0 #000; }
-  /* コックピットふうの パネル */
-  .panel { width: 400px; background: #161b45; padding: 10px 12px; color: #e8ecff;
-    border: 4px solid; border-color: #6a74d8 #0b0d26 #0b0d26 #6a74d8; outline: 2px solid #000; }
-  #levelSelect { width: 100%; }
-  #levelSelect option, #rockCount option { color: #222; text-shadow: none; background: #ddd; }
-  #lessonText { margin: 8px 0 6px; line-height: 1.7; }
-  #limitText { font-size: 14px; color: #ffb3f0; }
-  #hintBtn { font-size: 14px; padding: 3px 10px; background: #5b4bd6; }
-  #hintText { display: none; margin-top: 6px; padding: 6px 8px; background: #0b0f2a; line-height: 1.7; border: 2px dashed #6a74d8; }
+  /* ===== テーマ：うちゅう ===== */
+  :root {
+    --page-bg: #070a1f radial-gradient(circle at 20px 30px, #ffffff 1px, transparent 2px) 0 0 / 80px 80px;
+    --hdr-bg: linear-gradient(#8a7cff 0 10px, #5b4bd6 10px 14px, #1a2a6c 14px);
+    --hdr-border: #0b0d26; --title-shadow: #000; --link: #ffe066;
+    --btn: #3a3f6b; --btn-light: #8a90d0; --btn-dark: #15183a; --fn: #5b4bd6;
+    --panel-bg: #161b45; --panel-light: #6a74d8; --panel-dark: #0b0d26; --panel-text: #e8ecff; --accent: #ffb3f0;
+    --hintbtn: #5b4bd6; --hint-bg: #0b0f2a; --hint-text: #e8ecff; --board-ring: #5b4bd6; --info: #b9c0ef;
+    --ok: #7dffb0; --ng: #ff7b8a; --dlg-title: #7dffb0;
+  }
+  .board { box-shadow: 0 0 0 4px var(--board-ring), 0 0 24px #5b4bd6aa; }
   #randomRow { display: none; }
   #starCount { font-size: 22px; color: #ffe066; text-shadow: 2px 2px 0 #000; letter-spacing: .05em; }
   #starCount.done { color: #7dffb0; }
-  #msg { min-height: 1.6em; font-size: 20px; text-align: center; max-width: 400px; text-shadow: 2px 2px 0 #000; }
-  #msg.ok { color: #7dffb0; }
-  #msg.ng { color: #ff7b8a; }
-  #info { font-size: 14px; color: #b9c0ef; text-shadow: 1px 1px 0 #000; text-align: center; max-width: 400px; line-height: 1.6; }
-  /* クリアした ときの かくにん ウィンドウ */
-  #clearDialog { display: none; position: fixed; inset: 0; background: rgba(0,0,10,.6); z-index: 100; align-items: center; justify-content: center; }
-  #clearDialog.show { display: flex; }
-  #clearDialog .box { width: 380px; max-width: 92vw; text-align: center; padding: 18px 20px 20px; }
-  #clearDialog .title { font-size: 26px; color: #7dffb0; margin-bottom: 6px; }
-  #clearDialog .question { font-size: 20px; margin: 10px 0 18px; line-height: 1.6; }
-  #clearDialog .btns { display: flex; gap: 16px; justify-content: center; }
-  #clearDialog .btns button { font-size: 20px; min-width: 110px; padding: 8px 16px; }
-  #dlgYes { background: #1f9e6e; }
-  .blocklyText, .blocklyFlyoutLabelText { font-family: "DotGothic16", monospace !important; }
-  @media (max-width: 900px) {
-    main { flex-direction: column; height: auto; }
-    #blocklyDiv { height: 60vh; flex: none; }
-  }
 </style>
-<link rel="stylesheet" href="common.css">
 </head>
 <body>
 <header>
@@ -74,15 +35,15 @@
   <nav class="nav" id="nav"></nav>
   <button id="run"></button>
   <button id="reset" class="sub"></button>
-  <button id="answerBtn" class="sub" style="display:none;background:#8e24aa;"></button>
-  <button id="fnBtn" class="sub2" style="background:#5b4bd6;"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
   <div id="stage">
     <div id="lesson" class="panel">
       <select id="levelSelect"></select>
-      <div id="lessonText"></div>
+      <div id="lessonText" class="lessonText"></div>
       <div id="limitText"></div>
       <button id="hintBtn" data-i18n="hintBtn"></button>
       <div id="hintText"></div>
@@ -96,7 +57,7 @@
       <button id="newMaze" data-i18n="newMaze"></button>
     </div>
     <div id="starCount"></div>
-    <canvas id="board" width="400" height="400"></canvas>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
     <div class="row">
       <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
     </div>
