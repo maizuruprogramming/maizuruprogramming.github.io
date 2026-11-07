@@ -69,6 +69,7 @@
   <button id="reset">↺ もどす</button>
   <button id="answerBtn" style="display:none;background:#8e24aa;">📖 こたえ</button>
   <button id="soundBtn" style="background:#5a5a5a;"></button>
+  <button id="nextPerson" style="background:#b0392f;">🔄 つぎの ひとへ</button>
 </header>
 <main>
   <div id="blocklyDiv"></div>
@@ -699,6 +700,31 @@ document.getElementById('hintBtn').addEventListener('click', () => {
 window.addEventListener('resize', () => Blockly.svgResize(workspace));
 
 setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
+
+// つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムめいろを けして ステージ1へ
+const nextPersonBtn = document.getElementById('nextPerson');
+let nextPersonArmed = null;
+nextPersonBtn.addEventListener('click', () => {
+  if (!nextPersonArmed) {   // 2かい おして かくにん（まちがえて けさないように）
+    nextPersonBtn.textContent = '⚠ もういちど おすと リセット';
+    nextPersonArmed = setTimeout(() => { nextPersonBtn.textContent = '🔄 つぎの ひとへ'; nextPersonArmed = null; }, 4000);
+    return;
+  }
+  clearTimeout(nextPersonArmed); nextPersonArmed = null;
+  nextPersonBtn.textContent = '🔄 つぎの ひとへ';
+  try {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch (_) {}
+  cleared = [];
+  loading = true; workspace.clear(); loading = false;
+  setLevel(0);
+  workspace.scrollCenter && workspace.scrollCenter();
+  msg.className = 'ok';
+  msg.textContent = '✨ リセットしたよ。つぎの ひと、がんばってね！';
+});
+
 
 // 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる
 const answerBtn = document.getElementById('answerBtn');
