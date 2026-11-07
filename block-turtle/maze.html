@@ -48,7 +48,17 @@
   #hintText { display: none; margin-top: 6px; padding: 6px 8px; background: #8b8b8b; color: #fff; text-shadow: 1px 1px 0 #333; line-height: 1.7;
     border: 3px solid; border-color: #555 #fff #fff #555; }
   #randomRow { display: none; }
-  #next { display: none; background: #4f9a2d; }
+  /* クリアした ときの かくにん ウィンドウ */
+  #clearDialog { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100;
+    align-items: center; justify-content: center; }
+  #clearDialog.show { display: flex; }
+  #clearDialog .box { width: 380px; max-width: 92vw; text-align: center; padding: 18px 20px 20px; }
+  #clearDialog .title { font-size: 26px; color: #2e7d32; margin-bottom: 6px; }
+  #clearDialog .question { font-size: 20px; margin: 10px 0 18px; line-height: 1.6; }
+  #clearDialog .btns { display: flex; gap: 16px; justify-content: center; }
+  #clearDialog .btns button { font-size: 20px; min-width: 110px; padding: 8px 16px; }
+  #dlgYes { background: #4f9a2d; }
+  #dlgNo  { background: #7d7d7d; }
   #msg { min-height: 1.6em; font-size: 20px; text-align: center; max-width: 400px; color: #fff; text-shadow: 2px 2px 0 #000; }
   #msg.ok { color: #55ff55; }
   #msg.ng { color: #ff5555; }
@@ -94,10 +104,21 @@
       <label>はやさ <input id="speed" type="range" min="1" max="10" value="4"></label>
     </div>
     <div id="msg"></div>
-    <button id="next">つぎの ステージへ ▶</button>
     <div id="info"></div>
   </div>
 </main>
+
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title">🎉 ステージ クリア！</div>
+    <div class="question" id="dlgQuestion">つぎの ステージに いきますか？</div>
+    <div class="btns">
+      <button id="dlgYes">はい</button>
+      <button id="dlgNo">いいえ</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 // ひょうじを ひらがなに そろえる（標準ブロックの ことば）
@@ -158,7 +179,7 @@ const ALL  = [...MOVE, 'controls_repeat_ext', 'maze_until_goal', 'maze_if', 'maz
 
 const LEVELS = [
   { title: 'ステージ1　まっすぐ すすもう',
-    text: 'ロボットを ゴールの ダイヤ 💎 まで うごかそう。「まえに すすむ」ブロックを ひだりから ひっぱってきて、たてに つなげてね。',
+    text: 'たんけんかを ゴールの ダイヤ 💎 まで うごかそう。「まえに すすむ」ブロックを ひだりから ひっぱってきて、たてに つなげてね。',
     hint: 'ゴールまで なんマス あるかな？ その かずだけ「まえに すすむ」を つなげよう。',
     map: ['#####', '#####', 'S...G', '#####', '#####'], dir: 1, blocks: ['maze_forward'] },
   { title: 'ステージ2　まがってみよう',
@@ -470,7 +491,15 @@ function draw() {
 /* ========== 8. ステージの きりかえ ========== */
 const msg = document.getElementById('msg');
 const levelSelect = document.getElementById('levelSelect');
-const nextBtn = document.getElementById('next');
+const clearDialog = document.getElementById('clearDialog');
+function showClearDialog() {
+  const next = LEVELS[levelIndex + 1];
+  document.getElementById('dlgQuestion').innerHTML =
+    `つぎの ステージに いきますか？<br><span style="font-size:15px">（${next.title}）</span>`;
+  clearDialog.classList.add('show');
+  document.getElementById('dlgYes').focus();
+}
+function hideClearDialog() { clearDialog.classList.remove('show'); }
 let cleared = store.get('-cleared') || [];
 
 function refreshLevelList() {
@@ -514,7 +543,7 @@ function markCleared() {
   cleared[levelIndex] = true;
   store.set('-cleared', cleared);
   refreshLevelList();
-  if (levelIndex < LEVELS.length - 1) nextBtn.style.display = 'inline-block';
+  if (levelIndex < LEVELS.length - 1) setTimeout(showClearDialog, 900);   // ファンファーレの あとに だす
 }
 
 /* ========== 9. じっこう ========== */
@@ -523,7 +552,7 @@ function resetRobot() {
   timer = null;
   robot = { ...START }; trail = [[START.r, START.c]]; crashed = false;
   msg.textContent = ''; msg.className = '';
-  nextBtn.style.display = 'none';
+  hideClearDialog();
   workspace.highlightBlock(null);
   draw();
 }
@@ -692,7 +721,19 @@ document.getElementById('newMaze').addEventListener('click', () =>
 document.getElementById('rockCount').addEventListener('change', () =>
   setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value))));
 levelSelect.addEventListener('change', () => setLevel(Number(levelSelect.value)));
-nextBtn.addEventListener('click', () => setLevel(levelIndex + 1));
+// はい → つぎの ステージへ
+document.getElementById('dlgYes').addEventListener('click', () => { hideClearDialog(); setLevel(levelIndex + 1); });
+// いいえ → おなじ ステージを もういちど（ブロックは そのまま、たんけんかは スタートへ）
+document.getElementById('dlgNo').addEventListener('click', () => {
+  hideClearDialog();
+  resetRobot();
+  msg.className = 'ok';
+  msg.textContent = 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね';
+});
+document.addEventListener('keydown', (e) => {
+  if (!clearDialog.classList.contains('show')) return;
+  if (e.key === 'Escape') document.getElementById('dlgNo').click();
+});
 document.getElementById('hintBtn').addEventListener('click', () => {
   const h = document.getElementById('hintText');
   h.style.display = h.style.display === 'none' ? 'block' : 'none';
