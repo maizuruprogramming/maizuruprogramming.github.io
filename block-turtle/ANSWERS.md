@@ -7,13 +7,14 @@
 
 # 日本語の こたえ
 
-このファイルには、ブロックの4つのアプリと 🐍 Python版3つの解答をまとめています。
+このファイルには、ブロックの4つのアプリと 🐍 Python版4つの解答をまとめています。
 どの解答も、左が組むブロック、右が実行した結果の画像です（🐍 Python は解答のコード）。
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
 - 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
+- 🐍 **Pythonで おえかき**（python-draw.html）：おだい ①〜⑨
 - 🐍 **Pythonで めいろ**（python.html）：ステージ 1〜5
 - 🐍 **Pythonで うちゅう**（python-space.html）：ステージ 1〜6
 - 🐍 **Pythonで こわす・おく**（python-craft.html）：ステージ 1〜7
@@ -27,6 +28,7 @@ https://<ユーザー名>.github.io/<リポジトリ名>/index.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/maze.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/space.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/craft.html?sensei
+https://<ユーザー名>.github.io/<リポジトリ名>/python-draw.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/python.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/python-space.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sensei
@@ -266,6 +268,117 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 
 ### じゆうモード
 ランダムな世界です。水の数（3こ）と同じ数のブロックを持ってスタートするので、どの世界でもクリアできます。決まった解答はないので、先生モードの「こたえ」は読み込めません。
+
+---
+
+# 🐍 Pythonで おえかき（python-draw.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ① 六角形（ろっかくけい） ★
+
+**ポイント**：forward() と right() の () の なかに かずを かく。for の なかの 2ぎょうを 6かい くりかえすよ。
+
+```python
+for i in range(6):
+    forward(80)
+    right(60)
+```
+
+### ② ほし ★★
+
+**ポイント**：5かいで 720ど（2しゅう）まわるから、1かいは 720 ÷ 5 = 144 ど。
+
+```python
+for i in range(5):
+    forward(150)
+    right(144)
+```
+
+### ③ まる ★★
+
+**ポイント**：10ど ずつ 36かい まわると 360ど。ちいさな せんを たくさん つなぐと まるに 見えるよ。
+
+```python
+for i in range(36):
+    forward(10)
+    right(10)
+```
+
+### ④ まど ★★★
+
+**ポイント**：なかの for は スペース 8つ じさげ。しかくを かいたら、そとの for の なかで right(90)。
+
+```python
+for i in range(4):
+    for k in range(4):
+        forward(60)
+        right(90)
+    right(90)
+```
+
+### ⑤ はな ★★★
+
+**ポイント**：まる 1こが なかの for。そとの for で 360 ÷ 6 = 60 ど まわしながら 6かい。
+
+```python
+for i in range(6):
+    for k in range(36):
+        forward(5)
+        right(10)
+    right(60)
+```
+
+### ⑥ しかくい うずまき ★★★★
+
+**ポイント**：range(10, 201, 10) は 10, 20, … 200。おわりの かずは ふくまない ので 201 に する。forward(i) で だんだん ながく。
+
+```python
+for i in range(10, 201, 10):
+    forward(i)
+    right(90)
+```
+
+### ⑦ ならんだ たかくけい ★★★★
+
+**ポイント**：n かくけいの まわる かくどは 360 / n。range(3, 9) で n は 3〜8。
+
+```python
+for n in range(3, 9):
+    for i in range(n):
+        forward(50)
+        right(360 / n)
+```
+
+### ⑧ ゆきの けっしょう ★★★★★
+
+**ポイント**：えだ 1本は 10ぎょう。もとの ばしょと むきに もどるので、right(60) で つぎの えだへ。
+
+```python
+for i in range(6):
+    forward(80)
+    back(30)
+    left(45)
+    forward(25)
+    back(25)
+    right(90)
+    forward(25)
+    back(25)
+    left(45)
+    back(50)
+    right(60)
+```
+
+### ⑨ ほしの うずまき ★★★★★
+
+**ポイント**：すすむ ながさ i * 4 が 4ほ ずつ のびて、144ど まわると ほしの うずまきに なる。
+
+```python
+for i in range(1, 51):
+    pen_color('random')
+    forward(i * 4)
+    right(144)
+```
 
 ---
 
@@ -512,13 +625,14 @@ while not at_goal():
 ---
 # English answers
 
-This section has the answers for the four block apps and the three 🐍 Python apps. In every image, the blocks are on the left and the result is on the right (🐍 Python shows the answer code).
+This section has the answers for the four block apps and the four 🐍 Python apps. In every image, the blocks are on the left and the result is on the right (🐍 Python shows the answer code).
 These images show the English block labels. To see the same blocks in the app, switch the language with **⚙ Settings → 🌐**.
 
 - 🐢 **Block Drawing** (index.html): challenges ①–⑨
 - ⛏ **Block Maze** (maze.html): stages 1–8
 - 🚀 **Space Star Hunt** (space.html): stages 1–7
 - 🧱 **Break & Build Quest** (craft.html): stages 1–7
+- 🐍 **Python Drawing** (python-draw.html): challenges ①–⑨
 - 🐍 **Python Maze** (python.html): stages 1–5
 - 🐍 **Python Space** (python-space.html): stages 1–6
 - 🐍 **Python Break & Build** (python-craft.html): stages 1–7
@@ -532,6 +646,7 @@ https://<user>.github.io/<repository>/index.html?sensei&lang=en
 https://<user>.github.io/<repository>/maze.html?sensei&lang=en
 https://<user>.github.io/<repository>/space.html?sensei&lang=en
 https://<user>.github.io/<repository>/craft.html?sensei&lang=en
+https://<user>.github.io/<repository>/python-draw.html?sensei&lang=en
 https://<user>.github.io/<repository>/python.html?sensei&lang=en
 https://<user>.github.io/<repository>/python-space.html?sensei&lang=en
 https://<user>.github.io/<repository>/python-craft.html?sensei&lang=en
@@ -748,6 +863,119 @@ With the Stage 6 program, the explorer cannot get around the corners and ends wi
 Random worlds. You start with as many blocks as there are water squares (3), so every world can be cleared. There is no fixed answer, so the teacher-mode "Answer" button does not load one.
 
 ---
+
+---
+
+---
+
+# 🐍 Python Drawing (python-draw.html)
+
+Building these in block mode gives the same Python shown below. In Python mode, type the code as it is.
+
+### ① Hexagon ★
+
+**Key point**: Write numbers inside forward() and right(). The 2 lines inside for repeat 6 times.
+
+```python
+for i in range(6):
+    forward(80)
+    right(60)
+```
+
+### ② Star ★★
+
+**Key point**: 5 turns make 720 degrees (twice around), so each turn is 720 ÷ 5 = 144.
+
+```python
+for i in range(5):
+    forward(150)
+    right(144)
+```
+
+### ③ Circle ★★
+
+**Key point**: 36 turns of 10 degrees make 360. Many short lines look like a circle.
+
+```python
+for i in range(36):
+    forward(10)
+    right(10)
+```
+
+### ④ Window ★★★
+
+**Key point**: The inner for is indented 8 spaces. After a square, right(90) inside the outer for.
+
+```python
+for i in range(4):
+    for k in range(4):
+        forward(60)
+        right(90)
+    right(90)
+```
+
+### ⑤ Flower ★★★
+
+**Key point**: One circle is the inner for. The outer for turns 360 ÷ 6 = 60 degrees, 6 times.
+
+```python
+for i in range(6):
+    for k in range(36):
+        forward(5)
+        right(10)
+    right(60)
+```
+
+### ⑥ Square spiral ★★★★
+
+**Key point**: range(10, 201, 10) gives 10, 20, … 200. The end is not included, so use 201. forward(i) gets longer each time.
+
+```python
+for i in range(10, 201, 10):
+    forward(i)
+    right(90)
+```
+
+### ⑦ Polygons in a row ★★★★
+
+**Key point**: An n-sided shape turns 360 / n. range(3, 9) gives n = 3 to 8.
+
+```python
+for n in range(3, 9):
+    for i in range(n):
+        forward(50)
+        right(360 / n)
+```
+
+### ⑧ Snowflake ★★★★★
+
+**Key point**: One branch is 10 lines. It returns to the start, so right(60) moves to the next branch.
+
+```python
+for i in range(6):
+    forward(80)
+    back(30)
+    left(45)
+    forward(25)
+    back(25)
+    right(90)
+    forward(25)
+    back(25)
+    left(45)
+    back(50)
+    right(60)
+```
+
+### ⑨ Star spiral ★★★★★
+
+**Key point**: The length i * 4 grows by 4 each time, and turning 144 makes a star spiral.
+
+```python
+for i in range(1, 51):
+    pen_color('random')
+    forward(i * 4)
+    right(144)
+```
 
 ---
 

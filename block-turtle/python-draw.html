@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pythonで おえかき / Python Drawing</title>
+<!-- 🐍 Python版のおえかき：ブロックで くむと Python に なる。Python は ページの なかの ちいさな かいしゃくき で よみとり、
+     カメが せんを かく（python-core.js）。お手本との くらべかたは ブロックでおえかき（index.html）と おなじ -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="python.css">
+<style>
+  /* ===== テーマ：そらと ノート（おえかき） ===== */
+  :root {
+    --page-bg: #2c4a73 repeating-conic-gradient(rgba(0,0,0,.12) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#9fd8ff 0 10px, #5aa9e8 10px 14px, #2f6db5 14px);
+    --hdr-border: #173a66; --title-shadow: #173a66; --link: #ffe680;
+    --btn: #5b7fb0; --btn-light: #a9c6ec; --btn-dark: #2a4570; --fn: #2f6db5;
+    --panel-bg: #f4efe0; --panel-light: #ffffff; --panel-dark: #9a8f70; --panel-text: #3a3a3a;
+    --hintbtn: #2f6db5; --hint-bg: #fff5cc; --hint-text: #3a3a3a; --board-ring: #9fb8d8; --dlg-title: #2e7d32;
+  }
+  /* おえかきの かみ（お手本・え・カメの 3まいを かさねる） */
+  #canvasWrap { position: relative; background: #fff; }
+  #canvasWrap canvas { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🐍</span><span class="lbl" id="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="codeSide">
+    <div id="tabs"><button id="tabBlocks" class="on"></button><button id="tabPy" class="off"></button></div>
+    <div id="blocklyDiv"></div>
+    <div id="pyLabel"></div>
+    <div id="editorBox"><div id="lineNo"></div><div id="codeWrap"><pre id="hl" aria-hidden="true"></pre><textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div></div>
+    <div id="palette"></div>
+    <details id="mapBox"><summary id="mapTitle"></summary><table id="mapTable"></table></details>
+    <div id="console"></div>
+  </div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText" class="lessonText"></div>
+      <button id="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div id="canvasWrap" class="board">
+      <canvas id="guide" width="400" height="400"></canvas>
+      <canvas id="paper" width="400" height="400"></canvas>
+      <canvas id="turtle" width="400" height="400"></canvas>
+    </div>
+    <div class="row"><label><span id="speedLbl"></span> <input id="speed" type="range" min="1" max="10" value="5"></label></div>
+    <div id="msg"></div>
+    <div id="info"></div>
+  </div>
+</main>
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title" id="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
+    <div class="btns"><button id="dlgYes"></button><button id="dlgNo"></button></div>
+  </div>
+</div>
+<script>
+/* ========== 0. ことば（おえかきと おなじ。Python ようの ことばは python-core.js で たす） ========== */
+const STR = {
+  ja: {
+    appTitle: 'ブロックでおえかき', run: 'じっこう', clear: 'けす', answer: 'こたえ', hintBtn: '💡 ヒント', speed: 'はやさ',
+    catMove: 'うごき', catPen: 'ペン', catLoop: 'くりかえし', catNum: 'かず', catVar: 'へんすう',
+    bForward: 'まえに %1 ほ すすむ', bBack: 'うしろに %1 ほ さがる', bRight: 'みぎに %1 ど まわる', bLeft: 'ひだりに %1 ど まわる',
+    bHome: 'まんなかに もどる', bColor: 'ペンのいろを %1 にする', bWidth: 'ペンのふとさを %1 にする',
+    bPenUp: 'ペンを あげる（かかない）', bPenDown: 'ペンを おろす（かく）',
+    colors: ['くろ', 'あか', 'あお', 'みどり', 'きいろ', 'オレンジ', 'むらさき', 'ピンク', 'ランダム'],
+    tooMany: 'めいれいが おおすぎるよ。くりかえしの かいすうを へらしてみよう',
+    correct: '🎉 せいかい！ よくできました！',
+    close: (p, over) => `おしい！ お手本の ${p}% まで かけたよ` + (over ? '（はみだした せんが あるよ）' : ''),
+    wrong: 'お手本と ちがうみたい。ヒントを みてみよう',
+    noAnswer: 'じゆうに かこう には こたえが ないよ',
+    answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
+  },
+  en: {
+    appTitle: 'Block Drawing', run: 'Run', clear: 'Clear', answer: 'Answer', hintBtn: '💡 Hint', speed: 'Speed',
+    catMove: 'Move', catPen: 'Pen', catLoop: 'Loops', catNum: 'Numbers', catVar: 'Variables',
+    bForward: 'move forward %1 steps', bBack: 'move back %1 steps', bRight: 'turn right %1 degrees', bLeft: 'turn left %1 degrees',
+    bHome: 'go to the center', bColor: 'set pen color to %1', bWidth: 'set pen size to %1',
+    bPenUp: 'pen up (stop drawing)', bPenDown: 'pen down (draw)',
+    colors: ['black', 'red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'random'],
+    tooMany: 'Too many commands! Try fewer repeats.',
+    correct: '🎉 Correct! Great job!',
+    close: (p, over) => `Almost! You drew ${p}% of the model` + (over ? ' (some lines go outside it)' : ''),
+    wrong: 'It looks different from the model. Check the hint!',
+    noAnswer: 'Free drawing has no answer.',
+    answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
+  }
+};
+
+const t = makeT(STR);
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
+STR.ja.pyTitle = 'Pythonで おえかき'; STR.en.pyTitle = 'Python Drawing';
+STR.ja.endless = 'くりかえしが おわらないよ'; STR.en.endless = 'The loop never ends!';
+const SAVE_KEY = 'block-pydraw';
+// ほぞん（この ブラウザの なかだけ）
+const store = {
+  get(k) { let v = null; try { v = localStorage.getItem(SAVE_KEY + k); } catch (_) { return null; } if (v == null) return null; try { return JSON.parse(v); } catch (_) { return v; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+
+/* ---------- お手本（index.html の おだいの こたえ） ---------- */
+const CHALLENGES = [
+  { title: 'じゆうに かこう', text: 'すきな えを かいてみよう！', hint: '', answer: '',
+    en: { title: 'Free drawing', text: 'Draw anything you like!', hint: '' } },
+  { title: '① 六角形（ろっかくけい） ★',
+    text: '1つの へんが 80ほの 六角形を かこう。',
+    hint: '6かい くりかえすよ。まわる かくどは 360 ÷ 6 = ？',
+    answer: 'for(let k=0;k<6;k++){forward(80);turn(60);}',
+    en: { title: '① Hexagon ★', text: 'Draw a hexagon with sides of 80 steps.', hint: 'Repeat 6 times. How many degrees to turn? 360 ÷ 6 = ?' } },
+  { title: '② ほし ★★',
+    text: '1つの せんが 150ほの ほしを かこう。',
+    hint: '5かい くりかえすと、カメは 2しゅう（720ど）まわるよ。720 ÷ 5 = ？',
+    answer: 'for(let k=0;k<5;k++){forward(150);turn(144);}',
+    en: { title: '② Star ★★', text: 'Draw a star with lines of 150 steps.', hint: 'After 5 repeats the turtle turns around twice (720 degrees). 720 ÷ 5 = ?' } },
+  { title: '③ まる ★★',
+    text: '10ほ すすんで すこし まわる、を くりかえして まるを かこう。',
+    hint: '1しゅうは 360ど。10どずつ まわるなら なんかい くりかえす？',
+    answer: 'for(let k=0;k<36;k++){forward(10);turn(10);}',
+    en: { title: '③ Circle ★★', text: 'Draw a circle by repeating: move 10 steps, then turn a little.', hint: 'One full turn is 360 degrees. If you turn 10 degrees each time, how many repeats do you need?' } },
+  { title: '④ まど ★★★',
+    text: '1つの へんが 60ほの しかくを 4つ くっつけて、まどの かたちを かこう。',
+    hint: '「しかくを かく」を 4かい くりかえす。しかくを 1つ かいたら みぎに 90ど まわろう。くりかえしの なかに くりかえしを いれるよ。',
+    answer: 'for(let a=0;a<4;a++){for(let k=0;k<4;k++){forward(60);turn(90);}turn(90);}',
+    en: { title: '④ Window ★★★', text: 'Draw 4 squares (sides of 60 steps) next to each other to make a window.', hint: 'Repeat "draw a square" 4 times. After each square, turn right 90 degrees. Put a repeat inside a repeat!' } },
+  { title: '⑤ はな ★★★',
+    text: 'まるを まわしながら 6こ かいて、はなを かこう。（まるは 5ほ・10ど を 36かい）',
+    hint: 'まるを 1こ かいたら、360 ÷ 6 = 60ど まわる。これを 6かい くりかえす。',
+    answer: 'for(let a=0;a<6;a++){for(let k=0;k<36;k++){forward(5);turn(10);}turn(60);}',
+    en: { title: '⑤ Flower ★★★', text: 'Draw 6 circles, turning between them, to make a flower. (Circle: 5 steps and 10 degrees, 36 times)', hint: 'After each circle, turn 360 ÷ 6 = 60 degrees. Repeat this 6 times.' } },
+  { title: '⑥ しかくい うずまき ★★★★',
+    text: 'すすむ ながさを 10ほ、20ほ、30ほ…と 200ほまで のばしながら、みぎに 90どずつ まわろう。',
+    hint: '「くりかえし」の「i を 10 から 200 まで 10ずつ」を つかう。「すすむ」の かずに へんすう i を いれよう。',
+    answer: 'for(let i=10;i<=200;i+=10){forward(i);turn(90);}',
+    en: { title: '⑥ Square spiral ★★★★', text: 'Move 10, 20, 30 … up to 200 steps, turning right 90 degrees each time.', hint: 'Use the loop "count with i from 10 to 200 by 10". Put the variable i into the "move" block.' } },
+  { title: '⑦ ならんだ たかくけい ★★★★',
+    text: '三角形・四角形・五角形…八角形まで、1つの へんが 50ほの かたちを おなじ ばしょから かこう。',
+    hint: 'n を 3 から 8 まで かえながら、「n かい くりかえす：50ほ すすむ、360 ÷ n ど まわる」。けいさんブロックを つかおう。',
+    answer: 'for(let n=3;n<=8;n++){for(let k=0;k<n;k++){forward(50);turn(360/n);}}',
+    en: { title: '⑦ Polygons in a row ★★★★', text: 'From the same spot, draw a triangle, square, pentagon … up to an octagon, each with sides of 50 steps.', hint: 'Change n from 3 to 8: "repeat n times: move 50 steps, turn right 360 ÷ n degrees". Use the math block!' } },
+  { title: '⑧ ゆきの けっしょう ★★★★★',
+    text: '1本の えだを かいて もとの ばしょに もどり、60ど まわる。これを 6かい くりかえそう。',
+    hint: 'えだ：80ほ すすむ → 30ほ さがる → ひだり45ど → 25ほ すすむ → 25ほ さがる → みぎ90ど → 25ほ すすむ → 25ほ さがる → ひだり45ど → 50ほ さがる。',
+    answer: 'for(let a=0;a<6;a++){forward(80);forward(-30);turn(-45);forward(25);forward(-25);turn(90);forward(25);forward(-25);turn(-45);forward(-50);turn(60);}',
+    en: { title: '⑧ Snowflake ★★★★★', text: 'Draw one branch, come back to where you started, and turn 60 degrees. Repeat this 6 times.', hint: 'Branch: forward 80 → back 30 → left 45 → forward 25 → back 25 → right 90 → forward 25 → back 25 → left 45 → back 50.' } },
+  { title: '⑨ ほしの うずまき ★★★★★',
+    text: 'すすむ ながさを 4ほ、8ほ、12ほ…と 4ほずつ のばしながら（50かい）、みぎに 144どずつ まわろう。',
+    hint: 'i を 1 から 50 まで 1ずつ。すすむ ながさは i × 4 だよ。いろを「ランダム」に すると きれい！',
+    answer: 'for(let i=1;i<=50;i++){forward(i*4);turn(144);}',
+    en: { title: '⑨ Star spiral ★★★★★', text: 'Move 4, 8, 12 … steps (4 more each time, 50 times), turning right 144 degrees.', hint: 'Count i from 1 to 50 by 1. Move i × 4 steps. Try a "random" pen color!' } }
+];
+
+
+/* ========== カメ（タートル）と おえかき（index.html と おなじ かきかた） ========== */
+const DW = 400, DH = 400, MAX_CMDS = 20000, MAX_LOOPS = 100000;
+const guideCtx = document.getElementById('guide').getContext('2d');
+const paperCtx = document.getElementById('paper').getContext('2d');
+const tctx = document.getElementById('turtle').getContext('2d');
+let turtle = null, timer = null, goalCmds = [];
+const newTurtle = () => ({ x: DW / 2, y: DH / 2, angle: 0, down: true, color: '#222222', width: 3 });
+const randomColor = () => `hsl(${Math.floor(Math.random() * 360)}, 80%, 50%)`;
+function line(ctx, x1, y1, x2, y2, color, width) {
+  ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+}
+function applyInstant(tt, c) {
+  if (c.t === 'color') tt.color = c.v === 'random' ? randomColor() : c.v;
+  if (c.t === 'width') tt.width = c.v;
+  if (c.t === 'pen') tt.down = c.v;
+  if (c.t === 'home') { tt.x = DW / 2; tt.y = DH / 2; tt.angle = 0; }
+}
+// めいれい 1つを カメに やらせる（style が あれば いろ・ふとさを うわがき）
+function doCmd(ctx, tt, c, style) {
+  if (c.t === 'move') {
+    const rad = tt.angle * Math.PI / 180, nx = tt.x + c.v * Math.sin(rad), ny = tt.y - c.v * Math.cos(rad);
+    if (tt.down) line(ctx, tt.x, tt.y, nx, ny, style ? style.color : tt.color, style ? style.width : tt.width);
+    tt.x = nx; tt.y = ny;
+  } else if (c.t === 'turn') tt.angle += c.v;
+  else applyInstant(tt, c);
+}
+function drawCmds(ctx, cmds, style) { const tt = newTurtle(); for (const c of cmds) doCmd(ctx, tt, c, style); }
+function drawTurtle() {
+  tctx.clearRect(0, 0, DW, DH);
+  tctx.save(); tctx.translate(turtle.x, turtle.y); tctx.rotate(turtle.angle * Math.PI / 180);
+  tctx.fillStyle = '#2e7d32'; tctx.beginPath(); tctx.moveTo(0, -12); tctx.lineTo(9, 9); tctx.lineTo(-9, 9); tctx.closePath(); tctx.fill();
+  tctx.restore();
+}
+function draw() { drawTurtle(); }
+// せんの ピクセルを くらべる（index.html と おなじ はんてい）
+function coverage(thinCmds, thickCmds) {
+  const make = (cmds, width) => {
+    const cv = document.createElement('canvas'); cv.width = DW; cv.height = DH;
+    const ctx = cv.getContext('2d'); drawCmds(ctx, cmds, { color: '#000', width });
+    return ctx.getImageData(0, 0, DW, DH).data;
+  };
+  const thin = make(thinCmds, 2), thick = make(thickCmds, 12);
+  let total = 0, hit = 0;
+  for (let p = 3; p < thin.length; p += 4) if (thin[p] > 0) { total++; if (thick[p] > 0) hit++; }
+  return total ? hit / total : 0;
+}
+class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; this.why = why; } }
+// プログラムを うごかして めいれいの リストを つくり、お手本と くらべる
+function runTurtle(code, withJudge) {
+  const frames = []; let blockId = null, loops = 0;
+  const push = (c) => { if (frames.length >= MAX_CMDS) throw new Stop('ng', t('tooMany')); frames.push({ ...c, id: blockId, event: c.t }); };
+  const api = {
+    highlight: (id) => { blockId = id; },
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', t('endless')); },
+    forward: (d) => push({ t: 'move', v: Number(d) || 0 }),
+    turn: (a) => push({ t: 'turn', v: Number(a) || 0 }),
+    home: () => push({ t: 'home' }),
+    penColor: (c) => push({ t: 'color', v: c }),
+    penWidth: (w) => push({ t: 'width', v: Math.max(1, Math.min(50, Number(w) || 1)) }),
+    pen: (d) => push({ t: 'pen', v: d })
+  };
+  try { new Function(...Object.keys(api), code)(...Object.values(api)); }
+  catch (e) { return { frames, result: e instanceof Stop ? e : new Stop('ng', /^\w*Error/.test(e.message) ? e.message : '⚠ ' + e.message) }; }
+  if (!withJudge) return { frames, result: new Stop('ok', '') };
+  const a = coverage(goalCmds, frames), b = coverage(frames, goalCmds);
+  if (a >= 0.95 && b >= 0.95) return { frames, result: new Stop('ok', t('correct')) };
+  return { frames, result: new Stop('ng', a >= 0.6 ? t('close', Math.floor(a * 100), b < 0.95) : t('wrong'), 'shape') };
+}
+function simulate(code) { return runTurtle(code, true); }
+
+// こうかおん（ブロックでおえかき・めいろと おなじ 8ビットの おと）
+const Sound = {
+  ctx: null, master: null, muted: (() => { try { return localStorage.getItem(SAVE_KEY + '-muted') === '1'; } catch (_) { return false; } })(), stepFoot: 0,
+  // ブラウザは ボタンを おすまで おとを ならせないので、さいしょの クリックで じゅんび
+  unlock() {
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.25;
+      this.master.connect(this.ctx.destination);
+    }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  // 1つの おと：type=なみの かたち, f1→f2 に たかさを かえる, len=びょう
+  tone(type, f1, f2, len, delay = 0, vol = 1) {
+    if (this.muted || !this.ctx) return;
+    const t = this.ctx.currentTime + delay;
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f1, t);
+    if (f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t + len);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + len);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + len + 0.02);
+  },
+  noise(len, delay = 0, vol = 1) {
+    if (this.muted || !this.ctx) return;
+    const t = this.ctx.currentTime + delay;
+    const buf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * len), this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1;
+    const src = this.ctx.createBufferSource(), g = this.ctx.createGain(), lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 900;
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + len);
+    src.buffer = buf; src.connect(lp); lp.connect(g); g.connect(this.master);
+    src.start(t);
+  },
+  notes(list, type = 'square', vol = 0.6) {   // list: [[ヘルツ, はじまり(びょう), ながさ(びょう)], ...]
+    for (const [f, at, len] of list) this.tone(type, f, f, len, at, vol);
+  },
+
+  // --- つかう おと ---
+  step() {                                   // あしおと（ひだり・みぎで すこし たかさを かえる）
+    this.stepFoot ^= 1;
+    this.noise(0.07, 0, 0.5);
+    this.tone('square', this.stepFoot ? 330 : 294, this.stepFoot ? 220 : 196, 0.07, 0, 0.35);
+  },
+  turnRight() { this.tone('triangle', 520, 880, 0.12, 0, 0.7); },   // ひゅっ↑
+  turnLeft()  { this.tone('triangle', 880, 520, 0.12, 0, 0.7); },   // ひゅっ↓
+  crash() {                                  // ゴンッ
+    this.noise(0.35, 0, 1);
+    this.tone('square', 140, 50, 0.35, 0, 0.8);
+  },
+  clear() {                                  // ステージ クリア：ドミソド〜
+    this.notes([[523, 0, .12], [659, .12, .12], [784, .24, .12], [1047, .36, .45]]);
+    this.notes([[392, .36, .45], [659, .36, .45]], 'triangle', 0.5);
+  },
+  goalSoSo() { this.notes([[784, 0, .12], [1047, .14, .25]]); },      // ゴールしたけど めやすオーバー
+  fail()  { this.notes([[392, 0, .16], [330, .18, .16], [262, .36, .35]], 'square', 0.5); },  // ざんねん
+  grandClear() {                             // チュートリアル ぜんぶ クリア
+    const m = [[523, 0, .1], [523, .12, .1], [523, .24, .1], [523, .36, .3], [415, .7, .3], [466, 1.0, .3], [523, 1.3, .15], [466, 1.5, .1], [523, 1.62, .7]];
+    this.notes(m);
+    this.notes([[262, 1.3, 1.0], [330, 1.3, 1.0], [392, 1.3, 1.0]], 'triangle', 0.4);
+  },
+  toggle() {
+    this.muted = !this.muted; try { localStorage.setItem(SAVE_KEY + '-muted', this.muted ? '1' : '0'); } catch (_) {}
+    return this.muted;
+  }
+};
+let lastSfx = 0;
+function cueSound(c) {   // すすむ・まわる ときの おと（なりすぎない ように 0.045びょう あける）
+  const now = performance.now();
+  if (now - lastSfx < 45) return;
+  lastSfx = now;
+  if (c.t === 'move') Sound.step();
+  else if (c.t === 'turn') { if (c.v > 0) Sound.turnRight(); else Sound.turnLeft(); }
+}
+
+/* ========== Python版の せってい ========== */
+const paperTheme = Blockly.Theme.defineTheme('pydraw', {
+  base: Blockly.Themes.Classic,
+  componentStyles: { workspaceBackgroundColour: '#e8eef7', toolboxBackgroundColour: '#2f4f7f', toolboxForegroundColour: '#ffffff',
+    flyoutBackgroundColour: '#c9d6ea', flyoutOpacity: 1, scrollbarColour: '#7f9cc7', insertionMarkerColour: '#2f6db5' },
+  fontStyle: { family: 'DotGothic16, monospace', size: 12 }
+});
+const COL = { move: '#5ba68d', pen: '#a6745b', loop: '#5ba65b' };
+const PCOLORS = ['#222222', '#e53935', '#1e88e5', '#43a047', '#fdd835', '#fb8c00', '#8e24aa', '#ec407a', 'random'];
+const PYCOL = ['black', 'red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'random'];
+// ペンの いろ：[ブロックの ことば, Python の ことば, かく いろ]
+const COLOR_OPTS = PYCOL.map((p, k) => [t('colors')[k], p, PCOLORS[k]]);
+const WORLD = {
+  exprs: true, icons: ['🐍', '🐢'], theme: paperTheme, renderer: 'zelos', gridColour: '#d5deec', loopColour: COL.loop,
+  cmds: [
+    { py: 'forward', arg: 'num', def: 100, js: (a) => `forward(${a})`, label: t('bForward'), colour: COL.move },
+    { py: 'back', arg: 'num', def: 50, js: (a) => `forward(-(${a}))`, label: t('bBack'), colour: COL.move },
+    { py: 'right', arg: 'num', def: 90, js: (a) => `turn(${a})`, label: t('bRight'), colour: COL.move },
+    { py: 'left', arg: 'num', def: 90, js: (a) => `turn(-(${a}))`, label: t('bLeft'), colour: COL.move },
+    { py: 'home', js: 'home()', label: t('bHome'), colour: COL.move },
+    { py: 'pen_color', opts: COLOR_OPTS, js: (c) => `penColor('${c}')`, label: t('bColor'), colour: COL.pen },
+    { py: 'pen_width', arg: 'num', def: 5, js: (a) => `penWidth(${a})`, label: t('bWidth'), colour: COL.pen },
+    { py: 'pen_up', js: 'pen(false)', label: t('bPenUp'), colour: COL.pen },
+    { py: 'pen_down', js: 'pen(true)', label: t('bPenDown'), colour: COL.pen }
+  ],
+  palette: ['forward(100)', 'back(50)', 'right(90)', 'left(90)', "pen_color('red')", 'pen_width(5)', 'pen_up()', 'pen_down()', 'home()',
+            'for i in range(4):', 'for i in range(10, 201, 10):'],
+  mapRows: [
+    [COL.move, t('bForward').replace('%1', '〇'), 'forward(〇)'], [COL.move, t('bBack').replace('%1', '〇'), 'back(〇)'],
+    [COL.move, t('bRight').replace('%1', '〇'), 'right(〇)'], [COL.move, t('bLeft').replace('%1', '〇'), 'left(〇)'],
+    [COL.pen, t('bColor').replace('%1', t('colors')[1]), "pen_color('red')"], [COL.pen, t('bWidth').replace('%1', '〇'), 'pen_width(〇)'],
+    [COL.loop, LANG === 'en' ? 'repeat 〇 times' : '〇かい くりかえす', 'for i in range(〇):'],
+    [COL.loop, LANG === 'en' ? 'count with i from 10 to 200 by 10' : 'i を 10 から 200 まで 10 ずつ', 'for i in range(10, 201, 10):'],
+    ['#5b67a5', LANG === 'en' ? '360 ÷ n' : '360 ÷ n（けいさん）', '360 / n']
+  ],
+  load(lv) {
+    goalCmds = runTurtle(lv.goal, false).frames;
+    guideCtx.clearRect(0, 0, DW, DH);
+    drawCmds(guideCtx, goalCmds, { color: '#cfd8e3', width: 8 });   // お手本を うすく
+  },
+  resetView() { paperCtx.clearRect(0, 0, DW, DH); turtle = newTurtle(); drawTurtle(); },
+  apply(f) { if (!window.__instant) cueSound(f); doCmd(paperCtx, turtle, f); },
+  delay(f, sp) { return f.t === 'move' || f.t === 'turn' ? Math.max(3, 130 - sp * 12) : 0; }
+};
+
+/* ========== Python の ステージ（おえかきの おだい ①〜⑨） ==========
+   goal：お手本（index.html の こたえ）  blocks：ブロック モードで つかえる ブロック */
+const MOVE = ['w_forward', 'w_back', 'w_right', 'w_left'];
+const PEN = ['w_pen_color', 'w_pen_width', 'w_pen_up', 'w_pen_down', 'w_home'];
+const COUNT = ['controls_for', 'variables_get', 'math_arithmetic', 'math_number'];
+const PYODAI = [
+  { text: 'forward(80) で 80ほ すすみ、right(60) で 60ど まわる。これを 6かい くりかえして 六角形を かこう。',
+    en: { text: 'forward(80) moves 80 steps and right(60) turns 60 degrees. Repeat them 6 times to draw a hexagon.', hint: 'Put forward(80) and right(60) inside for i in range(6):. 360 ÷ 6 = 60' },
+    hint: 'for i in range(6): の なかに forward(80) と right(60)。360 ÷ 6 = 60',
+    blocks: [...MOVE, 'w_repeat'], answer: 'for i in range(6):\n    forward(80)\n    right(60)\n' },
+  { text: '1つの せんが 150ほの ほしを かこう。forward(150) と right(144) を 5かい くりかえすよ。',
+    en: { text: 'Draw a star with lines of 150 steps: repeat forward(150) and right(144) 5 times.', hint: 'The turtle turns around twice (720 degrees). 720 ÷ 5 = 144' },
+    hint: 'カメは 2しゅう（720ど）まわるよ。720 ÷ 5 = 144',
+    blocks: [...MOVE, 'w_repeat'], answer: 'for i in range(5):\n    forward(150)\n    right(144)\n' },
+  { text: 'forward(10) と right(10) を くりかえして まるを かこう。',
+    en: { text: 'Draw a circle by repeating forward(10) and right(10).', hint: 'One full turn is 360 degrees. 360 ÷ 10 = 36, so use range(36).' },
+    hint: '1しゅうは 360ど。360 ÷ 10 = 36 だから range(36)',
+    blocks: [...MOVE, 'w_repeat', ...PEN], answer: 'for i in range(36):\n    forward(10)\n    right(10)\n' },
+  { text: '1つの へんが 60ほの しかくを 4つ くっつけて、まどを かこう。for の なかに for を いれるよ。',
+    en: { text: 'Draw 4 squares (sides of 60 steps) to make a window. Put a for loop inside a for loop.', hint: 'Outer loop 4 times: the inner for k in range(4): draws a square, then right(90).' },
+    hint: 'そとの for で 4かい：なかの for k in range(4): で しかくを かいて、そのあと right(90)。',
+    blocks: [...MOVE, 'w_repeat', ...PEN], answer: 'for i in range(4):\n    for k in range(4):\n        forward(60)\n        right(90)\n    right(90)\n' },
+  { text: 'まる（forward(5) と right(10) を 36かい）を、60どずつ まわしながら 6こ かいて はなに しよう。',
+    en: { text: 'Draw 6 circles (forward(5) and right(10), 36 times), turning 60 degrees between them, to make a flower.', hint: 'for i in range(6): → for k in range(36): forward(5), right(10) → right(60)' },
+    hint: 'for i in range(6): → なかで for k in range(36): forward(5) と right(10) → right(60)',
+    blocks: [...MOVE, 'w_repeat', ...PEN], answer: 'for i in range(6):\n    for k in range(36):\n        forward(5)\n        right(10)\n    right(60)\n' },
+  { text: 'for i in range(10, 201, 10): で i を 10, 20, 30 … 200 と ふやしながら、forward(i) と right(90) で うずまきを かこう。',
+    en: { text: 'Use for i in range(10, 201, 10): so i becomes 10, 20, 30 … 200, and draw a spiral with forward(i) and right(90).', hint: 'range(start, end, step). The end number is not included, so use 201.' },
+    hint: 'range(はじめ, おわり, ふやす かず)。おわりの かずは ふくまないので 201 に するよ。',
+    blocks: [...MOVE, 'w_repeat', ...COUNT, ...PEN], answer: 'for i in range(10, 201, 10):\n    forward(i)\n    right(90)\n' },
+  { text: 'for n in range(3, 9): で n を 3〜8 に かえながら、n かくけい（1つの へんは 50ほ）を おなじ ばしょから かこう。',
+    en: { text: 'Use for n in range(3, 9): to change n from 3 to 8, and draw an n-sided shape (sides of 50 steps) from the same spot.', hint: 'Inside, for i in range(n): forward(50) and right(360 / n). / means divide.' },
+    hint: 'なかで for i in range(n): forward(50) と right(360 / n)。/ は わりざん。',
+    blocks: [...MOVE, 'w_repeat', ...COUNT, ...PEN], answer: 'for n in range(3, 9):\n    for i in range(n):\n        forward(50)\n        right(360 / n)\n' },
+  { text: 'えだを 1本 かいて もとの ばしょに もどり、right(60)。これを 6かい くりかえして ゆきの けっしょうを かこう。',
+    en: { text: 'Draw one branch, come back, and right(60). Repeat this 6 times to draw a snowflake.', hint: 'Branch: forward(80) → back(30) → left(45) → forward(25) → back(25) → right(90) → forward(25) → back(25) → left(45) → back(50)' },
+    hint: 'えだ：forward(80) → back(30) → left(45) → forward(25) → back(25) → right(90) → forward(25) → back(25) → left(45) → back(50)',
+    blocks: [...MOVE, 'w_repeat', ...PEN],
+    answer: 'for i in range(6):\n    forward(80)\n    back(30)\n    left(45)\n    forward(25)\n    back(25)\n    right(90)\n    forward(25)\n    back(25)\n    left(45)\n    back(50)\n    right(60)\n' },
+  { text: "for i in range(1, 51): で i を 1〜50 に して、forward(i * 4) と right(144)。pen_color('random') で いろを かえよう。",
+    en: { text: "Use for i in range(1, 51): (i from 1 to 50), then forward(i * 4) and right(144). Change colors with pen_color('random').", hint: '* means multiply. The line gets 4 steps longer each time.' },
+    hint: '* は かけざん。すすむ ながさが 4ほずつ のびるよ。',
+    blocks: [...MOVE, 'w_repeat', ...COUNT, ...PEN], answer: "for i in range(1, 51):\n    pen_color('random')\n    forward(i * 4)\n    right(144)\n" }
+];
+const LEVELS = PYODAI.map((p, k) => {
+  const c = CHALLENGES[k + 1];
+  return { title: c.title, text: p.text, hint: p.hint, goal: c.answer, blocks: p.blocks, answer: p.answer,
+    start: '# forward(80) で 80ほ すすむ\nforward(80)\n', startEn: '# forward(80) moves 80 steps\nforward(80)\n',
+    en: { title: c.en.title, text: p.en.text, hint: p.en.hint } };
+});
+</script>
+<script src="python-core.js"></script>
+</body>
+</html>

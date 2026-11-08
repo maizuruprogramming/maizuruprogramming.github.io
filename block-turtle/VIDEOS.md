@@ -7,7 +7,13 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 
 **動画の流れ / Structure**：タイトル（めあて）→ 盤面の紹介 → かんがえかた（ヒント）→ 解答ブロックを1つずつ並べる → 実行（いま動いているブロックが光る）→ クリア！とポイント → 次のステージの予告
 
-🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（めいろ 5・うちゅう 6・こわす・おく 7 ＝ 18ステージ × 日英 36本）。
+🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7 ＝ 27ステージ × 日英 54本）。
+
+## 🎮 あそびかた ／ 🎮 How to play
+
+| 内容 | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1分で わかる あそびかた（アプリの選び方・4ステップ・Python・コツ・修了証） | [あそびかた](videos/ja/howto.mp4) | [How to play](videos/en/howto.mp4) | 48秒 |
 
 ## ⛏ ブロックでめいろ ／ ⛏ Block Maze
 
@@ -45,6 +51,20 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 5 | [もし いしが あったら](videos/ja/craft-05.mp4) | [If there is stone](videos/en/craft-05.mp4) | 33秒 |
 | 6 | [いしと みず](videos/ja/craft-06.mp4) | [Stone and water](videos/en/craft-06.mp4) | 37秒 |
 | 7 | [うずまきの どうくつ](videos/ja/craft-07.mp4) | [Spiral cave](videos/en/craft-07.mp4) | 48秒 |
+
+## 🐍 Pythonで おえかき ／ 🐍 Python Drawing
+
+| おだい | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [① 六角形（ろっかくけい） ★](videos/ja/pydraw-01.mp4) | [① Hexagon ★](videos/en/pydraw-01.mp4) | 42秒 |
+| 2 | [② ほし ★★](videos/ja/pydraw-02.mp4) | [② Star ★★](videos/en/pydraw-02.mp4) | 35秒 |
+| 3 | [③ まる ★★](videos/ja/pydraw-03.mp4) | [③ Circle ★★](videos/en/pydraw-03.mp4) | 42秒 |
+| 4 | [④ まど ★★★](videos/ja/pydraw-04.mp4) | [④ Window ★★★](videos/en/pydraw-04.mp4) | 49秒 |
+| 5 | [⑤ はな ★★★](videos/ja/pydraw-05.mp4) | [⑤ Flower ★★★](videos/en/pydraw-05.mp4) | 49秒 |
+| 6 | [⑥ しかくい うずまき ★★★★](videos/ja/pydraw-06.mp4) | [⑥ Square spiral ★★★★](videos/en/pydraw-06.mp4) | 49秒 |
+| 7 | [⑦ ならんだ たかくけい ★★★★](videos/ja/pydraw-07.mp4) | [⑦ Polygons in a row ★★★★](videos/en/pydraw-07.mp4) | 48秒 |
+| 8 | [⑧ ゆきの けっしょう ★★★★★](videos/ja/pydraw-08.mp4) | [⑧ Snowflake ★★★★★](videos/en/pydraw-08.mp4) | 53秒 |
+| 9 | [⑨ ほしの うずまき ★★★★★](videos/ja/pydraw-09.mp4) | [⑨ Star spiral ★★★★★](videos/en/pydraw-09.mp4) | 48秒 |
 
 ## 🐍 Pythonで めいろ ／ 🐍 Python Maze
 

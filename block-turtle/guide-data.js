@@ -1330,6 +1330,376 @@ window.GUIDE = {
    ]
   },
   {
+   "key": "pydraw",
+   "file": "python-draw.html",
+   "icon": "🐍",
+   "name": {
+    "ja": "Pythonで おえかき",
+    "en": "Python Drawing"
+   },
+   "intro": {
+    "ja": "おえかきを Python で。forward(80)・right(60) のように () の なかに かずを かき、for i in range(10, 201, 10): の へんすうや 360 / n の けいさんも つかって、お手本と おなじ かたちを かく。",
+    "en": "Drawing with Python. Write numbers inside () like forward(80) and right(60), and use variables (for i in range(10, 201, 10):) and math (360 / n) to match the model."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "loop",
+      "angle",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(6):\n    forward(80)\n    right(60)",
+     "video": {
+      "ja": "videos/ja/pydraw-01.mp4",
+      "en": "videos/en/pydraw-01.mp4"
+     },
+     "title": {
+      "ja": "① 六角形（ろっかくけい） ★",
+      "en": "① Hexagon ★"
+     },
+     "text": {
+      "ja": "forward(80) で 80ほ すすみ、right(60) で 60ど まわる。これを 6かい くりかえして 六角形を かこう。",
+      "en": "forward(80) moves 80 steps and right(60) turns 60 degrees. Repeat them 6 times to draw a hexagon."
+     },
+     "hint": {
+      "ja": "for i in range(6): の なかに forward(80) と right(60)。360 ÷ 6 = 60",
+      "en": "Put forward(80) and right(60) inside for i in range(6):. 360 ÷ 6 = 60"
+     },
+     "goal": {
+      "ja": "for で 正多角形を かこう",
+      "en": "Draw a regular polygon with for"
+     },
+     "point": {
+      "ja": "forward() と right() の () の なかに かずを かく。for の なかの 2ぎょうを 6かい くりかえすよ。",
+      "en": "Write numbers inside forward() and right(). The 2 lines inside for repeat 6 times."
+     },
+     "mistake": {
+      "ja": "right(60) の じさげを わすれると、まわるのが 1かいだけに なって まっすぐな せんに なるよ。",
+      "en": "If right(60) is not indented, it turns only once and draws a straight line."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "loop",
+      "angle",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(5):\n    forward(150)\n    right(144)",
+     "video": {
+      "ja": "videos/ja/pydraw-02.mp4",
+      "en": "videos/en/pydraw-02.mp4"
+     },
+     "title": {
+      "ja": "② ほし ★★",
+      "en": "② Star ★★"
+     },
+     "text": {
+      "ja": "1つの せんが 150ほの ほしを かこう。forward(150) と right(144) を 5かい くりかえすよ。",
+      "en": "Draw a star with lines of 150 steps: repeat forward(150) and right(144) 5 times."
+     },
+     "hint": {
+      "ja": "カメは 2しゅう（720ど）まわるよ。720 ÷ 5 = 144",
+      "en": "The turtle turns around twice (720 degrees). 720 ÷ 5 = 144"
+     },
+     "goal": {
+      "ja": "2しゅう まわる かくどを かんがえよう",
+      "en": "Think about turning around twice"
+     },
+     "point": {
+      "ja": "5かいで 720ど（2しゅう）まわるから、1かいは 720 ÷ 5 = 144 ど。",
+      "en": "5 turns make 720 degrees (twice around), so each turn is 720 ÷ 5 = 144."
+     },
+     "mistake": {
+      "ja": "right(72)（360 ÷ 5）に すると、ほしでは なく 五角形に なるよ。",
+      "en": "right(72) (360 ÷ 5) makes a pentagon, not a star."
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "loop",
+      "angle",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(36):\n    forward(10)\n    right(10)",
+     "video": {
+      "ja": "videos/ja/pydraw-03.mp4",
+      "en": "videos/en/pydraw-03.mp4"
+     },
+     "title": {
+      "ja": "③ まる ★★",
+      "en": "③ Circle ★★"
+     },
+     "text": {
+      "ja": "forward(10) と right(10) を くりかえして まるを かこう。",
+      "en": "Draw a circle by repeating forward(10) and right(10)."
+     },
+     "hint": {
+      "ja": "1しゅうは 360ど。360 ÷ 10 = 36 だから range(36)",
+      "en": "One full turn is 360 degrees. 360 ÷ 10 = 36, so use range(36)."
+     },
+     "goal": {
+      "ja": "みじかい 直線で まるを つくろう",
+      "en": "Make a circle from short lines"
+     },
+     "point": {
+      "ja": "10ど ずつ 36かい まわると 360ど。ちいさな せんを たくさん つなぐと まるに 見えるよ。",
+      "en": "36 turns of 10 degrees make 360. Many short lines look like a circle."
+     },
+     "mistake": {
+      "ja": "range(35) だと まるが すこし あいて しまう。360 ÷ 10 = 36 を たしかめよう。",
+      "en": "range(35) leaves a small gap. Check 360 ÷ 10 = 36."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "loop",
+      "nest",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(4):\n    for k in range(4):\n        forward(60)\n        right(90)\n    right(90)",
+     "video": {
+      "ja": "videos/ja/pydraw-04.mp4",
+      "en": "videos/en/pydraw-04.mp4"
+     },
+     "title": {
+      "ja": "④ まど ★★★",
+      "en": "④ Window ★★★"
+     },
+     "text": {
+      "ja": "1つの へんが 60ほの しかくを 4つ くっつけて、まどを かこう。for の なかに for を いれるよ。",
+      "en": "Draw 4 squares (sides of 60 steps) to make a window. Put a for loop inside a for loop."
+     },
+     "hint": {
+      "ja": "そとの for で 4かい：なかの for k in range(4): で しかくを かいて、そのあと right(90)。",
+      "en": "Outer loop 4 times: the inner for k in range(4): draws a square, then right(90)."
+     },
+     "goal": {
+      "ja": "for の なかに for を いれよう",
+      "en": "Put a for inside a for"
+     },
+     "point": {
+      "ja": "なかの for は スペース 8つ じさげ。しかくを かいたら、そとの for の なかで right(90)。",
+      "en": "The inner for is indented 8 spaces. After a square, right(90) inside the outer for."
+     },
+     "mistake": {
+      "ja": "さいごの right(90) を なかの for と おなじ ふかさに すると、しかくが かさなって 1つに みえるよ。",
+      "en": "If the last right(90) is at the inner for’s depth, the squares overlap and look like one."
+     }
+    },
+    {
+     "n": 5,
+     "tags": [
+      "loop",
+      "nest",
+      "angle",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(6):\n    for k in range(36):\n        forward(5)\n        right(10)\n    right(60)",
+     "video": {
+      "ja": "videos/ja/pydraw-05.mp4",
+      "en": "videos/en/pydraw-05.mp4"
+     },
+     "title": {
+      "ja": "⑤ はな ★★★",
+      "en": "⑤ Flower ★★★"
+     },
+     "text": {
+      "ja": "まる（forward(5) と right(10) を 36かい）を、60どずつ まわしながら 6こ かいて はなに しよう。",
+      "en": "Draw 6 circles (forward(5) and right(10), 36 times), turning 60 degrees between them, to make a flower."
+     },
+     "hint": {
+      "ja": "for i in range(6): → なかで for k in range(36): forward(5) と right(10) → right(60)",
+      "en": "for i in range(6): → for k in range(36): forward(5), right(10) → right(60)"
+     },
+     "goal": {
+      "ja": "いれこ ＋ くるっと まわす",
+      "en": "Nesting + turning around"
+     },
+     "point": {
+      "ja": "まる 1こが なかの for。そとの for で 360 ÷ 6 = 60 ど まわしながら 6かい。",
+      "en": "One circle is the inner for. The outer for turns 360 ÷ 6 = 60 degrees, 6 times."
+     },
+     "mistake": {
+      "ja": "まわす かくどが 60 で ないと、はなびらが かたよるよ。",
+      "en": "If the turn is not 60, the petals are uneven."
+     }
+    },
+    {
+     "n": 6,
+     "tags": [
+      "var",
+      "loop",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(10, 201, 10):\n    forward(i)\n    right(90)",
+     "video": {
+      "ja": "videos/ja/pydraw-06.mp4",
+      "en": "videos/en/pydraw-06.mp4"
+     },
+     "title": {
+      "ja": "⑥ しかくい うずまき ★★★★",
+      "en": "⑥ Square spiral ★★★★"
+     },
+     "text": {
+      "ja": "for i in range(10, 201, 10): で i を 10, 20, 30 … 200 と ふやしながら、forward(i) と right(90) で うずまきを かこう。",
+      "en": "Use for i in range(10, 201, 10): so i becomes 10, 20, 30 … 200, and draw a spiral with forward(i) and right(90)."
+     },
+     "hint": {
+      "ja": "range(はじめ, おわり, ふやす かず)。おわりの かずは ふくまないので 201 に するよ。",
+      "en": "range(start, end, step). The end number is not included, so use 201."
+     },
+     "goal": {
+      "ja": "へんすう i を ながさに つかおう",
+      "en": "Use the variable i as the length"
+     },
+     "point": {
+      "ja": "range(10, 201, 10) は 10, 20, … 200。おわりの かずは ふくまない ので 201 に する。forward(i) で だんだん ながく。",
+      "en": "range(10, 201, 10) gives 10, 20, … 200. The end is not included, so use 201. forward(i) gets longer each time."
+     },
+     "mistake": {
+      "ja": "range(10, 200, 10) だと 190 で おわって しまうよ。",
+      "en": "range(10, 200, 10) stops at 190."
+     }
+    },
+    {
+     "n": 7,
+     "tags": [
+      "var",
+      "math",
+      "nest",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for n in range(3, 9):\n    for i in range(n):\n        forward(50)\n        right(360 / n)",
+     "video": {
+      "ja": "videos/ja/pydraw-07.mp4",
+      "en": "videos/en/pydraw-07.mp4"
+     },
+     "title": {
+      "ja": "⑦ ならんだ たかくけい ★★★★",
+      "en": "⑦ Polygons in a row ★★★★"
+     },
+     "text": {
+      "ja": "for n in range(3, 9): で n を 3〜8 に かえながら、n かくけい（1つの へんは 50ほ）を おなじ ばしょから かこう。",
+      "en": "Use for n in range(3, 9): to change n from 3 to 8, and draw an n-sided shape (sides of 50 steps) from the same spot."
+     },
+     "hint": {
+      "ja": "なかで for i in range(n): forward(50) と right(360 / n)。/ は わりざん。",
+      "en": "Inside, for i in range(n): forward(50) and right(360 / n). / means divide."
+     },
+     "goal": {
+      "ja": "へんすう と わりざん",
+      "en": "Variables and division"
+     },
+     "point": {
+      "ja": "n かくけいの まわる かくどは 360 / n。range(3, 9) で n は 3〜8。",
+      "en": "An n-sided shape turns 360 / n. range(3, 9) gives n = 3 to 8."
+     },
+     "mistake": {
+      "ja": "360 // n（きりすて）は ブロックに できないよ。わりざんは / を つかおう。",
+      "en": "360 // n (floor division) has no block. Use / for division."
+     }
+    },
+    {
+     "n": 8,
+     "tags": [
+      "seq",
+      "decomp",
+      "loop",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(6):\n    forward(80)\n    back(30)\n    left(45)\n    forward(25)\n    back(25)\n    right(90)\n    forward(25)\n    back(25)\n    left(45)\n    back(50)\n    right(60)",
+     "video": {
+      "ja": "videos/ja/pydraw-08.mp4",
+      "en": "videos/en/pydraw-08.mp4"
+     },
+     "title": {
+      "ja": "⑧ ゆきの けっしょう ★★★★★",
+      "en": "⑧ Snowflake ★★★★★"
+     },
+     "text": {
+      "ja": "えだを 1本 かいて もとの ばしょに もどり、right(60)。これを 6かい くりかえして ゆきの けっしょうを かこう。",
+      "en": "Draw one branch, come back, and right(60). Repeat this 6 times to draw a snowflake."
+     },
+     "hint": {
+      "ja": "えだ：forward(80) → back(30) → left(45) → forward(25) → back(25) → right(90) → forward(25) → back(25) → left(45) → back(50)",
+      "en": "Branch: forward(80) → back(30) → left(45) → forward(25) → back(25) → right(90) → forward(25) → back(25) → left(45) → back(50)"
+     },
+     "goal": {
+      "ja": "てじゅんを わけて かんがえよう",
+      "en": "Break the steps into parts"
+     },
+     "point": {
+      "ja": "えだ 1本は 10ぎょう。もとの ばしょと むきに もどるので、right(60) で つぎの えだへ。",
+      "en": "One branch is 10 lines. It returns to the start, so right(60) moves to the next branch."
+     },
+     "mistake": {
+      "ja": "さいごの back(50) を わすれると、えだが ずれて いくよ。",
+      "en": "Forgetting the last back(50) shifts each branch."
+     }
+    },
+    {
+     "n": 9,
+     "tags": [
+      "var",
+      "math",
+      "loop",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(1, 51):\n    pen_color('random')\n    forward(i * 4)\n    right(144)",
+     "video": {
+      "ja": "videos/ja/pydraw-09.mp4",
+      "en": "videos/en/pydraw-09.mp4"
+     },
+     "title": {
+      "ja": "⑨ ほしの うずまき ★★★★★",
+      "en": "⑨ Star spiral ★★★★★"
+     },
+     "text": {
+      "ja": "for i in range(1, 51): で i を 1〜50 に して、forward(i * 4) と right(144)。pen_color('random') で いろを かえよう。",
+      "en": "Use for i in range(1, 51): (i from 1 to 50), then forward(i * 4) and right(144). Change colors with pen_color('random')."
+     },
+     "hint": {
+      "ja": "* は かけざん。すすむ ながさが 4ほずつ のびるよ。",
+      "en": "* means multiply. The line gets 4 steps longer each time."
+     },
+     "goal": {
+      "ja": "へんすう × けいさん ＋ かいてん",
+      "en": "Variable × math + turning"
+     },
+     "point": {
+      "ja": "すすむ ながさ i * 4 が 4ほ ずつ のびて、144ど まわると ほしの うずまきに なる。",
+      "en": "The length i * 4 grows by 4 each time, and turning 144 makes a star spiral."
+     },
+     "mistake": {
+      "ja": "range(1, 50) だと 49かいで おわる。50かい かくには range(1, 51)。",
+      "en": "range(1, 50) stops after 49. Use range(1, 51) for 50 times."
+     }
+    }
+   ]
+  },
+  {
    "key": "python",
    "file": "python.html",
    "icon": "🐍",

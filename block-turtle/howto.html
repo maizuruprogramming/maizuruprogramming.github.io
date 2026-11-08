@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>あそびかた・べんきょうの しかた / How to Play and Learn</title>
+<script src="i18n.js"></script>  <!-- にほんご／English・⚙メニュー（ここでは Blockly は つかわない） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  /* ===== テーマ：こくばんと チョーク（あそびかた） ===== */
+  :root {
+    --page-bg: #1f3a32 repeating-conic-gradient(rgba(0,0,0,.14) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#f2b84b 0 10px, #c98a1c 10px 14px, #2b4a40 14px);
+    --hdr-border: #0f1f1a; --title-shadow: #000; --link: #ffe08a; --fn: #c98a1c;
+    --panel-bg: #fdf8ec; --panel-light: #ffffff; --panel-dark: #b8a77c; --panel-text: #2f2a22; --accent: #c0601c;
+  }
+  html, body { height: auto; min-height: 100%; }
+  #wrap { max-width: 1100px; margin: 0 auto; padding: 16px 16px 40px; }
+  .panel { width: auto; margin: 0 0 16px; line-height: 1.8; }
+  h2.sec { color: #fff; font-weight: normal; font-size: 26px; text-shadow: 2px 2px 0 #000; margin: 30px 0 10px; scroll-margin-top: 10px; }
+  #lead { color: #f2efe4; text-shadow: 1px 1px 0 #000; line-height: 1.8; margin: 6px 0 12px; }
+  /* もくじ */
+  #toc { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 4px; }
+  #toc a { color: #fff; text-decoration: none; background: rgba(0,0,0,.35); border: 3px solid #000; padding: 6px 12px; text-shadow: 2px 2px 0 #000; }
+  /* どうが */
+  .videoBox { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: center; }
+  .videoBox video { width: 100%; display: block; background: #000; aspect-ratio: 16 / 9; border: 4px solid #000; }
+  .videoBox .t { font-size: 20px; color: var(--accent); margin-bottom: 6px; }
+  /* カードの ならび */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .card { background: var(--panel-bg); color: var(--panel-text); border: 4px solid #000; padding: 12px 14px; line-height: 1.7; }
+  .card .ic { font-size: 36px; line-height: 1; }
+  .card .num { display: inline-block; background: var(--accent); color: #fff; padding: 0 10px; margin-right: 6px; border: 2px solid #000; }
+  .card h3 { margin: 8px 0 4px; font-size: 19px; font-weight: normal; }
+  .card p { margin: 0; font-size: 15px; }
+  .card a.go { display: inline-block; margin-top: 8px; color: #fff; background: #2b4a40; padding: 3px 12px; border: 2px solid #000; text-decoration: none; font-size: 15px; }
+  .card .lvl { font-size: 13px; color: #7a6a4a; }
+  /* 4つの ステップ（え つき） */
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .steps img { width: 100%; image-rendering: pixelated; border: 3px solid #000; margin-top: 8px; display: block; }
+  .btnLike { display: inline-block; padding: 1px 8px; border: 2px solid #000; color: #fff; background: #3a7d2c; font-size: 14px; }
+  .btnLike.r { background: #6b6b6b; } .btnLike.h { background: #3c5aa6; }
+  /* Python */
+  .pyBox { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  pre.code { margin: 0; padding: 12px 14px; background: #1e2430; color: #e6e6e6; border: 4px solid #000; font: 17px/1.6 "DotGothic16", monospace; overflow-x: auto; }
+  pre.code .kw { color: #ff9d5c; } pre.code .fn { color: #7fd6ff; } pre.code .str { color: #ffe08a; } pre.code .num { color: #b5f07a; } pre.code .bi { color: #d7a6ff; } pre.code .no { color: #6c7894; }
+  ul.rules { margin: 6px 0 0; padding-left: 1.2em; }
+  /* がめんの みかた（え と ばんごう） */
+  .scrWrap { position: relative; width: 100%; overflow: hidden; }
+  .scr { position: absolute; left: 0; top: 0; width: 960px; height: 540px; transform-origin: 0 0; background: #3a2a1c; border: 4px solid #000; box-sizing: border-box; font-family: inherit; color: #fff; }
+  .scr .hdr { position: absolute; left: 0; top: 0; right: 0; height: 52px; background: linear-gradient(#5fa83a 0 8px, #866043 8px); display: flex; align-items: center; gap: 10px; padding: 0 12px; box-sizing: border-box; border-bottom: 3px solid #000; }
+  .scr .hdr .ttl { font-size: 18px; text-shadow: 2px 2px 0 #000; margin-right: 6px; }
+  .scr .hdr .lnk { font-size: 18px; }
+  .scr .hdr .sp { flex: 1; }
+  .scr .b { font-size: 14px; padding: 4px 10px; border: 2px solid #000; color: #fff; }
+  .scr .b.run { background: #3a7d2c; } .scr .b.gray { background: #6b6b6b; } .scr .b.fn { background: #3c5aa6; }
+  .scr .tool { position: absolute; left: 0; top: 52px; width: 170px; bottom: 0; background: #6e6e6e; border-right: 3px solid #000; padding: 12px 10px; box-sizing: border-box; }
+  .scr .ws { position: absolute; left: 170px; top: 52px; width: 400px; bottom: 0; background: #4a3726; }
+  .scr .blk { display: block; width: max-content; padding: 6px 10px; margin: 0 0 6px; background: #4f8f2f; border: 2px solid rgba(0,0,0,.35); font-size: 13px; color: #fff; }
+  .scr .blk.loop { background: #8b5a2b; } .scr .blk.if { background: #3c5aa6; }
+  .scr .stack { position: absolute; left: 40px; top: 40px; }
+  .scr .trash { position: absolute; right: 16px; bottom: 16px; font-size: 30px; }
+  .scr .zoom { position: absolute; right: 18px; bottom: 64px; display: flex; flex-direction: column; gap: 4px; font-size: 16px; }
+  .scr .zoom span { background: #c6c6c6; color: #333; width: 26px; text-align: center; border: 2px solid #555; }
+  .scr .side { position: absolute; left: 570px; top: 52px; right: 0; bottom: 0; padding: 10px 14px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .scr .les { width: 100%; background: #c6c6c6; color: #3f3f3f; border: 3px solid #fff; outline: 2px solid #000; padding: 6px 8px; box-sizing: border-box; font-size: 12px; line-height: 1.5; }
+  .scr .sel { background: #fff; border: 2px solid #555; padding: 2px 6px; display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .scr .hint { display: inline-block; background: #3c5aa6; color: #fff; padding: 2px 8px; border: 2px solid #000; margin-top: 4px; }
+  .scr .board { width: 250px; height: 250px; image-rendering: pixelated; border: 3px solid #000; }
+  .scr .spd { font-size: 12px; }
+  .scr .msg { font-size: 14px; color: #ffff55; text-shadow: 1px 1px 0 #000; }
+  /* Python の がめん */
+  .scr.py .hdr { background: linear-gradient(#ffd43b 0 8px, #2b3a55 8px); }
+  .scr .tabs { position: absolute; left: 12px; top: 62px; display: flex; gap: 6px; }
+  .scr .tabs span { font-size: 13px; padding: 3px 10px; border: 2px solid #000; background: #555; opacity: .6; }
+  .scr .tabs span.on { background: #306998; opacity: 1; }
+  .scr .ed { position: absolute; left: 12px; top: 96px; width: 548px; height: 220px; background: #1e2430; border: 3px solid #000; font: 15px/1.6 "DotGothic16", monospace; padding: 8px 0; box-sizing: border-box; white-space: pre; }
+  .scr .ed div { padding-left: 8px; } .scr .ed .cur { background: rgba(255,212,59,.25); }
+  .scr .ed .no { display: inline-block; width: 26px; color: #6c7894; text-align: right; margin-right: 12px; }
+  .scr .ed .cur .no { background: #ffd43b; color: #1e2430; }
+  .scr .ed .kw { color: #ff9d5c; } .scr .ed .fn { color: #7fd6ff; } .scr .ed .str { color: #ffe08a; } .scr .ed .nm { color: #b5f07a; } .scr .ed .bi { color: #d7a6ff; }
+  .scr .pal { position: absolute; left: 12px; top: 324px; width: 548px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .scr .pal span { font: 12px "DotGothic16", monospace; padding: 2px 7px; background: #2b3a55; border: 2px solid #000; }
+  .scr .map { position: absolute; left: 12px; top: 392px; font-size: 13px; text-shadow: 1px 1px 0 #000; }
+  .scr .con { position: absolute; left: 12px; top: 420px; width: 548px; height: 104px; background: #0d1018; border: 3px solid #000; font: 13px/1.5 "DotGothic16", monospace; color: #c8f7c5; padding: 6px 8px; box-sizing: border-box; }
+  .scr .con .o { color: #7fd6ff; }
+  /* ばんごうの まる */
+  .scr .n { position: absolute; z-index: 5; width: 28px; height: 28px; border-radius: 50%; background: #ffd43b; color: #1e2430; border: 3px solid #000; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-shadow: none; box-shadow: 0 0 0 3px rgba(255,255,255,.6); }
+  ol.legend { margin: 12px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px 18px; }
+  ol.legend li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.6; }
+  ol.legend .k { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #ffd43b; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
+  ol.legend b { font-weight: normal; color: var(--accent); }
+  html.theme-night ol.legend b { color: #ffcf8a; }
+  /* ひょう */
+  table.t { border-collapse: collapse; width: 100%; background: #fffaf0; font-size: 15px; }
+  table.t th, table.t td { border: 2px solid #c9b98a; padding: 6px 10px; text-align: left; vertical-align: top; }
+  table.t th { background: #efe2bf; white-space: nowrap; font-weight: normal; }
+  .teacher { font-size: 14px; }
+  .teacher a { color: var(--accent); }
+  html.theme-night .card, html.theme-night table.t { background: #22262f; color: #e3e6ee; }
+  html.theme-night table.t th { background: #2c313c; } html.theme-night table.t th, html.theme-night table.t td { border-color: #3a4050; }
+  html.theme-night .card .lvl { color: #aab3c5; }
+  @media (max-width: 860px) {
+    .videoBox, .pyBox { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🎮</span><span class="lbl" id="title"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<div id="wrap">
+  <div id="lead"></div>
+  <div id="toc"></div>
+  <div id="body"></div>
+</div>
+<script>
+const J = LANG === 'ja';
+const tx = (ja, en) => J ? ja : en;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+document.title = tx('あそびかた・べんきょうの しかた', 'How to Play and Learn');
+document.getElementById('title').textContent = tx('あそびかた・べんきょうの しかた', 'How to Play and Learn');
+document.getElementById('lead').textContent = tx(
+  'ブロックを つなげて、カメや たんけんかを うごかす プログラミングの ゲームだよ。さいしょに どうがを みて、あそびかたを たしかめよう！',
+  'This is a programming game: connect blocks to move a turtle or an explorer. Watch the video first to see how to play!');
+
+const SECS = [
+  ['video', '🎬', 'どうがで みてみよう', 'Watch the video'],
+  ['apps', '🗺', 'どの アプリから はじめる？', 'Which app first?'],
+  ['screen', '🖥', 'がめんの みかた', 'The screen'],
+  ['steps', '🕹', 'あそびかた（4つの ステップ）', 'How to play (4 steps)'],
+  ['tips', '🧠', 'べんきょうの コツ', 'Tips for learning'],
+  ['python', '🐍', 'Python に チャレンジ', 'Try Python'],
+  ['more', '⚙', 'べんりな きのう', 'Useful features'],
+  ['adults', '👩‍🏫', 'おうちの かた・先生へ', 'For parents and teachers']
+];
+document.getElementById('toc').innerHTML = SECS.map(([id, ic, ja, en]) => `<a href="#${id}">${ic} ${esc(tx(ja, en))}</a>`).join('');
+const H = (id) => { const s = SECS.find((x) => x[0] === id); return `<h2 class="sec" id="${id}">${s[1]} ${esc(tx(s[2], s[3]))}</h2>`; };
+
+let html = '';
+
+// 🎬 どうが
+html += H('video') + `<div class="panel"><div class="videoBox">
+  <video id="howtoVideo" src="videos/${LANG}/howto.mp4" controls preload="metadata" playsinline></video>
+  <div><div class="t">${esc(tx('1ぷんで わかる あそびかた', 'How to play in 1 minute'))}</div>
+  ${esc(tx('アプリの えらびかた → ステージを えらぶ → ブロックを つなげる → じっこう → なおして もういちど → Python → しゅうりょうしょう の じゅんに しょうかい するよ。',
+          'Choosing an app → choosing a stage → connecting blocks → running → fixing and trying again → Python → certificate.'))}
+  <br><a href="videos.html" style="color:var(--accent)">${esc(tx('▶ ステージごとの かいせつ どうがは こちら', '▶ Videos for each stage'))}</a></div>
+</div></div>`;
+
+// 🗺 アプリ
+const APPS = [
+  ['🐢', 'index.html', 'ブロックでおえかき', 'Block Drawing', 'カメで せんを かく。かくどと くりかえしを まなぶ。', 'Draw lines with a turtle. Learn angles and loops.', 'はじめての ひと', 'First time'],
+  ['⛏', 'maze.html', 'ブロックでめいろ', 'Block Maze', 'たんけんかを ゴールの ダイヤまで うごかす。', 'Move the explorer to the diamond.', 'しょうがくせい〜', 'Elementary+'],
+  ['🚀', 'space.html', 'うちゅうで ほしあつめ', 'Space Star Hunt', 'ほしを ぜんぶ ひろって ロケットへ。', 'Collect every star and reach the rocket.', 'めいろの つぎに', 'After the maze'],
+  ['🧱', 'craft.html', 'こわして つくる ぼうけん', 'Break & Build Quest', 'いしを こわして、みずに はしを かける。', 'Break stone and build bridges over water.', 'もっと むずかしく', 'More challenging'],
+  ['🐍', 'python.html', 'Python版（おえかき・めいろ・うちゅう・こわす・おく）', 'Python versions', 'おなじ せかいを、もじの プログラム Python で とく。', 'Solve the same worlds with Python, a text language.', 'ブロックを おえたら', 'After the blocks'],
+  ['🐟', 'aquarium.html', 'おさかな すいぞくかん', 'Aquarium', 'さかなを かいて、プログラムで およがせる。', 'Draw a fish and make it swim with a program.', 'じゆうに つくる', 'Create freely']
+];
+html += H('apps') + `<div class="grid">` + APPS.map(([ic, href, ja, en, dja, den, lja, len], i) => `
+  <div class="card"><div class="ic">${ic}</div>
+    <h3><span class="num">${i + 1}</span>${esc(tx(ja, en))}</h3>
+    <div class="lvl">${esc(tx('めやす：' + lja, 'For: ' + len))}</div>
+    <p>${esc(tx(dja, den))}</p>
+    <a class="go" href="${href}">${esc(tx('▶ あそぶ', '▶ Play'))}</a></div>`).join('') + `</div>`;
+
+// 🖥 がめんの みかた（え と ばんごうの せつめい）
+const N = (k, x, y) => `<span class="n" style="left:${x}px;top:${y}px">${k}</span>`;
+const blockScreen = `<div class="scr">
+  <div class="hdr"><span class="ttl">⛏ ${esc(tx('ブロックでめいろ', 'Block Maze'))}</span><span class="lnk">🐢 🚀 🧱 🐟</span><span class="sp"></span>
+    <span class="b run">▶ ${esc(tx('じっこう', 'Run'))}</span><span class="b gray">↺ ${esc(tx('もどす', 'Restart'))}</span><span class="b fn">⚙ ${esc(tx('きのう', 'Settings'))}</span></div>
+  <div class="tool">${[tx('まえに すすむ', 'move forward'), tx('みぎを むく ↻', 'turn right ↻'), tx('ひだりを むく ↺', 'turn left ↺')].map((b) => `<span class="blk">${esc(b)}</span>`).join('')}
+    <span class="blk loop">${esc(tx('ゴールに つくまで くりかえす', 'repeat until goal'))}</span><span class="blk if">${esc(tx('もし まえ が あいていたら', 'if front is open'))}</span></div>
+  <div class="ws"><div class="stack">${[tx('まえに すすむ', 'move forward'), tx('まえに すすむ', 'move forward'), tx('みぎを むく ↻', 'turn right ↻'), tx('まえに すすむ', 'move forward')].map((b) => `<span class="blk">${esc(b)}</span>`).join('')}</div>
+    <div class="zoom"><span>＋</span><span>－</span></div><div class="trash">🗑</div></div>
+  <div class="side">
+    <div class="les"><div class="sel"><span>${esc(tx('ステージ2　まがってみよう', "Stage 2: Let's turn"))}</span><span>▼</span></div>${esc(tx('とちゅうで まがるよ。ライトが てらす ほうが「まえ」だよ。', 'You turn on the way. The light shows “front”.'))}<br><span class="hint">💡 ${esc(tx('ヒント', 'Hint'))}</span></div>
+    <img class="board" src="images/howto/board-run.png" alt="">
+    <div class="spd">${esc(tx('はやさ', 'Speed'))} ━━━●━━</div>
+    <div class="msg">🎉 ${esc(tx('ステージ クリア！', 'Stage clear!'))}</div>
+  </div>
+  ${N(1, 90, 38)}${N(2, 236, 38)}${N(3, 694, 38)}${N(4, 795, 38)}${N(5, 890, 38)}${N(6, 136, 64)}${N(7, 186, 64)}${N(8, 488, 470)}${N(9, 552, 62)}${N(10, 552, 100)}${N(11, 600, 190)}${N(12, 650, 446)}${N(13, 640, 478)}
+</div>`;
+const BLOCK_LEGEND = [
+  ['タイトル', 'Title', 'いま あそんでいる アプリ', 'The app you are playing'],
+  ['ほかの アプリ', 'Other apps', '🐢 おえかき・⛏ めいろ・🚀 うちゅう・🧱 こわす・おく・🐟 すいぞくかん へ いける', 'Go to Drawing, Maze, Space, Break & Build or Aquarium'],
+  ['▶ じっこう', '▶ Run', 'くんだ プログラムを うごかす', 'Runs your program'],
+  ['↺ もどす', '↺ Restart', 'たんけんかを はじめの ばしょに もどす（ブロックは きえない）', 'Puts the explorer back at the start (your blocks stay)'],
+  ['⚙ きのう', '⚙ Settings', 'Python に きりかえる・あそびかた・どうが・かいせつしょ・おと・ことば・ナイトモード・フォント・つぎの ひとへ など', 'Switch to Python, how to play, videos, guide, sound, language, night mode, font, next player and more'],
+  ['ブロックの たな', 'Block shelf', 'ここから ブロックを ひっぱって つかう', 'Drag blocks from here'],
+  ['ブロックを くむ ところ', 'Workspace', 'うえから じゅんばんに つなげる。くっついた ブロックだけが うごく', 'Stack blocks from the top. Only connected blocks run'],
+  ['ゴミばこ・おおきさ', 'Trash and zoom', 'いらない ブロックは 🗑 へ。＋／－ で おおきく・ちいさく', 'Drop unwanted blocks on 🗑. Zoom with + / −'],
+  ['ステージを えらぶ', 'Choose a stage', 'ステージの リスト。クリアすると ✅ が つく', 'The stage list. Cleared stages get ✅'],
+  ['もんだい・💡 ヒント', 'Task and 💡 hint', 'なにを するか よもう。こまったら ヒントを おす', 'Read what to do. Press Hint when stuck'],
+  ['ばんめん', 'Board', 'たんけんかが うごく ところ。ライトが てらす ほうが「まえ」', 'Where the explorer moves. The light shows “front”'],
+  ['はやさ', 'Speed', 'うごく はやさを かえる', 'Changes how fast it moves'],
+  ['メッセージ', 'Message', 'クリア や まちがいを おしえて くれる', 'Tells you if you cleared it or what went wrong']
+];
+const pyScreen = `<div class="scr py">
+  <div class="hdr"><span class="ttl">🐍 ${esc(tx('Pythonで めいろ', 'Python Maze'))}</span><span class="lnk">🐢 ⛏ 🚀 🧱 🐟</span><span class="sp"></span>
+    <span class="b run">▶ ${esc(tx('じっこう', 'Run'))}</span><span class="b gray">↺ ${esc(tx('もどす', 'Restart'))}</span><span class="b fn">⚙ ${esc(tx('きのう', 'Settings'))}</span></div>
+  <div class="tabs"><span>🧩 ${esc(tx('ブロック', 'Blocks'))}</span><span class="on">🐍 Python</span></div>
+  <div class="ed"><div><span class="no">1</span><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">2</span>):</div><div class="cur"><span class="no">2</span>    <span class="fn">forward</span>()</div><div><span class="no">3</span><span class="fn">turn_right</span>()</div><div><span class="no">4</span><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">2</span>):</div><div><span class="no">5</span>    <span class="fn">forward</span>()</div></div>
+  <div class="pal">${['forward()', 'turn_right()', 'turn_left()', 'for i in range(3):', 'while not at_goal():', "if is_open('front'):", 'else:'].map((b) => `<span>${esc(b)}</span>`).join('')}</div>
+  <div class="map">▶ 🧩 ${esc(tx('ブロックと 🐍 Python の たいおう', 'Blocks and 🐍 Python'))}</div>
+  <div class="con"><div>${esc(tx('>>> ここに けっかや エラーが でるよ', '>>> Results and errors appear here'))}</div><div class="o">>>> python main.py</div><div>✅ ${esc(tx('じっこう おわり', 'Finished'))}</div></div>
+  <div class="side" style="top:60px">
+    <div class="les"><div class="sel"><span>${esc(tx('ステージ2　まがってみよう', "Stage 2: Let's turn"))}</span><span>▼</span></div>${esc(tx('turn_right() で みぎを むくよ。', 'turn_right() turns right.'))}</div>
+    <img class="board" src="images/howto/board-run.png" alt="">
+    <div class="msg">🎉 ${esc(tx('Python で クリア！', 'Cleared with Python!'))}</div>
+  </div>
+  ${N(1, 232, 60)}${N(2, 530, 102)}${N(3, 530, 322)}${N(4, 300, 390)}${N(5, 530, 426)}${N(6, 586, 214)}
+</div>`;
+const PY_LEGEND = [
+  ['🧩 ブロック ／ 🐍 Python', '🧩 Blocks / 🐍 Python', 'タブで きりかえる。ブロックで くむと、したに Python が でる', 'Switch with the tabs. Blocks you build appear below as Python'],
+  ['コードを かく ところ', 'Code editor', 'ひだりは ぎょうばんごう。うごいている ぎょうは きいろ、エラーの ぎょうは あかく ひかる', 'Line numbers on the left. The running line is yellow; an error line is red'],
+  ['めいれいの ボタン', 'Command buttons', 'おすと コードが 1ぎょう はいる（じさげも そろう）', 'Press to add a line of code (with the right indent)'],
+  ['ブロックと Python の たいおう', 'Blocks and Python', 'ひらくと、ブロックが Python で なにに なるか わかる', 'Open it to see which Python each block becomes'],
+  ['コンソール', 'Console', 'じっこうの けっかや、エラー（ぎょうばんごう つき）が でる', 'Shows results and errors (with line numbers)'],
+  ['ばんめん', 'Board', 'Python の プログラムで たんけんかが うごく', 'The explorer moves with your Python program']
+];
+const legend = (L) => '<ol class="legend">' + L.map(([ja, en, dja, den], i) => `<li><span class="k">${i + 1}</span><span><b>${esc(tx(ja, en))}</b>：${esc(tx(dja, den))}</span></li>`).join('') + '</ol>';
+html += H('screen') + `<div class="panel">
+  <div style="font-size:18px;color:var(--accent)">🧩 ${esc(tx('ブロックの アプリ（れい：ブロックでめいろ）', 'Block apps (example: Block Maze)'))}</div>
+  <div class="scrWrap">${blockScreen}</div>${legend(BLOCK_LEGEND)}
+  <p style="margin:10px 0 0;font-size:14px">${esc(tx('おえかき・うちゅう・こわす・おく も おなじ ならびだよ。おえかきは「もどす」の かわりに「けす」で えを けす。',
+    'Drawing, Space and Break & Build use the same layout. In Drawing, “Clear” erases the picture instead of “Restart”.'))}</p>
+</div>
+<div class="panel">
+  <div style="font-size:18px;color:var(--accent)">🐍 ${esc(tx('Python版（れい：Pythonで めいろ）', 'Python versions (example: Python Maze)'))}</div>
+  <div class="scrWrap">${pyScreen}</div>${legend(PY_LEGEND)}
+</div>`;
+
+// 🕹 4つの ステップ
+const STEPS = [
+  ['🗂', 'ステージを えらぶ', 'Choose a stage', 'みぎうえの リストから ステージを えらんで、もんだいを よもう。ばんめんを みて、ゴールまでの みちを ゆびで なぞって みよう。',
+   'Pick a stage from the list and read the task. Trace the path to the goal with your finger.', 'images/howto/board-start.png'],
+  ['🧩', 'ブロックを つなげる', 'Connect blocks', 'ひだりの ブロックを ひっぱって、うえから じゅんばんに つなげる。いらない ブロックは ゴミばこへ。',
+   'Drag blocks from the left and stack them in order. Drop unwanted blocks in the trash.', 'images/answers/maze2.png'],
+  ['▶', 'じっこう する', 'Run it', '<span class="btnLike">▶ じっこう</span> を おすと うごくよ。いま うごいている ブロックが ひかる。',
+   '<span class="btnLike">▶ Run</span> starts the program. The block that is running lights up.', 'images/howto/board-run.png'],
+  ['🔁', 'なおして もういちど', 'Fix and try again', 'うまく いかなくても だいじょうぶ！ <span class="btnLike r">↺ もどす</span> で さいしょから。こまったら <span class="btnLike h">💡 ヒント</span>。',
+   'Mistakes are OK! <span class="btnLike r">↺ Restart</span> to start over. Stuck? Press <span class="btnLike h">💡 Hint</span>.', 'images/howto/board-crash.png']
+];
+html += H('steps') + `<div class="steps">` + STEPS.map(([ic, ja, en, dja, den, img], i) => `
+  <div class="card"><div class="ic">${ic}</div><h3><span class="num">${i + 1}</span>${esc(tx(ja, en))}</h3>
+    <p>${tx(dja, den)}</p>${img ? `<img src="${img}" alt="">` : ''}</div>`).join('') + `</div>
+  <div class="panel" style="margin-top:14px">${esc(tx(
+    'クリアすると「つぎの ステージに いきますか？」と きかれるよ。「はい」で つぎへ、「いいえ」で おなじ ステージを もういちど。ぜんぶの ステージを クリアすると 📜 しゅうりょうしょう が もらえる！',
+    'When you clear a stage, you will be asked “Go to the next stage?”. Yes moves on; No lets you try the same stage again. Clear every stage to get a 📜 certificate!'))}</div>`;
+
+// 🧠 コツ
+const TIPS = [
+  ['👀', 'よく みる', 'Look closely', 'たんけんかは どっちを むいている？ ライトが てらす ほうが「まえ」だよ。', 'Which way is the explorer facing? The light shows “front”.'],
+  ['🗣', 'くちで いってみる', 'Say it out loud', '「2マス すすんで、みぎを むいて…」と こえに だすと、じゅんばんが わかりやすい。', 'Saying “move 2, turn right…” helps you get the order right.'],
+  ['🧪', 'すこしずつ ためす', 'Test step by step', 'いっきに ぜんぶ つくらず、すこし つないだら ▶ じっこう。どこまで あっているか たしかめよう。', 'Don’t build everything at once. Run after a few blocks to check.'],
+  ['🔍', 'まちがいは ヒント', 'Mistakes are hints', 'どこで とまったか、どの ブロックが ひかって いたかを みれば、なおす ばしょが わかる。', 'Where did it stop? Which block was lit? That tells you what to fix.'],
+  ['🔁', 'おなじ うごきを さがす', 'Find repeats', 'おなじ うごきが つづいたら「くりかえし」で まとめられるかも。', 'If the same moves repeat, a loop can make it shorter.'],
+  ['🤝', 'ともだちと くらべる', 'Compare with friends', 'こたえは 1つじゃない！ ちがう やりかたを みせあって みよう。', 'There is more than one answer. Share different ways!']
+];
+html += H('tips') + `<div class="grid">` + TIPS.map(([ic, ja, en, dja, den]) => `
+  <div class="card"><div class="ic">${ic}</div><h3>${esc(tx(ja, en))}</h3><p>${esc(tx(dja, den))}</p></div>`).join('') + `</div>`;
+
+// 🐍 Python
+const PYCODE = `<span class="no">1</span>  <span class="fn">forward</span>()
+<span class="no">2</span>  <span class="fn">forward</span>()
+<span class="no">3</span>  <span class="fn">turn_right</span>()
+<span class="no">4</span>  <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="num">2</span>):
+<span class="no">5</span>      <span class="fn">forward</span>()`;
+html += H('python') + `<div class="panel"><div class="pyBox">
+  <div>${esc(tx('おえかき・めいろ・うちゅう・こわす・おく では、「⚙ きのう」→「🐍 Python に きりかえる」で、おなじ せかいを Python で とけるよ。',
+               'In Drawing, Maze, Space and Break & Build, choose “⚙ Settings → 🐍 Switch to Python” to solve the same world with Python.'))}
+    <ul class="rules">
+      <li>${esc(tx('「🧩 ブロック」で くむと、したに Python が でる', 'Build with “🧩 Blocks” and the Python appears below'))}</li>
+      <li>${esc(tx('「🐍 Python」タブで じぶんで かける', 'Write it yourself in the “🐍 Python” tab'))}</li>
+      <li>${esc(tx('めいれいの あとに「()」、さいごに「:」、なかの ぎょうは スペース 4つ', 'Add “()” after commands, “:” at the end, and 4 spaces inside'))}</li>
+      <li>${esc(tx('エラーには ぎょうばんごうが でる。あかい ぎょうを なおそう', 'Errors show a line number. Fix the red line'))}</li>
+    </ul></div>
+  <pre class="code">${PYCODE}</pre>
+</div></div>`;
+
+// ⚙ べんりな きのう
+const FEATS = [
+  ['⚙ きのう', '⚙ Settings', 'おと・ことば（日本語／English）・ナイトモード・おちついた いろ・🔤 フォントを かえる（よみやすい もじ）・つぎの ひとへ（リセット）。🎮 あそびかた・🎬 どうが・📖 かいせつしょ にも いける', 'Sound, language, night mode, calm colors, 🔤 change font (easy to read), and “Next player” reset. Also opens 🎮 How to play, 🎬 Videos and 📖 Guide'],
+  ['📖 かいせつしょ', '📖 Guide', 'ぜんぶの かだいの めあて・ヒント・こたえ', 'Goals, hints and answers for every task'],
+  ['🎬 どうが', '🎬 Videos', 'ステージごとの かいせつ どうが', 'An explanation video for each stage'],
+  ['📜 しゅうりょうしょう', '📜 Certificate', 'ぜんぶ クリアで もらえる。なまえを いれて いんさつ できる', 'Clear every stage to get one. Type your name and print it'],
+  ['📝 リリースノート', '📝 Release notes', 'あたらしく なった ところの おしらせ', 'What’s new']
+];
+html += H('more') + `<div class="panel"><table class="t">` + FEATS.map(([ja, en, dja, den]) => `<tr><th>${esc(tx(ja, en))}</th><td>${esc(tx(dja, den))}</td></tr>`).join('') + `</table></div>`;
+
+// 👩‍🏫 おとなへ
+html += H('adults') + `<div class="panel teacher">${tx(
+  'ブラウザだけで動き、インストールは不要です。子どもの名前などの個人情報は保存しません（記録は端末のブラウザの中だけ）。<br>授業では、授業用スライド（PowerPoint、日本語 <code>slides/ja/</code>・English <code>slides/en/</code>）、<a href="guide.html">解説書</a>、<a href="videos.html">解説動画</a>が使えます。アドレスの最後に <code>?sensei</code> を付けると、各アプリに「📖 こたえ」ボタンが出ます。',
+  'Runs in the browser with no installation. No personal information is saved (records stay in the device’s browser).<br>For lessons, use the lesson slides (PowerPoint: <code>slides/en/</code> in English, <code>slides/ja/</code> in Japanese), the <a href="guide.html">guide</a> and the <a href="videos.html">videos</a>. Add <code>?sensei</code> to an app’s address to show the “📖 Answer” button.')}</div>`;
+
+document.getElementById('body').innerHTML = html;
+// がめんの え（960×540）を パネルの はばに あわせて ちぢめる
+function fitScreens() {
+  document.querySelectorAll('.scrWrap').forEach((w) => {
+    const sc = Math.min(1, w.clientWidth / 960);
+    w.querySelector('.scr').style.transform = `scale(${sc})`;
+    w.style.height = 540 * sc + 'px';
+  });
+}
+fitScreens();
+window.addEventListener('resize', fitScreens);
+buildNav(document.getElementById('nav'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);
+</script>
+</body>
+</html>

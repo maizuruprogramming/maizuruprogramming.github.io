@@ -39,6 +39,12 @@ Object.assign(STR.ja, {
   eNoArg: (f) => `TypeError：「${f}()」の () の なかには なにも かかないよ`,
   eNotCmd: (f) => `「${f}()」は しらべる ための もの。if や while と いっしょに つかおう`,
   eRange: 'ValueError：range() の かずは 1〜50 に しよう',
+  eVar: (w) => `NameError：「${w}」という なまえ（へんすう）は まだ ないよ`,
+  eNeedArg: (f) => `TypeError：「${f}()」の () の なかに かずを かこう（れい：${f}(90)）`,
+  eExpr: 'SyntaxError：けいさんの かきかたが ちがうみたい',
+  eStep: 'ValueError：range() の 3つめ（ふやす かず）を 0 には できないよ',
+  eZero: 'ZeroDivisionError：0 で わる ことは できないよ',
+  eRangeArgs: 'TypeError：range() の () の なかは 1〜3こ の かずだよ',
   certItem: 'しゅうりょうしょうを みる', dlgTitle: '🎉 ステージ クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
   pyRetry: 'もういちど チャレンジ！ べつの かきかたも ためしてみよう', nextPerson: 'つぎの ひとへ', armedItem: 'もういちど おすと リセット',
   armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ', resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！',
@@ -70,6 +76,12 @@ Object.assign(STR.en, {
   eNoArg: (f) => `TypeError: write nothing inside the () of “${f}()”`,
   eNotCmd: (f) => `“${f}()” is for checking. Use it with if or while.`,
   eRange: 'ValueError: use a number from 1 to 50 in range()',
+  eVar: (w) => `NameError: the name (variable) “${w}” does not exist yet`,
+  eNeedArg: (f) => `TypeError: write a number inside the () of “${f}()” (e.g. ${f}(90))`,
+  eExpr: 'SyntaxError: the math is written the wrong way',
+  eStep: 'ValueError: the 3rd number of range() (the step) cannot be 0',
+  eZero: 'ZeroDivisionError: you cannot divide by 0',
+  eRangeArgs: 'TypeError: range() takes 1 to 3 numbers',
   certItem: 'View certificate', dlgTitle: '🎉 Stage clear!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
   pyRetry: 'Try again! Maybe write it a different way.', nextPerson: 'Next player', armedItem: 'Tap again to reset',
   armedMsg: '⚠ Tap "Next player" again to reset everything.', resetDone: '✨ All reset. Good luck, next player!',
@@ -77,6 +89,9 @@ Object.assign(STR.en, {
 });
 
 const W = WORLD;
+W.conds = W.conds || [];
+const UNTIL = W.until ? W.until.py : null;      // 「〜まで くりかえす」の しらべる なまえ（ない せかいも ある）
+const EXPRS = !!W.exprs;                         // かず・へんすう・けいさん を つかう せかい（おえかき）
 const CMD = new Map(W.cmds.map((c) => [c.py, c]));
 const CONDS = new Map(W.conds.map((c) => [c.py, c]));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -95,17 +110,59 @@ function parse(src) {
   });
   let pos = 0;
   const firstWord = (s) => (s.match(/[A-Za-z_]\w*/) || [s])[0];
+  const known = new Set();   // for で つくった へんすう（つかえる なまえ）
+  // けいさんの しき：かず・へんすう・( )・+ - * / // % **
+  function expr(text, no) {
+    const toks = []; const re = /\s*(\d+\.\d*|\.\d+|\d+|[A-Za-z_]\w*|\*\*|\/\/|[-+*\/%(),]|\S)/y; let m;
+    re.lastIndex = 0;
+    while (re.lastIndex < text.length && (m = re.exec(text))) toks.push(m[1]);
+    if (!toks.length) throw new PyError(no, t('eExpr'));
+    let k = 0;
+    const peek = () => toks[k], take = () => toks[k++];
+    function atom() {
+      const tk = take();
+      if (tk === undefined) throw new PyError(no, t('eExpr'));
+      if (/^(\d+\.?\d*|\.\d+)$/.test(tk)) return { k: 'num', v: Number(tk) };
+      if (/^[A-Za-z_]\w*$/.test(tk)) {
+        if (!known.has(tk)) throw new PyError(no, CMD.has(tk) || CONDS.has(tk) ? t('eExpr') : t('eVar', tk));
+        return { k: 'var', name: tk };
+      }
+      if (tk === '(') { const e = sum(); if (take() !== ')') throw new PyError(no, t('eExpr')); return e; }
+      throw new PyError(no, t('eExpr'));
+    }
+    function power() { const a = atom(); if (peek() === '**') { take(); return { k: 'bin', op: '**', a, b: unary() }; } return a; }
+    function unary() {
+      if (peek() === '-') { take(); const x = unary(); return x.k === 'num' ? { k: 'num', v: -x.v } : { k: 'neg', x }; }
+      if (peek() === '+') { take(); return unary(); }
+      return power();
+    }
+    function term() { let a = unary(); while (['*', '/', '//', '%'].includes(peek())) { const op = take(); a = { k: 'bin', op, a, b: unary() }; } return a; }
+    function sum() { let a = term(); while (['+', '-'].includes(peek())) { const op = take(); a = { k: 'bin', op, a, b: term() }; } return a; }
+    const e = sum();
+    if (k !== toks.length) throw new PyError(no, t('eExpr'));
+    return e;
+  }
+  // ( ) の なかを いちばん そとがわの「,」で わける
+  function splitArgs(text) {
+    const out = []; let depth = 0, cur = '';
+    for (const ch of text) {
+      if (ch === '(') depth++; if (ch === ')') depth--;
+      if (ch === ',' && depth === 0) { out.push(cur); cur = ''; } else cur += ch;
+    }
+    if (cur.trim() || out.length) out.push(cur);
+    return out.map((x) => x.trim());
+  }
   function cond(text, no) {
     const m = text.match(/^(not\s+)?([A-Za-z_]\w*)\s*\(\s*(?:(['"])(\w*)\3\s*)?\)$/);
     if (!m) {
       const w = text.replace(/^not\s+/, '');
       const name = firstWord(w);
-      if ((CONDS.has(name) || name === W.until.py) && !/\(/.test(w)) throw new PyError(no, t('eParen', name));
-      if (CONDS.has(name) || name === W.until.py) throw new PyError(no, t('eSyntax'));
+      if ((CONDS.has(name) || name === UNTIL) && !/\(/.test(w)) throw new PyError(no, t('eParen', name));
+      if (CONDS.has(name) || name === UNTIL) throw new PyError(no, t('eSyntax'));
       throw new PyError(no, t('eName', name));
     }
     const fn = m[2], arg = m[4];
-    if (fn === W.until.py) { if (arg !== undefined) throw new PyError(no, t('eNoArg', fn)); return { not: !!m[1], fn, arg: null }; }
+    if (fn === UNTIL) { if (arg !== undefined) throw new PyError(no, t('eNoArg', fn)); return { not: !!m[1], fn, arg: null }; }
     const fam = CONDS.get(fn);
     if (!fam) throw new PyError(no, t('eName', fn));
     if (fam.opts) {
@@ -131,7 +188,13 @@ function parse(src) {
       pos++;
       const h = header(ln);
       let m;
-      if ((m = h.match(/^for\s+([A-Za-z_]\w*)\s+in\s+range\(\s*(\d+)\s*\)$/))) {
+      if (EXPRS && (m = h.match(/^for\s+([A-Za-z_]\w*)\s+in\s+range\((.*)\)$/))) {
+        const parts = splitArgs(m[2]);
+        if (parts.length < 1 || parts.length > 3 || parts.some((x) => !x)) throw new PyError(ln.no, t('eRangeArgs'));
+        const args = parts.map((x) => expr(x, ln.no));
+        known.add(m[1]);
+        out.push({ type: 'for', no: ln.no, var: m[1], args, body: body(ln, indent) });
+      } else if ((m = h.match(/^for\s+([A-Za-z_]\w*)\s+in\s+range\(\s*(\d+)\s*\)$/))) {
         const n = Number(m[2]);
         if (n < 1 || n > 50) throw new PyError(ln.no, t('eRange'));
         out.push({ type: 'for', no: ln.no, n, body: body(ln, indent) });
@@ -153,8 +216,16 @@ function parse(src) {
       else if (h === 'pass') { /* なにも しない */ }
       else if ((m = h.match(/^([A-Za-z_]\w*)\s*\((.*)\)$/))) {
         const name = m[1];
-        if (CMD.has(name)) { if (m[2].trim()) throw new PyError(ln.no, t('eCmdArg', name)); out.push({ type: 'cmd', no: ln.no, cmd: name }); }
-        else if (CONDS.has(name) || name === W.until.py) throw new PyError(ln.no, t('eNotCmd', name));
+        const c = CMD.get(name), inner = m[2].trim();
+        if (c && c.arg === 'num') {
+          if (!inner) throw new PyError(ln.no, t('eNeedArg', name));
+          out.push({ type: 'cmd', no: ln.no, cmd: name, arg: expr(inner, ln.no) });
+        } else if (c && c.opts) {
+          const q = inner.match(/^(['"])(\w*)\1$/);
+          if (!q || !c.opts.some((o) => o[1] === q[2])) throw new PyError(ln.no, t('eArg', name, c.opts.map((o) => `'${o[1]}'`).join(' ')));
+          out.push({ type: 'cmd', no: ln.no, cmd: name, arg: q[2] });
+        } else if (c) { if (inner) throw new PyError(ln.no, t('eCmdArg', name)); out.push({ type: 'cmd', no: ln.no, cmd: name }); }
+        else if (CONDS.has(name) || name === UNTIL) throw new PyError(ln.no, t('eNotCmd', name));
         else throw new PyError(ln.no, t('eName', name));
       }
       else if (CMD.has(h)) throw new PyError(ln.no, t('eParen', h));
@@ -165,8 +236,10 @@ function parse(src) {
   if (lines.length && lines[0].indent > 0) throw new PyError(lines[0].no, t('eIndent'));
   const prog = block(0);
   if (pos < lines.length) throw new PyError(lines[pos].no, t('eIndent'));
-  return { prog, count: lines.length };
+  PY_VARS = [...known];
+  return { prog, count: lines.length, vars: [...known] };
 }
+let PY_VARS = [];
 
 /* ========== 2. よみとった Python → きまった めいれい だけの JavaScript ==========
    どの ぎょうを うごかしているかを pyLine(ぎょうばんごう) で しらせる */
@@ -175,13 +248,39 @@ function pyLine(n) { pyLastLine = n; }
 function pyEnd() { pyFinished = true; }
 function condJs(c) {
   if (c.always) return 'true';
-  const e = c.fn === W.until.py ? W.until.js : CONDS.get(c.fn).js(c.arg);
+  const e = c.fn === UNTIL ? W.until.js : CONDS.get(c.fn).js(c.arg);
   return c.not ? `!(${e})` : e;
 }
 function toJs(list, d) { return list.map((n) => nodeJs(n, d)).join(''); }
+// しきを JavaScript に（へんすうは v_なまえ）
+function exprJs(e) {
+  if (e.k === 'num') return String(e.v);
+  if (e.k === 'var') return 'v_' + e.name;
+  if (e.k === 'neg') return `(-${exprJs(e.x)})`;
+  const a = exprJs(e.a), b = exprJs(e.b);
+  if (e.op === '/') return `pyDiv(${a},${b})`;
+  if (e.op === '//') return `Math.floor(pyDiv(${a},${b}))`;
+  if (e.op === '%') return `pyMod(${a},${b})`;
+  if (e.op === '**') return `Math.pow(${a},${b})`;
+  return `(${a}${e.op}${b})`;
+}
+function pyDiv(a, b) { if (b === 0) throw new Error(t('eZero')); return a / b; }
+function pyMod(a, b) { if (b === 0) throw new Error(t('eZero')); return ((a % b) + b) % b; }
 function nodeJs(n, d) {
   const at = (no) => `pyLine(${no});highlight(${no});`;
-  if (n.type === 'cmd') return at(n.no) + CMD.get(n.cmd).js + ';\n';
+  if (n.type === 'cmd') {
+    const c = CMD.get(n.cmd);
+    if (c.arg === 'num') return at(n.no) + c.js(exprJs(n.arg)) + ';\n';
+    if (c.opts) return at(n.no) + c.js(c.opts.find((o) => o[1] === n.arg)[2]) + ';\n';
+    return at(n.no) + c.js + ';\n';
+  }
+  if (n.type === 'for' && n.args) {   // for へんすう in range(はじめ, おわり, ふやす かず)
+    const [a0, a1, a2] = n.args;
+    const start = n.args.length === 1 ? '0' : exprJs(a0), end = exprJs(n.args.length === 1 ? a0 : a1), step = a2 ? exprJs(a2) : '1';
+    const v = 'v_' + n.var;
+    return `${at(n.no)}{const s${d}=${step},e${d}=${end};if(s${d}===0)throw new Error(t('eStep'));` +
+      `for(${v}=${start};s${d}>0?${v}<e${d}:${v}>e${d};${v}+=s${d}){loopGuard();${at(n.no)}\n${toJs(n.body, d + 1)}}}\n`;
+  }
   if (n.type === 'for') return `${at(n.no)}for(let i${d}=0;i${d}<${n.n};i${d}++){loopGuard();${at(n.no)}\n${toJs(n.body, d + 1)}}\n`;
   if (n.type === 'while') return `${at(n.no)}while(${condJs(n.cond)}){loopGuard();\n${toJs(n.body, d + 1)}${at(n.no)}}\n`;
   // if / elif / else は「もし … そうでなければ（もし …）」の いれこに する
@@ -192,18 +291,23 @@ function nodeJs(n, d) {
   }
   return s;
 }
-function compile(prog) { return toJs(prog, 0) + 'pyEnd();\n'; }
+function compile(prog) { return (PY_VARS.length ? 'let ' + PY_VARS.map((v) => 'v_' + v).join(',') + ';\n' : '') + toJs(prog, 0) + 'pyEnd();\n'; }
 
 /* ========== 3. ブロック ⇄ Python ==========
    ブロック 1こ ＝ Python 1ぎょう。じっこう ちゅうの ぎょうから ブロックを ひからせられる */
 const BT = { cmd: (py) => 'w_' + py, repeat: 'w_repeat', until: 'w_until', iff: (fn) => 'w_if_' + fn, ifelse: (fn) => 'w_ifelse_' + fn };
 const condBlockArgs = (fam) => fam.opts ? [{ type: 'field_dropdown', name: 'ARG', options: fam.opts.map((o) => [o[0], o[1]]) }] : [];
 Blockly.common.defineBlocksWithJsonArray([
-  ...W.cmds.map((c) => ({ type: BT.cmd(c.py), message0: c.label, previousStatement: null, nextStatement: null, colour: c.colour })),
-  { type: BT.repeat, message0: t('pyRepeat'), args0: [{ type: 'field_number', name: 'TIMES', value: 3, min: 1, max: 50, precision: 1 }],
-    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], previousStatement: null, nextStatement: null, colour: W.loopColour },
-  { type: BT.until, message0: W.until.label, message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
-    previousStatement: null, nextStatement: null, colour: W.loopColour },
+  ...W.cmds.map((c) => ({ type: BT.cmd(c.py), message0: c.label, previousStatement: null, nextStatement: null, colour: c.colour,
+    args0: c.arg === 'num' ? [{ type: 'input_value', name: 'N', check: 'Number' }] : c.opts ? [{ type: 'field_dropdown', name: 'C', options: c.opts.map((o) => [o[0], o[1]]) }] : undefined,
+    inputsInline: true })),
+  EXPRS
+    ? { type: BT.repeat, message0: t('pyRepeat'), args0: [{ type: 'input_value', name: 'TIMES', check: 'Number' }], inputsInline: true,
+        message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], previousStatement: null, nextStatement: null, colour: W.loopColour }
+    : { type: BT.repeat, message0: t('pyRepeat'), args0: [{ type: 'field_number', name: 'TIMES', value: 3, min: 1, max: 50, precision: 1 }],
+        message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], previousStatement: null, nextStatement: null, colour: W.loopColour },
+  ...(W.until ? [{ type: BT.until, message0: W.until.label, message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    previousStatement: null, nextStatement: null, colour: W.loopColour }] : []),
   ...W.conds.flatMap((f) => [
     { type: BT.iff(f.py), message0: f.label, args0: condBlockArgs(f), message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
       previousStatement: null, nextStatement: null, colour: f.colour },
@@ -217,16 +321,50 @@ const TYPE2COND = new Map(W.conds.flatMap((f) => [[BT.iff(f.py), f], [BT.ifelse(
 const condText = (f, arg) => f.opts ? `${f.py}('${arg || f.opts[0][1]}')` : `${f.py}()`;
 
 // ブロック（JSON の つながり）→ Python の ぎょう { text, id }
-function blocksToLines(first, depth, out) {
+let VARMAP = {};   // へんすうの id → なまえ
+const OPS = { ADD: '+', MINUS: '-', MULTIPLY: '*', DIVIDE: '/', POWER: '**' };
+const PREC = { '+': 1, '-': 1, '*': 2, '/': 2, '//': 2, '%': 2, '**': 3 };
+const fmtNum = (v) => { const n = Number(v); return Number.isInteger(n) ? String(n) : String(Math.round(n * 1e6) / 1e6); };
+// あたいの ブロック（かず・へんすう・けいさん）→ Python の しき
+function exprNode(inp) { return inp ? (inp.block || inp.shadow) : null; }
+function exprText(node, parentPrec = 0, right = false) {
+  if (!node) return '0';
+  if (node.type === 'math_number') { const s = fmtNum((node.fields || {}).NUM ?? 0); return s.startsWith('-') && parentPrec ? `(${s})` : s; }
+  if (node.type === 'variables_get') return VARMAP[((node.fields || {}).VAR || {}).id] || ((node.fields || {}).VAR || {}).name || 'i';
+  if (node.type === 'math_arithmetic') {
+    const op = OPS[(node.fields || {}).OP] || '+', p = PREC[op], inp = node.inputs || {};
+    const s = `${exprText(exprNode(inp.A), p)} ${op} ${exprText(exprNode(inp.B), p, true)}`;
+    return parentPrec > p || (parentPrec === p && right) ? `(${s})` : s;
+  }
+  return '0';
+}
+const numOf = (node) => node && node.type === 'math_number' ? Number((node.fields || {}).NUM) : null;
+function blocksToLines(first, depth, out, scope = []) {
   for (let b = first; b; b = b.next && b.next.block) {
     const pad = '    '.repeat(depth), f = b.fields || {}, inp = b.inputs || {};
-    const sub = (blk, d, id) => { if (blk) blocksToLines(blk, d, out); else out.push({ text: '    '.repeat(d) + 'pass', id }); };
-    if (TYPE2CMD.has(b.type)) out.push({ text: `${pad}${TYPE2CMD.get(b.type)}()`, id: b.id });
-    else if (b.type === BT.repeat) {
+    const sub = (blk, d, id, sc = scope) => { if (blk) blocksToLines(blk, d, out, sc); else out.push({ text: '    '.repeat(d) + 'pass', id }); };
+    if (TYPE2CMD.has(b.type)) {
+      const c = CMD.get(TYPE2CMD.get(b.type));
+      const arg = c.arg === 'num' ? exprText(exprNode(inp.N)) : c.opts ? `'${f.C || c.opts[0][1]}'` : '';
+      out.push({ text: `${pad}${c.py}(${arg})`, id: b.id });
+    } else if (b.type === BT.repeat && EXPRS) {
+      const name = ['i', 'k', 'j', 'm', 'p'].find((x) => !scope.includes(x)) || 'q';
+      out.push({ text: `${pad}for ${name} in range(${exprText(exprNode(inp.TIMES))}):`, id: b.id });
+      sub(inp.DO && inp.DO.block, depth + 1, b.id, [...scope, name]);
+    } else if (b.type === 'controls_for') {
+      const name = VARMAP[(f.VAR || {}).id] || (f.VAR || {}).name || 'i';
+      const from = exprNode(inp.FROM), to = exprNode(inp.TO), by = exprNode(inp.BY);
+      const byN = numOf(by), toN = numOf(to);
+      const toText = toN !== null ? fmtNum(byN !== null && byN < 0 ? toN - 1 : toN + 1) : `${exprText(to, 1)} + 1`;
+      const args = [exprText(from), toText];
+      if (!(byN === 1)) args.push(exprText(by));
+      out.push({ text: `${pad}for ${name} in range(${args.join(', ')}):`, id: b.id });
+      sub(inp.DO && inp.DO.block, depth + 1, b.id, [...scope, name]);
+    } else if (b.type === BT.repeat) {
       out.push({ text: `${pad}for i in range(${Math.min(50, Math.max(1, Math.round(Number(f.TIMES) || 1)))}):`, id: b.id });
       sub(inp.DO && inp.DO.block, depth + 1, b.id);
-    } else if (b.type === BT.until) {
-      out.push({ text: `${pad}while not ${W.until.py}():`, id: b.id });
+    } else if (b.type === BT.until && UNTIL) {
+      out.push({ text: `${pad}while not ${UNTIL}():`, id: b.id });
       sub(inp.DO && inp.DO.block, depth + 1, b.id);
     } else if (TYPE2COND.has(b.type)) {
       // 「そうでなければ」の なかが「もし」1こ だけ なら elif に まとめる
@@ -247,7 +385,9 @@ function blocksToLines(first, depth, out) {
   return out;
 }
 function workspaceToLines() {
-  const tops = (Blockly.serialization.workspaces.save(workspace).blocks || {}).blocks || [];
+  const saved = Blockly.serialization.workspaces.save(workspace);
+  VARMAP = Object.fromEntries((saved.variables || []).map((v) => [v.id, v.name]));
+  const tops = (saved.blocks || {}).blocks || [];
   tops.sort((a, b) => (a.y || 0) - (b.y || 0) || (a.x || 0) - (b.x || 0));
   return { lines: tops.length ? blocksToLines(tops[0], 0, []) : [], loose: tops.length > 1 };
 }
@@ -265,11 +405,39 @@ function nodesToBlocks(list) {
   return head;
 }
 const bodyInput = (list) => { const b = nodesToBlocks(list); return b ? { block: b } : undefined; };
+// しき → あたいの ブロック
+const OPNAME = { '+': 'ADD', '-': 'MINUS', '*': 'MULTIPLY', '/': 'DIVIDE', '**': 'POWER' };
+function exprBlock(e, no) {
+  if (e.k === 'num') return { type: 'math_number', fields: { NUM: e.v } };
+  if (e.k === 'var') return { type: 'variables_get', fields: { VAR: { id: 'v_' + e.name } } };
+  if (e.k === 'neg') return exprBlock({ k: 'bin', op: '-', a: { k: 'num', v: 0 }, b: e.x }, no);
+  if (!OPNAME[e.op]) throw new NoBlock(no);   // // と % は ブロックに ない
+  return { type: 'math_arithmetic', fields: { OP: OPNAME[e.op] }, inputs: { A: valueInput(e.a, no), B: valueInput(e.b, no) } };
+}
+function valueInput(e, no) {
+  if (e.k === 'num') return { shadow: { type: 'math_number', fields: { NUM: e.v } } };
+  return { shadow: { type: 'math_number', fields: { NUM: 0 } }, block: exprBlock(e, no) };
+}
+const usesVar = (list, name) => JSON.stringify(list).includes(`"k":"var","name":"${name}"`);
 function nodeToBlock(n) {
-  if (n.type === 'cmd') return { type: BT.cmd(n.cmd) };
+  if (n.type === 'cmd') {
+    const c = CMD.get(n.cmd);
+    if (c.arg === 'num') return { type: BT.cmd(n.cmd), inputs: { N: valueInput(n.arg, n.no) } };
+    if (c.opts) return { type: BT.cmd(n.cmd), fields: { C: n.arg } };
+    return { type: BT.cmd(n.cmd) };
+  }
+  if (n.type === 'for' && n.args) {
+    if (n.args.length === 1 && !usesVar(n.body, n.var)) return { type: BT.repeat, inputs: clean({ TIMES: valueInput(n.args[0], n.no), DO: bodyInput(n.body) }) };
+    const one = { k: 'num', v: 1 };
+    const from = n.args.length === 1 ? { k: 'num', v: 0 } : n.args[0], end = n.args.length === 1 ? n.args[0] : n.args[1], step = n.args[2] || one;
+    if (step.k !== 'num' || step.v === 0) throw new NoBlock(n.no);
+    const to = end.k === 'num' ? { k: 'num', v: step.v > 0 ? end.v - 1 : end.v + 1 } : { k: 'bin', op: step.v > 0 ? '-' : '+', a: end, b: one };
+    return { type: 'controls_for', fields: { VAR: { id: 'v_' + n.var } },
+      inputs: clean({ FROM: valueInput(from, n.no), TO: valueInput(to, n.no), BY: valueInput({ k: 'num', v: Math.abs(step.v) }, n.no), DO: bodyInput(n.body) }) };
+  }
   if (n.type === 'for') return { type: BT.repeat, fields: { TIMES: n.n }, inputs: clean({ DO: bodyInput(n.body) }) };
   if (n.type === 'while') {
-    if (n.cond.always || n.cond.fn !== W.until.py || !n.cond.not) throw new NoBlock(n.no);
+    if (!UNTIL || n.cond.always || n.cond.fn !== UNTIL || !n.cond.not) throw new NoBlock(n.no);
     return { type: BT.until, inputs: clean({ DO: bodyInput(n.body) }) };
   }
   const build = (arms, other) => {
@@ -286,7 +454,17 @@ function nodeToBlock(n) {
 }
 
 /* ========== 4. ワークスペース ========== */
-const flyout = (types) => ({ kind: 'flyoutToolbox', contents: types.map((type) => ({ kind: 'block', type })) });
+const sh = (v) => ({ shadow: { type: 'math_number', fields: { NUM: v } } });
+function flyEntry(type) {   // ツールボックスの ブロック（かずの はいる ところには さいしょの かずを いれておく）
+  const c = CMD.get(TYPE2CMD.get(type));
+  if (c && c.arg === 'num') return { kind: 'block', type, inputs: { N: sh(c.def ?? 10) } };
+  if (type === BT.repeat && EXPRS) return { kind: 'block', type, inputs: { TIMES: sh(4) } };
+  if (type === 'controls_for') return { kind: 'block', type, fields: { VAR: { name: 'i' } }, inputs: { FROM: sh(1), TO: sh(10), BY: sh(1) } };
+  if (type === 'math_arithmetic') return { kind: 'block', type, fields: { OP: 'DIVIDE' }, inputs: { A: sh(360), B: sh(6) } };
+  if (type === 'variables_get') return { kind: 'block', type, fields: { VAR: { name: 'i' } } };
+  return { kind: 'block', type };
+}
+const flyout = (types) => ({ kind: 'flyoutToolbox', contents: types.map(flyEntry) });
 const codeSide = document.getElementById('codeSide');
 codeSide.classList.add('blocks');   // はいる まえに みえる ように して おく（おおきさを はかる ため）
 const workspace = Blockly.inject('blocklyDiv', {
@@ -301,7 +479,7 @@ const code = document.getElementById('code'), hl = document.getElementById('hl')
 const wrap = document.getElementById('codeWrap');
 const consoleEl = document.getElementById('console'), msg = document.getElementById('msg'), info = document.getElementById('info');
 let markLine = 0, markKind = '';
-const FN_NAMES = [...W.cmds.map((c) => c.py), ...W.conds.map((c) => c.py), W.until.py];
+const FN_NAMES = [...W.cmds.map((c) => c.py), ...W.conds.map((c) => c.py), ...(UNTIL ? [UNTIL] : [])];
 const TOKEN = new RegExp(`('[^']*'|"[^"]*")|\\b(for|in|while|if|elif|else|not|pass|True|False|and|or)\\b|\\b(${FN_NAMES.join('|')})\\b|\\b(range|print)\\b|\\b(\\d+)\\b`, 'g');
 function colorLine(s) {
   const m = s.match(/^([^#]*?)(#.*)?$/);
@@ -344,9 +522,9 @@ code.addEventListener('keydown', (e) => {
 });
 
 // めいれいの ボタン（キーボードが にがてな こ むけ）
-const PALETTE = [
+const PALETTE = W.palette || [
   ...W.cmds.map((c) => c.py + '()'),
-  'for i in range(3):', `while not ${W.until.py}():`,
+  'for i in range(3):', `while not ${UNTIL}():`,
   ...W.conds.map((f) => `if ${condText(f)}:`),
   `elif ${condText(W.conds[W.conds.length - 1])}:`, 'else:'
 ];
@@ -363,10 +541,10 @@ PALETTE.forEach((p) => {
 
 // ブロックと Python の たいおうひょう
 const fill = (label, fam) => label.replace('%1', fam && fam.opts ? fam.opts[0][0] : '〇');
-const MAP = [
+const MAP = W.mapRows || [
   ...W.cmds.map((c) => [c.colour, c.label, c.py + '()']),
   [W.loopColour, t('pyRepeatLbl'), 'for i in range(〇):'],
-  [W.loopColour, W.until.label, `while not ${W.until.py}():`],
+  [W.loopColour, W.until && W.until.label, `while not ${UNTIL}():`],
   ...W.conds.map((f) => [f.colour, fill(f.label, f), `if ${condText(f)}:`]),
   [W.conds[0].colour, t('pyElse'), LANG === 'en' ? 'else:   (only an “if” inside → elif)' : 'else:（なかが「もし」だけなら elif）']
 ];
@@ -395,9 +573,11 @@ function syncFromBlocks() {
 }
 // Python の もじを ブロックに する（できなければ エラーを なげる）
 function codeToBlocks(src) {
-  const first = nodesToBlocks(parse(src).prog);
-  workspace.clear();
-  if (first) { first.x = 20; first.y = 20; Blockly.serialization.blocks.append(first, workspace); }
+  const parsed = parse(src);
+  const first = nodesToBlocks(parsed.prog);
+  if (first) { first.x = 20; first.y = 20; }
+  Blockly.serialization.workspaces.load({ blocks: { languageVersion: 0, blocks: first ? [first] : [] },
+    variables: parsed.vars.map((v) => ({ name: v, id: 'v_' + v })) }, workspace);
   syncFromBlocks();
 }
 function setMode(m, quiet) {
@@ -489,7 +669,8 @@ function runCode() {
     if (mode === 'blocks') workspace.highlightBlock(lineIds[(f.id || 0) - 1] || null);
     draw();
     if (W.afterDraw) W.afterDraw();
-    timer = setTimeout(step, window.__instant ? 0 : 650 - Number(document.getElementById('speed').value) * 60);
+    const sp = Number(document.getElementById('speed').value);
+    timer = setTimeout(step, window.__instant ? 0 : W.delay ? W.delay(f, sp) : 650 - sp * 60);
   };
   if (window.__instant) {   // テストよう：まつ じかん なしで さいごまで
     while (i < frames.length) { const f = frames[i++]; W.apply(f, i, frames); if (mode === 'blocks') workspace.highlightBlock(lineIds[(f.id || 0) - 1] || null); }

@@ -45,6 +45,38 @@
    あたらしい バージョンを だすときは、この いちばん うえに 1つ たして、
    i18n.js の RELEASE_VERSION も おなじ ばんごうに する（「NEW」の しるしが でる） */
 const RELEASES = [
+  { v: '1.14', date: '2026-11-09', items: [
+    ['imp', '「⚙ きのう」の こうもくの なまえを「🎮 あそびかた・べんきょうの しかた」に そろえた', 'Unified the menu name to “🎮 How to play and learn”.'],
+    ['add', 'あそびかたの ページに「🖥 がめんの みかた」を ついか。ブロックの アプリと Python版の がめんを ばんごうつきの えで せつめい', 'Added “🖥 The screen” to the how-to page: numbered pictures of the block app and Python screens.']
+  ] },
+  { v: '1.13', date: '2026-11-09', items: [
+    ['imp', 'うえの メニュー（ヘッダー）から 🎬 どうが・📖 かいせつしょ を はずした。「⚙ きのう」から ひらいてね', 'Removed 🎬 Videos and 📖 Guide from the top menu (header). Open them from ⚙ Settings.']
+  ] },
+  { v: '1.12', date: '2026-11-09', items: [
+    ['add', '🐢 ブロックでおえかき・🐍 Pythonで おえかき にも こうかおん（すすむ・まわる・せいかい・おしい・ちがう）。「⚙ きのう」で おとの オン／オフ', '🐢 Block Drawing and 🐍 Python Drawing now have sound effects (move, turn, correct, almost, wrong), with sound on/off in ⚙ Settings.'],
+    ['add', '「⚙ きのう」の「🎮 べんきょうの しかた・あそびかた」の したに「🎬 どうが」「📖 かいせつしょ」を ついか', 'Added “🎬 Videos” and “📖 Guide book” under “🎮 How to play and learn” in ⚙ Settings.'],
+    ['imp', 'メニューが ながい ときは、メニューの なかを スクロール できるように した', 'Long menus can now scroll.']
+  ] },
+  { v: '1.11', date: '2026-11-09', items: [
+    ['add', "🐍 Pythonで おえかき（python-draw.html）：forward(80)・right(60)・pen_color('red') などで カメが かく。for i in range(10, 201, 10): の へんすうや 360 / n の けいさんも つかえる（おだい 9）", "🐍 Python Drawing (python-draw.html): draw with forward(80), right(60), pen_color('red') and more, using variables (for i in range(10, 201, 10):) and math (360 / n) (9 challenges)."],
+    ['imp', 'Python の しくみが、かず・へんすう・けいさん（+ - * / // % **）と range(はじめ, おわり, ふやす かず) に たいおう。ブロックの「かず」「けいさん」「カウント」とも いききできる', 'The Python engine now supports numbers, variables, math (+ - * / // % **) and range(start, end, step), and converts them to and from number, math and count blocks.'],
+    ['add', 'ブロックでおえかき の「⚙ きのう」にも「🐍 Python に きりかえる」', 'Added “🐍 Switch to Python” to Block Drawing.'],
+    ['add', '🎬 Pythonで おえかき の かいせつ どうが 18ぽん（にほんご・English）', '🎬 18 Python Drawing videos (Japanese/English).'],
+    ['add', '🖥 えいごばんの 授業用スライド（slides/en/）。にほんごばんは slides/ja/ に いどう。Pythonで おえかき の スライドも ついか', '🖥 English lesson slides (slides/en/); Japanese slides moved to slides/ja/. Added Python Drawing slides.'],
+    ['fix', 'Python版の どうがで、かずの まわりに しろい わくが でていた もんだいを なおした', 'Fixed white boxes around numbers in the Python videos.'],
+    ['doc', 'かいせつしょ（ぜんぶで 58かだい）・こたえ・README・ようけん ていぎしょ（1.8）を こうしん', 'Updated the guide (58 tasks), answer key, README and requirements (1.8).']
+  ] },
+  { v: '1.10', date: '2026-11-09', items: [
+    ['add', '「⚙ きのう」に「🔤 フォントを かえる」を ついか。いまの ドットもじ と よみやすい もじ（BIZ UDPゴシック）を いききできる（すべての ページ、ブロックや Python の コードも）', 'Added “🔤 Change font” to ⚙ Settings: switch between the pixel font and an easy-to-read font (BIZ UDPGothic) on every page, including blocks and Python code.']
+  ] },
+  { v: '1.9', date: '2026-11-08', items: [
+    ['add', '🎮 あそびかた・べんきょうの しかた（howto.html）：アプリの えらびかた、4つの ステップ、べんきょうの コツ、Python、べんりな きのう を しょうかい', '🎮 How to play and learn (howto.html): choosing an app, 4 steps, learning tips, Python and useful features.'],
+    ['add', '「⚙ きのう」に「🎮 べんきょうの しかた・あそびかた」を ついか（すべての ページ）', 'Added “🎮 How to play and learn” to the ⚙ Settings menu on every page.'],
+    ['add', '🎬 1ぷんで わかる あそびかたの どうが（にほんご・English）。どうがの ページの いちばん うえにも ついか', '🎬 A 1-minute how-to-play video (Japanese/English), also at the top of the videos page.']
+  ] },
+  { v: '1.8', date: '2026-11-08', items: [
+    ['add', '🖥 授業用スライド（PowerPoint）：授業ガイドと 7つの アプリの スライド（slides/）。ステージごとに もんだい・ヒント・こたえ、先生むけの ことばは ノート欄', '🖥 Lesson slides (PowerPoint): a teacher guide and slides for the 7 apps (slides/). Task, hint and answer for each stage, with teacher notes.']
+  ] },
   { v: '1.7', date: '2026-11-08', items: [
     ['add', '🐍 Pythonで うちゅう（python-space.html）：pick_up()・has_star()・mission_done() で ほしあつめ（6ステージ）', '🐍 Python Space (python-space.html): collect stars with pick_up(), has_star() and mission_done() (6 stages).'],
     ['add', "🐍 Pythonで こわす・おく（python-craft.html）：mine()・place()・front_is('stone') で こわして はしを かける（7ステージ）", "🐍 Python Break & Build (python-craft.html): break stone and build bridges with mine(), place() and front_is('stone') (7 stages)."],

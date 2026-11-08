@@ -49,6 +49,9 @@ const APPS = [
   { key: 'craft', icon: '🧱', ja: 'こわして つくる ぼうけん', en: 'Break & Build Quest', page: 'craft.html', titles: {
       ja: ['こわして すすもう', 'はしを かけよう', 'くりかえして こわそう', 'ながい はし', 'もし いしが あったら', 'いしと みず', 'うずまきの どうくつ'],
       en: ['Break and go', 'Build a bridge', 'Break with a loop', 'A long bridge', 'If there is stone', 'Stone and water', 'Spiral cave'] } },
+  { key: 'pydraw', icon: '🐍', ja: 'Pythonで おえかき', en: 'Python Drawing', page: 'python-draw.html', odai: true, titles: {
+      ja: ["① 六角形（ろっかくけい） ★", "② ほし ★★", "③ まる ★★", "④ まど ★★★", "⑤ はな ★★★", "⑥ しかくい うずまき ★★★★", "⑦ ならんだ たかくけい ★★★★", "⑧ ゆきの けっしょう ★★★★★", "⑨ ほしの うずまき ★★★★★"],
+      en: ["① Hexagon ★", "② Star ★★", "③ Circle ★★", "④ Window ★★★", "⑤ Flower ★★★", "⑥ Square spiral ★★★★", "⑦ Polygons in a row ★★★★", "⑧ Snowflake ★★★★★", "⑨ Star spiral ★★★★★"] } },
   { key: 'pymaze', icon: '🐍', ja: 'Pythonで めいろ', en: 'Python Maze', page: 'python.html', titles: {
       ja: ["まっすぐ すすもう", "まがってみよう", "for で くりかえそう", "while と if", "elif で 3つに わけよう"],
       en: ["Go straight", "Let's turn", "Repeat with for", "while and if", "Three choices with elif"] } },
@@ -66,6 +69,16 @@ document.getElementById('note').textContent = J
   ? 'ステージごとの かいせつ どうがです（じまく＋こうかおん、1ぽん 30〜60びょう）。🐍 Python版は、こたえの コードと うごいている ぎょうを みせます。▶ を おすと はじまります。'
   : 'One short video for each stage (captions + sound effects, 30–60 seconds). 🐍 Python videos show the answer code and the line that is running. Press ▶ to play.';
 const list = document.getElementById('list');
+// はじめに：あそびかたの しょうかい どうが
+{
+  const sec = document.createElement('section'); sec.className = 'app';
+  const h = document.createElement('h2'); h.innerHTML = `🎮 <a href="howto.html" style="color:inherit">${J ? 'あそびかた・べんきょうの しかた' : 'How to play and learn'}</a>`;
+  const grid = document.createElement('div'); grid.className = 'grid';
+  const card = document.createElement('div'); card.className = 'panel card';
+  const v = document.createElement('video'); v.src = `videos/${LANG}/howto.mp4`; v.controls = true; v.preload = 'metadata'; v.playsInline = true;
+  const cap = document.createElement('div'); cap.className = 't'; cap.textContent = J ? 'はじめに：1ぷんで わかる あそびかた' : 'Start here: how to play in 1 minute';
+  card.append(v, cap); grid.append(card); sec.append(h, grid); list.append(sec);
+}
 for (const a of APPS) {
   const sec = document.createElement('section'); sec.className = 'app';
   const h = document.createElement('h2'); h.innerHTML = `${a.icon} <a href="${a.page}" style="color:inherit">${J ? a.ja : a.en}</a>`;
@@ -76,7 +89,7 @@ for (const a of APPS) {
     const v = document.createElement('video');
     v.src = `videos/${LANG}/${a.key}-${n}.mp4`; v.controls = true; v.preload = 'metadata'; v.playsInline = true;
     const cap = document.createElement('div'); cap.className = 't';
-    cap.textContent = (J ? `ステージ${i + 1}　` : `Stage ${i + 1}: `) + t;
+    cap.textContent = (a.odai ? '' : (J ? `ステージ${i + 1}　` : `Stage ${i + 1}: `)) + t;
     card.append(v, cap); grid.append(card);
   });
   sec.append(h, grid); list.append(sec);
