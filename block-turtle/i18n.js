@@ -75,10 +75,21 @@
     var sw = window.pythonMenuItem();
     if (sw) items = [sw].concat(items);
     // 📝 リリースノート：どの ページでも ページへ いく こうもくの つぎに だす（リリースノートの ページ いがい）
-    if (!/releases\.html$/.test(location.pathname)) {
+    // 🎮 あそびかた・べんきょうの しかた も、ページへ いく こうもくの つぎに ならべる
+    var pages = [];
+    if (!/howto\.html$/.test(location.pathname)) pages.push(window.howtoMenuItem());
+    if (!/videos\.html$/.test(location.pathname)) pages.push(window.pageMenuItem('🎬', 'どうが（かいせつ どうが）', 'Videos', 'videos.html'));
+    if (!/guide\.html$/.test(location.pathname)) pages.push(window.pageMenuItem('📖', 'かいせつしょ', 'Guide book', 'guide.html'));
+    if (!/releases\.html$/.test(location.pathname)) pages.push(window.releaseMenuItem());
+    if (pages.length) {
       var at = items.length && items[0].cls === 'go' ? 1 : 0;
-      items = items.slice(0, at).concat([window.releaseMenuItem()], items.slice(at));
+      pages.forEach(function (p, k) { p.cls = k === pages.length - 1 ? 'go2' : 'go3'; });
+      items = items.slice(0, at).concat(pages, items.slice(at));
     }
+    // 🔤 フォントを かえる：「おちついた いろ」の つぎに だす（どの ページでも）
+    var ci = -1;
+    items.forEach(function (it, k) { if (it._calm) ci = k; });
+    if (ci >= 0) items = items.slice(0, ci + 1).concat([window.fontMenuItem()], items.slice(ci + 1));
     var menu = {
       render: function () {
         box.innerHTML = '';
@@ -117,7 +128,7 @@
   };
 
   // ブロックの アプリ ⇄ Python版 の くみあわせ
-  var PY_PAIRS = { 'maze.html': 'python.html', 'space.html': 'python-space.html', 'craft.html': 'python-craft.html' };
+  var PY_PAIRS = { 'index.html': 'python-draw.html', 'maze.html': 'python.html', 'space.html': 'python-space.html', 'craft.html': 'python-craft.html' };
   // メニューの「🐍 Python に きりかえる」（Python版では「🧩 ブロックに もどる」）の こうもく
   window.pythonMenuItem = function () {
     var here = location.pathname.split('/').pop() || 'index.html';
@@ -136,8 +147,26 @@
     };
   };
 
+  // 🎮 あそびかた・べんきょうの しかた（しょうかいの ページへ いく）
+  window.howtoMenuItem = function () {
+    return {
+      icon: function () { return '🎮'; },
+      label: function () { return lang === 'ja' ? 'あそびかた・べんきょうの しかた' : 'How to play and learn'; },
+      onClick: function () { location.href = 'howto.html'; }
+    };
+  };
+
+  // 🎬 どうが・📖 かいせつしょ など、ページへ いく こうもく
+  window.pageMenuItem = function (icon, ja, en, href) {
+    return {
+      icon: function () { return icon; },
+      label: function () { return lang === 'ja' ? ja : en; },
+      onClick: function () { location.href = href; }
+    };
+  };
+
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
-  var RELEASE_VERSION = '1.7';
+  var RELEASE_VERSION = '1.14';
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
   window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
@@ -165,16 +194,43 @@
      みための せってい：🌙 ナイトモード ／ 🎨 おちついた いろ
      5つの アプリで きょうつう。ページを ひらいた すぐに あてるので ちらつかない
      ------------------------------------------------------------------- */
-  var look = { night: false, calm: false };
-  try { look.night = localStorage.getItem('block-night') === '1'; look.calm = localStorage.getItem('block-calm') === '1'; } catch (e) {}
+  var look = { night: false, calm: false, ud: false };
+  try {
+    look.night = localStorage.getItem('block-night') === '1'; look.calm = localStorage.getItem('block-calm') === '1';
+    look.ud = localStorage.getItem('block-font') === 'ud';
+  } catch (e) {}
+  // 🔤 よみやすい フォント（UD フォント）：Google Fonts から よみこむ。つながらない ときは パソコンの フォントで だす
+  var UD_FAMILY = '"BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif';
+  var UD_MONO = '"BIZ UDGothic", "BIZ UDゴシック", "Osaka-Mono", "MS Gothic", monospace';
+  window.UD_FAMILY = UD_FAMILY;
+  function loadUdFont() {
+    if (document.getElementById('udFontCss')) return;
+    var l = document.createElement('link');
+    l.id = 'udFontCss'; l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap';
+    (document.head || document.documentElement).appendChild(l);
+  }
   function applyLook() {
     document.documentElement.classList.toggle('theme-night', look.night);
     document.documentElement.classList.toggle('theme-calm', look.calm);
+    document.documentElement.classList.toggle('font-ud', look.ud);
+    if (look.ud) loadUdFont();
   }
   function saveLook() {
-    try { localStorage.setItem('block-night', look.night ? '1' : '0'); localStorage.setItem('block-calm', look.calm ? '1' : '0'); } catch (e) {}
+    try {
+      localStorage.setItem('block-night', look.night ? '1' : '0'); localStorage.setItem('block-calm', look.calm ? '1' : '0');
+      localStorage.setItem('block-font', look.ud ? 'ud' : 'dot');
+    } catch (e) {}
   }
   applyLook();
+  // ブロックの もじも おなじ フォントに する（Blockly は テーマの フォントで もじの はばを はかるため）
+  if (window.Blockly && Blockly.Theme && Blockly.Theme.defineTheme) {
+    var defineTheme = Blockly.Theme.defineTheme;
+    Blockly.Theme.defineTheme = function (name, opts) {
+      if (look.ud && opts && opts.fontStyle) opts.fontStyle = Object.assign({}, opts.fontStyle, { family: UD_FAMILY, size: 12 });
+      return defineTheme.call(Blockly.Theme, name, opts);
+    };
+  }
   window.nightMenuItem = function () {
     return {
       icon: function () { return look.night ? '☀️' : '🌙'; },
@@ -185,8 +241,25 @@
       onClick: function (m) { look.night = !look.night; saveLook(); applyLook(); m.render(); }
     };
   };
+  // 🔤 フォントを かえる：ドットの もじ ⇄ よみやすい もじ（UD フォント）
+  window.fontMenuItem = function () {
+    return {
+      icon: function () { return '🔤'; },
+      label: function () {
+        return lang === 'ja' ? (look.ud ? 'フォントを かえる（もとの ドットもじへ）' : 'フォントを かえる（よみやすい もじへ）')
+                             : (look.ud ? 'Change font (back to pixel)' : 'Change font (easy to read)');
+      },
+      onClick: function (m) {
+        look.ud = !look.ud; saveLook();
+        // ブロックの ある ページは よみなおす（ブロックの おおきさを もじに あわせる ため。くんだ ブロックは ほぞん されている）
+        if (window.Blockly && window.Blockly.inject) { location.reload(); return; }
+        applyLook(); m.render();
+      }
+    };
+  };
   window.calmMenuItem = function () {
     return {
+      _calm: true,
       icon: function () { return look.calm ? '🌈' : '🎨'; },
       label: function () {
         return lang === 'ja' ? (look.calm ? 'もとの いろに もどす' : 'おちついた いろに する')
@@ -202,9 +275,8 @@
     { href: 'maze.html',     icon: '⛏', ja: 'めいろ',     en: 'Maze' },
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
     { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
-    { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' },
-    { href: 'videos.html',   icon: '🎬', ja: 'どうが', en: 'Videos' },
-    { href: 'guide.html',    icon: '📖', ja: 'かいせつしょ', en: 'Guide' }
+    { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' }
+    // 🎬 どうが・📖 かいせつしょ は「⚙ きのう」メニューから ひらく（ヘッダーには おかない）
   ];
   window.buildNav = function (nav) {
     var here = location.pathname.split('/').pop() || 'index.html';

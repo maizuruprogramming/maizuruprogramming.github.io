@@ -98,7 +98,7 @@ main { display: flex; height: calc(100% - 56px); }
 .blocklyText, .blocklyFlyoutLabelText { font-family: "DotGothic16", monospace !important; }
 
 /* ---------- ⚙ きのう メニュー ---------- */
-.fnMenu { position: fixed; z-index: 300; display: none; min-width: 260px; padding: 6px;
+.fnMenu { position: fixed; z-index: 300; display: none; min-width: 260px; padding: 6px; max-height: calc(100vh - 76px); overflow-y: auto;
   background: #2b2f3a; border: 3px solid #000; box-shadow: 0 8px 22px rgba(0,0,0,.45); font-family: inherit; }
 .fnMenu.show { display: block; }
 .fnMenu .fnItem { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin: 4px 0; padding: 8px 14px;
@@ -110,6 +110,7 @@ main { display: flex; height: calc(100% - 56px); }
 .fnMenu .fnItem.go:hover, .fnMenu .fnItem.go:focus-visible { background: #3d7fb8; }
 .fnMenu .fnItem.go2 { margin-bottom: 10px; }   /* 📝 リリースノート（ページを うつる こうもく） */
 .fnMenu .fnItem.go + .fnItem.go2 { margin-top: -4px; }
+.fnMenu .fnItem.go + .fnItem.go3 { margin-top: -4px; }
 .fnMenu .fnNew { margin-left: auto; background: #ffd43b; color: #222; text-shadow: none; font-size: 12px; padding: 1px 6px; border: 2px solid #000; }
 .fnMenu .fnIco { font-size: 22px; width: 1.3em; text-align: center; }
 
@@ -169,3 +170,13 @@ html.theme-calm .fnMenu, html.theme-calm #clearDialog .box, html.theme-calm .blo
   header { gap: 6px; }
   header button { padding-left: 9px; padding-right: 9px; }
 }
+
+/* ---------- 🔤 よみやすい フォント（⚙ きのう → フォントを かえる） ----------
+   ふつうの もじは BIZ UDPゴシック、コード（Python）は はばが そろった BIZ UDゴシック */
+html.font-ud body, html.font-ud body *:not(#hl):not(#code):not(#lineNo):not(#lineNo *):not(#hl *):not(code):not(pre):not(pre *):not(#console):not(#console *) {
+  font-family: "BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif !important;
+}
+html.font-ud #hl, html.font-ud #code, html.font-ud #lineNo, html.font-ud #lineNo *, html.font-ud #hl *, html.font-ud code, html.font-ud pre, html.font-ud pre *, html.font-ud #console, html.font-ud #console * {
+  font-family: "BIZ UDGothic", "BIZ UDゴシック", "Osaka-Mono", "MS Gothic", monospace !important;
+}
+html.font-ud .blocklyText, html.font-ud .blocklyFlyoutLabelText { font-family: "BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Sans", "Meiryo", sans-serif !important; }
