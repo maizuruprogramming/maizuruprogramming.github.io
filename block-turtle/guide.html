@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>かいせつしょ / Guide Book</title>
+<script src="i18n.js"></script>        <!-- にほんご／English・⚙メニュー（ここでは Blockly は つかわない） -->
+<script src="guide-data.js"></script>  <!-- かいせつの データ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  /* ===== テーマ：ほんだな（かいせつしょ） ===== */
+  :root {
+    --page-bg: #3b2a22 repeating-conic-gradient(rgba(0,0,0,.16) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#c0504d 0 10px, #8e2f2c 10px 14px, #4a2a24 14px);
+    --hdr-border: #1c0f0c; --title-shadow: #000; --link: #ffd966; --fn: #8e2f2c;
+    --panel-bg: #f6efdc; --panel-light: #ffffff; --panel-dark: #9a8a62; --panel-text: #3a3026; --accent: #8e2f2c;
+  }
+  html, body { height: auto; min-height: 100%; }
+  #wrap { max-width: 1100px; margin: 0 auto; padding: 16px 16px 40px; }
+  .panel { width: auto; }
+  h2.app { color: #fff; font-weight: normal; font-size: 26px; text-shadow: 2px 2px 0 #000; margin: 30px 0 10px; scroll-margin-top: 10px; }
+  .appIntro { margin-bottom: 14px; line-height: 1.8; }
+  .appIntro a { color: var(--accent); }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .bar button { font-size: 15px; padding: 5px 12px; }
+  #intro p { margin: 6px 0; line-height: 1.8; }
+  .teacher { margin-top: 10px; padding: 8px 12px; background: #efe4c6; border-left: 6px solid var(--accent); font-size: 14px; line-height: 1.8; }
+  /* もくじ */
+  #toc { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+  #toc a { color: #fff; text-decoration: none; background: rgba(0,0,0,.35); border: 3px solid #000; padding: 6px 12px; text-shadow: 2px 2px 0 #000; }
+  /* まなびの つながり（ひょう） */
+  table.map { border-collapse: collapse; width: 100%; font-size: 14px; background: #fffaf0; }
+  table.map th, table.map td { border: 2px solid #c9b98a; padding: 5px 8px; text-align: center; }
+  table.map th { background: #e7d9b3; }
+  table.map td.c { text-align: left; white-space: nowrap; }
+  table.map td a { color: var(--accent); margin: 0 2px; }
+  /* かだいの カード */
+  .item { margin: 12px 0; scroll-margin-top: 10px; }
+  .item h3 { margin: 0 0 6px; font-size: 21px; font-weight: normal; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .chip { font-size: 13px; padding: 2px 8px; background: #3c5aa6; color: #fff; border: 2px solid #000; }
+  .chip.lim { background: #8e2f2c; }
+  .facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; line-height: 1.8; margin: 3px 0; }
+  .facts .k { color: var(--accent); white-space: nowrap; }
+  @media (max-width: 600px) { .facts { grid-template-columns: 1fr; } }
+  details { margin-top: 8px; border: 3px solid; border-color: var(--panel-dark) var(--panel-light) var(--panel-light) var(--panel-dark); background: #fffaf0; }
+  details summary { cursor: pointer; padding: 6px 10px; font-size: 16px; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: '▶ '; }
+  details[open] summary::before { content: '▼ '; }
+  details .in { padding: 4px 12px 12px; line-height: 1.8; }
+  details pre.py { margin: 8px 0 0; padding: 10px 14px; background: #1e2430; color: #e6e6e6; border: 2px solid #000; font: 16px/1.6 "DotGothic16", monospace; overflow-x: auto; white-space: pre; }
+  details img { display: block; max-width: 100%; height: auto; margin-top: 8px; border: 2px solid #000; }
+  .links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .links a { font-size: 15px; color: #fff; text-decoration: none; background: #4f6a9a; border: 3px solid; border-color: #9fb5dd #22314f #22314f #9fb5dd; outline: 2px solid #000; padding: 4px 10px; text-shadow: 1px 1px 0 #000; }
+  .links a.v { background: #8e2f2c; border-color: #d48a87 #4a1311 #4a1311 #d48a87; }
+  html.theme-night table.map { background: #22262f; }
+  html.theme-night table.map th { background: #2b2f3a; }
+  html.theme-night table.map th, html.theme-night table.map td { border-color: #3a4050; }
+  html.theme-night details, html.theme-night .teacher { background: #1b1e26; }
+  /* いんさつ：ヘッダーと ボタンを かくし、こたえを ひらいた じょうたいで */
+  @media print {
+    header, .bar, #toc, .links, .fnMenu { display: none !important; }
+    html, body { background: #fff !important; }
+    #wrap { max-width: none; padding: 0; }
+    h2.app { color: #000; text-shadow: none; page-break-before: always; }
+    .panel { outline: none; border: 1px solid #999; background: #fff !important; color: #000 !important; }
+    .item { page-break-inside: avoid; }
+    details { border: 1px solid #999; }
+    details summary::before { content: ''; }
+    html.theme-calm main, html.theme-calm header { filter: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">📖</span><span class="lbl" id="title"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<div id="wrap">
+  <div id="intro" class="panel"></div>
+  <div id="toc"></div>
+  <div id="mapBox"></div>
+  <div id="body"></div>
+</div>
+<script>
+const J = LANG === 'ja';
+const G = window.GUIDE;
+const T = (o) => o == null ? '' : (typeof o === 'string' ? o : (o[LANG] ?? o.ja));
+const S = {
+  title: ['かいせつしょ', 'Guide Book'],
+  lead1: ['この ページは、ブロックの 4つの アプリと 🐍 Python版 3つの すべての かだい（おだい・ステージ）の かいせつしょ です。',
+          'This page explains every challenge and stage in the four block apps and the three 🐍 Python apps.'],
+  lead2: ['「ヒントを みる」「こたえと ポイントを みる」を おすと、ヒントや こたえが ひらきます。まずは じぶんで かんがえてから ひらいてみよう！',
+          'Press “Show hint” or “Show answer and key point” to open them. Try to think by yourself first!'],
+  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（めいろ・うちゅう・こわす・おく と、その Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。',
+            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Maze, Space, Break & Build and their Python versions) are included. “🖨 Print” prints with all answers open.'],
+  openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'],
+  mapTitle: ['まなびの つながり（どの かだいで なにを まなぶか）', 'What you learn where'],
+  concept: ['まなぶ こと', 'Concept'],
+  goal: ['🎯 めあて', '🎯 Goal'], q: ['📝 もんだい', '📝 Task'], mistake: ['⚠ つまずきやすい ところ', '⚠ Common mistake'],
+  hint: ['💡 ヒントを みる', '💡 Show hint'], answer: ['📖 こたえと ポイントを みる', '📖 Show answer and key point'], point: ['✨ ポイント', '✨ Key point'],
+  limit: (n) => J ? `めやす：ブロック ${n}こ いない` : `Target: ${n} blocks or fewer`,
+  openApp: ['▶ アプリで ためす', '▶ Try it in the app'], video: ['🎬 かいせつ どうが', '🎬 Video'],
+  stage: (a, n) => a === 'draw' ? (J ? `おだい${n}` : `Challenge ${n}`) : (J ? `ステージ${n}` : `Stage ${n}`)
+};
+const s = (k) => Array.isArray(S[k]) ? S[k][J ? 0 : 1] : S[k];
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+document.title = s('title'); document.getElementById('title').textContent = s('title');
+
+// はじめに
+document.getElementById('intro').innerHTML =
+  `<p>${esc(s('lead1'))}</p><p>${esc(s('lead2'))}</p><div class="teacher">${esc(s('teacher'))}</div>
+   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button></div>`;
+
+// もくじ
+document.getElementById('toc').innerHTML = G.apps.map((a) => `<a href="#app-${a.key}">${a.icon} ${esc(T(a.name))}</a>`).join('');
+
+// まなびの つながり（ひょう）
+const order = ['seq', 'dir', 'loop', 'nest', 'pattern', 'angle', 'count', 'if', 'until', 'var', 'math', 'decomp', 'algo', 'py'];
+let map = `<div class="panel" style="margin:12px 0"><h3 style="margin:0 0 8px;font-weight:normal">${esc(s('mapTitle'))}</h3><div style="overflow-x:auto"><table class="map"><tr><th>${esc(s('concept'))}</th>`;
+map += G.apps.map((a) => `<th>${a.icon} ${esc(T(a.name))}</th>`).join('') + '</tr>';
+for (const c of order) {
+  map += `<tr><td class="c">${esc(T(G.concepts[c]))}</td>`;
+  for (const a of G.apps) {
+    const hits = a.items.filter((it) => it.tags.includes(c)).map((it) => `<a href="#${a.key}-${it.n}">${it.n}</a>`);
+    map += `<td>${hits.join(' ') || '–'}</td>`;
+  }
+  map += '</tr>';
+}
+document.getElementById('mapBox').innerHTML = map + '</table></div></div>';
+
+// アプリごとの かだい
+let html = '';
+for (const a of G.apps) {
+  html += `<h2 class="app" id="app-${a.key}">${a.icon} ${esc(T(a.name))}</h2>`;
+  html += `<div class="panel appIntro">${esc(T(a.intro))}<div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${a.key !== 'draw' ? `<a class="v" href="videos.html">${esc(s('video'))}</a>` : ''}</div></div>`;
+  for (const it of a.items) {
+    const chips = it.tags.map((c) => `<span class="chip">${esc(T(G.concepts[c]))}</span>`).join('') +
+      (it.limit ? `<span class="chip lim">${esc(S.limit(it.limit))}</span>` : '');
+    html += `<div class="panel item" id="${a.key}-${it.n}">
+      <h3>${esc(T(it.title))}</h3>
+      <div class="chips">${chips}</div>
+      <div class="facts">
+        <span class="k">${esc(s('goal'))}</span><span>${esc(T(it.goal))}</span>
+        <span class="k">${esc(s('q'))}</span><span>${esc(T(it.text))}</span>
+        <span class="k">${esc(s('mistake'))}</span><span>${esc(T(it.mistake))}</span>
+      </div>
+      ${T(it.hint) ? `<details class="hintBox"><summary>${esc(s('hint'))}</summary><div class="in">${esc(T(it.hint))}</div></details>` : ''}
+      <details class="ansBox"><summary>${esc(s('answer'))}</summary><div class="in">
+        <div><b>${esc(s('point'))}</b>：${esc(T(it.point))}</div>
+        ${it.code ? `<pre class="py">${esc(it.code)}</pre>` : `<img loading="lazy" src="${T(it.img)}" alt="${esc(T(it.title))}">`}
+      </div></details>
+      <div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${it.video ? `<a class="v" href="${T(it.video)}" target="_blank">${esc(s('video'))}</a>` : ''}</div>
+    </div>`;
+  }
+}
+document.getElementById('body').innerHTML = html;
+
+// ひらく・とじる・いんさつ
+const setAll = (open) => document.querySelectorAll('details').forEach((d) => { d.open = open; });
+document.getElementById('openAll').addEventListener('click', () => setAll(true));
+document.getElementById('closeAll').addEventListener('click', () => setAll(false));
+let before = [];
+window.addEventListener('beforeprint', () => {
+  before = [...document.querySelectorAll('details')].map((d) => d.open);
+  document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; });
+  setAll(true);
+});
+window.addEventListener('afterprint', () => document.querySelectorAll('details').forEach((d, i) => { d.open = before[i]; }));
+document.getElementById('printBtn').addEventListener('click', () => {
+  document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; });
+  setAll(true); setTimeout(() => window.print(), 300);
+});
+
+buildNav(document.getElementById('nav'));
+FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);
+</script>
+</body>
+</html>

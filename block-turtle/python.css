@@ -1,0 +1,58 @@
+/* =====================================================================
+   🐍 Python版（めいろ・うちゅう・こわす・おく）で きょうつうの みため
+   コードエディタ・タブ・めいれいボタン・たいおうひょう・コンソール
+   ===================================================================== */
+:root { --py-blue: #306998; --py-yellow: #ffd43b; }
+
+/* ひだり：ブロック ／ コード */
+#codeSide { flex: 1 1 60%; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 10px 0 10px 12px; }
+#tabs { display: flex; gap: 6px; }
+#tabs button { font-size: 15px; padding: 4px 12px; }
+#tabs button.on { background: var(--py-blue); }
+#tabs button.off { opacity: .55; }
+
+/* ブロック モード：うえに ブロック、したに「Python で かくと こうなるよ」（みるだけ） */
+#codeSide #blocklyDiv { display: none; flex: 3 1 0; min-height: 250px; border: 4px solid #000; }
+#codeSide.blocks #blocklyDiv { display: block; }
+#codeSide.blocks #editorBox { flex: 2 1 0; min-height: 130px; }
+#codeSide.blocks #palette { display: none; }
+#pyLabel { display: none; color: var(--py-yellow); text-shadow: 2px 2px 0 #000; font-size: 15px; }
+#codeSide.blocks #pyLabel { display: block; }
+#codeSide.blocks #code { caret-color: transparent; cursor: default; }
+
+/* コードエディタ（いろづけした pre の うえに すきとおった textarea を かさねる） */
+#editorBox { position: relative; flex: 1 1 auto; min-height: 240px; background: #1e2430; border: 4px solid #000; display: flex; overflow: hidden; }
+#lineNo { flex: none; width: 3.2em; padding: 10px 6px; text-align: right; color: #6c7894; background: #171c26; font: 18px/1.6 "DotGothic16", monospace; white-space: pre; user-select: none; overflow: hidden; }
+#lineNo .cur { color: #1e2430; background: var(--py-yellow); display: inline-block; width: 100%; }
+#codeWrap { position: relative; flex: 1; overflow: auto; }
+#hl, #code { margin: 0; padding: 10px 12px; font: 18px/1.6 "DotGothic16", monospace; white-space: pre; tab-size: 4; border: 0; min-height: 100%; box-sizing: border-box; }
+#hl { position: absolute; inset: 0; pointer-events: none; color: #e6e6e6; }
+#code { position: relative; width: 100%; height: 100%; resize: none; background: transparent; color: transparent; caret-color: var(--py-yellow); outline: none; overflow: hidden; }
+#hl .kw { color: #ff9d5c; } #hl .fn { color: #7fd6ff; } #hl .num { color: #b5f07a; } #hl .str { color: #ffe08a; } #hl .cm { color: #8a93a8; } #hl .bi { color: #d7a6ff; }
+#hl .run { background: rgba(255,212,59,.22); display: inline-block; width: 100%; }
+#hl .err { background: rgba(255,80,80,.35); display: inline-block; width: 100%; }
+
+/* めいれいの ボタン（おすと いれられる） */
+#palette { display: flex; gap: 6px; flex-wrap: wrap; }
+#palette button { font: 15px "DotGothic16", monospace; padding: 3px 10px; background: #2b3a55; }
+
+/* ブロックと Python の たいおう */
+#mapBox summary { cursor: pointer; color: #fff; text-shadow: 2px 2px 0 #000; }
+#mapTable { border-collapse: collapse; margin-top: 6px; background: #c6c6c6; color: #222; font-size: 14px; }
+#mapTable td { border: 2px solid #555; padding: 3px 10px; }
+#mapTable td.blk { color: #fff; text-shadow: 1px 1px 0 #000; }
+#mapTable code { font: 15px "DotGothic16", monospace; }
+
+/* コンソール */
+#console { height: 92px; background: #0d1018; color: #c8f7c5; border: 4px solid #000; padding: 6px 10px; font: 15px/1.5 "DotGothic16", monospace; overflow: auto; white-space: pre-wrap; }
+#console .e { color: #ff8a8a; } #console .o { color: #7fd6ff; }
+
+html.theme-night #mapTable { background: #22262f; color: #e3e6ee; }
+html.theme-night #mapTable td { border-color: #3a4050; }
+
+/* せまい がめん：たてに ならべる */
+@media (max-width: 900px) {
+  #codeSide { padding: 10px 12px; }
+  #codeSide #blocklyDiv { height: 50vh; flex: none; }
+  #editorBox { min-height: 220px; }
+}

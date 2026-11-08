@@ -71,17 +71,26 @@
     var box = document.createElement('div');
     box.className = 'fnMenu'; box.setAttribute('role', 'menu');
     document.body.appendChild(box);   // ヘッダーの そとに おく（きれないように）
+    // 🐍 Python に きりかえる ／ 🧩 ブロックに もどる：たいおうする ページが ある ときだけ、いちばん うえに だす
+    var sw = window.pythonMenuItem();
+    if (sw) items = [sw].concat(items);
+    // 📝 リリースノート：どの ページでも ページへ いく こうもくの つぎに だす（リリースノートの ページ いがい）
+    if (!/releases\.html$/.test(location.pathname)) {
+      var at = items.length && items[0].cls === 'go' ? 1 : 0;
+      items = items.slice(0, at).concat([window.releaseMenuItem()], items.slice(at));
+    }
     var menu = {
       render: function () {
         box.innerHTML = '';
         items.forEach(function (it) {
           if (it.visible && !it.visible()) return;
           var b = document.createElement('button');
-          b.className = 'fnItem' + (it.warn && it.warn() ? ' warn' : '');
+          b.className = 'fnItem' + (it.warn && it.warn() ? ' warn' : '') + (it.cls ? ' ' + it.cls : '');
           b.setAttribute('role', 'menuitem');
           var i = document.createElement('span'); i.className = 'fnIco'; i.textContent = it.icon();
           var l = document.createElement('span'); l.textContent = it.label();
           b.appendChild(i); b.appendChild(l);
+          if (it.badge && it.badge()) { var nb = document.createElement('span'); nb.className = 'fnNew'; nb.textContent = it.badge(); b.appendChild(nb); }
           b.addEventListener('click', function (e) { e.stopPropagation(); it.onClick(menu); });
           box.appendChild(b);
         });
@@ -105,6 +114,41 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.isOpen()) { menu.close(); btn.focus(); } });
     window.addEventListener('resize', function () { menu.close(); });
     return menu;
+  };
+
+  // ブロックの アプリ ⇄ Python版 の くみあわせ
+  var PY_PAIRS = { 'maze.html': 'python.html', 'space.html': 'python-space.html', 'craft.html': 'python-craft.html' };
+  // メニューの「🐍 Python に きりかえる」（Python版では「🧩 ブロックに もどる」）の こうもく
+  window.pythonMenuItem = function () {
+    var here = location.pathname.split('/').pop() || 'index.html';
+    var toPy = PY_PAIRS[here], toBlock = null;
+    Object.keys(PY_PAIRS).forEach(function (b) { if (PY_PAIRS[b] === here) toBlock = b; });
+    if (!toPy && !toBlock) return null;   // たいおうする ページが ない（おえかき・すいぞくかん など）
+    return {
+      cls: 'go',
+      icon: function () { return toPy ? '🐍' : '🧩'; },
+      label: function () {
+        if (toPy) return lang === 'ja' ? 'Python に きりかえる' : 'Switch to Python';
+        return lang === 'ja' ? 'ブロックの アプリに もどる' : 'Back to the block app';
+      },
+      // Python版へは、すぐ かけるように Python の がめんで ひらく
+      onClick: function () { location.href = toPy ? toPy + '?mode=python' : toBlock; }
+    };
+  };
+
+  // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
+  var RELEASE_VERSION = '1.7';
+  window.RELEASE_VERSION = RELEASE_VERSION;
+  function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
+  window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
+  window.releaseMenuItem = function () {
+    return {
+      cls: 'go2',
+      icon: function () { return '📝'; },
+      label: function () { return lang === 'ja' ? 'リリースノート（v' + RELEASE_VERSION + '）' : 'Release notes (v' + RELEASE_VERSION + ')'; },
+      badge: function () { return releaseSeen() ? '' : 'NEW'; },
+      onClick: function () { location.href = 'releases.html'; }
+    };
   };
 
   // メニューの「ことば」の こうもく
@@ -159,7 +203,8 @@
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
     { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
     { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' },
-    { href: 'videos.html',   icon: '🎬', ja: 'どうが', en: 'Videos' }
+    { href: 'videos.html',   icon: '🎬', ja: 'どうが', en: 'Videos' },
+    { href: 'guide.html',    icon: '📖', ja: 'かいせつしょ', en: 'Guide' }
   ];
   window.buildNav = function (nav) {
     var here = location.pathname.split('/').pop() || 'index.html';

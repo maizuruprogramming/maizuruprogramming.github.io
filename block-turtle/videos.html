@@ -48,14 +48,23 @@ const APPS = [
       en: ['Pick up a star', 'Turn and collect', 'Collect with a loop', 'Star stairs', 'If there is a star', 'Until mission complete', 'Any space!'] } },
   { key: 'craft', icon: '🧱', ja: 'こわして つくる ぼうけん', en: 'Break & Build Quest', page: 'craft.html', titles: {
       ja: ['こわして すすもう', 'はしを かけよう', 'くりかえして こわそう', 'ながい はし', 'もし いしが あったら', 'いしと みず', 'うずまきの どうくつ'],
-      en: ['Break and go', 'Build a bridge', 'Break with a loop', 'A long bridge', 'If there is stone', 'Stone and water', 'Spiral cave'] } }
+      en: ['Break and go', 'Build a bridge', 'Break with a loop', 'A long bridge', 'If there is stone', 'Stone and water', 'Spiral cave'] } },
+  { key: 'pymaze', icon: '🐍', ja: 'Pythonで めいろ', en: 'Python Maze', page: 'python.html', titles: {
+      ja: ["まっすぐ すすもう", "まがってみよう", "for で くりかえそう", "while と if", "elif で 3つに わけよう"],
+      en: ["Go straight", "Let's turn", "Repeat with for", "while and if", "Three choices with elif"] } },
+  { key: 'pyspace', icon: '🐍', ja: 'Pythonで うちゅう', en: 'Python Space', page: 'python-space.html', titles: {
+      ja: ["ほしを ひろおう", "まがって あつめよう", "for で あつめよう", "ほしの かいだん", "if has_star():", "while not mission_done():"],
+      en: ["Pick up a star", "Turn and collect", "Collect with for", "Star stairs", "if has_star():", "while not mission_done():"] } },
+  { key: 'pycraft', icon: '🐍', ja: 'Pythonで こわす・おく', en: 'Python Break & Build', page: 'python-craft.html', titles: {
+      ja: ["こわして すすもう", "はしを かけよう", "for で こわそう", "ながい はし", "if front_is('stone'):", "elif で いしと みず", "うずまきの どうくつ"],
+      en: ["Break and go", "Build a bridge", "Break with for", "A long bridge", "if front_is('stone'):", "Stone and water with elif", "Spiral cave"] } }
 ];
 const J = LANG === 'ja';
 document.getElementById('title').textContent = J ? 'かいせつ どうが' : 'Explanation Videos';
 document.title = J ? 'かいせつ どうが' : 'Explanation Videos';
 document.getElementById('note').textContent = J
-  ? 'ステージごとの かいせつ どうがです（じまく＋こうかおん、1ぽん 30〜60びょう）。▶ を おすと はじまります。'
-  : 'One short video for each stage (captions + sound effects, 30–60 seconds). Press ▶ to play.';
+  ? 'ステージごとの かいせつ どうがです（じまく＋こうかおん、1ぽん 30〜60びょう）。🐍 Python版は、こたえの コードと うごいている ぎょうを みせます。▶ を おすと はじまります。'
+  : 'One short video for each stage (captions + sound effects, 30–60 seconds). 🐍 Python videos show the answer code and the line that is running. Press ▶ to play.';
 const list = document.getElementById('list');
 for (const a of APPS) {
   const sec = document.createElement('section'); sec.className = 'app';

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pythonで こわす・おく / Python Break & Build</title>
+<!-- 🐍 Python版：ブロックで くむと Python に なる。Python は ページの なかの ちいさな かいしゃくき で よみとり、
+     もとの アプリと おなじ せかい・はんてい・ドット絵・こうかおん で うごかす（python-core.js） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="python.css">
+<style>
+  /* ===== テーマ：いしと どうくつ（こわす・おく） ===== */
+  :root {
+    --page-bg: #2f2f35 repeating-conic-gradient(rgba(0,0,0,.2) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#8a8a8a 0 10px, #6b6b6b 10px 14px, #4a4a4f 14px);
+    --hdr-border: #1c1c20; --title-shadow: #222; --link: #ffd966; --fn: #a0662a;
+  }
+  #randomRow { display: none; }
+  /* もちもの（インベントリ） */
+  #inv { display: flex; align-items: center; gap: 8px; background: #8b8b8b; padding: 4px 10px; color: #fff; font-size: 18px;
+    text-shadow: 2px 2px 0 #333; border: 3px solid; border-color: #555 #fff #fff #555; }
+  #invIcon { width: 28px; height: 28px; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🐍</span><span class="lbl" id="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="codeSide">
+    <div id="tabs"><button id="tabBlocks" class="on"></button><button id="tabPy" class="off"></button></div>
+    <div id="blocklyDiv"></div>
+    <div id="pyLabel"></div>
+    <div id="editorBox"><div id="lineNo"></div><div id="codeWrap"><pre id="hl" aria-hidden="true"></pre><textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div></div>
+    <div id="palette"></div>
+    <details id="mapBox"><summary id="mapTitle"></summary><table id="mapTable"></table></details>
+    <div id="console"></div>
+  </div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText" class="lessonText"></div>
+      <button id="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div id="inv"><canvas id="invIcon" width="16" height="16"></canvas><span id="invText"></span></div>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
+    <div class="row"><label><span id="speedLbl"></span> <input id="speed" type="range" min="1" max="10" value="5"></label></div>
+    <div id="msg"></div>
+    <div id="info"></div>
+  </div>
+</main>
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title" id="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
+    <div class="btns"><button id="dlgYes"></button><button id="dlgNo"></button></div>
+  </div>
+</div>
+<script>
+/* ========== 0. ことば（もとの アプリと おなじ。Python ようの ことばは python-core.js で たす） ========== */
+const STR = {
+  ja: {
+    appTitle: 'こわして つくる ぼうけん', run: 'じっこう', reset: 'もどす', answer: 'こたえ', nextPerson: 'つぎの ひとへ',
+    soundOn: 'おと：オン', soundOff: 'おと：オフ', hintBtn: '💡 ヒント', speed: 'はやさ', newWorld: '🎲 あたらしい せかい',
+    dlgTitle: '🎉 ステージ クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
+    kindB: 'いしブロック', kindW: 'みず', kindO: 'すすめる みち',
+    bForward: 'まえに すすむ', bRight: 'みぎを むく ↻', bLeft: 'ひだりを むく ↺',
+    bMine: '⛏ まえの ブロックを こわす', bPlace: '🧱 まえに ブロックを おく',
+    bUntilGoal: 'ゴールに つくまで くりかえす', bIf: 'もし まえが %1 だったら', bElse: 'そうでなければ %1',
+    inv: (n) => `もっている ブロック：${n}こ`,
+    tooManyMoves: (n) => `うごきが おおすぎるよ（${n}かいまで）`, endless: 'くりかえしが おわらないよ',
+    bumpBlock: '💥 いしブロックに ぶつかった！ ⛏ で こわそう', bumpWall: '💥 かべに ぶつかっちゃった！',
+    splash: '💦 みずに おちちゃった！ ブロックを おいて はしを つくろう',
+    mineNothing: '⛏ まえに こわせる ブロックが ないよ', mineBedrock: '⛏ この いわは かたくて こわせない！',
+    noBlocks: '🧱 ブロックを もっていないよ。さきに いしを こわそう', cantPlace: '🧱 そこには おけないよ',
+    noGoal: 'ゴールに つかなかったよ', limit: (n) => `🎯 めやす：ブロック ${n}こ いないで クリア`,
+    used: (n) => `つかった ブロック：${n}こ`, moves: (n) => ` ／ うごいた かず：${n}かい`,
+    freeGoal: '🎉 たからばこ ゲット！ 🎲で べつの せかいでも ためしてみよう',
+    overLimit: (n, lim) => `ゴール！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
+    stageClear: '🎉 たからばこ ゲット！ ステージ クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
+    armedItem: 'もういちど おすと リセット', armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ',
+    certItem: 'しゅうりょうしょうを みる', resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう',
+    noAnswer: 'じゆうモードには こたえが ないよ'
+  },
+  en: {
+    appTitle: 'Break & Build Quest', run: 'Run', reset: 'Restart', answer: 'Answer', nextPerson: 'Next player',
+    soundOn: 'Sound: On', soundOff: 'Sound: Off', hintBtn: '💡 Hint', speed: 'Speed', newWorld: '🎲 New world',
+    dlgTitle: '🎉 Stage clear!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
+    kindB: 'a stone block', kindW: 'water', kindO: 'an open path',
+    bForward: 'move forward', bRight: 'turn right ↻', bLeft: 'turn left ↺',
+    bMine: '⛏ break the block in front', bPlace: '🧱 place a block in front',
+    bUntilGoal: 'repeat until goal', bIf: 'if the front is %1', bElse: 'else %1',
+    inv: (n) => `Blocks you have: ${n}`,
+    tooManyMoves: (n) => `Too many moves (max ${n})`, endless: 'The loop never ends!',
+    bumpBlock: '💥 You bumped into a stone block! Break it with ⛏.', bumpWall: '💥 You bumped into a wall!',
+    splash: '💦 Splash! You fell in the water. Place a block to make a bridge.',
+    mineNothing: '⛏ There is no block to break in front of you.', mineBedrock: '⛏ This rock is too hard to break!',
+    noBlocks: '🧱 You have no blocks. Break some stone first.', cantPlace: '🧱 You cannot place a block there.',
+    noGoal: "You didn't reach the goal.", limit: (n) => `🎯 Target: clear with ${n} blocks or fewer`,
+    used: (n) => `Blocks used: ${n}`, moves: (n) => ` / Moves: ${n}`,
+    freeGoal: '🎉 Treasure found! Try another world with 🎲',
+    overLimit: (n, lim) => `Goal! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
+    stageClear: '🎉 Treasure found! Stage clear!', retry: 'Try again! Fix your blocks and press ▶ Run.',
+    armedItem: 'Tap again to reset', armedMsg: '⚠ Tap "Next player" again to reset everything.',
+    certItem: 'View certificate', resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.',
+    noAnswer: 'Free mode has no answer.'
+  }
+};
+const t = makeT(STR);
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
+STR.ja.pyTitle = 'Pythonで こわす・おく'; STR.en.pyTitle = 'Python Break & Build';
+const COL = { move: '#4f8f2f', tool: '#a0662a', loop: '#8b5a2b', iff: '#3c5aa6' };
+const SAVE_KEY = 'block-pycraft';
+// ほぞん（この ブラウザの なかだけ）
+const store = {
+  get(k) { let v = null; try { v = localStorage.getItem(SAVE_KEY + k); } catch (_) { return null; } if (v == null) return null; try { return JSON.parse(v); } catch (_) { return v; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+
+/* ---------- ここから craft.html と おなじ（せかい・はんてい・ドット絵） ---------- */
+/* ========== 5. せかい（マスの しゅるい） ========== */
+const N = 5, CELL = 80;
+const DR = [-1, 0, 1, 0], DC = [0, 1, 0, -1];   // 0:うえ 1:みぎ 2:した 3:ひだり
+// マス：'.'くさ 'd'つち（こわした あと） 'b'はし '#'いし 'X'かたい いわ '~'みず 'S' 'G'
+let world = [], START = { r: 0, c: 0, dir: 1 }, GOAL = { r: 4, c: 4 }, START_INV = 0;
+const WALK = new Set(['.', 'd', 'b', 'S', 'G']);
+
+function loadMap(map, dir, inv) {
+  world = map.map((row, r) => [...row].map((ch, c) => {
+    if (ch === 'S') START = { r, c, dir };
+    if (ch === 'G') GOAL = { r, c };
+    return ch;
+  }));
+  START_INV = inv || 0;
+}
+
+// ランダムな せかい：みち・いし・みずを つかえば かならず ゴールに いける
+function randomWorld() {
+  for (;;) {
+    const w = Array.from({ length: N }, () => Array(N).fill('.'));
+    w[0][0] = 'S'; w[N - 1][N - 1] = 'G';
+    const cells = [];
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (r + c > 1 && !(r === N - 1 && c === N - 1)) cells.push([r, c]);
+    const put = (ch, k) => { for (let i = 0; i < k; i++) { const [r, c] = cells.splice(Math.floor(Math.random() * cells.length), 1)[0]; w[r][c] = ch; } };
+    put('X', 5); put('#', 4); put('~', 3);
+    // いし・みずも とおれる として ゴールまで いけるか
+    const seen = new Set(['0,0']); const q = [[0, 0]]; let ok = false;
+    while (q.length) {
+      const [r, c] = q.shift();
+      if (r === N - 1 && c === N - 1) { ok = true; break; }
+      for (let d = 0; d < 4; d++) {
+        const nr = r + DR[d], nc = c + DC[d];
+        if (nr < 0 || nc < 0 || nr >= N || nc >= N || w[nr][nc] === 'X' || seen.has(nr + ',' + nc)) continue;
+        seen.add(nr + ',' + nc); q.push([nr, nc]);
+      }
+    }
+    if (ok) return { map: w.map((row) => row.join('')), inv: 3 };
+  }
+}
+
+/* ========== 6. プログラムを しらべて、うごきの きろくを つくる ========== */
+const MAX_MOVES = 300, MAX_LOOPS = 2000;
+class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; this.why = why; } }
+
+function simulate(code) {
+  const s = { ...START }, w = world.map((row) => row.slice());
+  let inv = START_INV, blockId = null, loops = 0;
+  const frames = [];
+  const inside = (r, c) => r >= 0 && c >= 0 && r < N && c < N;
+  const front = () => ({ r: s.r + DR[s.dir], c: s.c + DC[s.dir] });
+  const atGoal = () => s.r === GOAL.r && s.c === GOAL.c;
+  const rec = (event, extra) => {
+    frames.push({ r: s.r, c: s.c, dir: s.dir, inv, id: blockId, event, ...extra });
+    if (frames.length > MAX_MOVES) throw new Stop('ng', t('tooManyMoves', MAX_MOVES));
+  };
+  const api = {
+    highlight: (id) => { blockId = id; },
+    forward: () => {
+      const { r, c } = front();
+      const ch = inside(r, c) ? w[r][c] : 'X';
+      if (ch === '#') { rec('crash'); throw new Stop('ng', t('bumpBlock'), 'crash'); }
+      if (ch === '~') { s.r = r; s.c = c; rec('splash'); throw new Stop('ng', t('splash'), 'crash'); }
+      if (!WALK.has(ch)) { rec('crash'); throw new Stop('ng', t('bumpWall'), 'crash'); }
+      s.r = r; s.c = c; rec('move');
+      if (atGoal()) throw new Stop('ok', 'goal');
+    },
+    turnRight: () => { s.dir = (s.dir + 1) % 4; rec('turn'); },
+    turnLeft:  () => { s.dir = (s.dir + 3) % 4; rec('turn'); },
+    mine: () => {
+      const { r, c } = front();
+      const ch = inside(r, c) ? w[r][c] : '';
+      if (ch === 'X') { rec('miss'); throw new Stop('ng', t('mineBedrock'), 'miss'); }
+      if (ch !== '#') { rec('miss'); throw new Stop('ng', t('mineNothing'), 'miss'); }
+      w[r][c] = 'd'; inv++; rec('mine', { tr: r, tc: c, tile: 'd' });
+    },
+    place: () => {
+      const { r, c } = front();
+      const ch = inside(r, c) ? w[r][c] : '';
+      if (inv <= 0) { rec('miss'); throw new Stop('ng', t('noBlocks'), 'miss'); }
+      if (ch === '~') { w[r][c] = 'b'; inv--; rec('place', { tr: r, tc: c, tile: 'b' }); return; }
+      if (ch === '.' || ch === 'd') { w[r][c] = '#'; inv--; rec('place', { tr: r, tc: c, tile: '#' }); return; }
+      rec('miss'); throw new Stop('ng', t('cantPlace'), 'miss');
+    },
+    frontIs: (k) => {
+      const { r, c } = front();
+      if (!inside(r, c)) return false;
+      const ch = w[r][c];
+      return k === 'B' ? ch === '#' : k === 'W' ? ch === '~' : WALK.has(ch);
+    },
+    atGoal,
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', t('endless')); }
+  };
+  let result;
+  try {
+    new Function(...Object.keys(api), code)(...Object.values(api));
+    result = atGoal() ? new Stop('ok', 'goal') : new Stop('ng', t('noGoal'));
+  } catch (e) {
+    result = e instanceof Stop ? e : new Stop('ng', '⚠ ' + e.message);
+  }
+  return { frames, result };
+}
+
+/* ========== 7. えを かく（ドット絵） ========== */
+const ctx = document.getElementById('board').getContext('2d');
+ctx.imageSmoothingEnabled = false;
+const PX = CELL / 16;
+let shown = [], robot = { ...START }, invShown = 0, crashed = false, splashed = false, opened = false, timer = null, tick = 0, burst = null;
+
+function rand(r, c, i) {
+  let h = (r * 73856093) ^ (c * 19349663) ^ (i * 83492791);
+  h = (h ^ (h >>> 13)) * 1274126177;
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function dotOn(g, x, y, px, py, color, size = PX) { g.fillStyle = color; g.fillRect(x + px * size, y + py * size, size, size); }
+function dot(x, y, px, py, color) { dotOn(ctx, x, y, px, py, color); }
+function noiseTile(x, y, r, c, salt, colors) {
+  for (let py = 0; py < 16; py++) for (let px = 0; px < 16; px++)
+    dot(x, y, px, py, colors[Math.floor(rand(r * 16 + py, c * 16 + px, salt) * colors.length)]);
+}
+function grassTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 1, ['#5fa83a', '#5fa83a', '#58a034', '#6cbb45', '#4e9a2f']);
+  for (let k = 0; k < 4; k++) dot(x, y, Math.floor(rand(r, c, 10 + k) * 16), Math.floor(rand(r, c, 20 + k) * 16), '#7fd055');
+}
+function dirtTile(x, y, r, c) { noiseTile(x, y, r, c, 2, ['#8b5a2b', '#7a4e25', '#966434', '#8b5a2b', '#6e4520']); }
+// いしブロック（こわせる）：まるい いしを ならべた もよう
+const STONES = [[1, 1, 6, 5], [8, 0, 7, 4], [0, 7, 4, 4], [5, 6, 6, 5], [12, 5, 4, 6], [1, 12, 7, 4], [9, 12, 6, 4]];
+function stonePattern(g, x, y, r, c, size = PX) {
+  for (let py = 0; py < 16; py++) for (let px = 0; px < 16; px++)
+    dotOn(g, x, y, px, py, ['#7f7f7f', '#8a8a8a', '#757575', '#828282'][Math.floor(rand(r * 16 + py, c * 16 + px, 3) * 4)], size);
+  for (const [sx, sy, w, h] of STONES) {
+    for (let i = 0; i < w; i++) { dotOn(g, x, y, sx + i, sy + h - 1, '#555555', size); dotOn(g, x, y, sx + i, sy, '#a5a5a5', size); }
+    for (let j = 0; j < h; j++) dotOn(g, x, y, sx + w - 1, sy + j, '#555555', size);
+  }
+}
+function stoneTile(x, y, r, c) {
+  stonePattern(ctx, x, y, r, c);
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(x, y + CELL - PX * 2, CELL, PX * 2);
+}
+// かたい いわ（こわせない）：くろっぽく、ごつごつ
+function bedrockTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 5, ['#2b2b2b', '#3d3d3d', '#1f1f1f', '#4a4a4a', '#333']);
+  for (let k = 0; k < 6; k++) dot(x, y, Math.floor(rand(r, c, 30 + k) * 16), Math.floor(rand(r, c, 40 + k) * 16), '#666');
+}
+// みず（ゆらゆら）
+function waterTile(x, y, r, c) {
+  for (let py = 0; py < 16; py++) for (let px = 0; px < 16; px++) {
+    const wave = Math.sin((px + py * 0.6 + tick / 4 + c * 3) / 2.2);
+    dot(x, y, px, py, wave > 0.6 ? '#5aa0ff' : wave > -0.2 ? '#3a78e0' : '#2d62c4');
+  }
+}
+// はし（いたの はし）
+function bridgeTile(x, y, r, c) {
+  waterTile(x, y, r, c);
+  for (let py = 1; py < 15; py++) for (let px = 0; px < 16; px++) {
+    const plank = Math.floor((py - 1) / 3.5);
+    dot(x, y, px, py, (py - 1) % 4 === 3 ? '#6b4a22' : ['#b8945f', '#ae8a55', '#c19d68', '#a8854f'][plank % 4]);
+  }
+  for (let px of [1, 14]) for (let py = 1; py < 15; py++) dot(x, y, px, py, '#5a3d1a');
+}
+// スタート
+function startTile(x, y, r, c) {
+  dirtTile(x, y, r, c);
+  for (let i = 2; i < 14; i++) { dot(x, y, i, 2, '#d8c27a'); dot(x, y, i, 13, '#d8c27a'); dot(x, y, 2, i, '#d8c27a'); dot(x, y, 13, i, '#d8c27a'); }
+}
+// ゴール：たからばこ
+function chestTile(x, y, r, c, open) {
+  grassTile(x, y, r, c);
+  const B = '#7a4a1a', M = '#a8682a', L = '#c98a3a', K = '#2a1a0a', Y = '#ffd84a';
+  for (let py = 4; py < 14; py++) for (let px = 2; px < 14; px++) {
+    let col = M;
+    if (px === 2 || px === 13 || py === 13) col = K;
+    else if (py === 4) col = K;
+    else if (py === 8 && !open) col = K;
+    else if (py < 8) col = open ? '#3a240e' : L;
+    dot(x, y, px, py, col);
+  }
+  if (open) { for (let px = 3; px < 13; px++) dot(x, y, px, 5, Y); dot(x, y, 6, 6, '#4ee8e0'); dot(x, y, 9, 6, '#4ee8e0'); }
+  else { dot(x, y, 7, 8, Y); dot(x, y, 8, 8, Y); dot(x, y, 7, 9, Y); dot(x, y, 8, 9, Y); }
+}
+
+const HERO = [
+  '................', '................', '......LLLL......', '....hhLLLLhh....',
+  '....hHHHHHHh....', '....hHHHHHHh....', '....hHHHHHHh....', '..BBhHHHHHHhBB..',
+  '.SBBhHHHHHHhBBS.', '.SBBhhhhhhhhBBS.', '.SBBBBBBBBBBBBS.', '.SBBBBBBBBBBBBS.',
+  '..BBBBBBBBBBBB..', '..bbbbbbbbbbbb..', '................', '................'];
+function drawHero() {
+  const cx = robot.c * CELL + CELL / 2, cy = robot.r * CELL + CELL / 2;
+  const col = (crashed || splashed)
+    ? { L: '#fff59d', h: '#8b0000', H: '#e53935', B: '#e53935', b: '#8b0000', S: '#e0b48a' }
+    : { L: '#fff59d', h: '#c66a00', H: '#ff9800', B: '#3f8fd2', b: '#2c6aa0', S: '#e0b48a' };
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(robot.dir * Math.PI / 2);
+  ctx.fillStyle = 'rgba(255,245,157,.45)';
+  ctx.beginPath(); ctx.moveTo(-PX * 2, -PX * 6); ctx.lineTo(PX * 2, -PX * 6);
+  ctx.lineTo(PX * 5, -CELL * 0.75); ctx.lineTo(-PX * 5, -CELL * 0.75); ctx.fill();
+  // つるはし（みぎて）
+  ctx.fillStyle = '#7a5a30'; ctx.fillRect(PX * 5, -PX * 6, PX, PX * 6);
+  ctx.fillStyle = '#9adfe0'; ctx.fillRect(PX * 3, -PX * 7, PX * 5, PX);
+  HERO.forEach((row, py) => [...row].forEach((ch, px) => {
+    if (col[ch]) { ctx.fillStyle = col[ch]; ctx.fillRect((px - 8) * PX, (py - 8) * PX, PX, PX); }
+  }));
+  ctx.restore();
+}
+
+function draw() {
+  tick++;
+  ctx.clearRect(0, 0, 400, 400);
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+    const x = c * CELL, y = r * CELL, ch = shown[r][c];
+    if (ch === '#') stoneTile(x, y, r, c);
+    else if (ch === 'X') bedrockTile(x, y, r, c);
+    else if (ch === '~') waterTile(x, y, r, c);
+    else if (ch === 'b') bridgeTile(x, y, r, c);
+    else if (ch === 'd') dirtTile(x, y, r, c);
+    else if (ch === 'S') startTile(x, y, r, c);
+    else if (ch === 'G') chestTile(x, y, r, c, opened);
+    else grassTile(x, y, r, c);
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1;
+  for (let i = 1; i < N; i++) {
+    ctx.beginPath(); ctx.moveTo(i * CELL + .5, 0); ctx.lineTo(i * CELL + .5, 400); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, i * CELL + .5); ctx.lineTo(400, i * CELL + .5); ctx.stroke();
+  }
+  // こわした ときの かけら
+  if (burst && burst.t-- > 0) {
+    for (const p of burst.p) { p.x += p.vx; p.y += p.vy; p.vy += 0.6; ctx.fillStyle = p.col; ctx.fillRect(p.x, p.y, PX * 1.5, PX * 1.5); }
+  }
+  if (!splashed) drawHero();
+  else { ctx.fillStyle = 'rgba(255,255,255,.8)'; for (let k = 0; k < 6; k++) ctx.fillRect(robot.c * CELL + 20 + k * 8, robot.r * CELL + 30 + (k % 2) * 10, PX * 1.5, PX * 1.5); }
+  document.getElementById('invText').textContent = t('inv', invShown);
+}
+function makeBurst(r, c, colors) {
+  const x = c * CELL + CELL / 2, y = r * CELL + CELL / 2;
+  burst = { t: 14, p: Array.from({ length: 14 }, () => ({ x, y, vx: (Math.random() - .5) * 9, vy: -Math.random() * 7, col: colors[Math.floor(Math.random() * colors.length)] })) };
+}
+// もちものの アイコン（いしブロック）
+stonePattern(document.getElementById('invIcon').getContext('2d'), 0, 0, 0, 0, 1);
+// みずの ゆらゆらを うごかす
+setInterval(() => { if (!timer) draw(); }, 120);
+
+/* ---------- craft.html と おなじ（こうかおん） ---------- */
+const Sound = {
+  ctx: null, master: null, muted: !!store.get('-muted'), foot: 0,
+  unlock() {
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      this.ctx = new AC(); this.master = this.ctx.createGain(); this.master.gain.value = 0.25; this.master.connect(this.ctx.destination);
+    }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  tone(type, f1, f2, len, delay = 0, vol = 1) {
+    if (this.muted || !this.ctx) return;
+    const tt = this.ctx.currentTime + delay, o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f1, tt);
+    if (f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, tt + len);
+    g.gain.setValueAtTime(vol, tt); g.gain.exponentialRampToValueAtTime(0.001, tt + len);
+    o.connect(g); g.connect(this.master); o.start(tt); o.stop(tt + len + 0.02);
+  },
+  noise(len, delay = 0, vol = 1, freq = 900, type = 'lowpass') {
+    if (this.muted || !this.ctx) return;
+    const tt = this.ctx.currentTime + delay;
+    const buf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * len), this.ctx.sampleRate);
+    const d = buf.getChannelData(0); for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1;
+    const src = this.ctx.createBufferSource(), g = this.ctx.createGain(), f = this.ctx.createBiquadFilter();
+    f.type = type; f.frequency.value = freq;
+    g.gain.setValueAtTime(vol, tt); g.gain.exponentialRampToValueAtTime(0.001, tt + len);
+    src.buffer = buf; src.connect(f); f.connect(g); g.connect(this.master); src.start(tt);
+  },
+  notes(list, type = 'square', vol = 0.6) { for (const [fq, at, len] of list) this.tone(type, fq, fq, len, at, vol); },
+  step()      { this.foot ^= 1; this.noise(0.07, 0, 0.5); this.tone('square', this.foot ? 330 : 294, this.foot ? 220 : 196, 0.07, 0, 0.35); },
+  turnRight() { this.tone('triangle', 520, 880, 0.12, 0, 0.7); },
+  turnLeft()  { this.tone('triangle', 880, 520, 0.12, 0, 0.7); },
+  mine()      { this.noise(0.06, 0, 0.9, 3000, 'bandpass'); this.noise(0.06, 0.09, 0.9, 2500, 'bandpass'); this.noise(0.25, 0.18, 0.8, 700); this.tone('square', 900, 1300, 0.08, 0.2, 0.3); },   // カッ カッ ガラッ
+  place()     { this.noise(0.12, 0, 0.9, 500); this.tone('square', 160, 110, 0.12, 0, 0.6); },   // ゴトッ
+  splash()    { this.noise(0.6, 0, 0.9, 1800, 'bandpass'); this.tone('sine', 600, 200, 0.4, 0, 0.5); },
+  miss()      { this.tone('square', 200, 150, 0.25, 0, 0.6); },
+  crash()     { this.noise(0.35, 0, 1); this.tone('square', 140, 50, 0.35, 0, 0.8); },
+  chest()     { this.notes([[784, 0, .1], [988, .1, .1], [1175, .2, .1], [1568, .3, .35]], 'square', 0.5); },
+  clear()     { this.notes([[523, .6, .12], [659, .72, .12], [784, .84, .12], [1047, .96, .45]]); this.notes([[392, .96, .45], [659, .96, .45]], 'triangle', 0.5); },
+  goalSoSo()  { this.notes([[784, .6, .12], [1047, .74, .25]]); },
+  fail()      { this.notes([[392, 0, .16], [330, .18, .16], [262, .36, .35]], 'square', 0.5); },
+  toggle() { this.muted = !this.muted; store.set('-muted', this.muted); return this.muted; }
+};
+
+/* ========== Python版の せってい ========== */
+const craftTheme = Blockly.Theme.defineTheme('craft2', {
+  base: Blockly.Themes.Classic,
+  blockStyles: {
+    loop_blocks: { colourPrimary: COL.loop, colourSecondary: '#a8743f', colourTertiary: '#5e3b1a' },
+    math_blocks: { colourPrimary: '#6b6b6b', colourSecondary: '#8a8a8a', colourTertiary: '#444444' }
+  },
+  componentStyles: {
+    workspaceBackgroundColour: '#3b3b42', toolboxBackgroundColour: '#5a5a5a', flyoutBackgroundColour: '#6e6e6e',
+    flyoutOpacity: 1, scrollbarColour: '#c6c6c6', insertionMarkerColour: '#ffff55'
+  },
+  fontStyle: { family: 'DotGothic16, monospace', size: 12 }
+});
+// まえに ある もの：[ブロックの ことば, Python の ことば, もとの アプリの きごう]
+const KINDS = [[t('kindB'), 'stone', 'B'], [t('kindW'), 'water', 'W'], [t('kindO'), 'path', 'O']];
+const kindCode = (a) => KINDS.find((o) => o[1] === a)[2];
+const WORLD = {
+  icons: ['🐍', '🧱'], theme: craftTheme, renderer: 'geras', gridColour: '#34343a', loopColour: COL.loop,
+  cmds: [
+    { py: 'forward', js: 'forward()', label: t('bForward'), colour: COL.move },
+    { py: 'turn_right', js: 'turnRight()', label: t('bRight'), colour: COL.move },
+    { py: 'turn_left', js: 'turnLeft()', label: t('bLeft'), colour: COL.move },
+    { py: 'mine', js: 'mine()', label: t('bMine'), colour: COL.tool },
+    { py: 'place', js: 'place()', label: t('bPlace'), colour: COL.tool }
+  ],
+  conds: [{ py: 'front_is', opts: KINDS, js: (a) => `frontIs('${kindCode(a)}')`, label: t('bIf'), colour: COL.iff }],
+  until: { py: 'at_goal', js: 'atGoal()', label: t('bUntilGoal') },
+  load(lv) { loadMap(lv.map, lv.dir, lv.inv); },
+  resetView() {
+    shown = world.map((row) => row.slice());
+    robot = { ...START }; invShown = START_INV; crashed = false; splashed = false; opened = false; burst = null; draw();
+  },
+  apply(f, i, frames) {   // craft.html と おなじ
+    robot = { r: f.r, c: f.c, dir: f.dir }; invShown = f.inv;
+    if (f.event === 'move') Sound.step();
+    if (f.event === 'turn') { const prev = i > 1 ? frames[i - 2].dir : START.dir; if ((prev + 1) % 4 === f.dir) Sound.turnRight(); else Sound.turnLeft(); }
+    if (f.event === 'mine')  { shown[f.tr][f.tc] = f.tile; makeBurst(f.tr, f.tc, ['#8a8a8a', '#a5a5a5', '#555']); Sound.mine(); }
+    if (f.event === 'place') { shown[f.tr][f.tc] = f.tile; makeBurst(f.tr, f.tc, f.tile === 'b' ? ['#5aa0ff', '#ffffff'] : ['#8a8a8a', '#a5a5a5']); Sound.place(); }
+    if (f.event === 'miss') Sound.miss();
+    if (f.event === 'crash') { crashed = true; Sound.crash(); }
+    if (f.event === 'splash') { splashed = true; makeBurst(f.r, f.c, ['#5aa0ff', '#ffffff', '#9fd0ff']); Sound.splash(); }
+  },
+  afterDraw() {   // かけらの アニメーションを すこし みせる
+    if (burst && burst.t > 0) { const anim = () => { if (burst && burst.t > 0) { draw(); requestAnimationFrame(anim); } }; requestAnimationFrame(anim); }
+  },
+  onGoal() { opened = true; draw(); Sound.chest(); }
+};
+
+/* ========== Python の ステージ ==========
+   blocks：ブロック モードで つかえる ブロック   start：さいしょの コード   answer：こたえ（先生モード） */
+const MOVE = ['w_forward', 'w_turn_right', 'w_turn_left'];
+const TOOLS = ['w_mine', 'w_place'];
+const LEVELS = [
+  { title: 'ステージ1　こわして すすもう',
+    en: { title: 'Stage 1: Break and go', text: 'A stone block is in the way. mine() breaks the block in front of you. Break it and go to the treasure chest!', hint: 'forward() → mine() → forward() ×3' },
+    text: 'いしブロックが じゃまを しているよ。mine() で まえの ブロックを こわして、たからばこまで すすもう！',
+    hint: 'forward() → mine() → forward() を 3かい',
+    map: ['XXXXX', 'XXXXX', 'S.#.G', 'XXXXX', 'XXXXX'], dir: 1, inv: 0, blocks: ['w_forward', 'w_mine'],
+    start: '# mine() で まえの ブロックを こわす\nforward()\n', startEn: '# mine() breaks the block in front\nforward()\n',
+    answer: 'forward()\nmine()\nforward()\nforward()\nforward()\n' },
+  { title: 'ステージ2　はしを かけよう',
+    en: { title: 'Stage 2: Build a bridge', text: 'place() puts a block in front of you. On water it becomes a bridge. Break the stone first to get a block!', hint: 'mine() → forward() → place() → forward() ×3' },
+    text: 'place() で まえに ブロックを おくよ。みずに おくと はしに なる。まず いしを こわして ブロックを てに いれよう！',
+    hint: 'mine() → forward() → place() → forward() を 3かい',
+    map: ['XXXXX', 'XXXXX', 'S#~.G', 'XXXXX', 'XXXXX'], dir: 1, inv: 0, blocks: ['w_forward', ...TOOLS],
+    start: 'mine()\n', startEn: 'mine()\n',
+    answer: 'mine()\nforward()\nplace()\nforward()\nforward()\nforward()\n' },
+  { title: 'ステージ3　for で こわそう',
+    en: { title: 'Stage 3: Break with for', text: 'Stone blocks in a row! Repeat “mine() → forward()” with for.', hint: 'for i in range(3): mine(), forward() → forward()' },
+    text: 'いしブロックが ならんでいるよ。「mine() → forward()」を for で くりかえそう。',
+    hint: 'for i in range(3): の なかに mine() と forward() → さいごに forward()',
+    map: ['XXXXX', 'XXXXX', 'S###G', 'XXXXX', 'XXXXX'], dir: 1, inv: 0, blocks: [...MOVE, ...TOOLS, 'w_repeat'],
+    start: 'for i in range(3):\n    mine()\n', startEn: 'for i in range(3):\n    mine()\n',
+    answer: 'for i in range(3):\n    mine()\n    forward()\nforward()\n' },
+  { title: 'ステージ4　ながい はし',
+    en: { title: 'Stage 4: A long bridge', text: 'You have 3 blocks. Repeat “place() → forward()” to make a long bridge.', hint: 'for i in range(3): place(), forward() → forward()' },
+    text: 'ブロックを 3こ もっているよ。「place() → forward()」を くりかえして ながい はしを つくろう。',
+    hint: 'for i in range(3): の なかに place() と forward() → さいごに forward()',
+    map: ['XXXXX', 'XXXXX', 'S~~~G', 'XXXXX', 'XXXXX'], dir: 1, inv: 3, blocks: [...MOVE, ...TOOLS, 'w_repeat'],
+    start: 'for i in range(3):\n    place()\n', startEn: 'for i in range(3):\n    place()\n',
+    answer: 'for i in range(3):\n    place()\n    forward()\nforward()\n' },
+  { title: "ステージ5　if front_is('stone'):",
+    en: { title: "Stage 5: if front_is('stone'):", text: "front_is('stone') checks if the front is a stone block. Use if so you only break where there is stone.", hint: "for i in range(4): if front_is('stone'): mine() → forward()" },
+    text: "front_is('stone') で まえが いしブロックか しらべられるよ。if で いしの ときだけ こわそう。",
+    hint: "for i in range(4): の なかで if front_is('stone'): → （じさげ）mine() → forward()",
+    map: ['XXXXX', 'XXXXX', 'S#.#G', 'XXXXX', 'XXXXX'], dir: 1, inv: 0, blocks: [...MOVE, ...TOOLS, 'w_repeat', 'w_if_front_is'],
+    start: 'for i in range(4):\n    forward()\n', startEn: 'for i in range(4):\n    forward()\n',
+    answer: "for i in range(4):\n    if front_is('stone'):\n        mine()\n    forward()\n" },
+  { title: 'ステージ6　elif で いしと みず',
+    en: { title: 'Stage 6: Stone and water with elif', text: "Stone and water are mixed. If it is stone, mine(); elif it is water, place(). Breaking gives you a block, and placing uses one.", hint: "for i in range(4): if front_is('stone'): mine() / elif front_is('water'): place() / forward()" },
+    text: 'いしと みずが まざっているよ。いしなら mine()、そうでなくて みずなら（elif）place()。こわすと ブロックが ふえて、おくと へるよ。',
+    hint: "for i in range(4): の なかで if front_is('stone'): mine() → elif front_is('water'): place() → forward()",
+    map: ['XXXXX', 'XXXXX', 'S#~#G', 'XXXXX', 'XXXXX'], dir: 1, inv: 0, blocks: [...MOVE, ...TOOLS, 'w_repeat', 'w_if_front_is', 'w_ifelse_front_is'],
+    start: "for i in range(4):\n    if front_is('stone'):\n        mine()\n    forward()\n", startEn: "for i in range(4):\n    if front_is('stone'):\n        mine()\n    forward()\n",
+    answer: "for i in range(4):\n    if front_is('stone'):\n        mine()\n    elif front_is('water'):\n        place()\n    forward()\n" },
+  { title: 'ステージ7　うずまきの どうくつ',
+    en: { title: 'Stage 7: Spiral cave', text: "Use “while not at_goal():” and decide by checking the front: stone → mine(), water → place(), path → forward(), otherwise turn_right().", hint: "while not at_goal(): if front_is('stone') … elif front_is('water') … elif front_is('path') … else: turn_right()" },
+    text: "「while not at_goal():」で くりかえして、まえを しらべて きめよう：いし → mine()、みず → place()、みち → forward()、どれでもなければ turn_right()。",
+    hint: "while not at_goal(): の なかで if front_is('stone') … elif front_is('water') … elif front_is('path') … else: turn_right()",
+    map: ['S.#~.', 'XXXX.', '.~GX#', '#XXX.', '..~..'], dir: 1, inv: 0, blocks: [...MOVE, ...TOOLS, 'w_until', 'w_if_front_is', 'w_ifelse_front_is'],
+    start: 'while not at_goal():\n    forward()\n', startEn: 'while not at_goal():\n    forward()\n',
+    answer: "while not at_goal():\n    if front_is('stone'):\n        mine()\n    elif front_is('water'):\n        place()\n    elif front_is('path'):\n        forward()\n    else:\n        turn_right()\n" }
+];
+</script>
+<script src="python-core.js"></script>
+</body>
+</html>

@@ -7,13 +7,16 @@
 
 # 日本語の こたえ
 
-このファイルには、4つのアプリの解答をまとめています。
-どの解答も、左が組むブロック、右が実行した結果の画像です。
+このファイルには、ブロックの4つのアプリと 🐍 Python版3つの解答をまとめています。
+どの解答も、左が組むブロック、右が実行した結果の画像です（🐍 Python は解答のコード）。
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
 - 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
+- 🐍 **Pythonで めいろ**（python.html）：ステージ 1〜5
+- 🐍 **Pythonで うちゅう**（python-space.html）：ステージ 1〜6
+- 🐍 **Pythonで こわす・おく**（python-craft.html）：ステージ 1〜7
 
 ## 📖 先生モード（こたえをブロックで読み込む）
 
@@ -24,6 +27,9 @@ https://<ユーザー名>.github.io/<リポジトリ名>/index.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/maze.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/space.html?sensei
 https://<ユーザー名>.github.io/<リポジトリ名>/craft.html?sensei
+https://<ユーザー名>.github.io/<リポジトリ名>/python.html?sensei
+https://<ユーザー名>.github.io/<リポジトリ名>/python-space.html?sensei
+https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sensei
 ```
 
 ボタンを押すと、選んでいるおだい（ステージ）の解答ブロックが読み込まれます。「▶ じっこう」で動きを確かめられるので、授業での解説に使えます。
@@ -263,15 +269,259 @@ https://<ユーザー名>.github.io/<リポジトリ名>/craft.html?sensei
 
 ---
 
+# 🐍 Pythonで めいろ（python.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　まっすぐ すすもう
+
+**ポイント**：Python は うえの ぎょうから じゅんばんに うごく。ブロックの「まえに すすむ」＝ forward()
+
+```python
+forward()
+forward()
+forward()
+forward()
+```
+
+### ステージ2　まがってみよう
+
+**ポイント**：むきを かえても マスは うごかない。「_」（アンダーバー）も わすれずに。
+
+```python
+forward()
+forward()
+turn_right()
+forward()
+forward()
+```
+
+### ステージ3　for で くりかえそう
+
+**ポイント**：「:」の つぎの ぎょうを じさげ すると、その ぎょうが くりかえしの なかみ に なる。じさげを もどすと くりかえしの そと。
+
+```python
+for i in range(4):
+    forward()
+turn_right()
+for i in range(4):
+    forward()
+```
+
+### ステージ4　while と if
+
+**ポイント**：not は「〜でない」。while not at_goal() ＝「ゴールに ついていない あいだ くりかえす」。
+
+```python
+while not at_goal():
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+### ステージ5　elif で 3つに わけよう
+
+**ポイント**：elif は「そうでなくて もし」。ブロックで「そうでなければ」の なかに「もし」を いれると、Python では elif に なるよ。
+
+```python
+while not at_goal():
+    if is_open('front'):
+        forward()
+    elif is_open('right'):
+        turn_right()
+    else:
+        turn_left()
+```
+
+---
+
+# 🐍 Pythonで うちゅう（python-space.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　ほしを ひろおう
+
+**ポイント**：pick_up() は いま いる マスの ほしを ひろう めいれい。ほしを ぜんぶ ひろってから ロケットへ！
+
+```python
+forward()
+forward()
+pick_up()
+forward()
+forward()
+```
+
+### ステージ2　まがって あつめよう
+
+**ポイント**：turn_right() は その ばで むきを かえるだけ。まがる ばしょと ひろう ばしょの じゅんばんが だいじ。
+
+```python
+forward()
+forward()
+pick_up()
+forward()
+turn_right()
+forward()
+pick_up()
+forward()
+```
+
+### ステージ3　for で あつめよう
+
+**ポイント**：for の なかに 2ぎょう いれるには、どちらも スペース 4つ じさげ する。さいごの forward() は じさげ しない。
+
+```python
+for i in range(3):
+    forward()
+    pick_up()
+forward()
+```
+
+### ステージ4　ほしの かいだん
+
+**ポイント**：5ぎょうの セットを まるごと for の なかへ。4かいめの とちゅうで ロケットに つくと そこで おわるよ。
+
+```python
+for i in range(4):
+    forward()
+    turn_right()
+    forward()
+    pick_up()
+    turn_left()
+```
+
+### ステージ5　if has_star():
+
+**ポイント**：if の なかの ぎょうは、for より もう 1だん（ぜんぶで スペース 8つ）じさげ する。
+
+```python
+for i in range(4):
+    forward()
+    if has_star():
+        pick_up()
+```
+
+### ステージ6　while not mission_done():
+
+**ポイント**：mission_done() は「ほしを ぜんぶ ひろって ロケットに ついた」ときに True に なる。not で「まだの あいだ」くりかえす。
+
+```python
+while not mission_done():
+    if has_star():
+        pick_up()
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+---
+
+# 🐍 Pythonで こわす・おく（python-craft.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　こわして すすもう
+
+**ポイント**：mine() で まえの いしを こわすと、すすめる みちに なるよ。
+
+```python
+forward()
+mine()
+forward()
+forward()
+forward()
+```
+
+### ステージ2　はしを かけよう
+
+**ポイント**：さいしょは ブロックを もっていない。mine() で 1こ もってから place() で はしを かける。
+
+```python
+mine()
+forward()
+place()
+forward()
+forward()
+forward()
+```
+
+### ステージ3　for で こわそう
+
+**ポイント**：「mine() → forward()」を 3かい。さいごの forward() は for の そと（じさげ しない）。
+
+```python
+for i in range(3):
+    mine()
+    forward()
+forward()
+```
+
+### ステージ4　ながい はし
+
+**ポイント**：3こ もっているから、3かい place() すると ちょうど 0こ。
+
+```python
+for i in range(3):
+    place()
+    forward()
+forward()
+```
+
+### ステージ5　if front_is('stone'):
+
+**ポイント**：front_is('stone') は まえが いしなら True。if の なかは もう 1だん じさげ。
+
+```python
+for i in range(4):
+    if front_is('stone'):
+        mine()
+    forward()
+```
+
+### ステージ6　elif で いしと みず
+
+**ポイント**：いし → mine()、そうでなくて みず → place()。こわすと 1こ ふえて、おくと 1こ へる（0 → 1 → 0 → 1）。
+
+```python
+for i in range(4):
+    if front_is('stone'):
+        mine()
+    elif front_is('water'):
+        place()
+    forward()
+```
+
+### ステージ7　うずまきの どうくつ
+
+**ポイント**：if・elif・elif・else で 4つの ばあいに わける。くりかえす たびに まえを しらべなおすよ。
+
+```python
+while not at_goal():
+    if front_is('stone'):
+        mine()
+    elif front_is('water'):
+        place()
+    elif front_is('path'):
+        forward()
+    else:
+        turn_right()
+```
+
+---
 # English answers
 
-This section has the answers for the four apps. In every image, the blocks are on the left and the result is on the right.
+This section has the answers for the four block apps and the three 🐍 Python apps. In every image, the blocks are on the left and the result is on the right (🐍 Python shows the answer code).
 These images show the English block labels. To see the same blocks in the app, switch the language with **⚙ Settings → 🌐**.
 
 - 🐢 **Block Drawing** (index.html): challenges ①–⑨
 - ⛏ **Block Maze** (maze.html): stages 1–8
 - 🚀 **Space Star Hunt** (space.html): stages 1–7
 - 🧱 **Break & Build Quest** (craft.html): stages 1–7
+- 🐍 **Python Maze** (python.html): stages 1–5
+- 🐍 **Python Space** (python-space.html): stages 1–6
+- 🐍 **Python Break & Build** (python-craft.html): stages 1–7
 
 ## 📖 Teacher mode (load the answer blocks)
 
@@ -282,6 +532,9 @@ https://<user>.github.io/<repository>/index.html?sensei&lang=en
 https://<user>.github.io/<repository>/maze.html?sensei&lang=en
 https://<user>.github.io/<repository>/space.html?sensei&lang=en
 https://<user>.github.io/<repository>/craft.html?sensei&lang=en
+https://<user>.github.io/<repository>/python.html?sensei&lang=en
+https://<user>.github.io/<repository>/python-space.html?sensei&lang=en
+https://<user>.github.io/<repository>/python-craft.html?sensei&lang=en
 ```
 
 Press the button to load the answer blocks for the selected challenge or stage. Then press "▶ Run" to show how it works in class.
@@ -493,3 +746,247 @@ With the Stage 6 program, the explorer cannot get around the corners and ends wi
 
 ### Free mode
 Random worlds. You start with as many blocks as there are water squares (3), so every world can be cleared. There is no fixed answer, so the teacher-mode "Answer" button does not load one.
+
+---
+
+---
+
+# 🐍 Python Maze (python.html)
+
+Building these in block mode gives the same Python shown below. In Python mode, type the code as it is.
+
+### Stage 1: Go straight
+
+**Key point**: Python runs from the top line down. The “move forward” block = forward()
+
+```python
+forward()
+forward()
+forward()
+forward()
+```
+
+### Stage 2: Let's turn
+
+**Key point**: Turning does not move you. Don’t forget the “_” (underscore).
+
+```python
+forward()
+forward()
+turn_right()
+forward()
+forward()
+```
+
+### Stage 3: Repeat with for
+
+**Key point**: Lines indented after “:” are inside the loop. Un-indent to leave the loop.
+
+```python
+for i in range(4):
+    forward()
+turn_right()
+for i in range(4):
+    forward()
+```
+
+### Stage 4: while and if
+
+**Key point**: not means “is not”. while not at_goal() = “repeat while you are not at the goal”.
+
+```python
+while not at_goal():
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+### Stage 5: Three choices with elif
+
+**Key point**: elif means “else if”. Putting an “if” block inside “else” becomes elif in Python.
+
+```python
+while not at_goal():
+    if is_open('front'):
+        forward()
+    elif is_open('right'):
+        turn_right()
+    else:
+        turn_left()
+```
+
+---
+
+# 🐍 Python Space (python-space.html)
+
+Building these in block mode gives the same Python shown below. In Python mode, type the code as it is.
+
+### Stage 1: Pick up a star
+
+**Key point**: pick_up() picks up the star on your square. Collect them all, then go to the rocket!
+
+```python
+forward()
+forward()
+pick_up()
+forward()
+forward()
+```
+
+### Stage 2: Turn and collect
+
+**Key point**: turn_right() only changes direction. The order of turning and picking up matters.
+
+```python
+forward()
+forward()
+pick_up()
+forward()
+turn_right()
+forward()
+pick_up()
+forward()
+```
+
+### Stage 3: Collect with for
+
+**Key point**: To put 2 lines inside for, indent both by 4 spaces. The last forward() is not indented.
+
+```python
+for i in range(3):
+    forward()
+    pick_up()
+forward()
+```
+
+### Stage 4: Star stairs
+
+**Key point**: Put the whole 5-line set inside for. You reach the rocket during the 4th repeat, and it ends there.
+
+```python
+for i in range(4):
+    forward()
+    turn_right()
+    forward()
+    pick_up()
+    turn_left()
+```
+
+### Stage 5: if has_star():
+
+**Key point**: Lines inside if are indented one more level (8 spaces in total).
+
+```python
+for i in range(4):
+    forward()
+    if has_star():
+        pick_up()
+```
+
+### Stage 6: while not mission_done():
+
+**Key point**: mission_done() becomes True when you have every star and are at the rocket. not repeats “while it is not done yet”.
+
+```python
+while not mission_done():
+    if has_star():
+        pick_up()
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+---
+
+# 🐍 Python Break & Build (python-craft.html)
+
+Building these in block mode gives the same Python shown below. In Python mode, type the code as it is.
+
+### Stage 1: Break and go
+
+**Key point**: mine() breaks the stone in front, and it becomes a path.
+
+```python
+forward()
+mine()
+forward()
+forward()
+forward()
+```
+
+### Stage 2: Build a bridge
+
+**Key point**: You start with no blocks. mine() to get one, then place() to build a bridge.
+
+```python
+mine()
+forward()
+place()
+forward()
+forward()
+forward()
+```
+
+### Stage 3: Break with for
+
+**Key point**: “mine() → forward()” 3 times. The last forward() is outside the for (not indented).
+
+```python
+for i in range(3):
+    mine()
+    forward()
+forward()
+```
+
+### Stage 4: A long bridge
+
+**Key point**: You have 3 blocks, so after 3 place() calls you have exactly 0.
+
+```python
+for i in range(3):
+    place()
+    forward()
+forward()
+```
+
+### Stage 5: if front_is('stone'):
+
+**Key point**: front_is('stone') is True if the front is stone. Indent one more level inside if.
+
+```python
+for i in range(4):
+    if front_is('stone'):
+        mine()
+    forward()
+```
+
+### Stage 6: Stone and water with elif
+
+**Key point**: Stone → mine(), else if water → place(). Breaking adds one and placing uses one (0 → 1 → 0 → 1).
+
+```python
+for i in range(4):
+    if front_is('stone'):
+        mine()
+    elif front_is('water'):
+        place()
+    forward()
+```
+
+### Stage 7: Spiral cave
+
+**Key point**: if, elif, elif and else split it into 4 cases. You check the front again on every loop.
+
+```python
+while not at_goal():
+    if front_is('stone'):
+        mine()
+    elif front_is('water'):
+        place()
+    elif front_is('path'):
+        forward()
+    else:
+        turn_right()
+```
