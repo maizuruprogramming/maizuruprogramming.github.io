@@ -24,6 +24,12 @@
   .card video { width: 100%; display: block; background: #000; aspect-ratio: 16 / 9; }
   .card .t { margin-top: 6px; font-size: 15px; line-height: 1.4; }
   .card a { color: inherit; }
+  .viewBar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 22px; }
+  .viewBar .vl { color: #fff; text-shadow: 2px 2px 0 #000; font-size: 15px; }
+  .viewBar button { font-size: 15px; padding: 6px 12px; background: #3d4352; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+  .viewBar button small { font-size: 12px; opacity: .85; }
+  .viewBar button[aria-pressed="true"] { background: #306998; border-color: #ffd43b; outline: 3px solid #ffd43b; }
+  body.view-blk section.app[data-kind="py"], body.view-py section.app[data-kind="blk"] { display: none; }
   #note { color: #ddd; text-shadow: 1px 1px 0 #000; line-height: 1.7; margin: 4px 0 12px; }
 </style>
 </head>
@@ -40,6 +46,9 @@
 <script>
 // 動画の いちらん（videos/ja/〜.mp4、videos/en/〜.mp4）
 const APPS = [
+  { key: 'draw', icon: '🐢', ja: 'ブロックでおえかき', en: 'Block Drawing', page: 'index.html', odai: true, titles: {
+      ja: ['① 六角形（ろっかくけい） ★', '② ほし ★★', '③ まる ★★', '④ まど ★★★', '⑤ はな ★★★', '⑥ しかくい うずまき ★★★★', '⑦ ならんだ たかくけい ★★★★', '⑧ ゆきの けっしょう ★★★★★', '⑨ ほしの うずまき ★★★★★'],
+      en: ['① Hexagon ★', '② Star ★★', '③ Circle ★★', '④ Window ★★★', '⑤ Flower ★★★', '⑥ Square spiral ★★★★', '⑦ Polygons in a row ★★★★', '⑧ Snowflake ★★★★★', '⑨ Star spiral ★★★★★'] } },
   { key: 'maze',  icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze', page: 'maze.html', titles: {
       ja: ['まっすぐ すすもう', 'まがってみよう', 'ながい みち', 'くりかえしを つかおう', 'かいだんを のぼろう', 'もし〜なら', 'みぎ？ ひだり？', 'どんな めいろでも ゴール！'],
       en: ['Go straight', "Let's turn", 'A long path', 'Use a loop', 'Climb the stairs', 'If…', 'Right? Left?', 'Any maze!'] } },
@@ -97,8 +106,21 @@ const list = document.getElementById('list');
   const cap = document.createElement('div'); cap.className = 't'; cap.textContent = J ? 'はじめに：1ぷんで わかる あそびかた' : 'Start here: how to play in 1 minute';
   card.append(v, cap); grid.append(card); sec.append(h, grid); list.append(sec);
 }
+// 📚 すべて ／ 🧩 Blockly版 ／ 🐍 Python版 の きりかえ（かいせつしょと おなじ。えらんだ ものは おぼえておく）
+const kindOf = (k) => (/^py/.test(k) ? 'py' : 'blk');
+{
+  const cnt = (k) => APPS.filter((a) => !k || kindOf(a.key) === k).reduce((n, a) => n + a.titles[LANG].length, 0);
+  const apps = (k) => APPS.filter((a) => !k || kindOf(a.key) === k).length;
+  const unit = (k) => J ? `（${apps(k)}アプリ・${cnt(k)}ほん）` : ` (${apps(k)} apps, ${cnt(k)} videos)`;
+  const bar = document.createElement('div'); bar.id = 'viewBar'; bar.className = 'viewBar'; bar.setAttribute('role', 'group');
+  bar.innerHTML = `<span class="vl">${J ? 'みる ものを えらぶ：' : 'Show:'}</span>` +
+    [['all', '📚 すべてを みる', '📚 Show all', ''], ['blk', '🧩 Blockly版を みる', '🧩 Show Blockly', 'blk'], ['py', '🐍 Python版を みる', '🐍 Show Python', 'py']]
+      .map(([v, ja, en, k]) => `<button type="button" data-view="${v}" aria-pressed="false">${J ? ja : en}<small>${unit(k)}</small></button>`).join('');
+  list.append(bar);
+}
+
 for (const a of APPS) {
-  const sec = document.createElement('section'); sec.className = 'app';
+  const sec = document.createElement('section'); sec.className = 'app'; sec.dataset.kind = kindOf(a.key);
   const h = document.createElement('h2'); h.innerHTML = `${a.icon} <a href="${a.page}" style="color:inherit">${J ? a.ja : a.en}</a>`;
   const grid = document.createElement('div'); grid.className = 'grid';
   a.titles[LANG].forEach((t, i) => {
@@ -111,6 +133,21 @@ for (const a of APPS) {
     card.append(v, cap); grid.append(card);
   });
   sec.append(h, grid); list.append(sec);
+}
+{
+  const bar = document.getElementById('viewBar');
+  const setView = (v, save) => {
+    if (!['all', 'blk', 'py'].includes(v)) v = 'all';
+    document.body.classList.remove('view-all', 'view-blk', 'view-py'); document.body.classList.add('view-' + v);
+    bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    // かくれた どうがは とめる
+    document.querySelectorAll('section.app video').forEach((vd) => { if (!vd.offsetParent && !vd.paused) vd.pause(); });
+    if (save) { try { localStorage.setItem('videos-view', v); } catch (e) {} }
+  };
+  let v = new URLSearchParams(location.search).get('view');
+  if (!v) { try { v = localStorage.getItem('videos-view'); } catch (e) {} }
+  setView(v || 'all', false);
+  bar.addEventListener('click', (e) => { const b = e.target.closest('button[data-view]'); if (b) setView(b.dataset.view, true); });
 }
 buildNav(document.getElementById('nav'));
 FnMenu(document.getElementById('fnBtn'), [langMenuItem(), nightMenuItem(), calmMenuItem()]);

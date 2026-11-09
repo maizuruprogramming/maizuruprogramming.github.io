@@ -15,6 +15,20 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 |---|---|---|---|
 | 1分で わかる あそびかた（アプリの選び方・4ステップ・Python・コツ・修了証） | [あそびかた](videos/ja/howto.mp4) | [How to play](videos/en/howto.mp4) | 48秒 |
 
+## 🐢 ブロックでおえかき ／ 🐢 Block Drawing
+
+| おだい | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [① 六角形（ろっかくけい） ★](videos/ja/draw-01.mp4) | [① Hexagon ★](videos/en/draw-01.mp4) | 32秒 |
+| 2 | [② ほし ★★](videos/ja/draw-02.mp4) | [② Star ★★](videos/en/draw-02.mp4) | 32秒 |
+| 3 | [③ まる ★★](videos/ja/draw-03.mp4) | [③ Circle ★★](videos/en/draw-03.mp4) | 40秒 |
+| 4 | [④ まど ★★★](videos/ja/draw-04.mp4) | [④ Window ★★★](videos/en/draw-04.mp4) | 45秒 |
+| 5 | [⑤ はな ★★★](videos/ja/draw-05.mp4) | [⑤ Flower ★★★](videos/en/draw-05.mp4) | 42秒 |
+| 6 | [⑥ しかくい うずまき ★★★★](videos/ja/draw-06.mp4) | [⑥ Square spiral ★★★★](videos/en/draw-06.mp4) | 42秒 |
+| 7 | [⑦ ならんだ たかくけい ★★★★](videos/ja/draw-07.mp4) | [⑦ Polygons in a row ★★★★](videos/en/draw-07.mp4) | 49秒 |
+| 8 | [⑧ ゆきの けっしょう ★★★★★](videos/ja/draw-08.mp4) | [⑧ Snowflake ★★★★★](videos/en/draw-08.mp4) | 46秒 |
+| 9 | [⑨ ほしの うずまき ★★★★★](videos/ja/draw-09.mp4) | [⑨ Star spiral ★★★★★](videos/en/draw-09.mp4) | 46秒 |
+
 ## ⛏ ブロックでめいろ ／ ⛏ Block Maze
 
 | ステージ | 日本語 | English | 長さ |

@@ -1,8 +1,10 @@
 """めいろの ほん（PDF）を つくる。
 
-つかいかた: python3 tools/book/build.py          → book/maze-book.pdf と book/en/maze-book.pdf
+つかいかた: python3 tools/book/build.py [maze,draw,space,craft]
+  → book/{maze,draw,space,craft}-book.pdf と book/en/…（にほんご・English）
 ステージの もんだい・こたえ は guide-data.js、めいろの かたちは 各アプリの map から よむ。
-ぶんしょうは tools/book/content.py。
+おえかき・うちゅう・こわす・おく の 盤面の えは tools/book/boards/（capture_boards.py で とる）。
+ぶんしょうは tools/book/content*.py。
 """
 import html
 import io
@@ -17,6 +19,10 @@ from pypdf import PdfReader, PdfWriter
 
 sys.path.insert(0, str(Path(__file__).parent))
 import content as C  # noqa: E402
+import content as C_MAZE  # noqa: E402
+import content_draw, content_space, content_craft  # noqa: E402
+BOOKS = {'maze': C_MAZE, 'draw': content_draw, 'space': content_space, 'craft': content_craft}
+BOARDS = Path(__file__).parent / 'boards'
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = Path('/tmp/bookimg')
@@ -155,7 +161,7 @@ def chips(G, it):
     return ''.join(f'<span class="chip">{html.escape(G["concepts"][c][["ja", "en"][L]])}</span>' for c in it['tags'])
 
 
-def stage_pages(G, app, it, rows, d, label, junior=False, same=None):
+def stage_pages(G, app, it, rows, d, label, junior=False, same=None, board_html=None, board_cap=''):
     lang = ['ja', 'en'][L]
     lim = f'<div class="lim">{ui("limit", n=it["limit"])}</div>' if it.get('limit') else ''
     note8 = f'<p class="cap">{ui("sample")}</p>' if app['key'] == 'maze' and it['n'] == 8 else ''
@@ -164,7 +170,7 @@ def stage_pages(G, app, it, rows, d, label, junior=False, same=None):
 <div class="crumb">{app["icon"]} {html.escape(label)}</div>
 <h3 class="st">{html.escape(it["title"][lang])}</h3>
 <div class="chips">{chips(G, it)}</div>
-<div class="bd">{board(rows, d, junior=junior, size=86 if len(rows) <= 5 else 100)}{note8}{same_txt}</div>
+<div class="bd">{board_html or board(rows, d, junior=junior, size=86 if len(rows) <= 5 else 100)}{board_cap}{note8}{same_txt}</div>
 <div class="box q"><b>{ui("q")}</b><p>{html.escape(it["text"][lang])}</p>{lim}</div>
 <div class="box g"><b>🎯 {ui("goal")}</b>：{html.escape(it["goal"][lang])}</div>
 <div class="box h"><b>{ui("hint")}</b><p class="hinttxt">{html.escape(it["hint"][lang])}</p></div>
@@ -204,9 +210,9 @@ def column(ch):
     return f'<section class="pg col"><div class="colbox"><div class="coltag">{ui("column")}</div><h3>{title}</h3>{body}</div></section>'
 
 
-def overview_table(G):
+def overview_table(G, order=None):
     lang = ['ja', 'en'][L]
-    order = ['mazejr', 'maze', 'mazekey', 'mazeenemy', 'python', 'pymazejr', 'pymazekey', 'pymazeenemy']
+    order = order or ['mazejr', 'maze', 'mazekey', 'mazeenemy', 'python', 'pymazejr', 'pymazekey', 'pymazeenemy']
     apps = {a['key']: a for a in G['apps']}
     h = ['<table class="t map"><tr><th>' + ('アプリ' if L == 0 else 'App') + '</th><th>#</th><th>' +
          ('ステージ' if L == 0 else 'Stage') + '</th><th>' + ('考え方' if L == 0 else 'Ideas') + '</th></tr>']
@@ -287,6 +293,55 @@ def build_body(G, pages):
     return toc(entries, pages) + ''.join(parts)
 
 
+def img_uri(path):
+    import base64
+    return 'data:image/png;base64,' + base64.b64encode(Path(path).read_bytes()).decode()
+
+
+def build_body_simple(G, pages):
+    lang = ['ja', 'en'][L]
+    apps = {a['key']: a for a in G['apps']}
+    entries, parts = [], []
+    entries.append(('howto', 'この ほんの つかいかた' if L == 0 else 'How to use this book', ''))
+    entries.append(('p1', t(C.PART1), 'tp'))
+    entries.append(('ch1', f'{ui("chapter", n=1)}　{t(C.CH1_TITLE)}', 'ch'))
+    rows_tbl = ''.join(f'<tr><td>{t(n)}</td><td>{s}</td><td>{t(g)}</td></tr>' for n, f, s, g in C.APPS_TABLE)
+    howto = t(C.HOWTO) + (f'<table class="t"><tr><th>{"アプリ" if L == 0 else "App"}</th><th>{"かず" if L == 0 else "Tasks"}</th>'
+                          f'<th>{"めやすの がくねん" if L == 0 else "Grade"}</th></tr>{rows_tbl}</table>')
+    parts.append(f'<section class="pg">{mark("howto")}{howto}</section>')
+    parts.append(f'<section class="pg part">{mark("p1")}<div class="ptag">PART 1</div><h1>{t(C.PART1)}</h1></section>')
+    parts.append(f'<section class="pg">{mark("ch1")}<div class="chno">{ui("chapter", n=1)}</div>{t(C.CH1)}</section>')
+    n = 1
+    for ch in C.CHAPTERS:
+        n += 1
+        k = f'ch{n}'
+        entries.append((k, f'{ui("chapter", n=n)}　{t(ch["title"])}', 'ch'))
+        parts.append(chapter_open(n, ch, k))
+        a = apps[ch['key']]
+        for it in a['items']:
+            img = BOARDS / f'{ch["boards"]}-{it["n"]}.png'
+            bh = f'<img class="bimg{" smooth" if ch["boards"] == "draw" else ""}" src="{img_uri(img)}">'
+            cap = f'<p class="cap">{ui(C.BOARD_LABEL)}</p>'
+            same = None
+            if ch.get('py') and C.SAME_NOTE:
+                same = t(C.SAME_NOTE).format(n=it['n'])
+            if ch['key'] == 'space' and it['n'] == 7:
+                cap += f'<p class="cap">{"れい：うちゅうは じっこうする たびに かわるよ" if L == 0 else "Example: the world changes every time you run"}</p>'
+            parts.append(stage_pages(G, a, it, None, None, a['name'][lang], same=same, board_html=bh, board_cap=cap))
+        parts.append(column(ch))
+    entries.append(('outro', 'おわりに' if L == 0 else 'Well done!', 'ch'))
+    parts.append(f'<section class="pg">{mark("outro")}{t(C.OUTRO)}</section>')
+    entries.append(('p2', t(C.PART2), 'tp'))
+    parts.append(f'<section class="pg part p2">{mark("p2")}<div class="ptag">PART 2</div><h1>{t(C.PART2)}</h1></section>')
+    order = [ch['key'] for ch in C.CHAPTERS]
+    for i, (title, ja, en) in enumerate(C.TEACHER):
+        k = f't{i}'
+        entries.append((k, t(title), 'tch'))
+        body = (ja if L == 0 else en).replace('{MAP}', overview_table(G, order))
+        parts.append(f'<section class="pg teach">{mark(k)}<h2>{t(title)}</h2>{body}</section>')
+    return toc(entries, pages) + ''.join(parts)
+
+
 CSS = '''
 @page { size: A4; margin: 15mm 16mm 16mm; }
 * { box-sizing: border-box; }
@@ -334,6 +389,8 @@ svg.board { border: 3px solid #5a3a1a; border-radius: 2mm; display: block; margi
 .nextp { text-align: right; color: #999; font-size: 10pt; }
 .ansbox { text-align: center; margin: 3mm 0; }
 img.ans { max-width: 100%; max-height: 150mm; border-radius: 2mm; }
+img.bimg.smooth { image-rendering: auto; }
+img.bimg { width: 92mm; border: 3px solid #5a3a1a; border-radius: 2mm; display: block; margin: 0 auto; image-rendering: pixelated; }
 pre.code { text-align: left; font-family: 'DejaVu Sans Mono', monospace; font-size: 12pt; line-height: 1.6; background: #1f2430; color: #e8e8e8; padding: 4mm 5mm; border-radius: 3mm; white-space: pre; }
 pre.code .ln { display: inline-block; width: 7mm; color: #7c8496; user-select: none; }
 .vid { font-size: 9.5pt; color: #666; }
@@ -356,11 +413,14 @@ pre.code .ln { display: inline-block; width: 7mm; color: #7c8496; user-select: n
 
 
 def cover_html():
-    b = board(['S..#....', '##.#.##.', '...#..#.', '.####.#.', '......#G'], 1, size=150)
+    if C is C_MAZE:
+        b = board(['S..#....', '##.#.##.', '...#..#.', '.####.#.', '......#G'], 1, size=150)
+    else:
+        b = f'<img src="{img_uri(BOARDS / (C.COVER_IMG + ".png"))}" style="width:120mm;border:4px solid #5a3a1a;border-radius:3mm;image-rendering:{'auto' if C.COVER_IMG.startswith('draw') else 'pixelated'};background:#fff">'
     return f'''<!DOCTYPE html><html lang="{['ja', 'en'][L]}"><head><meta charset="utf-8"><style>{CSS}
 @page {{ margin: 0; }}
 .cover {{ height: 297mm; padding: 30mm 20mm; background: linear-gradient(#fff4d6, #f5d79a); text-align: center; }}
-.cover h1 {{ font-size: {32 if L == 0 else 30}pt; color: #5a3a1a; margin: 0 0 6mm; line-height: 1.3; }}
+.cover h1 {{ font-size: {(32 if len(t(C.TITLE)) <= 15 else 25) if L == 0 else 28}pt; word-break: keep-all; color: #5a3a1a; margin: 0 0 6mm; line-height: 1.3; }}
 .cover .sub {{ font-size: 14pt; color: #7a5a2a; }}
 .cover .bd {{ margin: 18mm 0; }}
 .cover .au {{ position: absolute; bottom: 25mm; left: 0; right: 0; font-size: 12pt; color: #5a3a1a; }}
@@ -370,7 +430,8 @@ def cover_html():
 
 
 def body_html(G, pages):
-    return f'<!DOCTYPE html><html lang="{["ja", "en"][L]}"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{build_body(G, pages)}</body></html>'
+    body = build_body(G, pages) if C is C_MAZE else build_body_simple(G, pages)
+    return f'<!DOCTYPE html><html lang="{["ja", "en"][L]}"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>'
 
 
 FOOT = '<div style="width:100%;text-align:center;font-size:8px;color:#888;font-family:DejaVu Sans"><span class="pageNumber"></span></div>'
@@ -385,33 +446,85 @@ def render(pg, html_s, path, footer):
     pg.pdf(**opts)
 
 
-def main():
-    global L
+def main(which=None):
+    global L, C
     G = guide()
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page()
-        for L, out in ((0, ROOT / 'book' / 'maze-book.pdf'), (1, ROOT / 'book' / 'en' / 'maze-book.pdf')):
-            out.parent.mkdir(parents=True, exist_ok=True)
-            tmp_c, tmp_b = Path('/tmp/book_cover.pdf'), Path('/tmp/book_body.pdf')
-            render(pg, cover_html(), tmp_c, False)
-            # 1かいめ：ページばんごうを しらべる → 2かいめ：もくじに いれる
-            render(pg, body_html(G, {}), tmp_b, True)
-            pages = {}
-            for i, page in enumerate(PdfReader(tmp_b).pages):
-                for k in re.findall(r'@@([\w-]+)@@', page.extract_text() or ''):
-                    pages.setdefault(k, i + 1)
-            render(pg, body_html(G, pages), tmp_b, True)
+        for key in (which or list(BOOKS)):
+          C = BOOKS[key]
+          fname = getattr(C, 'FILE', 'maze-book') + '.pdf'
+          for L, out in ((0, ROOT / 'book' / fname), (1, ROOT / 'book' / 'en' / fname)):
+              out.parent.mkdir(parents=True, exist_ok=True)
+              tmp_c, tmp_b = Path('/tmp/book_cover.pdf'), Path('/tmp/book_body.pdf')
+              render(pg, cover_html(), tmp_c, False)
+              # 1かいめ：ページばんごうを しらべる → 2かいめ：もくじに いれる
+              render(pg, body_html(G, {}), tmp_b, True)
+              pages = {}
+              for i, page in enumerate(PdfReader(tmp_b).pages):
+                  for k in re.findall(r'@@([\w-]+)@@', page.extract_text() or ''):
+                      pages.setdefault(k, i + 1)
+              render(pg, body_html(G, pages), tmp_b, True)
+              w = PdfWriter()
+              for f in (tmp_c, tmp_b):
+                  for page in PdfReader(f).pages:
+                      w.add_page(page)
+              w.add_metadata({'/Title': t(C.TITLE), '/Author': t(C.AUTHOR)})
+              with open(out, 'wb') as fh:
+                  w.write(fh)
+              print(out.relative_to(ROOT), len(w.pages), 'pages', round(out.stat().st_size / 1e6, 1), 'MB', 'marks', len(pages))
+        b.close()
+
+
+ALL_TITLE = ('ほん ぜんぶ ― ブロックで プログラミング', 'All books — Block Programming')
+
+
+def build_all():
+    """4さつの ほんを 1つに まとめる（ひょうし ＋ もくじ ＋ しおり）。book/all-books.pdf と book/en/all-books.pdf"""
+    global L, C
+    order = ['draw', 'maze', 'space', 'craft']   # おえかき → めいろ → うちゅう → こわす・おく
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page()
+        for L, d in ((0, ROOT / 'book'), (1, ROOT / 'book' / 'en')):
+            readers = [(k, PdfReader(d / f'{getattr(BOOKS[k], "FILE", "maze-book")}.pdf')) for k in order]
+            start, n = {}, 2   # ひょうし（1ページ）の つぎから
+            for k, r in readers:
+                start[k] = n; n += len(r.pages)
+            rows = ''.join(
+                f'<div class="tr"><span>{"📘 " + t(BOOKS[k].TITLE)}</span><i></i><b>{start[k]}</b></div>'
+                f'<div class="sub2">{t(BOOKS[k].SUBTITLE)}</div>' for k, r in readers)
+            cover = f'''<!DOCTYPE html><html lang="{['ja', 'en'][L]}"><head><meta charset="utf-8"><style>{CSS}
+@page {{ margin: 0; }}
+.cv {{ height: 297mm; padding: 34mm 24mm; background: linear-gradient(#fff4d6, #f5d79a); }}
+.cv h1 {{ font-size: 23pt; word-break: keep-all; color: #5a3a1a; text-align: center; margin: 0 0 4mm; }}
+.cv .lead {{ text-align: center; color: #7a5a2a; margin-bottom: 16mm; }}
+.cv .tr {{ font-size: 15pt; margin-top: 8mm; }} .cv .sub2 {{ font-size: 10.5pt; color: #7a5a2a; margin-left: 9mm; }}
+.cv .au {{ position: absolute; bottom: 25mm; left: 0; right: 0; text-align: center; color: #5a3a1a; }}
+</style></head><body><div class="cv pg"><h1>{t(ALL_TITLE)}</h1>
+<div class="lead">{"おえかき・めいろ・うちゅう・こわす おく の 4さつ（ブロック と Python）" if L == 0 else "Four books: Drawing, Maze, Space, Break & Build (blocks and Python)"}</div>
+{rows}<p class="cap" style="margin-top:10mm">{"ばんごうは PDF の ページ（それぞれの ほんの ページばんごうは 1 から はじまります）" if L == 0 else "Numbers are PDF pages (each book numbers its own pages from 1)."}</p><div class="au">{t(C_MAZE.AUTHOR)}</div></div></body></html>'''
+            tmp = Path('/tmp/all_cover.pdf')
+            render(pg, cover, tmp, False)
             w = PdfWriter()
-            for f in (tmp_c, tmp_b):
-                for page in PdfReader(f).pages:
+            for page in PdfReader(tmp).pages:
+                w.add_page(page)
+            for k, r in readers:
+                first = len(w.pages)
+                for page in r.pages:
                     w.add_page(page)
-            w.add_metadata({'/Title': t(C.TITLE), '/Author': t(C.AUTHOR)})
+                w.add_outline_item(t(BOOKS[k].TITLE), first)
+            w.add_metadata({'/Title': t(ALL_TITLE), '/Author': t(C_MAZE.AUTHOR)})
+            out = d / 'all-books.pdf'
             with open(out, 'wb') as fh:
                 w.write(fh)
-            print(out.relative_to(ROOT), len(w.pages), 'pages', round(out.stat().st_size / 1e6, 1), 'MB', 'marks', len(pages))
+            print(out.relative_to(ROOT), len(w.pages), 'pages', round(out.stat().st_size / 1e6, 1), 'MB')
         b.close()
 
 
 if __name__ == '__main__':
-    main()
+    args = sys.argv[1].split(',') if len(sys.argv) > 1 else None
+    if args != ['all']:
+        main(args)
+    build_all()

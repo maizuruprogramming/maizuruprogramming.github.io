@@ -58,6 +58,8 @@ button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: poin
   outline: 2px solid #000; outline-offset: -1px; }
 button:hover, select:hover { filter: brightness(1.12); }
 button:active { border-color: var(--btn-dark) var(--btn-light) var(--btn-light) var(--btn-dark); }
+/* ボタンの もじは たても よこも まんなかに（どの ページでも） */
+button { display: inline-flex; align-items: center; justify-content: center; text-align: center; vertical-align: middle; }
 select option { color: #222; text-shadow: none; background: #ddd; }
 /* ステージの えらぶ メニューは フォントに かかわらず おなじ たかさ（ドットもじの ときと そろえる） */
 select { box-sizing: border-box; height: 43px; line-height: 1.2; }
@@ -109,6 +111,7 @@ main { display: flex; height: calc(100% - 56px); }
   background: #2b2f3a; border: 3px solid #000; box-shadow: 0 8px 22px rgba(0,0,0,.45); font-family: inherit; }
 .fnMenu.show { display: block; }
 .fnMenu .fnItem { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin: 4px 0; padding: 8px 14px;
+  justify-content: flex-start;   /* メニューの こうもくは ひだりぞろえ（アイコンが たてに そろう） */
   font: inherit; font-size: 17px; color: #fff; text-shadow: none; text-align: left; cursor: pointer;
   background: #3d4352; border: 2px solid #59607a; border-radius: 6px; outline: none; filter: none; }
 .fnMenu .fnItem:hover, .fnMenu .fnItem:focus-visible { background: #50597a; border-color: #8a93c0; }

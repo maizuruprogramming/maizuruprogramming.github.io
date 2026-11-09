@@ -25,13 +25,13 @@
   .appIntro a { color: var(--accent); }
   .bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
   .bar button { font-size: 15px; padding: 5px 12px; }
-  .bar a.bookBtn { font-size: 15px; padding: 5px 12px; color: #fff; text-decoration: none; background: #8a5a1c; border: 3px solid; border-color: #d6a868 #4a2c08 #4a2c08 #d6a868; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; display: inline-flex; align-items: center; }
+  .bar a.bookBtn { font-size: 15px; padding: 5px 12px; color: #fff; text-decoration: none; background: #8a5a1c; border: 3px solid; border-color: #d6a868 #4a2c08 #4a2c08 #d6a868; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
   #intro p { margin: 6px 0; line-height: 1.8; }
   .teacher { margin-top: 10px; padding: 8px 12px; background: #efe4c6; border-left: 6px solid var(--accent); font-size: 14px; line-height: 1.8; }
   /* もくじ */
   .viewBar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 16px 0 0; scroll-margin-top: 10px; }
   .viewBar .vl { color: #fff; text-shadow: 2px 2px 0 #000; font-size: 15px; }
-  .viewBar button { font-size: 15px; padding: 6px 12px; background: #3d4352; display: inline-flex; align-items: baseline; gap: 4px; }
+  .viewBar button { font-size: 15px; padding: 6px 12px; background: #3d4352; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
   .viewBar button small { font-size: 12px; opacity: .85; }
   .viewBar button[aria-pressed="true"] { background: #306998; border-color: #ffd43b; outline: 3px solid #ffd43b; }
   body.view-blk [data-kind="py"], body.view-py [data-kind="blk"] { display: none !important; }
@@ -68,6 +68,7 @@
   .wsBox a.sub { background: #5d6b5a; border-color: #a9b5a6 #2c332b #2c332b #a9b5a6; }
   /* ボタンの もじを たての まんなかに（フォントが かわっても おなじ たかさ） */
   .links a, .wsBox a { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 34px; line-height: 1.2; padding-top: 0; padding-bottom: 0; }
+  .links a.bk { background: #8a5a1c; border-color: #d6a868 #4a2c08 #4a2c08 #d6a868; }
   .links a.v { background: #8e2f2c; border-color: #d48a87 #4a1311 #4a1311 #d48a87; }
   html.theme-night table.map { background: #22262f; }
   html.theme-night table.map th { background: #2b2f3a; }
@@ -110,9 +111,9 @@ const S = {
           'This page explains every challenge and stage in the seven block apps (including the three maze variations) and the seven 🐍 Python apps.'],
   lead2: ['「ヒントを みる」「こたえと ポイントを みる」を おすと、ヒントや こたえが ひらきます。まずは じぶんで かんがえてから ひらいてみよう！',
           'Press “Show hint” or “Show answer and key point” to open them. Try to think by yourself first!'],
-  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
-            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
-  openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'], book: ['📘 めいろの ほん（PDF）', '📘 Maze book (PDF)'],
+  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（おえかき・めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
+            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Drawing, Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
+  openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'], book: ['📘 ほん ぜんぶ（PDF）', '📘 All books (PDF)'],
   viewAll: ['📚 すべてを みる', '📚 Show all'], viewBlk: ['🧩 Blockly版を みる', '🧩 Show Blockly'], viewPy: ['🐍 Python版を みる', '🐍 Show Python'],
   viewLabel: ['みる ものを えらぶ：', 'Show:'],
   mapTitle: ['まなびの つながり（どの かだいで なにを まなぶか）', 'What you learn where'],
@@ -131,7 +132,7 @@ document.title = s('title'); document.getElementById('title').textContent = s('t
 // はじめに
 document.getElementById('intro').innerHTML =
   `<p>${esc(s('lead1'))}</p><p>${esc(s('lead2'))}</p><div class="teacher">${esc(s('teacher'))}</div>
-   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button><a class="bookBtn" href="${J ? 'book/maze-book.pdf' : 'book/en/maze-book.pdf'}" target="_blank" rel="noopener">${esc(s('book'))}</a></div>`;
+   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button><a class="bookBtn" href="${J ? 'book/all-books.pdf' : 'book/en/all-books.pdf'}" target="_blank" rel="noopener">${esc(s('book'))}</a></div>`;
 
 // もくじ
 // 🧩 Blockly版 ／ 🐍 Python版：キーが py で はじまる アプリ（python も）は Python版
@@ -157,6 +158,10 @@ const WS = { draw: 'ws2-draw', maze: 'ws3-maze', mazejr: 'ws4-arrow', mazekey: '
   space: 'ws5-space-craft', craft: 'ws5-space-craft' };
 // 学習指導案（PDF・日本語）：アプリ → 指導案
 const LP = { draw: 'lp-draw', mazejr: 'lp-arrow', maze: 'lp-maze', mazekey: 'lp-key-enemy', mazeenemy: 'lp-key-enemy', space: 'lp-space', craft: 'lp-craft' };
+// 📘 ほん（PDF）：アプリ → ほん
+const BOOKOF = (k) => /draw/.test(k) ? 'draw' : /space/.test(k) ? 'space' : /craft/.test(k) ? 'craft' : 'maze';
+const BOOKNAME = { maze: ['📘 めいろの ほん', '📘 Maze book'], draw: ['📘 おえかきの ほん', '📘 Drawing book'], space: ['📘 うちゅうの ほん', '📘 Space book'], craft: ['📘 ぼうけんの ほん', '📘 Adventure book'] };
+const bookLink = (k) => `<a class="bk" href="${J ? 'book/' : 'book/en/'}${BOOKOF(k)}-book.pdf" target="_blank" rel="noopener">${esc(BOOKNAME[BOOKOF(k)][J ? 0 : 1])}</a>`;
 const WSDIR = J ? 'worksheets/' : 'worksheets/en/';
 const wsFile = (k) => `${WSDIR}${WS[k] || 'ws7-python'}.pdf`;
 const wsLinks = (k) => `<div class="wsBox"><a href="${wsFile(k)}" target="_blank" rel="noopener">${esc(s('ws'))}</a>` +
@@ -169,7 +174,7 @@ let html = '';
 for (const a of G.apps) {
   html += `<div class="appSec" data-kind="${kindOf(a.key)}">`;
   html += `<h2 class="app" id="app-${a.key}">${a.icon} ${esc(T(a.name))}</h2>`;
-  html += `<div class="panel appIntro">${esc(T(a.intro))}<div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${a.key !== 'draw' ? `<a class="v" href="videos.html">${esc(s('video'))}</a>` : ''}</div></div>`;
+  html += `<div class="panel appIntro">${esc(T(a.intro))}<div class="links"><a href="${a.file}">${esc(s('openApp'))}</a><a class="v" href="videos.html">${esc(s('video'))}</a>${bookLink(a.key)}</div></div>`;
   for (const it of a.items) {
     const chips = it.tags.map((c) => `<span class="chip">${esc(T(G.concepts[c]))}</span>`).join('') +
       (it.limit ? `<span class="chip lim">${esc(S.limit(it.limit))}</span>` : '');
@@ -187,7 +192,7 @@ for (const a of G.apps) {
         ${it.code ? `<pre class="py">${esc(it.code)}</pre>` : `<img loading="lazy" src="${T(it.img)}" alt="${esc(T(it.title))}">`}
       </div></details>
       ${wsLinks(a.key)}
-      <div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${it.video ? `<a class="v" href="${T(it.video)}" target="_blank">${esc(s('video'))}</a>` : ''}</div>
+      <div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${it.video ? `<a class="v" href="${T(it.video)}" target="_blank">${esc(s('video'))}</a>` : ''}${bookLink(a.key)}</div>
     </div>`;
   }
   html += '</div>';

@@ -91,7 +91,10 @@ window.GUIDE = {
       "ja": "images/answers/odai1.png",
       "en": "images/answers/en/odai1.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-01.mp4",
+      "en": "videos/en/draw-01.mp4"
+     },
      "title": {
       "ja": "① 六角形（ろっかくけい） ★",
       "en": "① Hexagon ★"
@@ -128,7 +131,10 @@ window.GUIDE = {
       "ja": "images/answers/odai2.png",
       "en": "images/answers/en/odai2.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-02.mp4",
+      "en": "videos/en/draw-02.mp4"
+     },
      "title": {
       "ja": "② ほし ★★",
       "en": "② Star ★★"
@@ -165,7 +171,10 @@ window.GUIDE = {
       "ja": "images/answers/odai3.png",
       "en": "images/answers/en/odai3.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-03.mp4",
+      "en": "videos/en/draw-03.mp4"
+     },
      "title": {
       "ja": "③ まる ★★",
       "en": "③ Circle ★★"
@@ -201,7 +210,10 @@ window.GUIDE = {
       "ja": "images/answers/odai4.png",
       "en": "images/answers/en/odai4.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-04.mp4",
+      "en": "videos/en/draw-04.mp4"
+     },
      "title": {
       "ja": "④ まど ★★★",
       "en": "④ Window ★★★"
@@ -238,7 +250,10 @@ window.GUIDE = {
       "ja": "images/answers/odai5.png",
       "en": "images/answers/en/odai5.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-05.mp4",
+      "en": "videos/en/draw-05.mp4"
+     },
      "title": {
       "ja": "⑤ はな ★★★",
       "en": "⑤ Flower ★★★"
@@ -275,7 +290,10 @@ window.GUIDE = {
       "ja": "images/answers/odai6.png",
       "en": "images/answers/en/odai6.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-06.mp4",
+      "en": "videos/en/draw-06.mp4"
+     },
      "title": {
       "ja": "⑥ しかくい うずまき ★★★★",
       "en": "⑥ Square spiral ★★★★"
@@ -313,7 +331,10 @@ window.GUIDE = {
       "ja": "images/answers/odai7.png",
       "en": "images/answers/en/odai7.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-07.mp4",
+      "en": "videos/en/draw-07.mp4"
+     },
      "title": {
       "ja": "⑦ ならんだ たかくけい ★★★★",
       "en": "⑦ Polygons in a row ★★★★"
@@ -350,7 +371,10 @@ window.GUIDE = {
       "ja": "images/answers/odai8.png",
       "en": "images/answers/en/odai8.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-08.mp4",
+      "en": "videos/en/draw-08.mp4"
+     },
      "title": {
       "ja": "⑧ ゆきの けっしょう ★★★★★",
       "en": "⑧ Snowflake ★★★★★"
@@ -387,7 +411,10 @@ window.GUIDE = {
       "ja": "images/answers/odai9.png",
       "en": "images/answers/en/odai9.png"
      },
-     "video": null,
+     "video": {
+      "ja": "videos/ja/draw-09.mp4",
+      "en": "videos/en/draw-09.mp4"
+     },
      "title": {
       "ja": "⑨ ほしの うずまき ★★★★★",
       "en": "⑨ Star spiral ★★★★★"
