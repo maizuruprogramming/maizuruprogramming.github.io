@@ -201,6 +201,33 @@ html.font-ud .blocklyText, html.font-ud .blocklyFlyoutLabelText { font-family: "
 #mazePicker .mpCell.on { background: #306998; border: 3px solid #ffd43b; }
 #mazePicker .mpCell:focus-visible { box-shadow: 0 0 0 3px #ffd43b; }
 #mazePicker .mpNote { margin-top: 10px; font-size: 13px; color: #c9cee0; line-height: 1.5; }
+/* ℹ️ この アプリに ついて */
+#aboutBox { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,.55); display: flex; align-items: flex-start; justify-content: center; padding-top: 60px; }
+#aboutBox .abBox { width: 600px; max-width: calc(100vw - 16px); max-height: calc(100vh - 76px); overflow-y: auto; padding: 14px 18px 18px; background: #2b2f3a; color: #fff;
+  border: 3px solid #000; box-shadow: 0 8px 22px rgba(0,0,0,.45); font-size: 15px; line-height: 1.65; }
+#aboutBox .abHead { display: flex; align-items: center; margin-bottom: 6px; }
+#aboutBox .abTitle { flex: 1; font-size: 19px; }
+#aboutBox .abClose { width: 44px; height: 40px; padding: 0; background: #3d4352; border-color: #59607a; outline: none; }
+#aboutBox .abApp { font-size: 20px; color: #ffd43b; margin: 4px 0 2px; }
+#aboutBox p { margin: 4px 0; }
+#aboutBox section { margin-top: 12px; }
+#aboutBox h3 { font-size: 16px; font-weight: normal; color: #ffd43b; margin: 0 0 2px; }
+#aboutBox h4 { font-size: 14px; font-weight: normal; color: #ffd43b; margin: 10px 0 2px; }
+#aboutBox .abList { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 10px 0 0; }
+#aboutBox .abList dt { color: #c9cee0; } #aboutBox .abList dd { margin: 0; }
+#aboutBox a { color: #8fd3ff; }
+#aboutBox .abWarn { background: #3d4352; border-left: 4px solid #ffd43b; padding: 4px 10px; }
+#aboutBox .abLinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+#aboutBox .abLinks a { color: #fff; text-decoration: none; background: #3d4352; border: 2px solid #59607a; border-radius: 6px; padding: 4px 10px; }
+#aboutBox .abMore { margin-top: 14px; border-top: 1px solid #59607a; padding-top: 8px; font-size: 13.5px; }
+#aboutBox .abMore summary { cursor: pointer; color: #c9cee0; }
+#aboutBox ul { margin: 2px 0; padding-left: 20px; }
+#aboutBox code { background: #3d4352; padding: 0 4px; }
+html.theme-calm #aboutBox .abBox { filter: saturate(.45) contrast(.9); }
+@media (max-width: 600px) {
+  #aboutBox { align-items: flex-end; padding: 0; }
+  #aboutBox .abBox { width: 100%; max-width: 100%; max-height: 88vh; padding: 12px 14px calc(16px + env(safe-area-inset-bottom)); font-size: 14px; }
+}
 html.theme-calm #mazePicker .mpBox { filter: saturate(.45) contrast(.9); }
 @media (max-width: 600px) {
   #mazePicker { align-items: flex-end; padding: 0; }

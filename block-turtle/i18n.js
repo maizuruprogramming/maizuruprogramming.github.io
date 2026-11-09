@@ -97,6 +97,8 @@
     var ci = -1;
     items.forEach(function (it, k) { if (it._calm) ci = k; });
     if (ci >= 0) items = items.slice(0, ci + 1).concat([window.fontMenuItem()], items.slice(ci + 1));
+    // ℹ️ この アプリに ついて：どの ページでも いちばん したに だす
+    items = items.concat([window.aboutMenuItem()]);
     var menu = {
       render: function () {
         box.innerHTML = '';
@@ -230,6 +232,66 @@
     }];
   };
 
+  // ℹ️ この アプリに ついて（バージョン・つくった ひと・データの あつかい・つかっている もの）
+  window.openAbout = function () {
+    var J = lang === 'ja';
+    var old = document.getElementById('aboutBox'); if (old) old.remove();
+    var wrap = document.createElement('div'); wrap.id = 'aboutBox';
+    wrap.setAttribute('role', 'dialog'); wrap.setAttribute('aria-modal', 'true');
+    wrap.setAttribute('aria-label', J ? 'この アプリに ついて' : 'About this app');
+    var T = function (ja, en) { return J ? ja : en; };
+    var sec = function (ttl, body) { return '<section><h3>' + ttl + '</h3>' + body + '</section>'; };
+    var html =
+      '<div class="abHead"><div class="abTitle">ℹ️ ' + T('この アプリに ついて', 'About this app') + '</div>' +
+      '<button class="abClose" aria-label="' + T('とじる', 'Close') + '">×</button></div>' +
+      '<div class="abApp">🧱 ' + T('ブロックで プログラミング', 'Block Programming') + '</div>' +
+      '<p>' + T('ブロックを つなげて、カメで え を かいたり、めいろを ぬけたり、うちゅうで ほしを あつめたりしながら、プログラミングの かんがえかたを まなぶ アプリです。さいごは Python（パイソン）の ことばでも かけるように なります。',
+                'Snap blocks together to draw with a turtle, escape mazes and collect stars in space while learning how to think like a programmer. In the end, you can write the same programs in Python, too.') + '</p>' +
+      '<dl class="abList">' +
+      '<dt>' + T('バージョン', 'Version') + '</dt><dd>' + window.RELEASE_VERSION + '（' + window.RELEASE_DATE + '）　<a href="releases.html">📝 ' + T('リリースノート', 'Release notes') + '</a></dd>' +
+      '<dt>' + T('つくった ひと', 'Made by') + '</dt><dd>' + T('舞鶴工業高等専門学校　井上泰仁', 'Yasuhito Inoue, National Institute of Technology, Maizuru College') + '</dd>' +
+      '</dl>' +
+      sec('🤝 ' + T('つかう ときの おやくそく', 'Terms of use'),
+        '<p>' + T('この アプリは だれでも むりょうで つかえます。がっこうの じゅぎょうや いえでの べんきょうに じゆうに つかってください。',
+                  'Anyone can use this app for free. Please feel free to use it in school lessons and for learning at home.') + '</p>') +
+      sec('🔒 ' + T('データの あつかい', 'Your data'),
+        '<p>' + T('クリアした ステージや せっていは、この たんまつの ブラウザの なかだけに ほぞんされます。なまえや メールアドレスを いれる ところは ありません。',
+                  'Cleared stages and settings are saved only in this device’s browser. There is no place to enter your name or email address.') + '</p>') +
+      sec('💻 ' + T('つかえる たんまつ', 'Devices'),
+        '<p>' + T('パソコン・タブレット・スマートフォンの ブラウザ（Chrome、Safari、Edge など）で うごきます。インストールは いりません。',
+                  'Works in the browser (Chrome, Safari, Edge, etc.) on computers, tablets and smartphones. No installation needed.') + '</p>' +
+        '<p class="abWarn">🌐 ' + T('動作にはインターネット接続が必要です。', 'An internet connection is required.') + '</p>') +
+      sec('🧭 ' + T('こまったときは', 'Need help?'),
+        '<div class="abLinks"><a href="howto.html">🎮 ' + T('あそびかた', 'How to play') + '</a><a href="guide.html">📖 ' + T('かいせつしょ', 'Guide') + '</a>' +
+        '<a href="videos.html">🎬 ' + T('どうが', 'Videos') + '</a><a href="releases.html">📝 ' + T('リリースノート', 'Release notes') + '</a></div>') +
+      '<details class="abMore"><summary>' + T('くわしく（先生・保護者の方へ）', 'More (for teachers and parents)') + '</summary>' +
+        '<h4>' + T('授業で使える教材', 'Materials for lessons') + '</h4>' +
+        '<p>' + T('ワークシート（日本語・英語）、学習指導案（原案）、めいろの本（PDF）、授業用スライドを用意しています。ワークシート・学習指導案・めいろの本は「📖 かいせつしょ」から開けます。',
+                  'Worksheets (Japanese/English), lesson plans (Japanese), a maze book (PDF) and lesson slides are available. Open the worksheets, lesson plans and maze book from the 📖 Guide.') + '</p>' +
+        '<h4>' + T('先生モード', 'Teacher mode') + '</h4>' +
+        '<p>' + T('アドレスの最後に <code>?sensei</code> を付けると「こたえ」ボタンが表示され、答えのブロックを読み込めます。',
+                  'Add <code>?sensei</code> to the end of the address to show an “Answer” button that loads the answer blocks.') + '</p>' +
+        '<h4>' + T('使用しているもの', 'Credits') + '</h4>' +
+        '<ul><li>Blockly（Google）― ' + T('ブロックの しくみ', 'block editor') + '（Apache License 2.0）</li>' +
+        '<li>BIZ UDPGothic / BIZ UDGothic（Morisawa）・DotGothic16 ― ' + T('フォント', 'fonts') + '（SIL Open Font License 1.1）。Google Fonts ' + T('から読み込み', 'served by Google Fonts') + '</li></ul>' +
+      '</details>';
+    var box = document.createElement('div'); box.className = 'abBox'; box.innerHTML = html;
+    wrap.appendChild(box); document.body.appendChild(wrap);
+    function close() { wrap.remove(); document.removeEventListener('keydown', onKey); }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    box.querySelector('.abClose').addEventListener('click', close);
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) close(); });
+    document.addEventListener('keydown', onKey);
+    box.querySelector('.abClose').focus();
+  };
+  window.aboutMenuItem = function () {
+    return {
+      icon: function () { return 'ℹ️'; },
+      label: function () { return lang === 'ja' ? 'この アプリに ついて' : 'About this app'; },
+      onClick: function (m) { m.close(); window.openAbout(); }
+    };
+  };
+
   // 🎮 あそびかた・べんきょうの しかた（しょうかいの ページへ いく）
   window.howtoMenuItem = function () {
     return {
@@ -250,6 +312,8 @@
 
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
   var RELEASE_VERSION = '1.19';
+  var RELEASE_DATE = '2026-11-09';   // リリースノートの ひづけ（「この アプリに ついて」に だす）
+  window.RELEASE_DATE = RELEASE_DATE;
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
   window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
