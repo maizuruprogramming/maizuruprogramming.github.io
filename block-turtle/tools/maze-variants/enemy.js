@@ -248,10 +248,9 @@ function draw() {
   }
   drawHero();
   world.foes.forEach(([r, c]) => drawSlime(r, c));
-  // ターン（ひだりうえ）
-  ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(3, 3, CELL * 1.6, CELL * 0.45);
-  ctx.fillStyle = '#ffffff'; ctx.font = Math.round(CELL * 0.28) + 'px DotGothic16, monospace'; ctx.textBaseline = 'middle';
-  ctx.fillText((LANG === 'en' ? 'Turn ' : 'ターン ') + world.turn, 8, 3 + CELL * 0.23);
+  // ターン（ばんめんの うえの ぎょう）
+  const sr = document.getElementById('statusRow');
+  if (sr) sr.textContent = (LANG === 'en' ? '👾 Turn: ' : '👾 ターン：') + world.turn;
 }
 /*@@ SOUND */
   wait() { this.tone('triangle', 660, 660, 0.06, 0, 0.4); this.tone('triangle', 660, 660, 0.06, 0.12, 0.25); },   // ちっ ちっ

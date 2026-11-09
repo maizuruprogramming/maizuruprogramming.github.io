@@ -118,7 +118,7 @@ class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; 
 function simulate(code) {
   const s = { ...START };
   const frames = [];
-  let blockId = null;
+  let blockId = null, loops = 0;
   const rec = (event) => {
     frames.push({ r: s.r, c: s.c, dir: s.dir, id: blockId, event });
     if (frames.length > MAX_MOVES) throw new Stop('ng', t('tooManyMoves', MAX_MOVES));
@@ -131,7 +131,9 @@ function simulate(code) {
       if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', t('crash'), 'crash'); }
       s.r = nr; s.c = nc; rec('move');
       if (s.r === GOAL.r && s.c === GOAL.c) throw new Stop('ok', 'goal');
-    }
+    },
+    atGoal: () => s.r === GOAL.r && s.c === GOAL.c,
+    loopGuard: () => { if (++loops > MAX_LOOPS) throw new Stop('ng', t('endless')); }
   };
   let result;
   try {

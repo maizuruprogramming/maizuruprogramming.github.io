@@ -47,6 +47,8 @@ def build(v):
     s = s.replace("  toggle() {\n    this.muted = !this.muted;", parts['SOUND'].rstrip() + "\n  toggle() {\n    this.muted = !this.muted;", 1)
     # しゅうりょうしょう
     s = s.replace("icons: ['⛏', '💎']", f"icons: {v['cert']}", 1)
+    if v.get('status'):   # ばんめんの うえに もちもの・ターンを だす ぎょう
+        s = s.replace('    <canvas id="board" class="board"', '    <div class="row" id="statusRow" style="font-size:17px"></div>\n    <canvas id="board" class="board"', 1)
     for a, b in v.get('extra', []):
         assert a in s, a
         s = s.replace(a, b, 1)
@@ -56,8 +58,8 @@ def build(v):
     print('wrote', v['file'], len(s))
 
 VARIANTS = [
-    dict(key='key', file='maze-key.html', icon='🗝', title_ja='かぎと とびらの めいろ', title_en='Keys & Doors Maze', save='block-mazekey', cert="['🗝', '🚪']"),
-    dict(key='enemy', file='maze-enemy.html', icon='👾', title_ja='てきを よける めいろ', title_en='Dodge the Slime Maze', save='block-mazeenemy', cert="['👾', '💎']", speedMul='0.7'),
+    dict(key='key', file='maze-key.html', icon='🗝', title_ja='かぎと とびらの めいろ', title_en='Keys & Doors Maze', save='block-mazekey', cert="['🗝', '🚪']", status=True),
+    dict(key='enemy', file='maze-enemy.html', icon='👾', title_ja='てきを よける めいろ', title_en='Dodge the Slime Maze', save='block-mazeenemy', cert="['👾', '💎']", speedMul='0.7', status=True),
     dict(key='junior', file='maze-junior.html', icon='🧭', title_ja='やじるしの めいろ', title_en='Arrow Maze', save='block-mazejr', cert="['🧭', '💎']"),
 ]
 for v in VARIANTS:

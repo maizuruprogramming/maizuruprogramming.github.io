@@ -7,7 +7,7 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 
 **動画の流れ / Structure**：タイトル（めあて）→ 盤面の紹介 → かんがえかた（ヒント）→ 解答ブロックを1つずつ並べる → 実行（いま動いているブロックが光る）→ クリア！とポイント → 次のステージの予告
 
-🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7 ＝ 27ステージ × 日英 54本）。
+🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4 ＝ 41ステージ × 日英 82本）。
 
 ## 🎮 あそびかた ／ 🎮 How to play
 
@@ -27,6 +27,35 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 6 | [もし〜なら](videos/ja/maze-06.mp4) | [If…](videos/en/maze-06.mp4) | 44秒 |
 | 7 | [みぎ？ ひだり？](videos/ja/maze-07.mp4) | [Right? Left?](videos/en/maze-07.mp4) | 42秒 |
 | 8 | [どんな めいろでも ゴール！](videos/ja/maze-08.mp4) | [Any maze!](videos/en/maze-08.mp4) | 46秒 |
+
+## 🧭 やじるしの めいろ ／ 🧭 Arrow Maze
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [みぎへ すすもう](videos/ja/mazejr-01.mp4) | [Go right](videos/en/mazejr-01.mp4) | 27秒 |
+| 2 | [したへ まがろう](videos/ja/mazejr-02.mp4) | [Go down](videos/en/mazejr-02.mp4) | 29秒 |
+| 3 | [かいだん](videos/ja/mazejr-03.mp4) | [Stairs](videos/en/mazejr-03.mp4) | 29秒 |
+| 4 | [うえへ のぼろう](videos/ja/mazejr-04.mp4) | [Go up](videos/en/mazejr-04.mp4) | 29秒 |
+| 5 | [ぐるっと まわろう](videos/ja/mazejr-05.mp4) | [Go around](videos/en/mazejr-05.mp4) | 28秒 |
+| 6 | [くりかえしを つかおう](videos/ja/mazejr-06.mp4) | [Use repeat](videos/en/mazejr-06.mp4) | 30秒 |
+
+## 🗝 かぎと とびらの めいろ ／ 🗝 Keys & Doors Maze
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [かぎを ひろって とびらを あけよう](videos/ja/mazekey-01.mp4) | [Pick up the key, open the door](videos/en/mazekey-01.mp4) | 35秒 |
+| 2 | [かぎは どこ？](videos/ja/mazekey-02.mp4) | [Where is the key?](videos/en/mazekey-02.mp4) | 42秒 |
+| 3 | [とびらが 2つ](videos/ja/mazekey-03.mp4) | [Two doors](videos/en/mazekey-03.mp4) | 38秒 |
+| 4 | [じぶんで かんがえる たんけんか](videos/ja/mazekey-04.mp4) | [A thinking explorer](videos/en/mazekey-04.mp4) | 51秒 |
+
+## 👾 てきを よける めいろ ／ 👾 Dodge the Slime Maze
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [まって よけよう](videos/ja/mazeenemy-01.mp4) | [Wait and dodge](videos/en/mazeenemy-01.mp4) | 35秒 |
+| 2 | [あぶなかったら まつ](videos/ja/mazeenemy-02.mp4) | [Wait if it is dangerous](videos/en/mazeenemy-02.mp4) | 38秒 |
+| 3 | [おおきな めいろ](videos/ja/mazeenemy-03.mp4) | [A bigger maze](videos/en/mazeenemy-03.mp4) | 45秒 |
+| 4 | [うずまきの めいろ](videos/ja/mazeenemy-04.mp4) | [The spiral maze](videos/en/mazeenemy-04.mp4) | 49秒 |
 
 ## 🚀 うちゅうで ほしあつめ ／ 🚀 Space Star Hunt
 
@@ -98,3 +127,32 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 5 | [if front_is('stone'):](videos/ja/pycraft-05.mp4) | [if front_is('stone'):](videos/en/pycraft-05.mp4) | 38秒 |
 | 6 | [elif で いしと みず](videos/ja/pycraft-06.mp4) | [Stone and water with elif](videos/en/pycraft-06.mp4) | 45秒 |
 | 7 | [うずまきの どうくつ](videos/ja/pycraft-07.mp4) | [Spiral cave](videos/en/pycraft-07.mp4) | 52秒 |
+
+## 🐍 Pythonで やじるし めいろ ／ 🐍 Python Arrow Maze
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [right() で すすもう](videos/ja/pymazejr-01.mp4) | [Go with right()](videos/en/pymazejr-01.mp4) | 31秒 |
+| 2 | [down() で したへ](videos/ja/pymazejr-02.mp4) | [Go down with down()](videos/en/pymazejr-02.mp4) | 30秒 |
+| 3 | [かいだん](videos/ja/pymazejr-03.mp4) | [Stairs](videos/en/pymazejr-03.mp4) | 32秒 |
+| 4 | [up() で うえへ](videos/ja/pymazejr-04.mp4) | [Go up with up()](videos/en/pymazejr-04.mp4) | 29秒 |
+| 5 | [left() も つかおう](videos/ja/pymazejr-05.mp4) | [Use left() too](videos/en/pymazejr-05.mp4) | 32秒 |
+| 6 | [for で くりかえそう](videos/ja/pymazejr-06.mp4) | [Repeat with for](videos/en/pymazejr-06.mp4) | 38秒 |
+
+## 🐍 Pythonで かぎと とびら ／ 🐍 Python Keys & Doors
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [pick_up() と open_door()](videos/ja/pymazekey-01.mp4) | [pick_up() and open_door()](videos/en/pymazekey-01.mp4) | 38秒 |
+| 2 | [かぎは どこ？](videos/ja/pymazekey-02.mp4) | [Where is the key?](videos/en/pymazekey-02.mp4) | 47秒 |
+| 3 | [for で とびら 2つ](videos/ja/pymazekey-03.mp4) | [Two doors with for](videos/en/pymazekey-03.mp4) | 42秒 |
+| 4 | [key_here() と door_ahead()](videos/ja/pymazekey-04.mp4) | [key_here() and door_ahead()](videos/en/pymazekey-04.mp4) | 55秒 |
+
+## 🐍 Pythonで てきを よける ／ 🐍 Python Slime Maze
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [wait() で まとう](videos/ja/pymazeenemy-01.mp4) | [wait()](videos/en/pymazeenemy-01.mp4) | 35秒 |
+| 2 | [if danger_ahead():](videos/ja/pymazeenemy-02.mp4) | [if danger_ahead():](videos/en/pymazeenemy-02.mp4) | 44秒 |
+| 3 | [elif で おおきな めいろ](videos/ja/pymazeenemy-03.mp4) | [A bigger maze with elif](videos/en/pymazeenemy-03.mp4) | 46秒 |
+| 4 | [うずまきの めいろ](videos/ja/pymazeenemy-04.mp4) | [The spiral maze](videos/en/pymazeenemy-04.mp4) | 44秒 |

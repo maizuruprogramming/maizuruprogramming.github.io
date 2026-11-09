@@ -56,6 +56,14 @@ window.GUIDE = {
   "py": {
    "ja": "Pythonの かきかた（コロン・じさげ）",
    "en": "Python syntax (colon & indent)"
+  },
+  "state": {
+   "ja": "じょうたい（もっている もの）",
+   "en": "State"
+  },
+  "timing": {
+   "ja": "タイミング",
+   "en": "Timing"
   }
  },
  "apps": [
@@ -737,6 +745,618 @@ window.GUIDE = {
      "mistake": {
       "ja": "ステージ7の プログラムでは、めいろに よっては おなじ ところを まわりつづけるよ。",
       "en": "The Stage 7 program can keep going in circles in some mazes."
+     }
+    }
+   ]
+  },
+  {
+   "key": "mazejr",
+   "file": "maze-junior.html",
+   "icon": "🧭",
+   "name": {
+    "ja": "やじるしの めいろ",
+    "en": "Arrow Maze"
+   },
+   "intro": {
+    "ja": "ていがくねん むけ。うえ・した・ひだり・みぎ の やじるしで、たんけんかを ダイヤまで うごかします。「むき」を かんがえずに、じゅんばんを まなびます。",
+    "en": "For younger kids. Move the explorer to the diamond with up, down, left and right arrows. Learn about order without thinking about directions."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazejr1.png",
+      "en": "images/answers/en/mazejr1.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-01.mp4",
+      "en": "videos/en/mazejr-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　みぎへ すすもう",
+      "en": "Stage 1: Go right"
+     },
+     "text": {
+      "ja": "「みぎへ ➡」を 3つ つなげて、ダイヤ 💎 まで いこう。",
+      "en": "Stack three \"right ➡\" arrows and go to the diamond 💎."
+     },
+     "hint": {
+      "ja": "ダイヤまで 3マス だよ。",
+      "en": "The diamond is 3 squares away."
+     },
+     "goal": {
+      "ja": "やじるしを ならべて すすもう",
+      "en": "Line up arrows to move"
+     },
+     "point": {
+      "ja": "やじるし 1つで 1マス。ダイヤまでの マスを かぞえて、その かずだけ つなげよう。",
+      "en": "One arrow moves one square. Count the squares to the diamond and stack that many."
+     },
+     "mistake": {
+      "ja": "やじるしが 2つだと とどかない、4つだと くさむらに ぶつかるよ。",
+      "en": "With 2 arrows you fall short; with 4 you bump into the bushes."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq",
+      "dir"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazejr2.png",
+      "en": "images/answers/en/mazejr2.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-02.mp4",
+      "en": "videos/en/mazejr-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　したへ まがろう",
+      "en": "Stage 2: Go down"
+     },
+     "text": {
+      "ja": "「みぎへ ➡」と「したへ ⬇」を つかおう。",
+      "en": "Use \"right ➡\" and \"down ⬇\"."
+     },
+     "hint": {
+      "ja": "みぎへ 1つ、したへ 3つ、みぎへ 2つ。",
+      "en": "right, then down 3 times, then right 2 times."
+     },
+     "goal": {
+      "ja": "2しゅるいの やじるしを つかおう",
+      "en": "Use two kinds of arrows"
+     },
+     "point": {
+      "ja": "みぎへ → したへ → みぎへ。いく じゅんばんに やじるしを ならべるよ。",
+      "en": "Right → down → right. Put the arrows in the order you go."
+     },
+     "mistake": {
+      "ja": "「したへ」の かずを まちがえると、くさむらに ぶつかるよ。",
+      "en": "If you use the wrong number of “down” arrows, you bump into the bushes."
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "seq",
+      "pattern"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazejr3.png",
+      "en": "images/answers/en/mazejr3.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-03.mp4",
+      "en": "videos/en/mazejr-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　かいだん",
+      "en": "Stage 3: Stairs"
+     },
+     "text": {
+      "ja": "みぎ と した を じゅんばんに。",
+      "en": "Right and down, one after the other."
+     },
+     "hint": {
+      "ja": "みぎ → した → みぎ → した → みぎ → した",
+      "en": "right, down, right, down, right, down"
+     },
+     "goal": {
+      "ja": "こうごの ならびを みつけよう",
+      "en": "Find the alternating pattern"
+     },
+     "point": {
+      "ja": "みぎ・した・みぎ・した…と、おなじ ならびが つづいているね。",
+      "en": "Right, down, right, down… the same pair keeps going."
+     },
+     "mistake": {
+      "ja": "みぎを 2かい つづけると くさむらに ぶつかるよ。",
+      "en": "Two “right” arrows in a row bump into the bushes."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "seq",
+      "dir"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazejr4.png",
+      "en": "images/answers/en/mazejr4.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-04.mp4",
+      "en": "videos/en/mazejr-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　うえへ のぼろう",
+      "en": "Stage 4: Go up"
+     },
+     "text": {
+      "ja": "こんどは「うえへ ⬆」も つかうよ。",
+      "en": "Now use \"up ⬆\" too."
+     },
+     "hint": {
+      "ja": "うえへ 3つ、みぎへ 3つ。",
+      "en": "up 3 times, then right 3 times."
+     },
+     "goal": {
+      "ja": "うえへ も つかおう",
+      "en": "Use “up” too"
+     },
+     "point": {
+      "ja": "スタートは ひだりした。さきに うえへ 3つ、それから みぎへ 3つ。",
+      "en": "You start at the bottom left. First up 3, then right 3."
+     },
+     "mistake": {
+      "ja": "「みぎへ」から はじめると、すぐ くさむらに ぶつかるよ。",
+      "en": "If you start with “right”, you bump into the bushes right away."
+     }
+    },
+    {
+     "n": 5,
+     "tags": [
+      "seq",
+      "dir"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazejr5.png",
+      "en": "images/answers/en/mazejr5.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-05.mp4",
+      "en": "videos/en/mazejr-05.mp4"
+     },
+     "title": {
+      "ja": "ステージ5　ぐるっと まわろう",
+      "en": "Stage 5: Go around"
+     },
+     "text": {
+      "ja": "4つの やじるしを ぜんぶ つかおう。",
+      "en": "Use all four arrows."
+     },
+     "hint": {
+      "ja": "みぎへ 2つ、したへ 2つ、ひだりへ 2つ。",
+      "en": "right 2, down 2, left 2."
+     },
+     "goal": {
+      "ja": "4つの やじるしを ぜんぶ つかおう",
+      "en": "Use all four arrows"
+     },
+     "point": {
+      "ja": "みぎ → した → ひだり。ぐるっと まわって ダイヤへ。",
+      "en": "Right → down → left. Go around to the diamond."
+     },
+     "mistake": {
+      "ja": "「ひだりへ」と「みぎへ」を まちがえやすいよ。たんけんかから みて ではなく、がめんの ひだり・みぎ。",
+      "en": "“Left” and “right” are easy to mix up. They mean left and right on the screen."
+     }
+    },
+    {
+     "n": 6,
+     "tags": [
+      "loop",
+      "pattern"
+     ],
+     "limit": 3,
+     "img": {
+      "ja": "images/answers/mazejr6.png",
+      "en": "images/answers/en/mazejr6.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazejr-06.mp4",
+      "en": "videos/en/mazejr-06.mp4"
+     },
+     "title": {
+      "ja": "ステージ6　くりかえしを つかおう",
+      "en": "Stage 6: Use repeat"
+     },
+     "text": {
+      "ja": "ながい かいだん！「みぎへ ➡ したへ ⬇」を「くりかえす」の なかに いれよう。",
+      "en": "A long staircase! Put \"right ➡ down ⬇\" inside \"repeat\"."
+     },
+     "hint": {
+      "ja": "「4かい くりかえす」の なかに「みぎへ」「したへ」。",
+      "en": "repeat 4 times: right, down"
+     },
+     "goal": {
+      "ja": "くりかえしで みじかく しよう",
+      "en": "Make it shorter with repeat"
+     },
+     "point": {
+      "ja": "「みぎへ・したへ」の セットを 4かい。ブロック 3こで かけるね。",
+      "en": "Repeat the “right, down” set 4 times. Just 3 blocks!"
+     },
+     "mistake": {
+      "ja": "くりかえしの かずが 3だと、ダイヤの てまえで とまるよ。",
+      "en": "With 3 repeats you stop just before the diamond."
+     }
+    }
+   ]
+  },
+  {
+   "key": "mazekey",
+   "file": "maze-key.html",
+   "icon": "🗝",
+   "name": {
+    "ja": "かぎと とびらの めいろ",
+    "en": "Keys & Doors Maze"
+   },
+   "intro": {
+    "ja": "かぎを ひろって とびらを あけながら すすみます。「いま なにを もっているか」（じょうたい）を おぼえて かんがえる れんしゅうです。",
+    "en": "Pick up keys and open doors as you go. Practice remembering what you are carrying (state)."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "state"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazekey1.png",
+      "en": "images/answers/en/mazekey1.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazekey-01.mp4",
+      "en": "videos/en/mazekey-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　かぎを ひろって とびらを あけよう",
+      "en": "Stage 1: Pick up the key, open the door"
+     },
+     "text": {
+      "ja": "かぎ 🔑 の うえで「かぎを ひろう」。とびら 🚪 の まえで「とびらを あける」と、とおれるように なるよ。",
+      "en": "Move onto the key 🔑 and use \"pick up key\". In front of the door 🚪, use \"open door\" and you can go through."
+     },
+     "hint": {
+      "ja": "すすむ → すすむ → かぎを ひろう → とびらを あける → すすむ → すすむ",
+      "en": "forward → forward → pick up key → open door → forward → forward"
+     },
+     "goal": {
+      "ja": "かぎを ひろって とびらを あけよう",
+      "en": "Pick up the key and open the door"
+     },
+     "point": {
+      "ja": "「かぎを ひろう」で もちものが 1こに なり、「とびらを あける」で 0こに もどる。",
+      "en": "“Pick up key” makes your key count 1, and “open door” brings it back to 0."
+     },
+     "mistake": {
+      "ja": "かぎの うえに いないのに ひろうと「ここには かぎが ないよ」。すすむ かずを たしかめよう。",
+      "en": "Picking up when you are not on the key gives “There is no key here.” Check how far you move."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq",
+      "state",
+      "decomp"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazekey2.png",
+      "en": "images/answers/en/mazekey2.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazekey-02.mp4",
+      "en": "videos/en/mazekey-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　かぎは どこ？",
+      "en": "Stage 2: Where is the key?"
+     },
+     "text": {
+      "ja": "とびらの むこうに ダイヤが あるよ。さきに かぎを ひろいに いこう。かぎが ないと とびらは あかないよ。",
+      "en": "The diamond is behind the door. Go and get the key first. Without a key, the door will not open."
+     },
+     "hint": {
+      "ja": "かぎまで いって ひろったら、みぎを 2かい むいて もどろう。",
+      "en": "Walk to the key and pick it up. Then turn right twice and go back."
+     },
+     "goal": {
+      "ja": "さきに かぎを とりに いこう",
+      "en": "Get the key first"
+     },
+     "point": {
+      "ja": "ゴールの まえに より道。「かぎを とる」と「とびらへ もどる」に わけて かんがえよう。",
+      "en": "Take a side trip before the goal. Think of it as “get the key” and “go back to the door”."
+     },
+     "mistake": {
+      "ja": "かぎを もたずに とびらへ すすむと「とびらが あかないよ。かぎは どこかな？」。",
+      "en": "Going to the door without a key gives “The door is locked. Where is the key?”"
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "loop",
+      "pattern",
+      "state"
+     ],
+     "limit": 7,
+     "img": {
+      "ja": "images/answers/mazekey3.png",
+      "en": "images/answers/en/mazekey3.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazekey-03.mp4",
+      "en": "videos/en/mazekey-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　とびらが 2つ",
+      "en": "Stage 3: Two doors"
+     },
+     "text": {
+      "ja": "かぎと とびらが ならんでいるよ。おなじ うごきの セットを みつけて「くりかえす」で まとめよう。",
+      "en": "Keys and doors are in a row. Find the set of moves that repeats and use \"repeat\"."
+     },
+     "hint": {
+      "ja": "「すすむ → かぎを ひろう → とびらを あける → すすむ」を 2かい。さいごに みぎを むいて すすむ。",
+      "en": "Repeat 2 times: forward → pick up key → open door → forward. Then turn right and move forward."
+     },
+     "goal": {
+      "ja": "おなじ セットを くりかえそう",
+      "en": "Repeat the same set"
+     },
+     "point": {
+      "ja": "かぎ → とびら が 2かい ならんでいる。4つの ブロックを まとめて 2かい。",
+      "en": "Key → door appears twice. Repeat the 4 blocks 2 times."
+     },
+     "mistake": {
+      "ja": "「とびらを あける」の あとの「まえに すすむ」を わすれると、つぎの かぎに とどかないよ。",
+      "en": "If you forget “move forward” after “open door”, you never reach the next key."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "if",
+      "until",
+      "state",
+      "algo"
+     ],
+     "limit": 8,
+     "img": {
+      "ja": "images/answers/mazekey4.png",
+      "en": "images/answers/en/mazekey4.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazekey-04.mp4",
+      "en": "videos/en/mazekey-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　じぶんで かんがえる たんけんか",
+      "en": "Stage 4: A thinking explorer"
+     },
+     "text": {
+      "ja": "「ゴールに つくまで くりかえす」と「もし 〜なら」で、かぎを みつけたら ひろい、とびらが あったら あける プログラムに しよう。",
+      "en": "Use \"repeat until goal\" and \"if\". Make a program that picks up a key when it finds one and opens a door when there is one."
+     },
+     "hint": {
+      "ja": "くりかえしの なかで：もし ここに かぎが ある なら ひろう → もし まえが とびら なら あける → もし まえが あいていたら すすむ、そうでなければ みぎを むく",
+      "en": "Inside the loop: if key here → pick up key; if door in front → open door; if front is open → forward, else → turn right."
+     },
+     "goal": {
+      "ja": "しらべながら じぶんで きめよう",
+      "en": "Check and decide by yourself"
+     },
+     "point": {
+      "ja": "かぎを みつけたら ひろう、とびらが あったら あける、あとは まえ か みぎ。この 3つを まいかい しらべるよ。",
+      "en": "Pick up a key when you find one, open a door when there is one, and then go forward or turn right. Check all three every time."
+     },
+     "mistake": {
+      "ja": "「もし まえが とびら」より さきに「もし まえ が あいていたら」を おくと、とびらの まえで まわって しまうよ。",
+      "en": "If “if front is open” comes before “if door in front”, you turn around at the door."
+     }
+    }
+   ]
+  },
+  {
+   "key": "mazeenemy",
+   "file": "maze-enemy.html",
+   "icon": "👾",
+   "name": {
+    "ja": "てきを よける めいろ",
+    "en": "Dodge the Slime Maze"
+   },
+   "intro": {
+    "ja": "きまった みちを いったり きたり する スライムを、「まつ」で よけて すすみます。タイミングと「もし」を まなびます。",
+    "en": "Dodge slimes that move back and forth by waiting. Learn about timing and “if”."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "timing"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/mazeenemy1.png",
+      "en": "images/answers/en/mazeenemy1.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazeenemy-01.mp4",
+      "en": "videos/en/mazeenemy-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　まって よけよう",
+      "en": "Stage 1: Wait and dodge"
+     },
+     "text": {
+      "ja": "スライムが うえと したに いったり きたり しているよ。ぶつからないように「まつ」で タイミングを あわせよう。",
+      "en": "The slime goes up and down. Use \"wait\" to time your move so you do not bump into it."
+     },
+     "hint": {
+      "ja": "1マス すすんだら、スライムが とおりすぎるまで 2かい まつ。それから 3マス すすもう。",
+      "en": "Move 1 square, then wait 2 times until the slime passes. Then move 3 squares."
+     },
+     "goal": {
+      "ja": "まって タイミングを あわせよう",
+      "en": "Wait to time your move"
+     },
+     "point": {
+      "ja": "スライムは 1かいごとに 1マス。とおりすぎるまで「まつ」を 2かい。",
+      "en": "The slime moves one square each turn. Wait 2 times until it passes."
+     },
+     "mistake": {
+      "ja": "「まつ」が 1かいだと、ちょうど スライムに ぶつかるよ。",
+      "en": "With only one “wait”, you walk right into the slime."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "if",
+      "until",
+      "timing"
+     ],
+     "limit": 4,
+     "img": {
+      "ja": "images/answers/mazeenemy2.png",
+      "en": "images/answers/en/mazeenemy2.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazeenemy-02.mp4",
+      "en": "videos/en/mazeenemy-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　あぶなかったら まつ",
+      "en": "Stage 2: Wait if it is dangerous"
+     },
+     "text": {
+      "ja": "「もし まえが あぶなかったら」を つかおう。スライムが まえに いる ときや、つぎに まえに くる ときは「あぶない」だよ。",
+      "en": "Use \"if danger ahead\". It is dangerous when a slime is in front of you, or will move in front of you next."
+     },
+     "hint": {
+      "ja": "ゴールに つくまで くりかえす：もし まえが あぶなかったら まつ、そうでなければ すすむ",
+      "en": "Repeat until goal: if danger ahead → wait, else → move forward."
+     },
+     "goal": {
+      "ja": "あぶなかったら まとう",
+      "en": "Wait when it is dangerous"
+     },
+     "point": {
+      "ja": "「あぶない」は、まえに スライムが いる か、つぎに まえに くる とき。そう なら まつ、ちがえば すすむ。",
+      "en": "“Danger” means a slime is in front or will come there next. If so, wait; if not, move."
+     },
+     "mistake": {
+      "ja": "「もし」を くりかえしの そとに おくと、さいしょの 1かいしか しらべないよ。",
+      "en": "If the “if” is outside the loop, it checks only once."
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "if",
+      "nest",
+      "until",
+      "timing"
+     ],
+     "limit": 6,
+     "img": {
+      "ja": "images/answers/mazeenemy3.png",
+      "en": "images/answers/en/mazeenemy3.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazeenemy-03.mp4",
+      "en": "videos/en/mazeenemy-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　おおきな めいろ",
+      "en": "Stage 3: A bigger maze"
+     },
+     "text": {
+      "ja": "めいろが おおきく なったよ。あぶなかったら まつ。そうでなければ、まえが あいていたら すすむ、ふさがっていたら みぎを むく。",
+      "en": "The maze is bigger. If it is dangerous, wait. If not: move forward when the front is open, turn right when it is blocked."
+     },
+     "hint": {
+      "ja": "ゴールに つくまで くりかえす：もし まえが あぶなかったら まつ、そうでなければ（もし まえが あいていたら すすむ、そうでなければ みぎを むく）",
+      "en": "Repeat until goal: if danger ahead → wait, else → (if front is open → forward, else → turn right)."
+     },
+     "goal": {
+      "ja": "もしの なかに もし",
+      "en": "An if inside an if"
+     },
+     "point": {
+      "ja": "まず あぶないか しらべる。あぶなく なければ、まえが あいているか しらべる。じゅんばんが だいじ。",
+      "en": "First check for danger. If it is safe, check if the front is open. The order matters."
+     },
+     "mistake": {
+      "ja": "「あぶない」を しらべないで すすむと、とちゅうで スライムに つかまるよ。",
+      "en": "If you move without checking for danger, a slime catches you on the way."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "algo",
+      "until",
+      "timing"
+     ],
+     "limit": 6,
+     "img": {
+      "ja": "images/answers/mazeenemy4.png",
+      "en": "images/answers/en/mazeenemy4.png"
+     },
+     "video": {
+      "ja": "videos/ja/mazeenemy-04.mp4",
+      "en": "videos/en/mazeenemy-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　うずまきの めいろ",
+      "en": "Stage 4: The spiral maze"
+     },
+     "text": {
+      "ja": "さいごは 10×10 の うずまき。スライムが 3びき いるよ。ステージ3の プログラムで ゴール できるかな？",
+      "en": "Last one: a 10×10 spiral with three slimes. Can the program from Stage 3 reach the goal?"
+     },
+     "hint": {
+      "ja": "ステージ3と おなじ プログラムで いけるよ。スライムは みちを よこぎるので、まいかい「あぶない」を しらべよう。",
+      "en": "Use the same program as Stage 3. The slimes cross the path, so check for danger every time."
+     },
+     "goal": {
+      "ja": "おなじ プログラムで おおきな めいろ",
+      "en": "The same program, a bigger maze"
+     },
+     "point": {
+      "ja": "ステージ3の プログラムが そのまま つかえる。いつでも つかえる やりかた（一般化）だね。",
+      "en": "The Stage 3 program works as it is. That is a method that works anywhere (generalization)."
+     },
+     "mistake": {
+      "ja": "「まつ」を ぬくと、3びきの どれかに つかまるよ。",
+      "en": "Without “wait”, one of the three slimes catches you."
      }
     }
    ]
@@ -2444,6 +3064,602 @@ window.GUIDE = {
      "mistake": {
       "ja": "かたい いわ（くろ）は front_is では 'stone' に ならない。すすめない ときは else で turn_right()。",
       "en": "Hard dark rock is not 'stone' for front_is. When you cannot move, else turns right."
+     }
+    }
+   ]
+  },
+  {
+   "key": "pymazejr",
+   "file": "python-maze-junior.html",
+   "icon": "🐍",
+   "name": {
+    "ja": "Pythonで やじるし めいろ",
+    "en": "Python Arrow Maze"
+   },
+   "intro": {
+    "ja": "やじるしの めいろを Python で。up()・down()・left()・right() の 4つの めいれいと for を つかいます。",
+    "en": "The Arrow Maze in Python. Use the four commands up(), down(), left(), right() and for."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "right()\nright()\nright()",
+     "video": {
+      "ja": "videos/ja/pymazejr-01.mp4",
+      "en": "videos/en/pymazejr-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　right() で すすもう",
+      "en": "Stage 1: Go with right()"
+     },
+     "text": {
+      "ja": "right() と かくと みぎへ 1マス すすむよ。3ぎょう かいて ダイヤ 💎 まで いこう。",
+      "en": "right() moves one square to the right. Write it 3 times, one per line, to reach the diamond 💎."
+     },
+     "hint": {
+      "ja": "right() を 3ぎょう。",
+      "en": "right() on 3 lines."
+     },
+     "goal": {
+      "ja": "right() を かこう",
+      "en": "Write right()"
+     },
+     "point": {
+      "ja": "Python は 1ぎょうに 1つの めいれい。right() を 3ぎょう かくと 3マス すすむ。",
+      "en": "Python has one command per line. Three lines of right() move 3 squares."
+     },
+     "mistake": {
+      "ja": "「()」を わすれて right だけに すると SyntaxError。",
+      "en": "Writing just right without “()” causes a SyntaxError."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq",
+      "dir",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "right()\ndown()\ndown()\ndown()\nright()\nright()",
+     "video": {
+      "ja": "videos/ja/pymazejr-02.mp4",
+      "en": "videos/en/pymazejr-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　down() で したへ",
+      "en": "Stage 2: Go down with down()"
+     },
+     "text": {
+      "ja": "down() で したへ 1マス すすむよ。",
+      "en": "down() moves one square down."
+     },
+     "hint": {
+      "ja": "right() → down() を 3つ → right() を 2つ",
+      "en": "right() → down() ×3 → right() ×2"
+     },
+     "goal": {
+      "ja": "down() も つかおう",
+      "en": "Use down() too"
+     },
+     "point": {
+      "ja": "right() と down() を いく じゅんばんに かくよ。",
+      "en": "Write right() and down() in the order you go."
+     },
+     "mistake": {
+      "ja": "Down() のように おおもじに すると NameError。Python は おおもじと こもじを くべつするよ。",
+      "en": "Down() with a capital letter causes a NameError. Python cares about capital letters."
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "seq",
+      "pattern",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "right()\ndown()\nright()\ndown()\nright()\ndown()",
+     "video": {
+      "ja": "videos/ja/pymazejr-03.mp4",
+      "en": "videos/en/pymazejr-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　かいだん",
+      "en": "Stage 3: Stairs"
+     },
+     "text": {
+      "ja": "right() と down() を じゅんばんに かこう。",
+      "en": "right() and down(), one after the other."
+     },
+     "hint": {
+      "ja": "right() → down() → right() → down() → right() → down()",
+      "en": "right() down() right() down() right() down()"
+     },
+     "goal": {
+      "ja": "こうごに かこう",
+      "en": "Write them alternately"
+     },
+     "point": {
+      "ja": "right() と down() を 3かいずつ、こうごに。",
+      "en": "right() and down(), 3 times each, one after the other."
+     },
+     "mistake": {
+      "ja": "じゅんばんが いれかわると くさむらに ぶつかるよ。",
+      "en": "If the order is swapped, you bump into the bushes."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "seq",
+      "dir",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "up()\nup()\nup()\nright()\nright()\nright()",
+     "video": {
+      "ja": "videos/ja/pymazejr-04.mp4",
+      "en": "videos/en/pymazejr-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　up() で うえへ",
+      "en": "Stage 4: Go up with up()"
+     },
+     "text": {
+      "ja": "up() で うえへ 1マス すすむよ。",
+      "en": "up() moves one square up."
+     },
+     "hint": {
+      "ja": "up() を 3つ → right() を 3つ",
+      "en": "up() ×3 → right() ×3"
+     },
+     "goal": {
+      "ja": "up() で うえへ",
+      "en": "Go up with up()"
+     },
+     "point": {
+      "ja": "up() を 3ぎょう、それから right() を 3ぎょう。",
+      "en": "Three lines of up(), then three lines of right()."
+     },
+     "mistake": {
+      "ja": "ぎょうの はじめに スペースを いれると IndentationError。for の なか いがいは じさげ しないよ。",
+      "en": "A space at the start of a line causes an IndentationError. Only lines inside for are indented."
+     }
+    },
+    {
+     "n": 5,
+     "tags": [
+      "seq",
+      "dir",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "right()\nright()\ndown()\ndown()\nleft()\nleft()",
+     "video": {
+      "ja": "videos/ja/pymazejr-05.mp4",
+      "en": "videos/en/pymazejr-05.mp4"
+     },
+     "title": {
+      "ja": "ステージ5　left() も つかおう",
+      "en": "Stage 5: Use left() too"
+     },
+     "text": {
+      "ja": "left() で ひだりへ 1マス。4つ ぜんぶ つかおう。",
+      "en": "left() moves one square to the left. Use all four."
+     },
+     "hint": {
+      "ja": "right() を 2つ → down() を 2つ → left() を 2つ",
+      "en": "right() ×2 → down() ×2 → left() ×2"
+     },
+     "goal": {
+      "ja": "left() も つかおう",
+      "en": "Use left() too"
+     },
+     "point": {
+      "ja": "right() → down() → left()。4つの めいれいを ぜんぶ つかえたね。",
+      "en": "right() → down() → left(). Now you have used all four commands."
+     },
+     "mistake": {
+      "ja": "left と right を まちがえやすい。がめんの ひだり・みぎで かんがえよう。",
+      "en": "left and right are easy to mix up. Think of the left and right of the screen."
+     }
+    },
+    {
+     "n": 6,
+     "tags": [
+      "loop",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(4):\n    right()\n    down()",
+     "video": {
+      "ja": "videos/ja/pymazejr-06.mp4",
+      "en": "videos/en/pymazejr-06.mp4"
+     },
+     "title": {
+      "ja": "ステージ6　for で くりかえそう",
+      "en": "Stage 6: Repeat with for"
+     },
+     "text": {
+      "ja": "「for i in range(4):」で、したの ぎょうを 4かい くりかえすよ。くりかえす ぎょうは スペース 4つ じさげ。",
+      "en": "“for i in range(4):” repeats the lines under it 4 times. Indent those lines with 4 spaces."
+     },
+     "hint": {
+      "ja": "for i in range(4): → （じさげ）right() と down()",
+      "en": "for i in range(4): → (indented) right() and down()"
+     },
+     "goal": {
+      "ja": "for で くりかえそう",
+      "en": "Repeat with for"
+     },
+     "point": {
+      "ja": "for i in range(4): の したの 2ぎょうを スペース 4つ じさげ。2ぎょうとも くりかえされるよ。",
+      "en": "Indent the 2 lines under for i in range(4): by 4 spaces. Both lines repeat."
+     },
+     "mistake": {
+      "ja": "down() の じさげを わすれると、くりかえすのは right() だけに なるよ。",
+      "en": "If down() is not indented, only right() repeats."
+     }
+    }
+   ]
+  },
+  {
+   "key": "pymazekey",
+   "file": "python-maze-key.html",
+   "icon": "🐍",
+   "name": {
+    "ja": "Pythonで かぎと とびら",
+    "en": "Python Keys & Doors"
+   },
+   "intro": {
+    "ja": "かぎと とびらの めいろを Python で。pick_up()・open_door() と、key_here()・door_ahead() で しらべる if を つかいます。",
+    "en": "Keys & Doors in Python. Use pick_up(), open_door() and if with key_here() and door_ahead()."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "state",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "forward()\nforward()\npick_up()\nopen_door()\nforward()\nforward()",
+     "video": {
+      "ja": "videos/ja/pymazekey-01.mp4",
+      "en": "videos/en/pymazekey-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　pick_up() と open_door()",
+      "en": "Stage 1: pick_up() and open_door()"
+     },
+     "text": {
+      "ja": "かぎ 🔑 の うえで pick_up()、とびら 🚪 の まえで open_door()。すると とおれるよ。",
+      "en": "On the key 🔑, pick_up(). In front of the door 🚪, open_door(). Then you can go through."
+     },
+     "hint": {
+      "ja": "forward() を 2かい → pick_up() → open_door() → forward() を 2かい",
+      "en": "forward() ×2 → pick_up() → open_door() → forward() ×2"
+     },
+     "goal": {
+      "ja": "pick_up() と open_door()",
+      "en": "pick_up() and open_door()"
+     },
+     "point": {
+      "ja": "pick_up() で かぎが 1こ、open_door() で 0こ。もちものの かずが かわるね。",
+      "en": "pick_up() makes 1 key and open_door() makes 0. Your item count changes."
+     },
+     "mistake": {
+      "ja": "pickup() や open door() と かくと NameError や SyntaxError。「_」を わすれずに。",
+      "en": "pickup() or open door() causes an error. Don’t forget the “_”."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq",
+      "state",
+      "decomp",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "forward()\nforward()\nturn_right()\nforward()\nforward()\nturn_right()\nforward()\nforward()\npick_up()\nturn_right()\nturn_right()\nforward()\nforward()\nopen_door()\nforward()\nforward()",
+     "video": {
+      "ja": "videos/ja/pymazekey-02.mp4",
+      "en": "videos/en/pymazekey-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　かぎは どこ？",
+      "en": "Stage 2: Where is the key?"
+     },
+     "text": {
+      "ja": "さきに かぎを とりに いこう。かぎが ないと open_door() は できないよ。",
+      "en": "Get the key first. Without a key, open_door() does not work."
+     },
+     "hint": {
+      "ja": "かぎまで いって pick_up()、turn_right() を 2かい して もどろう。",
+      "en": "Walk to the key, pick_up(), turn_right() twice and go back."
+     },
+     "goal": {
+      "ja": "より道の じゅんばんを かこう",
+      "en": "Write the side trip in order"
+     },
+     "point": {
+      "ja": "かぎまで いく → pick_up() → turn_right() を 2かい → とびらへ。ながい てじゅんも 1ぎょうずつ。",
+      "en": "Go to the key → pick_up() → turn_right() twice → to the door. Write a long plan one line at a time."
+     },
+     "mistake": {
+      "ja": "pick_up() の まえに open_door() を かくと「かぎを もっていないよ」。",
+      "en": "open_door() before pick_up() gives “You have no key.”"
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "loop",
+      "pattern",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(2):\n    forward()\n    pick_up()\n    open_door()\n    forward()\nturn_right()\nforward()",
+     "video": {
+      "ja": "videos/ja/pymazekey-03.mp4",
+      "en": "videos/en/pymazekey-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　for で とびら 2つ",
+      "en": "Stage 3: Two doors with for"
+     },
+     "text": {
+      "ja": "「forward() → pick_up() → open_door() → forward()」を for で くりかえそう。",
+      "en": "Repeat “forward() → pick_up() → open_door() → forward()” with for."
+     },
+     "hint": {
+      "ja": "for i in range(2): の なかに 4ぎょう（じさげ）→ turn_right() → forward()",
+      "en": "for i in range(2): (4 lines, indented) → turn_right() → forward()"
+     },
+     "goal": {
+      "ja": "for の なかに 4ぎょう",
+      "en": "Four lines inside for"
+     },
+     "point": {
+      "ja": "for の なかの 4ぎょうは ぜんぶ スペース 4つ じさげ。さいごの 2ぎょうは じさげ しない。",
+      "en": "All 4 lines inside for are indented by 4 spaces. The last 2 lines are not."
+     },
+     "mistake": {
+      "ja": "turn_right() まで じさげ すると、2かい まわって もどって しまうよ。",
+      "en": "If turn_right() is indented too, you turn twice and go back."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "if",
+      "until",
+      "state",
+      "algo",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "while not at_goal():\n    if key_here():\n        pick_up()\n    if door_ahead():\n        open_door()\n    if is_open('front'):\n        forward()\n    else:\n        turn_right()",
+     "video": {
+      "ja": "videos/ja/pymazekey-04.mp4",
+      "en": "videos/en/pymazekey-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　key_here() と door_ahead()",
+      "en": "Stage 4: key_here() and door_ahead()"
+     },
+     "text": {
+      "ja": "key_here() で いまの マスに かぎが あるか、door_ahead() で まえに とびらが あるか しらべられるよ。「while not at_goal():」の なかで つかおう。",
+      "en": "key_here() checks for a key where you stand. door_ahead() checks for a door in front. Use them inside “while not at_goal():”."
+     },
+     "hint": {
+      "ja": "while not at_goal(): の なかで if key_here(): pick_up() → if door_ahead(): open_door() → if is_open('front'): forward() → else: turn_right()",
+      "en": "while not at_goal(): if key_here(): pick_up() / if door_ahead(): open_door() / if is_open('front'): forward() else: turn_right()"
+     },
+     "goal": {
+      "ja": "key_here() と door_ahead() で しらべよう",
+      "en": "Check with key_here() and door_ahead()"
+     },
+     "point": {
+      "ja": "if を 2つ ならべて、さいごに if … else。while の なかは まいかい しらべなおすよ。",
+      "en": "Two ifs in a row, then if … else. Inside while, everything is checked again each time."
+     },
+     "mistake": {
+      "ja": "key_here の あとの「()」を わすれると SyntaxError。しらべる ことばにも () を つけるよ。",
+      "en": "Forgetting “()” after key_here causes a SyntaxError. Checks also need ()."
+     }
+    }
+   ]
+  },
+  {
+   "key": "pymazeenemy",
+   "file": "python-maze-enemy.html",
+   "icon": "🐍",
+   "name": {
+    "ja": "Pythonで てきを よける",
+    "en": "Python Slime Maze"
+   },
+   "intro": {
+    "ja": "てきを よける めいろを Python で。wait() と danger_ahead()、if・elif・else を つかいます。",
+    "en": "Dodge the Slime Maze in Python. Use wait(), danger_ahead() and if, elif, else."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "timing",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "forward()\nwait()\nwait()\nforward()\nforward()\nforward()",
+     "video": {
+      "ja": "videos/ja/pymazeenemy-01.mp4",
+      "en": "videos/en/pymazeenemy-01.mp4"
+     },
+     "title": {
+      "ja": "ステージ1　wait() で まとう",
+      "en": "Stage 1: wait()"
+     },
+     "text": {
+      "ja": "wait() で 1かい まつよ。スライムは 1かいごとに 1マス うごく。タイミングを あわせよう！",
+      "en": "wait() makes the explorer wait for 1 turn. The slime moves 1 square every turn. Time your move!"
+     },
+     "hint": {
+      "ja": "forward() → wait() を 2かい → forward() を 3かい",
+      "en": "forward() → wait() ×2 → forward() ×3"
+     },
+     "goal": {
+      "ja": "wait() で まとう",
+      "en": "Wait with wait()"
+     },
+     "point": {
+      "ja": "wait() は 1かい まつ めいれい。スライムは その あいだに 1マス うごくよ。",
+      "en": "wait() waits one turn. The slime moves one square meanwhile."
+     },
+     "mistake": {
+      "ja": "wait(2) のように () の なかに かずを かくと TypeError。2かい まつなら wait() を 2ぎょう。",
+      "en": "wait(2) causes a TypeError. To wait twice, write wait() on 2 lines."
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "if",
+      "until",
+      "timing",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "while not at_goal():\n    if danger_ahead():\n        wait()\n    else:\n        forward()",
+     "video": {
+      "ja": "videos/ja/pymazeenemy-02.mp4",
+      "en": "videos/en/pymazeenemy-02.mp4"
+     },
+     "title": {
+      "ja": "ステージ2　if danger_ahead():",
+      "en": "Stage 2: if danger_ahead():"
+     },
+     "text": {
+      "ja": "danger_ahead() は、スライムが まえに いる ときや つぎに まえに くる とき True に なるよ。そう なら wait()、そうでなければ forward()。",
+      "en": "danger_ahead() is True when a slime is in front of you or will come there next. If so, wait(); else, forward()."
+     },
+     "hint": {
+      "ja": "while not at_goal(): の なかで if danger_ahead(): wait() → else: forward()",
+      "en": "while not at_goal(): if danger_ahead(): wait() else: forward()"
+     },
+     "goal": {
+      "ja": "if danger_ahead(): で しらべよう",
+      "en": "Check with if danger_ahead():"
+     },
+     "point": {
+      "ja": "danger_ahead() は あぶない とき True。if … else で まつ か すすむ かを きめる。",
+      "en": "danger_ahead() is True when it is dangerous. if … else decides between waiting and moving."
+     },
+     "mistake": {
+      "ja": "else: の「:」を わすれると SyntaxError。",
+      "en": "Forgetting the “:” after else causes a SyntaxError."
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "if",
+      "nest",
+      "until",
+      "timing",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "while not at_goal():\n    if danger_ahead():\n        wait()\n    elif is_open('front'):\n        forward()\n    else:\n        turn_right()",
+     "video": {
+      "ja": "videos/ja/pymazeenemy-03.mp4",
+      "en": "videos/en/pymazeenemy-03.mp4"
+     },
+     "title": {
+      "ja": "ステージ3　elif で おおきな めいろ",
+      "en": "Stage 3: A bigger maze with elif"
+     },
+     "text": {
+      "ja": "あぶなければ wait()、そうでなくて（elif）まえが あいていれば forward()、どれでもなければ turn_right()。",
+      "en": "If danger, wait(). elif the front is open, forward(). else turn_right()."
+     },
+     "hint": {
+      "ja": "while not at_goal(): の なかで if danger_ahead(): wait() → elif is_open('front'): forward() → else: turn_right()",
+      "en": "while not at_goal(): if danger_ahead(): wait() / elif is_open('front'): forward() / else: turn_right()"
+     },
+     "goal": {
+      "ja": "elif で 3つに わけよう",
+      "en": "Split into three with elif"
+     },
+     "point": {
+      "ja": "if（あぶない）→ elif（まえが あいている）→ else（みぎを むく）。うえから じゅんに しらべるよ。",
+      "en": "if (danger) → elif (front is open) → else (turn right). They are checked from the top."
+     },
+     "mistake": {
+      "ja": "elif を if に すると、まった あとに すすんで つかまる ことが あるよ。",
+      "en": "If you change elif to if, you may move right after waiting and get caught."
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "algo",
+      "until",
+      "timing",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "while not at_goal():\n    if danger_ahead():\n        wait()\n    elif is_open('front'):\n        forward()\n    else:\n        turn_right()",
+     "video": {
+      "ja": "videos/ja/pymazeenemy-04.mp4",
+      "en": "videos/en/pymazeenemy-04.mp4"
+     },
+     "title": {
+      "ja": "ステージ4　うずまきの めいろ",
+      "en": "Stage 4: The spiral maze"
+     },
+     "text": {
+      "ja": "10×10 の うずまきに スライムが 3びき。ステージ3の プログラムで いけるかな？",
+      "en": "A 10×10 spiral with three slimes. Does your program from Stage 3 work here too?"
+     },
+     "hint": {
+      "ja": "ステージ3の プログラムが そのまま つかえるよ。",
+      "en": "The Stage 3 program works as it is."
+     },
+     "goal": {
+      "ja": "おなじ コードで おおきな めいろ",
+      "en": "The same code, a bigger maze"
+     },
+     "point": {
+      "ja": "ステージ3の コードを そのまま。どんな めいろでも つかえる やりかただね。",
+      "en": "Use the Stage 3 code as it is. It works in any maze."
+     },
+     "mistake": {
+      "ja": "is_open('front') の ' を わすれると ValueError や SyntaxError。",
+      "en": "Forgetting the quotes in is_open('front') causes an error."
      }
     }
    ]

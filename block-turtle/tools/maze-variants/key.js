@@ -238,14 +238,9 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(0, i * CELL + .5); ctx.lineTo(W, i * CELL + .5); ctx.stroke();
   }
   drawHero();
-  // もちもの（ひだりうえ）
-  ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(4, 4, CELL * 1.25, CELL * 0.5);
-  const s = CELL / 32;
-  KEY_ART.forEach((row, py) => [...row].forEach((ch, px) => {
-    if (ch === 'Y' || ch === 'y') { ctx.fillStyle = ch === 'Y' ? '#ffd43b' : '#8a6a00'; ctx.fillRect(4 + px * s, 4 + py * s, s, s); }
-  }));
-  ctx.fillStyle = '#ffffff'; ctx.font = Math.round(CELL * 0.3) + 'px DotGothic16, monospace'; ctx.textBaseline = 'middle';
-  ctx.fillText('× ' + world.keys, 8 + CELL * 0.5, 4 + CELL * 0.25);
+  // もちもの（ばんめんの うえの ぎょう）
+  const sr = document.getElementById('statusRow');
+  if (sr) sr.textContent = (LANG === 'en' ? 'Items: 🔑 × ' : 'もちもの：🔑 × ') + world.keys;
 }
 /*@@ SOUND */
   pick() { this.notes([[988, 0, .08], [1319, .08, .18]], 'square', 0.5); },              // ちゃりん

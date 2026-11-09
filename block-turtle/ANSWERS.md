@@ -7,18 +7,19 @@
 
 # 日本語の こたえ
 
-このファイルには、ブロックの4つのアプリと 🐍 Python版4つの解答をまとめています。
+このファイルには、ブロックのアプリ（めいろの なかま を含む）と 🐍 Python版の解答をまとめています。
 どの解答も、左が組むブロック、右が実行した結果の画像です（🐍 Python は解答のコード）。
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
-- 🧭 **やじるしの めいろ**（maze-junior.html）：ステージ 1〜6、🗝 **かぎと とびらの めいろ**（maze-key.html）：ステージ 1〜4、👾 **てきを よける めいろ**（maze-enemy.html）：ステージ 1〜4（文字のみ）
+- 🧭 **やじるしの めいろ**（maze-junior.html）：ステージ 1〜6、🗝 **かぎと とびらの めいろ**（maze-key.html）：ステージ 1〜4、👾 **てきを よける めいろ**（maze-enemy.html）：ステージ 1〜4
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
 - 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
 - 🐍 **Pythonで おえかき**（python-draw.html）：おだい ①〜⑨
 - 🐍 **Pythonで めいろ**（python.html）：ステージ 1〜5
 - 🐍 **Pythonで うちゅう**（python-space.html）：ステージ 1〜6
 - 🐍 **Pythonで こわす・おく**（python-craft.html）：ステージ 1〜7
+- 🐍 **Pythonで やじるし めいろ・かぎと とびら・てきを よける**（python-maze-junior.html ／ python-maze-key.html ／ python-maze-enemy.html）：ステージ 1〜6・1〜4・1〜4
 
 ## 📖 先生モード（こたえをブロックで読み込む）
 
@@ -172,7 +173,7 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 
 # ⛏ めいろの なかま（やじるし・かぎと とびら・てき）
 
-画像はなく、ブロックの並びを文字で書いています（字下げは「くりかえす」「もし」の中）。先生モード（URL に `?sensei`）の「📖 こたえ」で、ブロックを読み込めます。
+画像（左がブロック、右が実行した結果）と、ブロックの並びの文字（字下げは「くりかえす」「もし」の中）をのせています。先生モード（URL に `?sensei`）の「📖 こたえ」で、ブロックを読み込めます。
 
 ## 🧭 やじるしの めいろ（maze-junior.html）
 
@@ -187,26 +188,41 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 | 5 ぐるっと まわろう | みぎへ ×2 → したへ ×2 → ひだりへ ×2 | 6 |
 | 6 くりかえしを つかおう | 4かい くりかえす（みぎへ → したへ） | 3（めやす 3） |
 
+![ステージ1 のこたえ](images/answers/mazejr1.png)
+![ステージ2 のこたえ](images/answers/mazejr2.png)
+![ステージ3 のこたえ](images/answers/mazejr3.png)
+![ステージ4 のこたえ](images/answers/mazejr4.png)
+![ステージ5 のこたえ](images/answers/mazejr5.png)
+![ステージ6 のこたえ](images/answers/mazejr6.png)
+
 ## 🗝 かぎと とびらの めいろ（maze-key.html）
 
 かぎ 🔑 の上で「かぎを ひろう」、とびら 🚪 の前で「とびらを あける」。かぎ1つで、とびらが1つ開きます。
 
 **ステージ1　かぎを ひろって とびらを あけよう**（6こ）
+
+![ステージ1 のこたえ](images/answers/mazekey1.png)
 ```
 まえに すすむ ×2 → かぎを ひろう → とびらを あける → まえに すすむ ×2
 ```
 **ステージ2　かぎは どこ？**（16こ）
+
+![ステージ2 のこたえ](images/answers/mazekey2.png)
 ```
 まえに すすむ ×2 → みぎを むく → まえに すすむ ×2 → みぎを むく → まえに すすむ ×2
 かぎを ひろう → みぎを むく ×2 → まえに すすむ ×2 → とびらを あける → まえに すすむ ×2
 ```
 **ステージ3　とびらが 2つ**（7こ、めやす 7）
+
+![ステージ3 のこたえ](images/answers/mazekey3.png)
 ```
 2かい くりかえす
     まえに すすむ → かぎを ひろう → とびらを あける → まえに すすむ
 みぎを むく → まえに すすむ
 ```
 **ステージ4　じぶんで かんがえる たんけんか**（8こ、めやす 8）
+
+![ステージ4 のこたえ](images/answers/mazekey4.png)
 ```
 ゴールに つくまで くりかえす
     もし ここに かぎが ある なら
@@ -225,10 +241,14 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 スライムは、たんけんかが1回動く（すすむ・むく・まつ）たびに1マス動き、端で引き返します。「まえが あぶない」は、前のマスにスライムがいる、または次に前のマスへ来るとき。
 
 **ステージ1　まって よけよう**（6こ）
+
+![ステージ1 のこたえ](images/answers/mazeenemy1.png)
 ```
 まえに すすむ → まつ ×2 → まえに すすむ ×3
 ```
 **ステージ2　あぶなかったら まつ**（4こ、めやす 4）
+
+![ステージ2 のこたえ](images/answers/mazeenemy2.png)
 ```
 ゴールに つくまで くりかえす
     もし まえが あぶなかったら
@@ -237,6 +257,9 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
         まえに すすむ
 ```
 **ステージ3　おおきな めいろ ／ ステージ4　うずまきの めいろ**（6こ、めやす 6）
+
+![ステージ3 のこたえ](images/answers/mazeenemy3.png)
+![ステージ4 のこたえ](images/answers/mazeenemy4.png)
 ```
 ゴールに つくまで くりかえす
     もし まえが あぶなかったら
@@ -703,6 +726,169 @@ while not at_goal():
 ```
 
 ---
+# 🐍 Pythonで やじるし めいろ（python-maze-junior.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　right() で すすもう
+```python
+right()
+right()
+right()
+```
+
+### ステージ2　down() で したへ
+```python
+right()
+down()
+down()
+down()
+right()
+right()
+```
+
+### ステージ3　かいだん
+```python
+right()
+down()
+right()
+down()
+right()
+down()
+```
+
+### ステージ4　up() で うえへ
+```python
+up()
+up()
+up()
+right()
+right()
+right()
+```
+
+### ステージ5　left() も つかおう
+```python
+right()
+right()
+down()
+down()
+left()
+left()
+```
+
+### ステージ6　for で くりかえそう
+```python
+for i in range(4):
+    right()
+    down()
+```
+
+# 🐍 Pythonで かぎと とびら（python-maze-key.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　pick_up() と open_door()
+```python
+forward()
+forward()
+pick_up()
+open_door()
+forward()
+forward()
+```
+
+### ステージ2　かぎは どこ？
+```python
+forward()
+forward()
+turn_right()
+forward()
+forward()
+turn_right()
+forward()
+forward()
+pick_up()
+turn_right()
+turn_right()
+forward()
+forward()
+open_door()
+forward()
+forward()
+```
+
+### ステージ3　for で とびら 2つ
+```python
+for i in range(2):
+    forward()
+    pick_up()
+    open_door()
+    forward()
+turn_right()
+forward()
+```
+
+### ステージ4　key_here() と door_ahead()
+```python
+while not at_goal():
+    if key_here():
+        pick_up()
+    if door_ahead():
+        open_door()
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+# 🐍 Pythonで てきを よける（python-maze-enemy.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　wait() で まとう
+```python
+forward()
+wait()
+wait()
+forward()
+forward()
+forward()
+```
+
+### ステージ2　if danger_ahead():
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    else:
+        forward()
+```
+
+### ステージ3　elif で おおきな めいろ
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    elif is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+### ステージ4　うずまきの めいろ
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    elif is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+---
+
 # English answers
 
 This section has the answers for the four block apps and the four 🐍 Python apps. In every image, the blocks are on the left and the result is on the right (🐍 Python shows the answer code).
@@ -845,7 +1031,7 @@ The Stage 8 program reaches the goal in any maze.
 
 # ⛏ Maze family (Arrow / Keys & Doors / Slime)
 
-No pictures: the blocks are written as text (indented = inside "repeat" or "if"). In teacher mode (`?sensei`), "📖 Answer" loads the blocks.
+Each picture shows the blocks (left) and the result (right). In teacher mode (`?sensei`), "📖 Answer" loads the blocks.
 
 ## 🧭 Arrow Maze (maze-junior.html)
 
@@ -858,6 +1044,13 @@ No pictures: the blocks are written as text (indented = inside "repeat" or "if")
 | 5 Go around | right ×2 → down ×2 → left ×2 | 6 |
 | 6 Use repeat | repeat 4 (right → down) | 3 (target 3) |
 
+![Stage 1 answer](images/answers/en/mazejr1.png)
+![Stage 2 answer](images/answers/en/mazejr2.png)
+![Stage 3 answer](images/answers/en/mazejr3.png)
+![Stage 4 answer](images/answers/en/mazejr4.png)
+![Stage 5 answer](images/answers/en/mazejr5.png)
+![Stage 6 answer](images/answers/en/mazejr6.png)
+
 ## 🗝 Keys & Doors Maze (maze-key.html)
 
 1. forward ×2 → pick up key → open door → forward ×2 (6)
@@ -865,11 +1058,21 @@ No pictures: the blocks are written as text (indented = inside "repeat" or "if")
 3. repeat 2 (forward → pick up key → open door → forward) → turn right → forward (7, target 7)
 4. repeat until goal: if key here (pick up key); if door in front (open door); if front is open (forward) else (turn right) (8, target 8)
 
+![Stage 1 answer](images/answers/en/mazekey1.png)
+![Stage 2 answer](images/answers/en/mazekey2.png)
+![Stage 3 answer](images/answers/en/mazekey3.png)
+![Stage 4 answer](images/answers/en/mazekey4.png)
+
 ## 👾 Dodge the Slime Maze (maze-enemy.html)
 
 1. forward → wait ×2 → forward ×3 (6)
 2. repeat until goal: if danger ahead (wait) else (forward) (4, target 4)
 3. and 4. repeat until goal: if danger ahead (wait) else (if front is open (forward) else (turn right)) (6, target 6)
+
+![Stage 1 answer](images/answers/en/mazeenemy1.png)
+![Stage 2 answer](images/answers/en/mazeenemy2.png)
+![Stage 3 answer](images/answers/en/mazeenemy3.png)
+![Stage 4 answer](images/answers/en/mazeenemy4.png)
 
 # 🚀 Space Star Hunt
 
@@ -1322,6 +1525,167 @@ while not at_goal():
     elif front_is('water'):
         place()
     elif front_is('path'):
+        forward()
+    else:
+        turn_right()
+```
+
+# 🐍 Python Arrow Maze (python-maze-junior.html)
+
+In block mode, the blocks become the same Python. In Python mode, writing this code is the answer.
+
+### Stage 1: Go with right()
+```python
+right()
+right()
+right()
+```
+
+### Stage 2: Go down with down()
+```python
+right()
+down()
+down()
+down()
+right()
+right()
+```
+
+### Stage 3: Stairs
+```python
+right()
+down()
+right()
+down()
+right()
+down()
+```
+
+### Stage 4: Go up with up()
+```python
+up()
+up()
+up()
+right()
+right()
+right()
+```
+
+### Stage 5: Use left() too
+```python
+right()
+right()
+down()
+down()
+left()
+left()
+```
+
+### Stage 6: Repeat with for
+```python
+for i in range(4):
+    right()
+    down()
+```
+
+# 🐍 Python Keys & Doors (python-maze-key.html)
+
+In block mode, the blocks become the same Python. In Python mode, writing this code is the answer.
+
+### Stage 1: pick_up() and open_door()
+```python
+forward()
+forward()
+pick_up()
+open_door()
+forward()
+forward()
+```
+
+### Stage 2: Where is the key?
+```python
+forward()
+forward()
+turn_right()
+forward()
+forward()
+turn_right()
+forward()
+forward()
+pick_up()
+turn_right()
+turn_right()
+forward()
+forward()
+open_door()
+forward()
+forward()
+```
+
+### Stage 3: Two doors with for
+```python
+for i in range(2):
+    forward()
+    pick_up()
+    open_door()
+    forward()
+turn_right()
+forward()
+```
+
+### Stage 4: key_here() and door_ahead()
+```python
+while not at_goal():
+    if key_here():
+        pick_up()
+    if door_ahead():
+        open_door()
+    if is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+# 🐍 Python Slime Maze (python-maze-enemy.html)
+
+In block mode, the blocks become the same Python. In Python mode, writing this code is the answer.
+
+### Stage 1: wait()
+```python
+forward()
+wait()
+wait()
+forward()
+forward()
+forward()
+```
+
+### Stage 2: if danger_ahead():
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    else:
+        forward()
+```
+
+### Stage 3: A bigger maze with elif
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    elif is_open('front'):
+        forward()
+    else:
+        turn_right()
+```
+
+### Stage 4: The spiral maze
+```python
+while not at_goal():
+    if danger_ahead():
+        wait()
+    elif is_open('front'):
         forward()
     else:
         turn_right()

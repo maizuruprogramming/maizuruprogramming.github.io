@@ -43,6 +43,15 @@ const APPS = [
   { key: 'maze',  icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze', page: 'maze.html', titles: {
       ja: ['まっすぐ すすもう', 'まがってみよう', 'ながい みち', 'くりかえしを つかおう', 'かいだんを のぼろう', 'もし〜なら', 'みぎ？ ひだり？', 'どんな めいろでも ゴール！'],
       en: ['Go straight', "Let's turn", 'A long path', 'Use a loop', 'Climb the stairs', 'If…', 'Right? Left?', 'Any maze!'] } },
+  { key: 'mazejr', icon: '🧭', ja: 'やじるしの めいろ', en: 'Arrow Maze', page: 'maze-junior.html', titles: {
+      ja: ["みぎへ すすもう", "したへ まがろう", "かいだん", "うえへ のぼろう", "ぐるっと まわろう", "くりかえしを つかおう"],
+      en: ["Go right", "Go down", "Stairs", "Go up", "Go around", "Use repeat"] } },
+  { key: 'mazekey', icon: '🗝', ja: 'かぎと とびらの めいろ', en: 'Keys & Doors Maze', page: 'maze-key.html', titles: {
+      ja: ["かぎを ひろって とびらを あけよう", "かぎは どこ？", "とびらが 2つ", "じぶんで かんがえる たんけんか"],
+      en: ["Pick up the key, open the door", "Where is the key?", "Two doors", "A thinking explorer"] } },
+  { key: 'mazeenemy', icon: '👾', ja: 'てきを よける めいろ', en: 'Dodge the Slime Maze', page: 'maze-enemy.html', titles: {
+      ja: ["まって よけよう", "あぶなかったら まつ", "おおきな めいろ", "うずまきの めいろ"],
+      en: ["Wait and dodge", "Wait if it is dangerous", "A bigger maze", "The spiral maze"] } },
   { key: 'space', icon: '🚀', ja: 'うちゅうで ほしあつめ', en: 'Space Star Hunt', page: 'space.html', titles: {
       ja: ['ほしを ひろおう', 'まがって あつめよう', 'くりかえしで あつめよう', 'ほしの かいだん', 'もし ほしが あったら', 'ミッション クリアまで', 'どんな うちゅうでも！'],
       en: ['Pick up a star', 'Turn and collect', 'Collect with a loop', 'Star stairs', 'If there is a star', 'Until mission complete', 'Any space!'] } },
@@ -60,7 +69,16 @@ const APPS = [
       en: ["Pick up a star", "Turn and collect", "Collect with for", "Star stairs", "if has_star():", "while not mission_done():"] } },
   { key: 'pycraft', icon: '🐍', ja: 'Pythonで こわす・おく', en: 'Python Break & Build', page: 'python-craft.html', titles: {
       ja: ["こわして すすもう", "はしを かけよう", "for で こわそう", "ながい はし", "if front_is('stone'):", "elif で いしと みず", "うずまきの どうくつ"],
-      en: ["Break and go", "Build a bridge", "Break with for", "A long bridge", "if front_is('stone'):", "Stone and water with elif", "Spiral cave"] } }
+      en: ["Break and go", "Build a bridge", "Break with for", "A long bridge", "if front_is('stone'):", "Stone and water with elif", "Spiral cave"] } },
+  { key: 'pymazejr', icon: '🐍', ja: 'Pythonで やじるし めいろ', en: 'Python Arrow Maze', page: 'python-maze-junior.html', titles: {
+      ja: ["right() で すすもう", "down() で したへ", "かいだん", "up() で うえへ", "left() も つかおう", "for で くりかえそう"],
+      en: ["Go with right()", "Go down with down()", "Stairs", "Go up with up()", "Use left() too", "Repeat with for"] } },
+  { key: 'pymazekey', icon: '🐍', ja: 'Pythonで かぎと とびら', en: 'Python Keys & Doors', page: 'python-maze-key.html', titles: {
+      ja: ["pick_up() と open_door()", "かぎは どこ？", "for で とびら 2つ", "key_here() と door_ahead()"],
+      en: ["pick_up() and open_door()", "Where is the key?", "Two doors with for", "key_here() and door_ahead()"] } },
+  { key: 'pymazeenemy', icon: '🐍', ja: 'Pythonで てきを よける', en: 'Python Slime Maze', page: 'python-maze-enemy.html', titles: {
+      ja: ["wait() で まとう", "if danger_ahead():", "elif で おおきな めいろ", "うずまきの めいろ"],
+      en: ["wait()", "if danger_ahead():", "A bigger maze with elif", "The spiral maze"] } }
 ];
 const J = LANG === 'ja';
 document.getElementById('title').textContent = J ? 'かいせつ どうが' : 'Explanation Videos';
