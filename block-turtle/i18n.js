@@ -249,7 +249,7 @@
   };
 
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
-  var RELEASE_VERSION = '1.18';
+  var RELEASE_VERSION = '1.19';
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
   window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
@@ -277,10 +277,11 @@
      みための せってい：🌙 ナイトモード ／ 🎨 おちついた いろ
      5つの アプリで きょうつう。ページを ひらいた すぐに あてるので ちらつかない
      ------------------------------------------------------------------- */
-  var look = { night: false, calm: false, ud: false };
+  var look = { night: false, calm: false, ud: true };
   try {
     look.night = localStorage.getItem('block-night') === '1'; look.calm = localStorage.getItem('block-calm') === '1';
-    look.ud = localStorage.getItem('block-font') === 'ud';
+    // ふつうは よみやすい もじ（UD フォント）。「⚙ きのう」で ドットもじに かえると 'dot' を おぼえる
+    look.ud = localStorage.getItem('block-font2') !== 'dot';
   } catch (e) {}
   // 🔤 よみやすい フォント（UD フォント）：Google Fonts から よみこむ。つながらない ときは パソコンの フォントで だす
   var UD_FAMILY = '"BIZ UDPGothic", "BIZ UDPゴシック", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif';
@@ -302,7 +303,7 @@
   function saveLook() {
     try {
       localStorage.setItem('block-night', look.night ? '1' : '0'); localStorage.setItem('block-calm', look.calm ? '1' : '0');
-      localStorage.setItem('block-font', look.ud ? 'ud' : 'dot');
+      localStorage.setItem('block-font2', look.ud ? 'ud' : 'dot');
     } catch (e) {}
   }
   applyLook();
@@ -327,10 +328,10 @@
   // 🔤 フォントを かえる：ドットの もじ ⇄ よみやすい もじ（UD フォント）
   window.fontMenuItem = function () {
     return {
-      icon: function () { return '🔤'; },
+      icon: function () { return look.ud ? '👾' : '🔤'; },
       label: function () {
-        return lang === 'ja' ? (look.ud ? 'フォントを かえる（もとの ドットもじへ）' : 'フォントを かえる（よみやすい もじへ）')
-                             : (look.ud ? 'Change font (back to pixel)' : 'Change font (easy to read)');
+        return lang === 'ja' ? (look.ud ? 'ドットもじに する' : 'よみやすい もじに もどす')
+                             : (look.ud ? 'Pixel font' : 'Back to easy-to-read font');
       },
       onClick: function (m) {
         look.ud = !look.ud; saveLook();
@@ -355,7 +356,7 @@
   // ヘッダーの アプリ リンク（いまの ページいがい）
   var APPS = [
     { href: 'index.html',    icon: '🐢', ja: 'おえかき',   en: 'Drawing' },
-    { href: 'maze.html',     icon: '⛏', ja: 'めいろ',     en: 'Maze' },
+    { href: 'maze.html',     icon: '⛏️', ja: 'めいろ',     en: 'Maze' },
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
     { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
     { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' }

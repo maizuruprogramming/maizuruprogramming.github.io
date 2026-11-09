@@ -44,6 +44,11 @@ header h1 { flex: none; white-space: nowrap; font-size: 22px; margin: 0; color: 
 header .nav { display: flex; gap: 12px; align-items: center; margin-right: auto; margin-left: 6px; flex: none; }
 header .nav a { white-space: nowrap; color: var(--link); font-size: 15px; text-shadow: 2px 2px 0 var(--title-shadow); }
 header button { flex: none; white-space: nowrap; }
+/* ヘッダーの ボタンは たかさを そろえる（もじや アイコンの フォントが ちがっても おなじ たかさ） */
+header button { height: 42px; display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+/* アプリの リンクも アイコンの たての いちを そろえる（⛏ などの もじの たかさの ちがいを なくす） */
+header .nav a { display: inline-flex; align-items: center; height: 32px; line-height: 1; }
+header .ico, header .lbl { line-height: 1; display: inline-block; }
 .ico + .lbl { margin-left: .3em; }
 
 /* ---------- ボタン・セレクト（もりあがった ブロック） ---------- */
