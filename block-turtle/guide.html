@@ -25,6 +25,7 @@
   .appIntro a { color: var(--accent); }
   .bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
   .bar button { font-size: 15px; padding: 5px 12px; }
+  .bar a.bookBtn { font-size: 15px; padding: 5px 12px; color: #fff; text-decoration: none; background: #8a5a1c; border: 3px solid; border-color: #d6a868 #4a2c08 #4a2c08 #d6a868; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; display: inline-flex; align-items: center; }
   #intro p { margin: 6px 0; line-height: 1.8; }
   .teacher { margin-top: 10px; padding: 8px 12px; background: #efe4c6; border-left: 6px solid var(--accent); font-size: 14px; line-height: 1.8; }
   /* もくじ */
@@ -55,6 +56,10 @@
   details img { display: block; max-width: 100%; height: auto; margin-top: 8px; border: 2px solid #000; }
   .links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
   .links a { font-size: 15px; color: #fff; text-decoration: none; background: #4f6a9a; border: 3px solid; border-color: #9fb5dd #22314f #22314f #9fb5dd; outline: 2px solid #000; padding: 4px 10px; text-shadow: 1px 1px 0 #000; }
+  .wsBox { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0 0; font-size: 14px; }
+  .wsBox a { color: #fff; text-decoration: none; background: #3f7d3a; border: 3px solid; border-color: #8fc98a #1d3f1a #1d3f1a #8fc98a; outline: 2px solid #000; padding: 3px 10px; text-shadow: 1px 1px 0 #000; }
+  .wsBox a.lp { background: #6a4c93; border-color: #b9a2d8 #33204e #33204e #b9a2d8; }
+  .wsBox a.sub { background: #5d6b5a; border-color: #a9b5a6 #2c332b #2c332b #a9b5a6; }
   .links a.v { background: #8e2f2c; border-color: #d48a87 #4a1311 #4a1311 #d48a87; }
   html.theme-night table.map { background: #22262f; }
   html.theme-night table.map th { background: #2b2f3a; }
@@ -62,7 +67,7 @@
   html.theme-night details, html.theme-night .teacher { background: #1b1e26; }
   /* いんさつ：ヘッダーと ボタンを かくし、こたえを ひらいた じょうたいで */
   @media print {
-    header, .bar, #toc, .links, .fnMenu { display: none !important; }
+    header, .bar, #toc, .links, .wsBox, .fnMenu { display: none !important; }
     html, body { background: #fff !important; }
     #wrap { max-width: none; padding: 0; }
     h2.app { color: #000; text-shadow: none; page-break-before: always; }
@@ -96,13 +101,14 @@ const S = {
           'This page explains every challenge and stage in the seven block apps (including the three maze variations) and the seven 🐍 Python apps.'],
   lead2: ['「ヒントを みる」「こたえと ポイントを みる」を おすと、ヒントや こたえが ひらきます。まずは じぶんで かんがえてから ひらいてみよう！',
           'Press “Show hint” or “Show answer and key point” to open them. Try to think by yourself first!'],
-  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。',
-            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open.'],
-  openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'],
+  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
+            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
+  openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'], book: ['📘 めいろの ほん（PDF）', '📘 Maze book (PDF)'],
   mapTitle: ['まなびの つながり（どの かだいで なにを まなぶか）', 'What you learn where'],
   concept: ['まなぶ こと', 'Concept'],
   goal: ['🎯 めあて', '🎯 Goal'], q: ['📝 もんだい', '📝 Task'], mistake: ['⚠ つまずきやすい ところ', '⚠ Common mistake'],
   hint: ['💡 ヒントを みる', '💡 Show hint'], answer: ['📖 こたえと ポイントを みる', '📖 Show answer and key point'], point: ['✨ ポイント', '✨ Key point'],
+  ws: ['📝 ワークシート（PDF）', '📝 Worksheet (PDF)'], wsGoal: ['🎯 めあて・ふりかえり', '🎯 Goal & reflection'], wsCheck: ['✅ チェックカード', '✅ Check card'], lp: ['📋 学習指導案', '📋 Lesson plan (Japanese)'],
   limit: (n) => J ? `めやす：ブロック ${n}こ いない` : `Target: ${n} blocks or fewer`,
   openApp: ['▶ アプリで ためす', '▶ Try it in the app'], video: ['🎬 かいせつ どうが', '🎬 Video'],
   stage: (a, n) => a === 'draw' ? (J ? `おだい${n}` : `Challenge ${n}`) : (J ? `ステージ${n}` : `Stage ${n}`)
@@ -114,7 +120,7 @@ document.title = s('title'); document.getElementById('title').textContent = s('t
 // はじめに
 document.getElementById('intro').innerHTML =
   `<p>${esc(s('lead1'))}</p><p>${esc(s('lead2'))}</p><div class="teacher">${esc(s('teacher'))}</div>
-   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button></div>`;
+   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button><a class="bookBtn" href="${J ? 'book/maze-book.pdf' : 'book/en/maze-book.pdf'}" target="_blank" rel="noopener">${esc(s('book'))}</a></div>`;
 
 // もくじ
 document.getElementById('toc').innerHTML = G.apps.map((a) => `<a href="#app-${a.key}">${a.icon} ${esc(T(a.name))}</a>`).join('');
@@ -132,6 +138,18 @@ for (const c of order) {
   map += '</tr>';
 }
 document.getElementById('mapBox').innerHTML = map + '</table></div></div>';
+
+// ワークシート（PDF）：アプリ → シート
+const WS = { draw: 'ws2-draw', maze: 'ws3-maze', mazejr: 'ws4-arrow', mazekey: 'ws6-key-enemy', mazeenemy: 'ws6-key-enemy',
+  space: 'ws5-space-craft', craft: 'ws5-space-craft' };
+// 学習指導案（PDF・日本語）：アプリ → 指導案
+const LP = { draw: 'lp-draw', mazejr: 'lp-arrow', maze: 'lp-maze', mazekey: 'lp-key-enemy', mazeenemy: 'lp-key-enemy', space: 'lp-space', craft: 'lp-craft' };
+const WSDIR = J ? 'worksheets/' : 'worksheets/en/';
+const wsFile = (k) => `${WSDIR}${WS[k] || 'ws7-python'}.pdf`;
+const wsLinks = (k) => `<div class="wsBox"><a href="${wsFile(k)}" target="_blank" rel="noopener">${esc(s('ws'))}</a>` +
+  `<a class="sub" href="${WSDIR}ws1-goal.pdf" target="_blank" rel="noopener">${esc(s('wsGoal'))}</a>` +
+  `<a class="sub" href="${WSDIR}ws8-check.pdf" target="_blank" rel="noopener">${esc(s('wsCheck'))}</a>` +
+  `<a class="lp" href="lesson-plans/${LP[k] || 'lp-python'}.pdf" target="_blank" rel="noopener">${esc(s('lp'))}</a></div>`;
 
 // アプリごとの かだい
 let html = '';
@@ -154,6 +172,7 @@ for (const a of G.apps) {
         <div><b>${esc(s('point'))}</b>：${esc(T(it.point))}</div>
         ${it.code ? `<pre class="py">${esc(it.code)}</pre>` : `<img loading="lazy" src="${T(it.img)}" alt="${esc(T(it.title))}">`}
       </div></details>
+      ${wsLinks(a.key)}
       <div class="links"><a href="${a.file}">${esc(s('openApp'))}</a>${it.video ? `<a class="v" href="${T(it.video)}" target="_blank">${esc(s('video'))}</a>` : ''}</div>
     </div>`;
   }

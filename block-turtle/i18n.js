@@ -155,20 +155,79 @@
     };
   };
 
-  // ⛏ めいろの なかま：いまの ページが この なかに あれば、ほかの めいろへの こうもくを つくる
+  // ⛏ めいろの なかま：ブロック 4つ ＋ Python版 4つ。めいろの ページでは「⚙ きのう → ⛏ めいろを えらぶ…」で ひょうを だす
   var MAZES = [
-    { href: 'maze.html',        icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze' },
-    { href: 'maze-junior.html', icon: '🧭', ja: 'やじるしの めいろ（ていがくねん）', en: 'Arrow Maze (younger kids)' },
-    { href: 'maze-key.html',    icon: '🗝', ja: 'かぎと とびらの めいろ', en: 'Keys & Doors Maze' },
-    { href: 'maze-enemy.html',  icon: '👾', ja: 'てきを よける めいろ', en: 'Dodge the Slime Maze' }
+    { icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze', sub: ['じゅんばん・くりかえし・もし', 'Sequence, loops, if'],
+      b: { href: 'maze.html', key: 'block-maze', n: 8 }, p: { href: 'python.html', key: 'block-python', n: 5 } },
+    { icon: '🧭', ja: 'やじるしの めいろ', en: 'Arrow Maze', sub: ['ていがくねん むけ', 'For younger kids'],
+      b: { href: 'maze-junior.html', key: 'block-mazejr', n: 6 }, p: { href: 'python-maze-junior.html', key: 'block-pymazejr', n: 6 } },
+    { icon: '🗝', ja: 'かぎと とびら', en: 'Keys & Doors', sub: ['もっている ものを おぼえる', 'Remember what you carry'],
+      b: { href: 'maze-key.html', key: 'block-mazekey', n: 4 }, p: { href: 'python-maze-key.html', key: 'block-pymazekey', n: 4 } },
+    { icon: '👾', ja: 'てきを よける', en: 'Dodge the Slime', sub: ['タイミング', 'Timing'],
+      b: { href: 'maze-enemy.html', key: 'block-mazeenemy', n: 4 }, p: { href: 'python-maze-enemy.html', key: 'block-pymazeenemy', n: 4 } }
   ];
   window.MAZES = MAZES;
-  window.mazeFamilyItems = function () {
+  function mazeHere() {
     var here = location.pathname.split('/').pop() || 'index.html';
-    if (!MAZES.some(function (m) { return m.href === here; })) return [];
-    return MAZES.filter(function (m) { return m.href !== here; }).map(function (m) {
-      return window.pageMenuItem(m.icon, m.ja, m.en, m.href);
+    return MAZES.some(function (m) { return m.b.href === here || m.p.href === here; }) ? here : null;
+  }
+  // クリアした ステージの かず（ブロックは [true, …]、Python版は [0, 2, …] の かたちで ほぞん）
+  function clearedCount(key) {
+    try {
+      var c = JSON.parse(localStorage.getItem(key + '-cleared'));
+      if (!Array.isArray(c)) return 0;
+      var seen = {};
+      c.forEach(function (x, i) { if (x === true) seen[i] = 1; else if (typeof x === 'number') seen['n' + x] = 1; });
+      return Object.keys(seen).length;
+    } catch (e) { return 0; }
+  }
+  window.openMazePicker = function () {
+    var here = mazeHere();
+    var old = document.getElementById('mazePicker'); if (old) old.remove();
+    var J = lang === 'ja';
+    var wrap = document.createElement('div'); wrap.id = 'mazePicker';
+    wrap.setAttribute('role', 'dialog'); wrap.setAttribute('aria-modal', 'true'); wrap.setAttribute('aria-label', J ? 'めいろを えらぶ' : 'Choose a maze');
+    var box = document.createElement('div'); box.className = 'mpBox';
+    var head = document.createElement('div'); head.className = 'mpHead';
+    var ttl = document.createElement('div'); ttl.className = 'mpTitle'; ttl.textContent = J ? 'めいろを えらぶ' : 'Choose a maze';
+    var x = document.createElement('button'); x.className = 'mpClose'; x.textContent = '×'; x.setAttribute('aria-label', J ? 'とじる' : 'Close');
+    head.appendChild(ttl); head.appendChild(x); box.appendChild(head);
+    var grid = document.createElement('div'); grid.className = 'mpGrid';
+    ['', J ? '🧩 ブロック' : '🧩 Blocks', '🐍 Python'].forEach(function (t) { var h = document.createElement('div'); h.className = 'mpCol'; h.textContent = t; grid.appendChild(h); });
+    MAZES.forEach(function (m) {
+      var nm = document.createElement('div'); nm.className = 'mpName';
+      var n1 = document.createElement('div'); n1.textContent = m.icon + ' ' + (J ? m.ja : m.en);
+      var n2 = document.createElement('div'); n2.className = 'mpSub'; n2.textContent = m.sub[J ? 0 : 1];
+      nm.appendChild(n1); nm.appendChild(n2); grid.appendChild(nm);
+      [m.b, m.p].forEach(function (v, k) {
+        var b = document.createElement('button'); b.className = 'mpCell' + (v.href === here ? ' on' : '');
+        var got = clearedCount(v.key), all = got >= v.n;
+        b.textContent = (v.href === here ? (J ? 'いま ここ　' : 'You are here  ') : '') + (all ? (J ? '✅ ぜんぶ' : '✅ All') : '✅ ' + got + ' / ' + v.n);
+        b.setAttribute('aria-label', (J ? m.ja : m.en) + (k ? ' Python' : (J ? ' ブロック' : ' Blocks')) + ' ' + got + '/' + v.n);
+        b.addEventListener('click', function () { if (v.href === here) { close(); return; } location.href = v.href + (k ? '?mode=python' : ''); });
+        grid.appendChild(b);
+      });
     });
+    box.appendChild(grid);
+    var note = document.createElement('div'); note.className = 'mpNote';
+    note.textContent = J ? 'あおい ところが いま やっている めいろ。✅ は クリアした ステージの かず。' : 'Blue = the maze you are playing now. ✅ = stages cleared.';
+    box.appendChild(note);
+    wrap.appendChild(box); document.body.appendChild(wrap);
+    function close() { wrap.remove(); document.removeEventListener('keydown', onKey); }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    x.addEventListener('click', close);
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) close(); });
+    document.addEventListener('keydown', onKey);
+    var cur = box.querySelector('.mpCell.on') || box.querySelector('.mpCell'); if (cur) cur.focus();
+  };
+  // ⚙ きのう の こうもく（めいろの ページだけ）
+  window.mazeFamilyItems = function () {
+    if (!mazeHere()) return [];
+    return [{
+      icon: function () { return '⛏'; },
+      label: function () { return lang === 'ja' ? 'めいろを えらぶ…（ブロック・Python）' : 'Choose a maze… (Blocks / Python)'; },
+      onClick: function (m) { m.close(); window.openMazePicker(); }
+    }];
   };
 
   // 🎮 あそびかた・べんきょうの しかた（しょうかいの ページへ いく）
@@ -190,7 +249,7 @@
   };
 
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
-  var RELEASE_VERSION = '1.17';
+  var RELEASE_VERSION = '1.18';
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
   window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
