@@ -59,6 +59,8 @@ button, select { font: inherit; font-size: 16px; padding: 6px 14px; cursor: poin
 button:hover, select:hover { filter: brightness(1.12); }
 button:active { border-color: var(--btn-dark) var(--btn-light) var(--btn-light) var(--btn-dark); }
 select option { color: #222; text-shadow: none; background: #ddd; }
+/* ステージの えらぶ メニューは フォントに かかわらず おなじ たかさ（ドットもじの ときと そろえる） */
+select { box-sizing: border-box; height: 43px; line-height: 1.2; }
 #run { background: var(--run); }
 #fnBtn { background: var(--fn); }
 #answerBtn { background: #8e24aa; }
