@@ -323,12 +323,16 @@
       if (blk.isShadow()) s.addEventListener('click', function (e) { e.stopPropagation(); });
       return s;
     }
-    if (B.FieldTextInput && f instanceof B.FieldTextInput) {
-      var isNum = B.FieldNumber && f instanceof B.FieldNumber;
+    // Blockly 10 いこうは かずの らん（FieldNumber）は FieldTextInput の なかまではなく FieldInput の なかま
+    var isNum = !!(B.FieldNumber && f instanceof B.FieldNumber);
+    if (isNum || (B.FieldInput && f instanceof B.FieldInput) || (B.FieldTextInput && f instanceof B.FieldTextInput)) {
       var i = el('input', 'tapIn');
       i.type = isNum ? 'number' : 'text'; if (isNum) i.inputMode = 'decimal';
       i.value = f.getValue(); i.size = Math.max(2, String(f.getValue()).length + 1);
-      i.addEventListener('change', function () { f.setValue(isNum ? Number(i.value) : i.value); });
+      var commit = function () { var v = isNum ? Number(i.value) : i.value; if (isNum && (i.value === '' || isNaN(v))) { i.value = f.getValue(); return; } if (String(v) !== String(f.getValue())) f.setValue(v); };
+      i.addEventListener('change', commit);
+      i.addEventListener('blur', commit);
+      i.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); i.blur(); } });
       i.addEventListener('click', function (e) { e.stopPropagation(); });
       return i;
     }
