@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- 🧭 やじるしの めいろ：maze.html を もとに tools/maze-variants/build.py で つくった ページ（junior.js が ちがう ところ） -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>やじるしの めいろ / Arrow Maze</title>
+<!-- Blockly 本体・標準ブロック・JavaScript変換・日本語メッセージ（CDN） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>  <!-- 📜 しゅうりょうしょう -->  <!-- にほんご／English と Blockly の ことば -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="mobile.css">  <!-- 📱 スマホの ならび（はば 600px いか） -->
+<style>
+  /* ===== テーマ：くさと つち（めいろ） ===== */
+  :root {
+    --page-bg: #3a2a1c repeating-conic-gradient(rgba(0,0,0,.18) 0 25%, transparent 0 50%) 0 0 / 32px 32px;
+    --hdr-bg: linear-gradient(#5fa83a 0 10px, #4e8a2e 10px 14px, #866043 14px);
+    --hdr-border: #2a1d12; --title-shadow: #3f3f3f; --link: #ffff55; --fn: #3c5aa6;
+  }
+  #randomRow { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🧭</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="blocklyDiv"></div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText" class="lessonText"></div>
+      <div id="limitText"></div>
+      <button id="hintBtn" data-i18n="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div class="row" id="randomRow">
+      <select id="rockCount">
+        <option value="4" data-i18n="easy"></option>
+        <option value="6" selected data-i18n="normal"></option>
+        <option value="8" data-i18n="hard"></option>
+      </select>
+      <button id="newMaze" data-i18n="newMaze"></button>
+    </div>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
+    <div class="row">
+      <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
+    </div>
+    <div id="msg"></div>
+    <div id="info"></div>
+  </div>
+</main>
+
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title" data-i18n="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
+    <div class="btns">
+      <button id="dlgYes" data-i18n="yes"></button>
+      <button id="dlgNo" data-i18n="no"></button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ひょうじを ひらがなに そろえる（標準ブロックの ことば）
+if (LANG === 'ja') {
+  Object.assign(Blockly.Msg, {
+    CONTROLS_REPEAT_TITLE: '%1 かい くりかえす',
+    CONTROLS_REPEAT_INPUT_DO: ''
+  });
+} else {
+  Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
+}
+
+/* ========== 0. ことば（にほんご ／ English） ========== */
+const STR = {
+  ja: {
+    appTitle: 'やじるしの めいろ', run: 'じっこう', reset: 'もどす', answer: 'こたえ', nextPerson: 'つぎの ひとへ',
+    soundOn: 'おと：オン', soundOff: 'おと：オフ', hintBtn: '💡 ヒント', speed: 'はやさ',
+    easy: 'かんたん（いわ 4こ）', normal: 'ふつう（いわ 6こ）', hard: 'むずかしい（いわ 8こ）', newMaze: '🎲 あたらしい めいろ',
+    dlgTitle: '🎉 ステージ クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
+    dirF: 'まえ', dirR: 'みぎ', dirL: 'ひだり',
+    bForward: 'まえに すすむ', bRight: 'みぎを むく ↻', bLeft: 'ひだりを むく ↺', bUntilGoal: 'ゴールに つくまで くりかえす',
+    bIf: 'もし %1 が あいていたら', bElse: 'そうでなければ %1',
+    tooManyMoves: (n) => `うごきが おおすぎるよ（${n}かいまで）`, crash: '💥 ぶつかっちゃった！', endless: 'くりかえしが おわらないよ',
+    noGoal: 'ゴールに つかなかったよ', limit: (n) => `🎯 めやす：ブロック ${n}こ いないで クリア`,
+    used: (n) => `つかった ブロック：${n}こ`, moves: (n) => ` ／ うごいた かず：${n}かい`,
+    grand: '🏆 30こ ぜんぶ ゴール！ チュートリアル クリア！',
+    testPartial: (ok) => `このめいろは ゴール！ でも テストは 30こ中 ${ok}こ。どんな めいろでも いける くふうを しよう`,
+    freeGoal: '🎉 ゴール！ 🎲で べつの めいろでも ためしてみよう',
+    overLimit: (n, lim) => `ゴール！ でも ブロックが ${n}こ。${lim}こ いかに できるかな？`,
+    stageClear: '🎉 ステージ クリア！', retry: 'もういちど ちょうせん！ ブロックを なおして ▶ じっこう してね',
+    armedItem: 'もういちど おすと リセット', armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ',
+    certItem: 'しゅうりょうしょうを みる', resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！', answerLoaded: '📖 こたえを よみこんだよ。▶ じっこう で たしかめよう'
+  },
+  en: {
+    appTitle: 'Arrow Maze', run: 'Run', reset: 'Restart', answer: 'Answer', nextPerson: 'Next player',
+    soundOn: 'Sound: On', soundOff: 'Sound: Off', hintBtn: '💡 Hint', speed: 'Speed',
+    easy: 'Easy (4 rocks)', normal: 'Normal (6 rocks)', hard: 'Hard (8 rocks)', newMaze: '🎲 New maze',
+    dlgTitle: '🎉 Stage clear!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
+    dirF: 'front', dirR: 'right', dirL: 'left',
+    bForward: 'move forward', bRight: 'turn right ↻', bLeft: 'turn left ↺', bUntilGoal: 'repeat until goal',
+    bIf: 'if %1 is open', bElse: 'else %1',
+    tooManyMoves: (n) => `Too many moves (max ${n})`, crash: '💥 Bump! You hit a rock.', endless: 'The loop never ends!',
+    noGoal: "You didn't reach the goal.", limit: (n) => `🎯 Target: clear with ${n} blocks or fewer`,
+    used: (n) => `Blocks used: ${n}`, moves: (n) => ` / Moves: ${n}`,
+    grand: '🏆 All 30 mazes cleared! Tutorial complete!',
+    testPartial: (ok) => `Goal reached here! But only ${ok} of 30 tests passed. Make it work for any maze!`,
+    freeGoal: '🎉 Goal! Try another maze with 🎲',
+    overLimit: (n, lim) => `Goal! But you used ${n} blocks. Can you do it with ${lim} or fewer?`,
+    stageClear: '🎉 Stage clear!', retry: 'Try again! Fix your blocks and press ▶ Run.',
+    armedItem: 'Tap again to reset', armedMsg: '⚠ Tap "Next player" again to reset everything.',
+    certItem: 'View certificate', resetDone: '✨ All reset. Good luck, next player!', answerLoaded: '📖 Answer loaded. Press ▶ Run to check it.'
+  }
+};
+const EXTRA = {
+  ja: {
+    bUp: 'うえへ ⬆', bDown: 'したへ ⬇', bLeftA: 'ひだりへ ⬅', bRightA: 'みぎへ ➡',
+    crash: '🌿 くさむらに ぶつかったよ。やじるしを なおそう', noGoal: 'ダイヤまで とどかなかったよ。やじるしを たそう'
+  },
+  en: {
+    bUp: 'up ⬆', bDown: 'down ⬇', bLeftA: 'left ⬅', bRightA: 'right ➡',
+    crash: '🌿 Bump into the bushes! Fix your arrows.', noGoal: 'Not at the diamond yet. Add more arrows.'
+  }
+};
+Object.assign(STR.ja, EXTRA.ja); Object.assign(STR.en, EXTRA.en);
+const t = makeT(STR);
+const L = (item, k) => (LANG === 'en' && item.en && item.en[k] !== undefined) ? item.en[k] : item[k];
+
+/* ========== 1. オリジナルのブロック（やじるし：むきを かんがえずに うえ・した・ひだり・みぎへ 1マス） ========== */
+Blockly.common.defineBlocksWithJsonArray([
+  { type: 'jr_up',    message0: t('bUp'),     previousStatement: null, nextStatement: null, colour: '#3c5aa6' },
+  { type: 'jr_down',  message0: t('bDown'),   previousStatement: null, nextStatement: null, colour: '#2e7d32' },
+  { type: 'jr_left',  message0: t('bLeftA'),  previousStatement: null, nextStatement: null, colour: '#8e44ad' },
+  { type: 'jr_right', message0: t('bRightA'), previousStatement: null, nextStatement: null, colour: '#c0631a' }
+]);
+
+/* ========== 2. ブロック → JavaScript ========== */
+const gen = javascript.javascriptGenerator;
+gen.STATEMENT_PREFIX = 'highlight(%1);\n';
+gen.addReservedWords('highlight');
+gen.forBlock['jr_up']    = () => 'go(0);\n';
+gen.forBlock['jr_right'] = () => 'go(1);\n';
+gen.forBlock['jr_down']  = () => 'go(2);\n';
+gen.forBlock['jr_left']  = () => 'go(3);\n';
+
+/* ========== 3. ステージ（ちいさな めいろ） ==========
+   map の きごう：S=スタート  G=ゴール（ダイヤ）  #=くさむら（かべ）  .=みち */
+const ARROWS = ['jr_up', 'jr_down', 'jr_left', 'jr_right'];
+const ALL = [...ARROWS, 'controls_repeat_ext'];
+
+const LEVELS = [
+  { title: 'ステージ1　みぎへ すすもう',
+    en: { title: 'Stage 1: Go right', text: 'Stack three "right ➡" arrows and go to the diamond 💎.', hint: 'The diamond is 3 squares away.' },
+    text: '「みぎへ ➡」を 3つ つなげて、ダイヤ 💎 まで いこう。',
+    hint: 'ダイヤまで 3マス だよ。',
+    map: ['####', 'S..G', '####', '####'], dir: 1, blocks: ['jr_right'] },
+  { title: 'ステージ2　したへ まがろう',
+    en: { title: 'Stage 2: Go down', text: 'Use "right ➡" and "down ⬇".', hint: 'right, then down 3 times, then right 2 times.' },
+    text: '「みぎへ ➡」と「したへ ⬇」を つかおう。',
+    hint: 'みぎへ 1つ、したへ 3つ、みぎへ 2つ。',
+    map: ['S.##', '#.##', '#.##', '#..G'], dir: 1, blocks: ['jr_right', 'jr_down'] },
+  { title: 'ステージ3　かいだん',
+    en: { title: 'Stage 3: Stairs', text: 'Right and down, one after the other.', hint: 'right, down, right, down, right, down' },
+    text: 'みぎ と した を じゅんばんに。',
+    hint: 'みぎ → した → みぎ → した → みぎ → した',
+    map: ['S.##', '#..#', '##..', '###G'], dir: 1, blocks: ['jr_right', 'jr_down'] },
+  { title: 'ステージ4　うえへ のぼろう',
+    en: { title: 'Stage 4: Go up', text: 'Now use "up ⬆" too.', hint: 'up 3 times, then right 3 times.' },
+    text: 'こんどは「うえへ ⬆」も つかうよ。',
+    hint: 'うえへ 3つ、みぎへ 3つ。',
+    map: ['...G', '.###', '.###', 'S###'], dir: 0, blocks: ARROWS },
+  { title: 'ステージ5　ぐるっと まわろう',
+    en: { title: 'Stage 5: Go around', text: 'Use all four arrows.', hint: 'right 2, down 2, left 2.' },
+    text: '4つの やじるしを ぜんぶ つかおう。',
+    hint: 'みぎへ 2つ、したへ 2つ、ひだりへ 2つ。',
+    map: ['S..#', '##.#', 'G..#', '####'], dir: 1, blocks: ARROWS },
+  { title: 'ステージ6　くりかえしを つかおう',
+    en: { title: 'Stage 6: Use repeat', text: 'A long staircase! Put "right ➡ down ⬇" inside "repeat".', hint: 'repeat 4 times: right, down' },
+    text: 'ながい かいだん！「みぎへ ➡ したへ ⬇」を「くりかえす」の なかに いれよう。',
+    hint: '「4かい くりかえす」の なかに「みぎへ」「したへ」。',
+    map: ['S.###', '#..##', '##..#', '###..', '####G'], dir: 1, blocks: ALL, limit: 3 }
+];
+const A = (() => {
+  const chain = (list) => list.reduceRight((next, b) => next ? { ...b, next: { block: next } } : b, null);
+  return {
+    u: () => ({ type: 'jr_up' }), d: () => ({ type: 'jr_down' }), l: () => ({ type: 'jr_left' }), r: () => ({ type: 'jr_right' }),
+    repeat: (n, body) => ({ type: 'controls_repeat_ext',
+      inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: n } } }, DO: { block: chain(body) } } }),
+    program: (body) => ({ blocks: { languageVersion: 0, blocks: [{ ...chain(body), x: 30, y: 30 }] } })
+  };
+})();
+{
+const u = A.u, d = A.d, l = A.l, r = A.r;
+const ANSWER_BLOCKS = [
+  A.program([r(), r(), r()]),
+  A.program([r(), d(), d(), d(), r(), r()]),
+  A.program([r(), d(), r(), d(), r(), d()]),
+  A.program([u(), u(), u(), r(), r(), r()]),
+  A.program([r(), r(), d(), d(), l(), l()]),
+  A.program([A.repeat(4, [r(), d()])])
+];
+LEVELS.forEach((lv, i) => { lv.answer = ANSWER_BLOCKS[i]; });
+}
+
+
+/* ========== 4. ワークスペース ========== */
+const flyout = (types) => ({
+  kind: 'flyoutToolbox',
+  contents: types.map((t) => t === 'controls_repeat_ext'
+    ? { kind: 'block', type: t, inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: 4 } } } } }
+    : { kind: 'block', type: t })
+});
+
+// ブロックふうの テーマ（つちの ワークスペース・ドットフォント）
+const craftTheme = Blockly.Theme.defineTheme('craft', {
+  base: Blockly.Themes.Classic,
+  blockStyles: {
+    loop_blocks: { colourPrimary: '#8b5a2b', colourSecondary: '#a8743f', colourTertiary: '#5e3b1a' },
+    math_blocks: { colourPrimary: '#6b6b6b', colourSecondary: '#8a8a8a', colourTertiary: '#444444' }
+  },
+  componentStyles: {
+    workspaceBackgroundColour: '#4a3726',
+    toolboxBackgroundColour: '#5a5a5a',
+    flyoutBackgroundColour: '#6e6e6e',
+    flyoutOpacity: 1,
+    scrollbarColour: '#c6c6c6',
+    insertionMarkerColour: '#ffff55'
+  },
+  fontStyle: { family: 'DotGothic16, monospace', size: 12 }
+});
+
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: flyout(ALL), renderer: 'geras', theme: craftTheme, trashcan: true,
+  grid: { spacing: 24, length: 24, colour: '#3f2e1f', snap: true },
+  zoom: { controls: true, wheel: true, startScale: 1.4 },
+  move: { scrollbars: true, drag: true, wheel: false }
+});
+
+const SAVE_KEY = 'block-mazejr';
+const store = {
+  get(k)    { try { return JSON.parse(localStorage.getItem(SAVE_KEY + k)); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+
+let levelIndex = 0, loading = false;
+workspace.addChangeListener((e) => {
+  if (e.isUiEvent || loading) return;
+  store.set('-ws-' + levelIndex, Blockly.serialization.workspaces.save(workspace));
+  updateInfo();
+});
+
+/* ========== 5. めいろ（ちいさい・やじるし） ========== */
+let N = 4, CELL = 96;
+const DR = [-1, 0, 1, 0], DC = [0, 1, 0, -1];   // 0:うえ 1:みぎ 2:した 3:ひだり
+let rocks = [], START = { r: 0, c: 0, dir: 1 }, GOAL = { r: 3, c: 3 };
+
+function inside(r, c) { return r >= 0 && r < N && c >= 0 && c < N; }
+function free(r, c)   { return inside(r, c) && !rocks[r][c]; }
+
+function loadMap(map, dir) {
+  N = map.length; CELL = 16 * Math.floor(400 / (N * 16)); PX = CELL / 16;
+  const cv = document.getElementById('board'); cv.width = cv.height = N * CELL; ctx.imageSmoothingEnabled = false;
+  rocks = map.map((row, r) => [...row].map((ch, c) => {
+    if (ch === 'S') START = { r, c, dir };
+    if (ch === 'G') GOAL = { r, c };
+    return ch === '#';
+  }));
+}
+function resetWorld() {}
+function onFrame() {}
+function solvable() { return true; }
+function randomRocks() { return rocks; }
+function setRandomMaze() { resetRobot(); }
+
+/* ========== 6. プログラムを しらべて、うごきの きろくを つくる ========== */
+const MAX_MOVES = 100, MAX_LOOPS = 1000;
+class Stop { constructor(kind, text, why) { this.kind = kind; this.text = text; this.why = why; } }
+
+function simulate(code) {
+  const s = { ...START };
+  const frames = [];
+  let blockId = null;
+  const rec = (event) => {
+    frames.push({ r: s.r, c: s.c, dir: s.dir, id: blockId, event });
+    if (frames.length > MAX_MOVES) throw new Stop('ng', t('tooManyMoves', MAX_MOVES));
+  };
+  const api = {
+    highlight: (id) => { blockId = id; },
+    go: (d) => {   // その むきを むいて 1マス すすむ（むきを かえる だけの コマは つくらない）
+      s.dir = d;
+      const nr = s.r + DR[d], nc = s.c + DC[d];
+      if (!free(nr, nc)) { rec('crash'); throw new Stop('ng', t('crash'), 'crash'); }
+      s.r = nr; s.c = nc; rec('move');
+      if (s.r === GOAL.r && s.c === GOAL.c) throw new Stop('ok', 'goal');
+    }
+  };
+  let result;
+  try {
+    new Function(...Object.keys(api), code)(...Object.values(api));
+    result = new Stop('ng', t('noGoal'));
+  } catch (e) {
+    result = e instanceof Stop ? e : new Stop('ng', '⚠ ' + e.message);
+  }
+  return { frames, result };
+}
+
+/* ========== 7. えを かく（ドット絵） ==========
+   1マスを 16×16 ドットで かき、5ばいに ひろげて ひょうじする */
+const ctx = document.getElementById('board').getContext('2d');
+ctx.imageSmoothingEnabled = false;
+let PX = CELL / 16;
+let robot = { ...START }, trail = [], crashed = false, timer = null;
+
+// マスごとに いつも おなじに なる らんすう（もようが ちらつかないように）
+function rand(r, c, i) {
+  let h = (r * 73856093) ^ (c * 19349663) ^ (i * 83492791);
+  h = (h ^ (h >>> 13)) * 1274126177;
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function dot(x, y, px, py, color) { ctx.fillStyle = color; ctx.fillRect(x + px * PX, y + py * PX, PX, PX); }
+function noiseTile(x, y, r, c, salt, colors) {
+  for (let py = 0; py < 16; py++) for (let px = 0; px < 16; px++)
+    dot(x, y, px, py, colors[Math.floor(rand(r * 16 + py, c * 16 + px, salt) * colors.length)]);
+}
+
+// くさの じめん
+function grassTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 1, ['#5fa83a', '#5fa83a', '#58a034', '#6cbb45', '#4e9a2f']);
+  for (let k = 0; k < 4; k++) dot(x, y, Math.floor(rand(r, c, 10 + k) * 16), Math.floor(rand(r, c, 20 + k) * 16), '#7fd055');
+}
+// とおった みち（つち）
+function dirtTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 2, ['#8b5a2b', '#7a4e25', '#966434', '#8b5a2b', '#6e4520']);
+}
+// いしブロック（いわ）：まるい いしを ならべた もよう
+function stoneTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 3, ['#7f7f7f', '#8a8a8a', '#757575', '#828282']);
+  const stones = [[1, 1, 6, 5], [8, 0, 7, 4], [0, 7, 4, 4], [5, 6, 6, 5], [12, 5, 4, 6], [1, 12, 7, 4], [9, 12, 6, 4]];
+  for (const [sx, sy, w, h] of stones) {
+    for (let i = 0; i < w; i++) { dot(x, y, sx + i, sy + h - 1, '#555555'); dot(x, y, sx + i, sy, '#a5a5a5'); }
+    for (let j = 0; j < h; j++) { dot(x, y, sx + w - 1, sy + j, '#555555'); }
+  }
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(x, y + CELL - PX * 2, CELL, PX * 2);   // したに かげ
+}
+// スタート：もくざいの いた
+function plankTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 4, ['#b8945f', '#ae8a55', '#c19d68']);
+  for (let row = 3; row < 16; row += 4) for (let px = 0; px < 16; px++) dot(x, y, px, row, '#7a5a30');
+  [[3, 0], [11, 4], [6, 8], [13, 12]].forEach(([px, py]) => { for (let j = 0; j < 3; j++) dot(x, y, px, py + j, '#7a5a30'); });
+}
+// ゴール：ダイヤの こうせき
+const GEM = [
+  '................', '..DD........dd..', '.DdkD......DdD..', '..Dk.........k..', '........DD......',
+  '.......DddD.....', '......DdkkD.....', '.......Dkk......', '..k.....D.......', '.DD.........DD..',
+  'DddD.......DdkD.', '.Dkk........Dk..', '..k....DD.......', '......DdkD......', '.......Dk.......', '................'];
+function diamondTile(x, y, r, c) {
+  stoneTile(x, y, r, c);
+  const col = { D: '#4ee8e0', d: '#d3fffb', k: '#1b9e98' };
+  GEM.forEach((row, py) => [...row].forEach((ch, px) => { if (col[ch]) dot(x, y, px, py, col[ch]); }));
+}
+
+// たんけんか（オリジナル キャラ）：うえむきで かいて、むきに あわせて まわす
+const HERO = [
+  '................', '................', '......LLLL......', '....hhLLLLhh....',
+  '....hHHHHHHh....', '....hHHHHHHh....', '....hHHHHHHh....', '..BBhHHHHHHhBB..',
+  '.SBBhHHHHHHhBBS.', '.SBBhhhhhhhhBBS.', '.SBBBBBBBBBBBBS.', '.SBBBBBBBBBBBBS.',
+  '..BBBBBBBBBBBB..', '..bbbbbbbbbbbb..', '................', '................'];
+function drawHero() {
+  const cx = robot.c * CELL + CELL / 2, cy = robot.r * CELL + CELL / 2;
+  const col = crashed
+    ? { L: '#fff59d', h: '#8b0000', H: '#e53935', B: '#e53935', b: '#8b0000', S: '#e0b48a' }
+    : { L: '#fff59d', h: '#c66a00', H: '#ff9800', B: '#3f8fd2', b: '#2c6aa0', S: '#e0b48a' };
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(robot.dir * Math.PI / 2);
+  ctx.fillStyle = 'rgba(255,245,157,.45)';            // ライトの ひかり（まえの むき）
+  ctx.beginPath(); ctx.moveTo(-PX * 2, -PX * 6); ctx.lineTo(PX * 2, -PX * 6);
+  ctx.lineTo(PX * 5, -CELL * 0.75); ctx.lineTo(-PX * 5, -CELL * 0.75); ctx.fill();
+  HERO.forEach((row, py) => [...row].forEach((ch, px) => {
+    if (col[ch]) { ctx.fillStyle = col[ch]; ctx.fillRect((px - 8) * PX, (py - 8) * PX, PX, PX); }
+  }));
+  ctx.restore();
+}
+
+// かべは くさの しげみ（こわく ない ように いわでは なく くさ）
+function bushTile(x, y, r, c) {
+  noiseTile(x, y, r, c, 6, ['#3f8a2a', '#4e9a2f', '#35781f', '#4e9a2f']);
+  [[2, 3], [7, 2], [11, 5], [4, 9], [9, 11], [13, 12]].forEach(([px, py]) => {
+    dot(x, y, px, py, '#7fd055'); dot(x, y, px + 1, py, '#7fd055'); dot(x, y, px, py + 1, '#2a5e18');
+  });
+}
+function draw() {
+  const W = N * CELL;
+  ctx.clearRect(0, 0, W, W);
+  const walked = new Set(trail.map(([r, c]) => r + ',' + c));
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+    const x = c * CELL, y = r * CELL;
+    if (rocks[r][c]) bushTile(x, y, r, c);
+    else if (r === GOAL.r && c === GOAL.c) { plankTile(x, y, r, c); const col = { D: '#4ee8e0', d: '#d3fffb', k: '#1b9e98' };
+      GEM.forEach((row, py) => [...row].forEach((ch, px) => { if (col[ch]) dot(x, y, px, py, col[ch]); })); }
+    else if (r === START.r && c === START.c) plankTile(x, y, r, c);
+    else if (walked.has(r + ',' + c)) dirtTile(x, y, r, c);
+    else plankTile(x, y, r, c);
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 2;
+  for (let i = 1; i < N; i++) {
+    ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, W); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(W, i * CELL); ctx.stroke();
+  }
+  drawHero();
+}
+
+/* ========== 8. ステージの きりかえ ========== */
+const msg = document.getElementById('msg');
+const levelSelect = document.getElementById('levelSelect');
+const clearDialog = document.getElementById('clearDialog');
+function showClearDialog() {
+  const next = LEVELS[levelIndex + 1];
+  document.getElementById('dlgQuestion').innerHTML =
+    `${t('dlgQuestion')}<br><span style="font-size:15px">${LANG === 'en' ? '(' : '（'}${L(next, 'title')}${LANG === 'en' ? ')' : '）'}</span>`;
+  clearDialog.classList.add('show');
+  document.getElementById('dlgYes').focus();
+}
+let dialogTimer = null;
+function hideClearDialog() { clearTimeout(dialogTimer); dialogTimer = null; clearDialog.classList.remove('show'); }
+let cleared = store.get('-cleared') || [];
+
+function refreshLevelList() {
+  levelSelect.innerHTML = '';
+  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + L(lv, 'title'), i)));
+  levelSelect.value = levelIndex;
+}
+
+function setLevel(i) {
+  levelIndex = i;
+  const lv = LEVELS[i];
+  store.set('-level', i);
+  refreshLevelList();
+  document.getElementById('lessonText').textContent = L(lv, 'text');
+  document.getElementById('limitText').textContent = lv.limit ? t('limit', lv.limit) : '';
+  const hint = document.getElementById('hintText');
+  hint.textContent = L(lv, 'hint'); hint.style.display = 'none';
+  document.getElementById('hintBtn').style.display = L(lv, 'hint') ? '' : 'none';
+  document.getElementById('randomRow').style.display = lv.mode ? 'flex' : 'none';
+
+  // つかえる ブロックと、この ステージで くんでいた プログラムを よみこむ
+  loading = true;
+  workspace.updateToolbox(flyout(lv.blocks));
+  workspace.clear();
+  const saved = store.get('-ws-' + i);
+  if (saved) { try { Blockly.serialization.workspaces.load(saved, workspace); } catch (_) {} }
+  loading = false;
+
+  if (lv.mode) {
+    const rk = store.get('-random');
+    if (Array.isArray(rk) && rk.length === N && solvable(rk)) setRandomMaze(rk);
+    else setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value)));
+  } else {
+    loadMap(lv.map, lv.dir);
+    resetRobot();
+  }
+  updateInfo();
+}
+
+// ぜんぶの ステージ（じゆうモード いがい）を クリアしたか
+function allStagesCleared() { return LEVELS.every((lv, i) => lv.mode === 'free' || cleared[i]); }
+
+// 📜 しゅうりょうしょう（とじたら、つぎの ステージの かくにんを だす）
+function showCertificate(thenNext) {
+  Certificate.show({ app: t('appTitle'), icons: ['🧭', '💎'],
+    onClose: thenNext && levelIndex < LEVELS.length - 1 ? showClearDialog : null });
+}
+
+function markCleared() {
+  const wasAll = allStagesCleared();
+  cleared[levelIndex] = true;
+  store.set('-cleared', cleared);
+  refreshLevelList();
+  if (!wasAll && allStagesCleared()) {   // いま ぜんぶ クリアに なった！
+    dialogTimer = setTimeout(() => showCertificate(true), 900);
+    return;
+  }
+  if (levelIndex < LEVELS.length - 1) dialogTimer = setTimeout(showClearDialog, 900);   // ファンファーレの あとに だす
+}
+
+/* ========== 9. じっこう ========== */
+function resetRobot() {
+  if (timer) clearTimeout(timer);
+  timer = null;
+  robot = { ...START }; trail = [[START.r, START.c]]; crashed = false;
+  resetWorld();
+  msg.textContent = ''; msg.className = '';
+  hideClearDialog();
+  workspace.highlightBlock(null);
+  draw();
+}
+
+function blockCount() {
+  return workspace.getAllBlocks(false).filter((b) => !b.isShadow()).length;
+}
+
+function updateInfo(moves) {
+  document.getElementById('info').textContent =
+    t('used', blockCount()) + (moves != null ? t('moves', moves) : '');
+}
+
+// ステージ8：ランダムな めいろ 30こで テスト
+function testOnRandomMazes(code, times) {
+  const keep = { rocks, START, GOAL };
+  const k = Number(document.getElementById('rockCount').value);
+  let ok = 0;
+  START = { r: 0, c: 0, dir: 1 }; GOAL = { r: N - 1, c: N - 1 };
+  for (let t = 0; t < times; t++) {
+    rocks = randomRocks(k);
+    if (simulate(code).result.kind === 'ok') ok++;
+  }
+  ({ rocks, START, GOAL } = keep);
+  return ok;
+}
+
+/* ========== 効果音（Web Audio で その場で つくる 8ビットふうの おと） ========== */
+const Sound = {
+  ctx: null, master: null, muted: !!store.get('-muted'), stepFoot: 0,
+  // ブラウザは ボタンを おすまで おとを ならせないので、さいしょの クリックで じゅんび
+  unlock() {
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.25;
+      this.master.connect(this.ctx.destination);
+    }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  // 1つの おと：type=なみの かたち, f1→f2 に たかさを かえる, len=びょう
+  tone(type, f1, f2, len, delay = 0, vol = 1) {
+    if (this.muted || !this.ctx) return;
+    const t = this.ctx.currentTime + delay;
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f1, t);
+    if (f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t + len);
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + len);
+    o.connect(g); g.connect(this.master);
+    o.start(t); o.stop(t + len + 0.02);
+  },
+  noise(len, delay = 0, vol = 1) {
+    if (this.muted || !this.ctx) return;
+    const t = this.ctx.currentTime + delay;
+    const buf = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * len), this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1;
+    const src = this.ctx.createBufferSource(), g = this.ctx.createGain(), lp = this.ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 900;
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + len);
+    src.buffer = buf; src.connect(lp); lp.connect(g); g.connect(this.master);
+    src.start(t);
+  },
+  notes(list, type = 'square', vol = 0.6) {   // list: [[ヘルツ, はじまり(びょう), ながさ(びょう)], ...]
+    for (const [f, at, len] of list) this.tone(type, f, f, len, at, vol);
+  },
+
+  // --- つかう おと ---
+  step() {                                   // あしおと（ひだり・みぎで すこし たかさを かえる）
+    this.stepFoot ^= 1;
+    this.noise(0.07, 0, 0.5);
+    this.tone('square', this.stepFoot ? 330 : 294, this.stepFoot ? 220 : 196, 0.07, 0, 0.35);
+  },
+  turnRight() { this.tone('triangle', 520, 880, 0.12, 0, 0.7); },   // ひゅっ↑
+  turnLeft()  { this.tone('triangle', 880, 520, 0.12, 0, 0.7); },   // ひゅっ↓
+  crash() {                                  // ゴンッ
+    this.noise(0.35, 0, 1);
+    this.tone('square', 140, 50, 0.35, 0, 0.8);
+  },
+  clear() {                                  // ステージ クリア：ドミソド〜
+    this.notes([[523, 0, .12], [659, .12, .12], [784, .24, .12], [1047, .36, .45]]);
+    this.notes([[392, .36, .45], [659, .36, .45]], 'triangle', 0.5);
+  },
+  goalSoSo() { this.notes([[784, 0, .12], [1047, .14, .25]]); },      // ゴールしたけど めやすオーバー
+  fail()  { this.notes([[392, 0, .16], [330, .18, .16], [262, .36, .35]], 'square', 0.5); },  // ざんねん
+  grandClear() {                             // チュートリアル ぜんぶ クリア
+    const m = [[523, 0, .1], [523, .12, .1], [523, .24, .1], [523, .36, .3], [415, .7, .3], [466, 1.0, .3], [523, 1.3, .15], [466, 1.5, .1], [523, 1.62, .7]];
+    this.notes(m);
+    this.notes([[262, 1.3, 1.0], [330, 1.3, 1.0], [392, 1.3, 1.0]], 'triangle', 0.4);
+  },
+
+  toggle() {
+    this.muted = !this.muted; store.set('-muted', this.muted);
+    return this.muted;
+  }
+};
+
+
+function finish(result, moves, code) {
+  const lv = LEVELS[levelIndex];
+  updateInfo(moves);
+  if (result.kind !== 'ok') {
+    msg.className = 'ng'; msg.textContent = result.text;
+    if (result.why !== 'crash') Sound.fail();   // ぶつかった ときは もう おとが なっている
+    return;
+  }
+  msg.className = 'ok';
+  const n = blockCount();
+  if (lv.mode === 'test') {
+    const ok = testOnRandomMazes(code, 30);
+    if (ok === 30) { msg.textContent = t('grand'); markCleared(); Sound.grandClear(); }
+    else { msg.className = 'ng'; msg.textContent = t('testPartial', ok); Sound.goalSoSo(); }
+  } else if (lv.mode === 'free') {
+    msg.textContent = t('freeGoal');
+    Sound.clear();
+  } else if (lv.limit && n > lv.limit) {
+    msg.textContent = t('overLimit', n, lv.limit);
+    Sound.goalSoSo();
+  } else {
+    msg.textContent = t('stageClear');
+    markCleared();
+    Sound.clear();
+  }
+}
+
+function run() {
+  Sound.unlock();
+  resetRobot();
+  const code = gen.workspaceToCode(workspace);
+  const { frames, result } = simulate(code);
+  let i = 0;
+  const tick = () => {
+    if (i < frames.length) {
+      const f = frames[i++];
+      robot = { r: f.r, c: f.c, dir: f.dir };
+      if (f.event === 'move') { trail.push([f.r, f.c]); Sound.step(); }
+      if (f.event === 'turn') {
+        const prev = i > 1 ? frames[i - 2].dir : START.dir;
+        if ((prev + 1) % 4 === f.dir) Sound.turnRight(); else Sound.turnLeft();
+      }
+      if (f.event === 'crash') { crashed = true; Sound.crash(); }
+      onFrame(f);
+      workspace.highlightBlock(f.id);
+      draw();
+      const speed = Number(document.getElementById('speed').value);
+      timer = setTimeout(tick, Math.max(40, (650 - speed * 60) * 1));
+    } else {
+      timer = null;
+      workspace.highlightBlock(null);
+      finish(result, frames.filter((f) => f.event !== 'crash').length, code);
+    }
+  };
+  tick();
+}
+
+document.getElementById('run').addEventListener('click', run);
+document.getElementById('reset').addEventListener('click', resetRobot);
+document.getElementById('newMaze').addEventListener('click', () =>
+  setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value))));
+document.getElementById('rockCount').addEventListener('change', () =>
+  setRandomMaze(randomRocks(Number(document.getElementById('rockCount').value))));
+levelSelect.addEventListener('change', () => setLevel(Number(levelSelect.value)));
+// はい → つぎの ステージへ
+document.getElementById('dlgYes').addEventListener('click', () => { hideClearDialog(); setLevel(levelIndex + 1); });
+// いいえ → おなじ ステージを もういちど（ブロックは そのまま、たんけんかは スタートへ）
+document.getElementById('dlgNo').addEventListener('click', () => {
+  hideClearDialog();
+  resetRobot();
+  msg.className = 'ok';
+  msg.textContent = t('retry');
+});
+document.addEventListener('keydown', (e) => {
+  if (!clearDialog.classList.contains('show')) return;
+  if (e.key === 'Escape') document.getElementById('dlgNo').click();
+});
+document.getElementById('hintBtn').addEventListener('click', () => {
+  const h = document.getElementById('hintText');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+});
+window.addEventListener('resize', () => Blockly.svgResize(workspace));
+
+// ヘッダー：ボタンの ことば・アプリの リンク・ことばの きりかえ
+setLabel(document.getElementById('run'), '▶', t('run'));
+setLabel(document.getElementById('reset'), '↺', t('reset'));
+setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
+buildNav(document.getElementById('nav'));
+applyI18n(t);
+
+setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
+
+// つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろく・ランダムめいろを けして ステージ1へ
+function resetForNextPerson() {
+  try {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level', SAVE_KEY + '-random'].includes(k))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch (_) {}
+  cleared = [];
+  Certificate.clearName();
+  loading = true; workspace.clear(); loading = false;
+  setLevel(0);
+  workspace.scrollCenter && workspace.scrollCenter();
+  msg.className = 'ok';
+  msg.textContent = t('resetDone');
+}
+
+// ⚙ きのう メニュー：おと・ことば・つぎの ひとへ（リセット）
+let resetArmed = null;
+const fnMenu = FnMenu(document.getElementById('fnBtn'), [
+  { icon: () => Sound.muted ? '🔇' : '🔊',
+    label: () => Sound.muted ? t('soundOff') : t('soundOn'),
+    onClick: (m) => { Sound.unlock(); Sound.toggle(); m.render(); if (!Sound.muted) Sound.turnRight(); } },
+  langMenuItem(),
+  nightMenuItem(),
+  calmMenuItem(),
+  { icon: () => '📜', label: () => t('certItem'), visible: allStagesCleared,
+    onClick: (m) => { m.close(); showCertificate(false); } },
+  { icon: () => resetArmed ? '⚠' : '🔄',
+    label: () => resetArmed ? t('armedItem') : t('nextPerson'),
+    warn: () => !!resetArmed,
+    onClick: (m) => {
+      if (!resetArmed) {   // 2かい おして かくにん（まちがえて けさないように）
+        msg.className = 'ng'; msg.textContent = t('armedMsg');
+        resetArmed = setTimeout(() => { resetArmed = null; m.render(); }, 4000);
+        m.render();
+        return;
+      }
+      clearTimeout(resetArmed); resetArmed = null;
+      m.close();
+      resetForNextPerson();
+    } }
+]);
+
+
+// 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる
+const answerBtn = document.getElementById('answerBtn');
+if (new URLSearchParams(location.search).has('sensei')) answerBtn.style.display = '';
+answerBtn.addEventListener('click', () => {
+  resetRobot();
+  workspace.clear();
+  Blockly.serialization.workspaces.load(LEVELS[levelIndex].answer, workspace);
+  msg.className = ''; msg.textContent = t('answerLoaded');
+});
+</script>
+<script src="mobile.js"></script>
+</body>
+</html>

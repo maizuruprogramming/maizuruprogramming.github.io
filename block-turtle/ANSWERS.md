@@ -12,6 +12,7 @@
 
 - 🐢 **ブロックでおえかき**（index.html）：おだい ①〜⑨
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
+- 🧭 **やじるしの めいろ**（maze-junior.html）：ステージ 1〜6、🗝 **かぎと とびらの めいろ**（maze-key.html）：ステージ 1〜4、👾 **てきを よける めいろ**（maze-enemy.html）：ステージ 1〜4（文字のみ）
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
 - 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
 - 🐍 **Pythonで おえかき**（python-draw.html）：おだい ①〜⑨
@@ -168,6 +169,85 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 ステージ8と同じプログラムで、どの迷路でもゴールできます。
 
 ---
+
+# ⛏ めいろの なかま（やじるし・かぎと とびら・てき）
+
+画像はなく、ブロックの並びを文字で書いています（字下げは「くりかえす」「もし」の中）。先生モード（URL に `?sensei`）の「📖 こたえ」で、ブロックを読み込めます。
+
+## 🧭 やじるしの めいろ（maze-junior.html）
+
+「むき」を考えずに、うえ・した・ひだり・みぎ の矢印で1マスずつ動きます（低学年向け）。
+
+| ステージ | こたえ | ブロック数 |
+|---|---|---|
+| 1 みぎへ すすもう | みぎへ ×3 | 3 |
+| 2 したへ まがろう | みぎへ → したへ ×3 → みぎへ ×2 | 6 |
+| 3 かいだん | みぎへ → したへ → みぎへ → したへ → みぎへ → したへ | 6 |
+| 4 うえへ のぼろう | うえへ ×3 → みぎへ ×3 | 6 |
+| 5 ぐるっと まわろう | みぎへ ×2 → したへ ×2 → ひだりへ ×2 | 6 |
+| 6 くりかえしを つかおう | 4かい くりかえす（みぎへ → したへ） | 3（めやす 3） |
+
+## 🗝 かぎと とびらの めいろ（maze-key.html）
+
+かぎ 🔑 の上で「かぎを ひろう」、とびら 🚪 の前で「とびらを あける」。かぎ1つで、とびらが1つ開きます。
+
+**ステージ1　かぎを ひろって とびらを あけよう**（6こ）
+```
+まえに すすむ ×2 → かぎを ひろう → とびらを あける → まえに すすむ ×2
+```
+**ステージ2　かぎは どこ？**（16こ）
+```
+まえに すすむ ×2 → みぎを むく → まえに すすむ ×2 → みぎを むく → まえに すすむ ×2
+かぎを ひろう → みぎを むく ×2 → まえに すすむ ×2 → とびらを あける → まえに すすむ ×2
+```
+**ステージ3　とびらが 2つ**（7こ、めやす 7）
+```
+2かい くりかえす
+    まえに すすむ → かぎを ひろう → とびらを あける → まえに すすむ
+みぎを むく → まえに すすむ
+```
+**ステージ4　じぶんで かんがえる たんけんか**（8こ、めやす 8）
+```
+ゴールに つくまで くりかえす
+    もし ここに かぎが ある なら
+        かぎを ひろう
+    もし まえが とびら なら
+        とびらを あける
+    もし まえ が あいていたら
+        まえに すすむ
+    そうでなければ
+        みぎを むく
+```
+つまずき：かぎを持たずにとびらへ進むと「とびらが あかないよ。かぎは どこかな？」、持っているのに「あける」を忘れると「とびらに ぶつかった！」と出ます。
+
+## 👾 てきを よける めいろ（maze-enemy.html）
+
+スライムは、たんけんかが1回動く（すすむ・むく・まつ）たびに1マス動き、端で引き返します。「まえが あぶない」は、前のマスにスライムがいる、または次に前のマスへ来るとき。
+
+**ステージ1　まって よけよう**（6こ）
+```
+まえに すすむ → まつ ×2 → まえに すすむ ×3
+```
+**ステージ2　あぶなかったら まつ**（4こ、めやす 4）
+```
+ゴールに つくまで くりかえす
+    もし まえが あぶなかったら
+        まつ
+    そうでなければ
+        まえに すすむ
+```
+**ステージ3　おおきな めいろ ／ ステージ4　うずまきの めいろ**（6こ、めやす 6）
+```
+ゴールに つくまで くりかえす
+    もし まえが あぶなかったら
+        まつ
+    そうでなければ
+        もし まえ が あいていたら
+            まえに すすむ
+        そうでなければ
+            みぎを むく
+```
+「まつ」を使わずに進むと、どのステージでもスライムにつかまります（「スライムに つかまっちゃった！」）。
 
 # 🚀 うちゅうで ほしあつめ
 
@@ -762,6 +842,34 @@ Swapping every "right" and "left" (the left-hand rule) also works. The Stage 7 p
 The Stage 8 program reaches the goal in any maze.
 
 ---
+
+# ⛏ Maze family (Arrow / Keys & Doors / Slime)
+
+No pictures: the blocks are written as text (indented = inside "repeat" or "if"). In teacher mode (`?sensei`), "📖 Answer" loads the blocks.
+
+## 🧭 Arrow Maze (maze-junior.html)
+
+| Stage | Answer | Blocks |
+|---|---|---|
+| 1 Go right | right ×3 | 3 |
+| 2 Go down | right → down ×3 → right ×2 | 6 |
+| 3 Stairs | right → down → right → down → right → down | 6 |
+| 4 Go up | up ×3 → right ×3 | 6 |
+| 5 Go around | right ×2 → down ×2 → left ×2 | 6 |
+| 6 Use repeat | repeat 4 (right → down) | 3 (target 3) |
+
+## 🗝 Keys & Doors Maze (maze-key.html)
+
+1. forward ×2 → pick up key → open door → forward ×2 (6)
+2. forward ×2 → turn right → forward ×2 → turn right → forward ×2 → pick up key → turn right ×2 → forward ×2 → open door → forward ×2 (16)
+3. repeat 2 (forward → pick up key → open door → forward) → turn right → forward (7, target 7)
+4. repeat until goal: if key here (pick up key); if door in front (open door); if front is open (forward) else (turn right) (8, target 8)
+
+## 👾 Dodge the Slime Maze (maze-enemy.html)
+
+1. forward → wait ×2 → forward ×3 (6)
+2. repeat until goal: if danger ahead (wait) else (forward) (4, target 4)
+3. and 4. repeat until goal: if danger ahead (wait) else (if front is open (forward) else (turn right)) (6, target 6)
 
 # 🚀 Space Star Hunt
 

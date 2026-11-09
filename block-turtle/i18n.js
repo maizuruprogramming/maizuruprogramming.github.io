@@ -86,6 +86,13 @@
       pages.forEach(function (p, k) { p.cls = k === pages.length - 1 ? 'go2' : 'go3'; });
       items = items.slice(0, at).concat(pages, items.slice(at));
     }
+    // ⛏ めいろの なかま（ふつう・やじるし・かぎと とびら・てき）：めいろの ページ どうしで いききできる
+    var fam = window.mazeFamilyItems();
+    if (fam.length) {
+      var at2 = (items.length && items[0].cls === 'go' ? 1 : 0) + pages.length;
+      fam.forEach(function (p, k) { p.cls = k === fam.length - 1 ? 'go2' : 'go3'; });
+      items = items.slice(0, at2).concat(fam, items.slice(at2));
+    }
     // 🔤 フォントを かえる：「おちついた いろ」の つぎに だす（どの ページでも）
     var ci = -1;
     items.forEach(function (it, k) { if (it._calm) ci = k; });
@@ -147,6 +154,22 @@
     };
   };
 
+  // ⛏ めいろの なかま：いまの ページが この なかに あれば、ほかの めいろへの こうもくを つくる
+  var MAZES = [
+    { href: 'maze.html',        icon: '⛏', ja: 'ブロックでめいろ', en: 'Block Maze' },
+    { href: 'maze-junior.html', icon: '🧭', ja: 'やじるしの めいろ（ていがくねん）', en: 'Arrow Maze (younger kids)' },
+    { href: 'maze-key.html',    icon: '🗝', ja: 'かぎと とびらの めいろ', en: 'Keys & Doors Maze' },
+    { href: 'maze-enemy.html',  icon: '👾', ja: 'てきを よける めいろ', en: 'Dodge the Slime Maze' }
+  ];
+  window.MAZES = MAZES;
+  window.mazeFamilyItems = function () {
+    var here = location.pathname.split('/').pop() || 'index.html';
+    if (!MAZES.some(function (m) { return m.href === here; })) return [];
+    return MAZES.filter(function (m) { return m.href !== here; }).map(function (m) {
+      return window.pageMenuItem(m.icon, m.ja, m.en, m.href);
+    });
+  };
+
   // 🎮 あそびかた・べんきょうの しかた（しょうかいの ページへ いく）
   window.howtoMenuItem = function () {
     return {
@@ -166,7 +189,7 @@
   };
 
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
-  var RELEASE_VERSION = '1.15';
+  var RELEASE_VERSION = '1.16';
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
   window.markReleaseSeen = function () { try { localStorage.setItem('block-release-seen', RELEASE_VERSION); } catch (e) {} };
