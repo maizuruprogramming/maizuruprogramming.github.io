@@ -104,7 +104,13 @@ const list = document.getElementById('list');
   const card = document.createElement('div'); card.className = 'panel card';
   const v = document.createElement('video'); v.src = `videos/${LANG}/howto.mp4`; v.controls = true; v.preload = 'metadata'; v.playsInline = true;
   const cap = document.createElement('div'); cap.className = 't'; cap.textContent = J ? 'はじめに：1ぷんで わかる あそびかた' : 'Start here: how to play in 1 minute';
-  card.append(v, cap); grid.append(card); sec.append(h, grid); list.append(sec);
+  card.append(v, cap); grid.append(card);
+  // 🎬 この システムの しょうかい（先生・保護者 むけ、スライドから つくった 2ふんの どうが）
+  const card2 = document.createElement('div'); card2.className = 'panel card';
+  const v2 = document.createElement('video'); v2.src = `videos/${LANG}/intro.mp4`; v2.controls = true; v2.preload = 'metadata'; v2.playsInline = true;
+  const cap2 = document.createElement('div'); cap2.className = 't'; cap2.textContent = J ? 'この システムの しょうかい（先生・保護者むけ、2ふん）' : 'System overview (for teachers and parents, 2 min)';
+  card2.append(v2, cap2); grid.append(card2);
+  sec.append(h, grid); list.append(sec);
 }
 // 📚 すべて ／ 🧩 Blockly版 ／ 🐍 Python版 の きりかえ（かいせつしょと おなじ。えらんだ ものは おぼえておく）
 const kindOf = (k) => (/^py/.test(k) ? 'py' : 'blk');

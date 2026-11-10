@@ -445,7 +445,7 @@ window.GUIDE = {
   {
    "key": "maze",
    "file": "maze.html",
-   "icon": "⛏",
+   "icon": "⛏️",
    "name": {
     "ja": "ブロックでめいろ",
     "en": "Block Maze"

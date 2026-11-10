@@ -14,6 +14,7 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 内容 | 日本語 | English | 長さ |
 |---|---|---|---|
 | 1分で わかる あそびかた（アプリの選び方・4ステップ・Python・コツ・修了証） | [あそびかた](videos/ja/howto.mp4) | [How to play](videos/en/howto.mp4) | 48秒 |
+| この システムの しょうかい（先生・保護者向け、スライド16枚に字幕） | [しょうかい](videos/ja/intro.mp4) | [System overview](videos/en/intro.mp4) | 120秒／140秒 |
 
 ## 🐢 ブロックでおえかき ／ 🐢 Block Drawing
 

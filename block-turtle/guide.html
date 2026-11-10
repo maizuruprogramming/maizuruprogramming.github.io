@@ -27,6 +27,8 @@
   .bar button { font-size: 15px; padding: 5px 12px; }
   .bar a.bookBtn { font-size: 15px; padding: 5px 12px; color: #fff; text-decoration: none; background: #8a5a1c; border: 3px solid; border-color: #d6a868 #4a2c08 #4a2c08 #d6a868; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
   #intro p { margin: 6px 0; line-height: 1.8; }
+  details.introVid { margin-top: 12px; }
+  details.introVid video { display: block; width: 100%; max-width: 820px; margin-top: 8px; background: #000; aspect-ratio: 16 / 9; }
   .teacher { margin-top: 10px; padding: 8px 12px; background: #efe4c6; border-left: 6px solid var(--accent); font-size: 14px; line-height: 1.8; }
   /* もくじ */
   .viewBar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 16px 0 0; scroll-margin-top: 10px; }
@@ -36,13 +38,49 @@
   .viewBar button[aria-pressed="true"] { background: #306998; border-color: #ffd43b; outline: 3px solid #ffd43b; }
   body.view-blk [data-kind="py"], body.view-py [data-kind="blk"] { display: none !important; }
   #toc { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
-  #toc a { color: #fff; text-decoration: none; background: rgba(0,0,0,.35); border: 3px solid #000; padding: 6px 12px; text-shadow: 2px 2px 0 #000; }
+  #toc a { color: #fff; text-decoration: none; background: rgba(0,0,0,.35); border: 3px solid #000; padding: 6px 12px; text-shadow: 2px 2px 0 #000;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.2; min-height: 40px; box-sizing: border-box; }
   /* まなびの つながり（ひょう） */
   table.map { border-collapse: collapse; width: 100%; font-size: 14px; background: #fffaf0; }
   table.map th, table.map td { border: 2px solid #c9b98a; padding: 5px 8px; text-align: center; }
   table.map th { background: #e7d9b3; }
   table.map td.c { text-align: left; white-space: nowrap; }
   table.map td a { color: var(--accent); margin: 0 2px; }
+  table.map th .sub { font-size: 10.5px; font-weight: normal; display: flex; flex-wrap: wrap; column-gap: 6px; justify-content: center; opacity: .8; }
+  table.map th .sub span { white-space: nowrap; }
+  table.map td.c { white-space: normal; min-width: 7.5em; max-width: 10em; font-size: 13px; line-height: 1.35; }
+  table.map th, table.map td { padding: 4px 5px; }
+  table.map td { vertical-align: middle; position: relative; }
+  table.map th.c, table.map td.c { position: sticky; left: 0; z-index: 1; background: #f3e6c4; }
+  .mapHead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .mapHead h3 { margin: 0; font-weight: normal; flex: 1; min-width: 240px; }
+  .mapMode { display: flex; gap: 6px; }
+  .mapMode button { font-size: 14px; padding: 4px 12px; background: #6b5a45; }
+  .mapMode button[aria-pressed="true"] { background: #306998; outline: 3px solid #ffd43b; }
+  .mapLegend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; margin: 0 0 6px; align-items: center; }
+  .mapLegend .dim, .mnone { color: #b8a77f; }
+  .mb, .mp { display: inline-block; font-size: 11px; color: #fff; padding: 0 4px; margin-right: 3px; border-radius: 3px; font-weight: bold; }
+  .mb { background: #4e8f32; } .mp { background: #306998; }
+  .mrow { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px; margin: 1px 0; }
+  a.mn { display: inline-block; min-width: 18px; padding: 0 4px; margin: 1px !important; border-radius: 4px; color: #fff !important; text-decoration: none; font-size: 13px; }
+  a.mn.nb { background: #4e8f32; } a.mn.np { background: #306998; }
+  /* ● で みる */
+  .mdot { --n: 1; width: calc(16px + var(--n) * 2.5px); height: calc(16px + var(--n) * 2.5px); padding: 0; border-radius: 50%; border: none; outline: none;
+    font-size: 11px; font-weight: bold; text-shadow: none; color: #fff; background: hsl(110, 45%, calc(72% - var(--n) * 5%)); }
+  .mdot[data-n="1"], .mdot[data-n="2"] { color: #234d18; }
+  .mdot:focus-visible { box-shadow: 0 0 0 3px #ffd43b; }
+  .mpop { position: absolute; top: calc(100% - 4px); left: 50%; transform: translateX(-50%); z-index: 5; min-width: 200px; text-align: left;
+    background: #2b2f3a; color: #fff; border: 3px solid #000; padding: 8px 10px; font-size: 13px; line-height: 1.7; white-space: nowrap; }
+  .mpop .mpt { font-weight: bold; margin-bottom: 2px; }
+  #mapBox.mm-num .cellDot, #mapBox.mm-num .lg-dot, #mapBox.mm-dot .cellNum, #mapBox.mm-dot .cellNumNone, #mapBox.mm-dot .lg-num { display: none; }
+  /* 「–」は その みかたで かだいが ない ときだけ */
+  #mapBox.mm-num .cellNumNone.hasB, #mapBox.mm-num .cellNumNone.hasP { display: none; }
+  body.view-blk #mapBox.mm-num .cellNumNone.hasP:not(.hasB) { display: inline; }
+  body.view-py #mapBox.mm-num .cellNumNone.hasB:not(.hasP) { display: inline; }
+  .cellDot .v-blk, .cellDot .v-py { display: none; }
+  body.view-blk .cellDot .v-all, body.view-py .cellDot .v-all { display: none; }
+  body.view-blk .cellDot .v-blk, body.view-py .cellDot .v-py { display: inline-flex; }
+  body.view-blk .cellDot span.v-blk, body.view-py .cellDot span.v-py { display: inline; }
   /* かだいの カード */
   .item { margin: 12px 0; scroll-margin-top: 10px; }
   .item h3 { margin: 0 0 6px; font-size: 21px; font-weight: normal; }
@@ -72,11 +110,12 @@
   .links a.v { background: #8e2f2c; border-color: #d48a87 #4a1311 #4a1311 #d48a87; }
   html.theme-night table.map { background: #22262f; }
   html.theme-night table.map th { background: #2b2f3a; }
+  html.theme-night table.map th.c, html.theme-night table.map td.c { background: #2b2f3a; }
   html.theme-night table.map th, html.theme-night table.map td { border-color: #3a4050; }
   html.theme-night details, html.theme-night .teacher { background: #1b1e26; }
   /* いんさつ：ヘッダーと ボタンを かくし、こたえを ひらいた じょうたいで */
   @media print {
-    header, .bar, .viewBar, #toc, .links, .wsBox, .fnMenu { display: none !important; }
+    header, .bar, .viewBar, details.introVid, #toc, .links, .wsBox, .fnMenu { display: none !important; }
     html, body { background: #fff !important; }
     #wrap { max-width: none; padding: 0; }
     h2.app { color: #000; text-shadow: none; page-break-before: always; }
@@ -114,10 +153,14 @@ const S = {
   teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（おえかき・めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
             'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Drawing, Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
   openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'], book: ['📘 ほん ぜんぶ（PDF）', '📘 All books (PDF)'],
+  introVid: ['🎬 この システムの しょうかい どうが（2ふん）', '🎬 System overview video (2 min)'],
   viewAll: ['📚 すべてを みる', '📚 Show all'], viewBlk: ['🧩 Blockly版を みる', '🧩 Show Blockly'], viewPy: ['🐍 Python版を みる', '🐍 Show Python'],
   viewLabel: ['みる ものを えらぶ：', 'Show:'],
   mapTitle: ['まなびの つながり（どの かだいで なにを まなぶか）', 'What you learn where'],
   concept: ['まなぶ こと', 'Concept'],
+  mapNum: ['🔢 ばんごうで みる', '🔢 Numbers'], mapDot: ['● で みる', '● Dots'],
+  legB: ['ブロック版の かだい', 'Block task'], legP: ['Python版の かだい', 'Python task'], legNone: ['その アプリでは でてこない', 'not in that app'],
+  legDot: ['●の こさ・おおきさ ＝ その かんがえかたが でてくる かだいの かず。●を おすと ばんごうが でるよ', 'Darker / bigger dot = more tasks with that idea. Tap a dot to see the task numbers.'],
   goal: ['🎯 めあて', '🎯 Goal'], q: ['📝 もんだい', '📝 Task'], mistake: ['⚠ つまずきやすい ところ', '⚠ Common mistake'],
   hint: ['💡 ヒントを みる', '💡 Show hint'], answer: ['📖 こたえと ポイントを みる', '📖 Show answer and key point'], point: ['✨ ポイント', '✨ Key point'],
   ws: ['📝 ワークシート（PDF）', '📝 Worksheet (PDF)'], wsGoal: ['🎯 めあて・ふりかえり', '🎯 Goal & reflection'], wsCheck: ['✅ チェックカード', '✅ Check card'], lp: ['📋 学習指導案', '📋 Lesson plan (Japanese)'],
@@ -132,7 +175,8 @@ document.title = s('title'); document.getElementById('title').textContent = s('t
 // はじめに
 document.getElementById('intro').innerHTML =
   `<p>${esc(s('lead1'))}</p><p>${esc(s('lead2'))}</p><div class="teacher">${esc(s('teacher'))}</div>
-   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button><a class="bookBtn" href="${J ? 'book/all-books.pdf' : 'book/en/all-books.pdf'}" target="_blank" rel="noopener">${esc(s('book'))}</a></div>`;
+   <div class="bar"><button id="openAll">${esc(s('openAll'))}</button><button id="closeAll">${esc(s('closeAll'))}</button><button id="printBtn" style="background:var(--run)">${esc(s('print'))}</button><a class="bookBtn" href="${J ? 'book/all-books.pdf' : 'book/en/all-books.pdf'}" target="_blank" rel="noopener">${esc(s('book'))}</a></div>
+   <details class="introVid"><summary>${esc(s('introVid'))}</summary><video src="videos/${J ? 'ja' : 'en'}/intro.mp4" controls preload="none" playsinline></video></details>`;
 
 // もくじ
 // 🧩 Blockly版 ／ 🐍 Python版：キーが py で はじまる アプリ（python も）は Python版
@@ -140,18 +184,58 @@ const kindOf = (k) => (/^py/.test(k) ? 'py' : 'blk');
 document.getElementById('toc').innerHTML = G.apps.map((a) => `<a data-kind="${kindOf(a.key)}" href="#app-${a.key}">${a.icon} ${esc(T(a.name))}</a>`).join('');
 
 // まなびの つながり（ひょう）
-const order = ['seq', 'dir', 'loop', 'nest', 'pattern', 'angle', 'count', 'if', 'until', 'var', 'math', 'decomp', 'algo', 'py'];
-let map = `<div class="panel" style="margin:12px 0"><h3 style="margin:0 0 8px;font-weight:normal">${esc(s('mapTitle'))}</h3><div style="overflow-x:auto"><table class="map"><tr><th>${esc(s('concept'))}</th>`;
-map += G.apps.map((a) => `<th data-kind="${kindOf(a.key)}">${a.icon} ${esc(T(a.name))}</th>`).join('') + '</tr>';
+// ブロック版と Python版を 1つの 列に まとめる。「🔢 ばんごうで みる」⇄「● で みる（ヒートマップ）」を きりかえられる
+const order = ['seq', 'dir', 'loop', 'nest', 'pattern', 'angle', 'count', 'if', 'until', 'state', 'timing', 'var', 'math', 'decomp', 'algo', 'py'];
+const PAIRS = [['draw', 'pydraw'], ['maze', 'python'], ['mazejr', 'pymazejr'], ['mazekey', 'pymazekey'], ['mazeenemy', 'pymazeenemy'], ['space', 'pyspace'], ['craft', 'pycraft']];
+const APPK = Object.fromEntries(G.apps.map((a) => [a.key, a]));
+const SHORT = { draw: ['おえかき', 'Drawing'], maze: ['めいろ', 'Maze'], mazejr: ['やじるし', 'Arrow'], mazekey: ['かぎと とびら', 'Keys & Doors'],
+  mazeenemy: ['てきを よける', 'Slime'], space: ['うちゅう', 'Space'], craft: ['こわす・おく', 'Break & Build'] };
+const hitsOf = (k, c) => APPK[k].items.filter((it) => it.tags.includes(c)).map((it) => it.n);
+const numLinks = (k, ns, cls) => ns.map((n) => `<a class="mn ${cls}" href="#${k}-${n}">${n}</a>`).join('');
+const dotHtml = (n, view, label) => n
+  ? `<button type="button" class="mdot v-${view}" style="--n:${Math.min(n, 8)}" data-n="${n}" aria-label="${esc(label)}：${n}">${n}</button>`
+  : `<span class="mnone v-${view}">·</span>`;
+let map = `<div class="panel" style="margin:12px 0"><div class="mapHead"><h3>${esc(s('mapTitle'))}</h3>
+  <div class="mapMode" role="group"><button type="button" data-mm="num" aria-pressed="true">${esc(s('mapNum'))}</button><button type="button" data-mm="dot" aria-pressed="false">${esc(s('mapDot'))}</button></div></div>
+  <div class="mapLegend lg-num"><span><b class="mb">${J ? 'ブ' : 'B'}</b>${esc(s('legB'))}</span><span data-kind="py"><b class="mp">Py</b>${esc(s('legP'))}</span><span class="dim">– ${esc(s('legNone'))}</span></div>
+  <div class="mapLegend lg-dot"><span>${esc(s('legDot'))}</span></div>
+  <div style="overflow-x:auto"><table class="map"><tr><th class="c">${esc(s('concept'))}</th>`;
+map += PAIRS.map(([b, p]) => `<th>${esc(SHORT[b][J ? 0 : 1])}<div class="sub"><span data-kind="blk">${J ? 'ブロック' : 'Blocks'} ${APPK[b].items.length}</span><span data-kind="py">Python ${APPK[p].items.length}</span></div></th>`).join('') + '</tr>';
 for (const c of order) {
   map += `<tr><td class="c">${esc(T(G.concepts[c]))}</td>`;
-  for (const a of G.apps) {
-    const hits = a.items.filter((it) => it.tags.includes(c)).map((it) => `<a href="#${a.key}-${it.n}">${it.n}</a>`);
-    map += `<td data-kind="${kindOf(a.key)}">${hits.join(' ') || '–'}</td>`;
+  for (const [b, p] of PAIRS) {
+    const hb = hitsOf(b, c), hp = hitsOf(p, c);
+    const num = (hb.length || hp.length)
+      ? `<div class="cellNum">${hb.length ? `<div class="mrow" data-kind="blk"><b class="mb">${J ? 'ブ' : 'B'}</b>${numLinks(b, hb, 'nb')}</div>` : ''}${hp.length ? `<div class="mrow" data-kind="py"><b class="mp">Py</b>${numLinks(p, hp, 'np')}</div>` : ''}</div>`
+      : '';
+    const none = `<span class="mnone cellNumNone${hb.length ? ' hasB' : ''}${hp.length ? ' hasP' : ''}">–</span>`;
+    const label = `${SHORT[b][J ? 0 : 1]} × ${T(G.concepts[c])}`;
+    const pop = `<div class="mpop" hidden><div class="mpt">${esc(label)}</div>${hb.length ? `<div data-kind="blk">${J ? 'ブロック' : 'Blocks'}：${numLinks(b, hb, 'nb')}</div>` : ''}${hp.length ? `<div data-kind="py">Python：${numLinks(p, hp, 'np')}</div>` : ''}</div>`;
+    const dots = `<div class="cellDot">${dotHtml(hb.length + hp.length, 'all', label)}${dotHtml(hb.length, 'blk', label)}${dotHtml(hp.length, 'py', label)}${pop}</div>`;
+    map += `<td>${num}${none}${dots}</td>`;
   }
   map += '</tr>';
 }
 document.getElementById('mapBox').innerHTML = map + '</table></div></div>';
+{
+  const box = document.getElementById('mapBox');
+  const setMM = (m, save) => {
+    if (m !== 'dot') m = 'num';
+    box.classList.toggle('mm-dot', m === 'dot'); box.classList.toggle('mm-num', m === 'num');
+    box.querySelectorAll('[data-mm]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mm === m)));
+    box.querySelectorAll('.mpop').forEach((p) => { p.hidden = true; });
+    if (save) { try { localStorage.setItem('guide-map', m); } catch (e) {} }
+  };
+  let m0 = null; try { m0 = localStorage.getItem('guide-map'); } catch (e) {}
+  setMM(m0 || (window.innerWidth <= 600 ? 'dot' : 'num'), false);   // スマホでは はじめは ● で みる
+  box.addEventListener('click', (e) => {
+    const mm = e.target.closest('[data-mm]'); if (mm) { setMM(mm.dataset.mm, true); return; }
+    const d = e.target.closest('.mdot');
+    box.querySelectorAll('.mpop').forEach((p) => { if (!d || p.parentNode !== d.parentNode) p.hidden = true; });
+    if (d) { const p = d.parentNode.querySelector('.mpop'); p.hidden = !p.hidden; }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') box.querySelectorAll('.mpop').forEach((p) => { p.hidden = true; }); });
+}
 
 // ワークシート（PDF）：アプリ → シート
 const WS = { draw: 'ws2-draw', maze: 'ws3-maze', mazejr: 'ws4-arrow', mazekey: 'ws6-key-enemy', mazeenemy: 'ws6-key-enemy',
