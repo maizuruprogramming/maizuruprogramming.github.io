@@ -211,8 +211,10 @@ html[data-theme=night] .kdie i{border-color:rgba(255,255,255,.35)} html[data-the
 .kdir{display:grid;grid-template-columns:repeat(3,1fr);grid-template-areas:". u ." "l . r" ". d .";gap:6px;max-width:300px;margin:0 auto}
 .kdir .btn{padding:10px 6px;font-size:16px}
 .kdir [data-s="0"]{grid-area:u}.kdir [data-s="1"]{grid-area:d}.kdir [data-s="2"]{grid-area:l}.kdir [data-s="3"]{grid-area:r}
-.kgame{grid-template-columns:1fr 360px}
-@media (max-width:900px){.kgame{grid-template-columns:1fr}.kctl{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.kc2 h4:first-child{margin-top:0}}
+.kgame{grid-template-columns:1fr 560px}
+.kctl{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.kc2 h4:first-child{margin-top:0}
+.kctl .stat b{font-size:22px}
+@media (max-width:900px){.kgame{grid-template-columns:1fr}}
 .kgoalrow{display:flex;gap:10px;align-items:flex-start}
 .kgoalrow small,.kpair small,.kgoalmini small{display:block;font-size:12px;color:var(--sub);font-weight:700;margin-bottom:4px}
 .kpair{flex-direction:row!important;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}

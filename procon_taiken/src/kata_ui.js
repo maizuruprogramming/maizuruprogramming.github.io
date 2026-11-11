@@ -133,7 +133,7 @@ ${t('json_a')}
 
 /* ============ 第35回：ゲーム ============ */
 let KG=null;
-function kMaxPx(){ return window.innerWidth>900? Math.min(window.innerWidth-420, window.innerHeight-150, 640) : Math.min(window.innerWidth-48, window.innerHeight*0.44, 560); }
+function kMaxPx(){ return window.innerWidth>900? Math.min(Math.min(window.innerWidth,1400)-40-560-20-12, window.innerHeight-130, 640) : Math.min(window.innerWidth-48, window.innerHeight*0.44, 560); }
 function startKata(){
   stopPlayers();
   const S=+segVal('segSize'), limit=+segVal('segTime'), lv=segVal('segProb');

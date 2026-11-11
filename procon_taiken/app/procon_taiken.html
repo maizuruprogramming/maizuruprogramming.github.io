@@ -220,8 +220,10 @@ html[data-theme=night] .kdie i{border-color:rgba(255,255,255,.35)} html[data-the
 .kdir{display:grid;grid-template-columns:repeat(3,1fr);grid-template-areas:". u ." "l . r" ". d .";gap:6px;max-width:300px;margin:0 auto}
 .kdir .btn{padding:10px 6px;font-size:16px}
 .kdir [data-s="0"]{grid-area:u}.kdir [data-s="1"]{grid-area:d}.kdir [data-s="2"]{grid-area:l}.kdir [data-s="3"]{grid-area:r}
-.kgame{grid-template-columns:1fr 360px}
-@media (max-width:900px){.kgame{grid-template-columns:1fr}.kctl{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.kc2 h4:first-child{margin-top:0}}
+.kgame{grid-template-columns:1fr 560px}
+.kctl{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.kc2 h4:first-child{margin-top:0}
+.kctl .stat b{font-size:22px}
+@media (max-width:900px){.kgame{grid-template-columns:1fr}}
 .kgoalrow{display:flex;gap:10px;align-items:flex-start}
 .kgoalrow small,.kpair small,.kgoalmini small{display:block;font-size:12px;color:var(--sub);font-weight:700;margin-bottom:4px}
 .kpair{flex-direction:row!important;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
@@ -510,7 +512,7 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 </section>
 
 <!-- ================= 第35回 GAME ================= -->
-<section class="screen" id="s-kgame">
+<section class="screen wide" id="s-kgame">
   <div class="bar"><button class="back" id="kQuit" data-i18n="quit"></button><h2 id="kgameTitle"></h2><div class="spacer"></div></div>
   <div class="game kgame">
     <div><div id="kBoard" style="padding-top:26px;display:flex;justify-content:center"></div></div>
@@ -2003,8 +2005,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.3', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.4', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
+    th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
     en:['The 35th contest is now on the left of the switch on the home screen','Both contest titles now use the same font size','Buttons and cards stay in place when switching contests'],
     vi:['Phần thi lần 35 nay nằm bên trái nút chuyển ở trang chủ','Tiêu đề hai phần thi có cùng cỡ chữ','Nút và thẻ không bị dịch chuyển khi chuyển phần thi'],
@@ -2528,7 +2532,7 @@ ${t('json_a')}
 
 /* ============ 第35回：ゲーム ============ */
 let KG=null;
-function kMaxPx(){ return window.innerWidth>900? Math.min(window.innerWidth-420, window.innerHeight-150, 640) : Math.min(window.innerWidth-48, window.innerHeight*0.44, 560); }
+function kMaxPx(){ return window.innerWidth>900? Math.min(Math.min(window.innerWidth,1400)-40-560-20-12, window.innerHeight-130, 640) : Math.min(window.innerWidth-48, window.innerHeight*0.44, 560); }
 function startKata(){
   stopPlayers();
   const S=+segVal('segSize'), limit=+segVal('segTime'), lv=segVal('segProb');

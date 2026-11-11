@@ -95,8 +95,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.3', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.4', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
+    th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
     en:['The 35th contest is now on the left of the switch on the home screen','Both contest titles now use the same font size','Buttons and cards stay in place when switching contests'],
     vi:['Phần thi lần 35 nay nằm bên trái nút chuyển ở trang chủ','Tiêu đề hai phần thi có cùng cỡ chữ','Nút và thẻ không bị dịch chuyển khi chuyển phần thi'],
