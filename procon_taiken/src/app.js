@@ -18,9 +18,11 @@ const GAMEPAL=()=>[0,1,2,3,1,2,3,0,2,3,0,1,3,0,1,2].map(v=>kColor(v,SETTINGS.the
 function renderHome(){
   const k=SETTINGS.game==='kata';
   document.querySelectorAll('#gameSw button').forEach(b=>b.classList.toggle('on',b.dataset.g===SETTINGS.game));
-  $('hBadge').innerHTML=t(k?'k_badge':'badge'); $('hLogo').innerHTML=t(k?'k_logo':'logo'); $('hLogo').classList.toggle('kata',k);
-  $('hTag').innerHTML=t(k?'k_tag':'tag'); $('hFoot').innerHTML=t(k?'k_foot':'foot'); $('hSoloS').innerHTML=t(k?'k_m_solo_s':'m_solo_s');
-  $('logoEn').style.display=k?'none':''; $('logoKata').style.display=k?'':'none';
+  $('hBadge').innerHTML=t(k?'k_badge':'badge');
+  $('hLogoEn').innerHTML=t('logo'); $('hTagEn').innerHTML=t('tag'); $('hFootEn').innerHTML=t('foot');
+  $('hLogoK').innerHTML=t('k_logo'); $('hTagK').innerHTML=t('k_tag'); $('hFootK').innerHTML=t('k_foot');
+  $('hSoloS').innerHTML=t(k?'k_m_solo_s':'m_solo_s');
+  document.querySelectorAll('#s-home .head').forEach(el=>{ const on=el.dataset.g===SETTINGS.game; el.classList.toggle('on',on); el.setAttribute('aria-hidden',on?'false':'true'); });
   $('logoKata').innerHTML=GAMEPAL().map(c=>`<i style="background:${c}"></i>`).join('');
 }
 document.querySelectorAll('#gameSw button').forEach(b=>b.onclick=()=>{ SETTINGS.game=b.dataset.g; saveSettings(); renderHome(); renderSetup(); });
@@ -93,8 +95,15 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.1', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.3', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
+    en:['The 35th contest is now on the left of the switch on the home screen','Both contest titles now use the same font size','Buttons and cards stay in place when switching contests'],
+    vi:['Phần thi lần 35 nay nằm bên trái nút chuyển ở trang chủ','Tiêu đề hai phần thi có cùng cỡ chữ','Nút và thẻ không bị dịch chuyển khi chuyển phần thi'],
+    th:['ย้ายการแข่งขันครั้งที่ 35 ไปไว้ด้านซ้ายของปุ่มสลับในหน้าแรก','ชื่อการแข่งขันทั้งสองใช้ขนาดตัวอักษรเท่ากัน','ปุ่มและการ์ดไม่เลื่อนตำแหน่งเมื่อสลับการแข่งขัน'],
+    mn:['Нүүр хуудасны сонголтод 35 дахь тэмцээнийг зүүн талд байрлуулсан','Хоёр тэмцээний гарчиг ижил хэмжээтэй үсэгтэй болсон','Тэмцээн солиход товч, картын байрлал хөдлөхгүй болсон']}},
+  {v:'0.9.2',items:{ja:['タイトル上のメッセージを、第36回・第35回とも「高専プロコン 競技部門を たいけんしよう」にそろえた'],en:['The message above the title is now the same for both contests: “Try the KOSEN PROCON Competition Section”'],vi:['Dòng chữ phía trên tiêu đề nay giống nhau cho cả hai phần thi'],
+    th:['ข้อความเหนือชื่อเรื่องเหมือนกันทั้งสองการแข่งขันแล้ว'],mn:['Гарчгийн дээрх бичвэр хоёр тэмцээнд адилхан болсон']}},
   {v:'0.9.1',items:{ja:['第36回のタイトルを大会テーマ「エ。ー縁結びの誘導についてー」に変更'],en:['Renamed the 36th contest to its official theme “エ。ー縁結びの誘導についてー”'],vi:['Đổi tên phần thi lần 36 theo chủ đề chính thức “エ。ー縁結びの誘導についてー”'],
     th:['เปลี่ยนชื่อการแข่งขันครั้งที่ 36 เป็นธีมทางการ “エ。ー縁結びの誘導についてー”'],mn:['36 дахь тэмцээний нэрийг албан ёсны сэдэв “エ。ー縁結びの誘導についてー” болгон өөрчилсөн']}},
   {v:'0.9',items:{ja:['タイ語・モンゴル語に対応（5言語に）','タイ語用のフォント（Noto Sans Thai）を追加'],en:['Added Thai and Mongolian (now 5 languages)','Added a Thai font (Noto Sans Thai)'],vi:['Hỗ trợ tiếng Thái và tiếng Mông Cổ (nay có 5 ngôn ngữ)','Thêm phông chữ tiếng Thái (Noto Sans Thai)'],

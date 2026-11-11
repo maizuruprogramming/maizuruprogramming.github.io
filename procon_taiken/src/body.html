@@ -4,23 +4,32 @@
 <!-- ================= HOME ================= -->
 <section class="screen on" id="s-home">
   <div class="home">
-    <div class="gsw" id="gameSw"><button data-g="en" data-i18n="game_en"></button><button data-g="kata" data-i18n="game_kata"></button></div>
+    <div class="gsw" id="gameSw"><button data-g="kata" data-i18n="game_kata"></button><button data-g="en" data-i18n="game_en"></button></div>
     <div class="badge" id="hBadge"></div>
-    <svg class="knot" id="logoEn" viewBox="0 0 120 72" aria-hidden="true">
-      <rect x="6" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="26" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
-      <rect x="74" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="94" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
-      <path d="M46 34 C 58 10, 62 58, 74 34" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/>
-    </svg>
-    <div class="klogo" id="logoKata" aria-hidden="true"></div>
-    <h1 class="logo" id="hLogo"></h1>
-    <p class="tag" id="hTag"></p>
+    <!-- 2つの競技の見出しを同じ場所に重ね、高いほうに合わせる（切り替えてもボタンの位置が動かない） -->
+    <div class="heads">
+      <div class="head" data-g="en">
+        <div class="hicon"><svg class="knot" viewBox="0 0 120 72" aria-hidden="true">
+          <rect x="6" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="26" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
+          <rect x="74" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="94" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
+          <path d="M46 34 C 58 10, 62 58, 74 34" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        </svg></div>
+        <h1 class="logo" id="hLogoEn"></h1>
+        <p class="tag" id="hTagEn"></p>
+      </div>
+      <div class="head" data-g="kata">
+        <div class="hicon"><div class="klogo" id="logoKata" aria-hidden="true"></div></div>
+        <h1 class="logo" id="hLogoK"></h1>
+        <p class="tag" id="hTagK"></p>
+      </div>
+    </div>
     <div class="menu">
       <button class="card" data-go="rules"><div class="ic">📜</div><b data-i18n="m_rules_b"></b><span data-i18n="m_rules_s"></span></button>
       <button class="card" data-go="setup-solo"><div class="ic">🧩</div><b data-i18n="m_solo_b"></b><span id="hSoloS"></span></button>
       <button class="card" data-go="setup-robot"><div class="ic">🤖</div><b data-i18n="m_robot_b"></b><span data-i18n="m_robot_s"></span></button>
       <button class="card" data-go="code"><div class="ic">🧱</div><b data-i18n="m_code_b"></b><span data-i18n="m_code_s"></span></button>
     </div>
-    <div class="foot" id="hFoot"></div>
+    <div class="heads feet"><div class="foot head" data-g="en" id="hFootEn"></div><div class="foot head" data-g="kata" id="hFootK"></div></div>
   </div>
 </section>
 

@@ -181,7 +181,7 @@ en:{
 vi:{
   doc_title:'Trải nghiệm phần thi PROCON KOSEN — Lần 36 “エ。ー縁結びの誘導についてー” và Lần 35 “Hồi sinh Di sản Thế giới”',
   gear:'⚙ Cài đặt',
-  badge:'Trải nghiệm phần thi Thi đấu của PROCON KOSEN',
+  badge:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   logo:'<span class="e">エ</span>。<span class="sub">— Dẫn dắt mối duyên —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Đưa các số giống nhau lại cạnh nhau.<br>Xoay <b>En</b> (khu vườn) để se duyên cho chúng!',
   m_rules_b:'Tìm hiểu luật chơi', m_rules_s:'Học cách chơi<br>qua 5 trang',
@@ -361,7 +361,7 @@ Object.assign(I18N.vi,{
 // ---- 第35回「シン・よみがえれ世界遺産」
 Object.assign(I18N.ja,{
   game_en:'第36回 エ。ー縁結びの誘導についてー', game_kata:'第35回 シン・よみがえれ世界遺産',
-  k_badge:'高専プロコン 第35回 競技部門を たいけんしよう',
+  k_badge:'高専プロコン 競技部門を たいけんしよう',
   k_logo:'シン・よみがえれ<br><span class="e">世界遺産</span>',
   k_tag:'<ruby>抜き型<rt>ぬきがた</rt></ruby>で ピースを ぬいて よせて、<br>こわれた 文化財を もとの すがたに 修復しよう！',
   k_m_solo_s:'じぶんの ペースで<br>修復しよう',
@@ -425,7 +425,7 @@ Object.assign(I18N.ja,{
 });
 Object.assign(I18N.en,{
   game_en:'36th: エ。ー縁結びの誘導についてー', game_kata:'35th: Revive the World Heritage',
-  k_badge:'Try the 35th KOSEN PROCON Competition Section',
+  k_badge:'Try the KOSEN PROCON Competition Section',
   k_logo:'Revive the<br><span class="e">World Heritage</span>',
   k_tag:'Cut out pieces with dies, slide them,<br>and restore the damaged treasure!',
   k_m_solo_s:'Restore at<br>your own pace',
@@ -489,7 +489,7 @@ Object.assign(I18N.en,{
 });
 Object.assign(I18N.vi,{
   game_en:'Lần 36: エ。ー縁結びの誘導についてー', game_kata:'Lần 35: Hồi sinh Di sản Thế giới',
-  k_badge:'Trải nghiệm phần thi Thi đấu PROCON KOSEN lần 35',
+  k_badge:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   k_logo:'Hồi sinh<br><span class="e">Di sản Thế giới</span>',
   k_tag:'Dùng khuôn cắt để lấy các mảnh ra, dồn chúng lại<br>và phục hồi di sản bị hư hại!',
   k_m_solo_s:'Phục hồi<br>theo tốc độ của bạn',
