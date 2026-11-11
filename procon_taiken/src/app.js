@@ -89,6 +89,7 @@ ${t('json_a')}
   setupTitles();
   BOARDS.forEach(b=>{ if(b.host.isConnected){ if(b.drawSel) b.drawSel(); else b.drawDie(); } });
   renderHome(); renderSetup(); kRulesJson();
+  if($('s-learn').classList.contains('on')) renderLearn();
   if(typeof INFO!=='undefined'){ if(INFO==='rel') showRelease(); else if(INFO==='about') showAbout(); }
   if(typeof KG!=='undefined' && KG && !KG.ended){ kUpd(KG.board); kUpdSubs(); kTick(); kUpdPos(); $('kDieName').textContent=dieName(KG.die); if(KG.hintKey) $('kHint').innerHTML=t(KG.hintKey); }
   if(G && !G.ended){ updStats(G.board); updSubs(); tick(); if(G.hintKey) $('hint').innerHTML=t(G.hintKey); }
@@ -96,9 +97,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.5', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.6', APP_DATE='2026-11-11';
 const RELEASES=[
-  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with a program”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng chương trình»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้ด้วยโปรแกรม»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Программаар бодох»: хэвийг дүрсээр нь харж сонгох']}},
+  {v:'0.9.6',items:{ja:['設定に「勉強の仕方・遊び方」ページを追加（遊び方の動画・おすすめの進め方・ヒント・授業での使い方の例）','「このアプリについて」に 高専プロコン公式サイトへの リンクを追加'],en:['Added a “How to learn & play” page in Settings (how-to video, suggested path, tips, lesson plan example)','Added a link to the official KOSEN PROCON site in “About this app”'],vi:['Thêm trang «Cách học & cách chơi» trong Cài đặt (video hướng dẫn, lộ trình gợi ý, mẹo, ví dụ tiết học)','Thêm liên kết đến trang chính thức của PROCON KOSEN trong «Giới thiệu ứng dụng»'],th:['เพิ่มหน้า «วิธีเรียนและวิธีเล่น» ในการตั้งค่า (วิดีโอสอนเล่น ลำดับที่แนะนำ คำแนะนำ ตัวอย่างแผนการสอน)','เพิ่มลิงก์ไปยังเว็บไซต์ทางการของโปรคอนโคเซ็นใน «เกี่ยวกับแอปนี้»'],mn:['Тохиргоонд «Суралцах ба тоглох арга» хуудас нэмэв (заавар видео, санал болгох дараалал, зөвлөгөө, хичээлийн жишээ)','«Энэ апп-ын тухай» хэсэгт Косэн Проконы албан ёсны сайтын холбоос нэмэв']}},
+  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with Blocks”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng khối lệnh»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้โจทย์ด้วยบล็อก»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Блокоор бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
     th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
@@ -140,6 +142,7 @@ function showAbout(){
       <dt>${t('ab_for_h')}</dt><dd>${t('ab_for')}</dd>
       <dt>${t('ab_env_h')}</dt><dd>${t('ab_env')}</dd>
       <dt>${t('ab_lang_h')}</dt><dd>日本語 / English / Tiếng Việt / ไทย / Монгол</dd>
+      <dt>${t('ab_site_h')}</dt><dd><a href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')}</a><br><span class="url">${PROCON_URL}</span></dd>
       <dt>${t('ab_src_h')}</dt><dd>${t('ab_src')}</dd>
       <dt>${t('ab_data_h')}</dt><dd>${t('ab_data')}</dd>
       <dt>${t('ab_credit_h')}</dt><dd>${t('ab_credit')}</dd>
@@ -148,6 +151,49 @@ function showAbout(){
   $('infoModal').classList.add('on'); $('infoModal').querySelector('.box').scrollTop=0; INFO='about';
 }
 let INFO=null;
+/* ---- 勉強の仕方・遊び方 ---- */
+const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4';
+let LEARN_FROM='home';
+function renderLearn(){
+  const box=$('learnBody'); if(!box) return;
+  const v=box.querySelector('video'); const tm=v? v.currentTime:0;
+  const steps=[1,2,3,4,5,6].map(i=>`<li><b>${t('lr_s'+i+'_h')}</b><span>${t('lr_s'+i)}</span></li>`).join('');
+  box.innerHTML=`
+  <div class="panel lrn">
+    <h3>🎬 ${t('lr_video_h')}</h3>
+    <p class="lrlead">${t('lr_video_p')}</p>
+    <div class="lrvid"><video controls playsinline preload="metadata" src="${HOWTO_VIDEO}"></video><div class="lrerr" hidden>${t('lr_video_err')}</div></div>
+  </div>
+  <div class="panel lrn">
+    <h3>🪜 ${t('lr_steps_h')}</h3>
+    <ol class="lrsteps">${steps}</ol>
+  </div>
+  <div class="lrtips">
+    <div class="panel lrn"><h3>🏯 ${t('lr_k_h')}</h3><ul>${t('lr_k_tips')}</ul></div>
+    <div class="panel lrn"><h3>🔁 ${t('lr_e_h')}</h3><ul>${t('lr_e_tips')}</ul></div>
+  </div>
+  <div class="panel lrn">
+    <h3>🧑‍🏫 ${t('lr_t_h')}</h3>
+    <p>${t('lr_t_p')}</p>
+    <ol class="lrplan">${t('lr_t_plan')}</ol>
+    <p class="lrsmall">${t('lr_t_note')}</p>
+  </div>
+  <div class="panel lrn lrlink">
+    <h3>🔗 ${t('lr_link_h')}</h3>
+    <p>${t('lr_link_p')}</p>
+    <a class="btn sub" href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')} ↗</a>
+  </div>`;
+  const nv=box.querySelector('video');
+  nv.addEventListener('error',()=>{ nv.hidden=true; box.querySelector('.lrerr').hidden=false; });
+  if(tm) nv.addEventListener('loadedmetadata',()=>{ nv.currentTime=tm; },{once:true});
+}
+function openLearn(){
+  const cur=document.querySelector('.screen.on'); LEARN_FROM=cur&&cur.id!=='s-learn'? cur.id.slice(2) : 'home';
+  $('settings').classList.remove('on');
+  renderLearn(); show('learn');
+}
+$('learnBtn').onclick=openLearn;
+$('learnBack').onclick=()=>{ const v=document.querySelector('#learnBody video'); if(v) v.pause(); show(LEARN_FROM); };
 $('relBtn').onclick=showRelease; $('aboutBtn').onclick=showAbout;
 $('infoClose').onclick=()=>{ $('infoModal').classList.remove('on'); INFO=null; };
 $('infoModal').addEventListener('click',e=>{ if(e.target.id==='infoModal'){ $('infoModal').classList.remove('on'); INFO=null; } });

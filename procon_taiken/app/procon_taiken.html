@@ -327,6 +327,28 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 .diepop .kdb span{font-size:13px}
 .diepop .dpname{margin-top:8px;font-size:13px;font-weight:700;min-height:1.3em;text-align:center}
 .diepick .dthumb i,.chipdie .dthumb i{background:#e3dccf}.diepick .dthumb i.on,.chipdie .dthumb i.on{background:#2b2420}
+/* 勉強の仕方・遊び方 */
+#s-learn .lrn{margin-bottom:16px;text-align:left}
+#s-learn .lrn h3{margin:0 0 10px;font-size:20px}
+#s-learn .lrn p{font-size:15px;line-height:1.8;margin:6px 0}
+.lrvid{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:16/9}
+.lrvid video{display:block;width:100%;height:100%}
+.lrerr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;color:#fff;font-size:15px;line-height:1.7;background:#2b2420}
+.lrerr[hidden]{display:none}
+.lrsteps{list-style:none;counter-reset:st;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.lrsteps li{counter-increment:st;background:var(--bg);border-radius:14px;padding:12px 14px 12px 54px;position:relative;line-height:1.7;font-size:14px}
+.lrsteps li::before{content:counter(st);position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--shu);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.lrsteps b{display:block;font-size:16px}
+.lrtips{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lrtips ul{margin:0;padding-left:1.2em;font-size:15px;line-height:1.8}
+.lrtips li{margin:4px 0}
+.lrplan{margin:6px 0;padding-left:1.4em;font-size:15px;line-height:1.9}
+.lrsmall{font-size:13px!important;color:var(--sub)}
+.lrlink .btn{display:inline-block;text-decoration:none;margin-top:6px;padding:12px 20px;font-size:16px}
+.about dd a{color:var(--shu);font-weight:800}
+.about dd .url{font-size:12px;color:var(--sub)}
+@media (max-width:760px){.lrtips{grid-template-columns:1fr}}
+.infobtns #learnBtn{flex-basis:100%}
 </style>
 </head>
 <body>
@@ -590,6 +612,11 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 </section>
 
 <!-- ================= SETTINGS ================= -->
+<section class="screen" id="s-learn">
+  <div class="bar"><button class="back" id="learnBack" data-i18n="back"></button><h2 data-i18n="lr_title"></h2></div>
+  <div id="learnBody"></div>
+</section>
+
 <div class="modal" id="settings"><div class="box set">
   <h3 data-i18n="set_title"></h3>
   <h4 data-i18n="set_theme"></h4>
@@ -609,7 +636,7 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
   </div>
   <p class="why" style="margin-top:16px" data-i18n="set_note"></p>
   <h4 data-i18n="info_h"></h4>
-  <div class="infobtns"><button class="btn sub" id="relBtn" data-i18n="rel_btn"></button><button class="btn sub" id="aboutBtn" data-i18n="about_btn"></button></div>
+  <div class="infobtns"><button class="btn sub" id="learnBtn" data-i18n="lr_btn"></button><button class="btn sub" id="relBtn" data-i18n="rel_btn"></button><button class="btn sub" id="aboutBtn" data-i18n="about_btn"></button></div>
   <div class="mbtns"><button class="btn main" id="setClose" data-i18n="close"></button></div>
 </div></div>
 
@@ -1179,6 +1206,36 @@ Object.assign(I18N.vi,{
 });
 // ---- リリースノート／このアプリについて
 Object.assign(I18N.ja,{
+  lr_btn:"📚 勉強の仕方・遊び方",
+  lr_title:"勉強の仕方・遊び方",
+  lr_video_h:"動画で 見てみよう",
+  lr_video_p:"2分ほどの 動画で、アプリの 使い方を ひととおり 見られます（音は ありません）。",
+  lr_video_err:"動画ファイル（howto.mp4）が 見つかりません。<br>アプリと 同じ フォルダに howto.mp4 を 置いてください。",
+  lr_steps_h:"おすすめの 進め方",
+  lr_s1_h:"ルールを知る",
+  lr_s1:"スライドで、何を すれば いいかを つかもう。わからなく なったら いつでも もどってきてね。",
+  lr_s2_h:"ひとりであそぶ",
+  lr_s2:"まずは いちばん 小さい 盤から。時間を 気にせず、さわって 動きを たしかめよう。",
+  lr_s3_h:"模範回答を見る",
+  lr_s3:"時間が 来ると 模範回答が 流れるよ。自分の やり方と どこが ちがうか くらべてみよう。",
+  lr_s4_h:"ロボットとしょうぶ",
+  lr_s4:"同じ 問題で コンピュータと くらべよう。どうすれば 手数を へらせるか 考えよう。",
+  lr_s5_h:"プログラムでとく",
+  lr_s5:"自分の「解き方」を ブロックで 組み立てよう。ちがう 問題でも うまく いくか ためしてみよう。",
+  lr_s6_h:"本物の 大会へ",
+  lr_s6:"高専プロコンでは、この 解き方を 本当の プログラムで 書いて、サーバーから 問題を 受け取って 競うよ。",
+  lr_k_h:"第35回の ヒント",
+  lr_k_tips:"<li>抜いた ピースは 指定した 方向の はしに よせられ、すき間は ほかの ピースが うめるよ。</li><li>「左上から 1ますずつ ゴールに そろえる」のが 基本の 作戦。</li><li>大きな 抜き型を 使うと、一度に たくさんの ピースを 動かせるよ。</li><li>そろえた ところを くずさない 順番を 考えよう。</li>",
+  lr_e_h:"第36回の ヒント",
+  lr_e_tips:"<li>エンを 回すと、中の 数字が いっしょに 90度 回るよ。</li><li>同じ 数字を となりどうしに 並べると ペアに なるよ。</li><li>小さな エン（2×2）は、近くの 数字だけを 動かしたい ときに 便利。</li><li>上の 行から 1組ずつ 作っていくと、作った ペアを こわしにくいよ。</li>",
+  lr_t_h:"先生・保護者の方へ",
+  lr_t_p:"45分の 授業で 使う ときの 進め方の 例です。",
+  lr_t_plan:"<li>動画を 見る（5分）</li><li>「ルールを知る」で ルールを 確認（10分）</li><li>「ひとりであそぶ」「ロボットとしょうぶ」で 体験（15分）</li><li>「プログラムでとく」で 解き方を ブロックに する（10分）</li><li>ふりかえり：どんな 工夫を したか 発表（5分）</li>",
+  lr_t_note:"時間配分は 一例です。児童・生徒の ようすに 合わせて 調整してください。記録や 設定は、この 端末の ブラウザの 中だけに 保存されます。",
+  lr_link_h:"もっと 知りたい ときは",
+  lr_link_p:"全国高等専門学校プログラミングコンテスト（高専プロコン）の 公式サイトで、大会の 最新情報を 見られます。",
+  ab_site_h:"公式サイト",
+  ab_site:"全国高等専門学校プログラミングコンテスト",
   info_h:'このアプリ', rel_btn:'📝 リリースノート', about_btn:'ℹ️ このアプリについて',
   rel_title:'📝 リリースノート', rel_ver:'バージョン {v}', about_title:'ℹ️ このアプリについて',
   ab_lead:'小学生・中学生が、全国高等専門学校プログラミングコンテスト（高専プロコン）競技部門の ルールを、iPad などの Web ブラウザだけで 体験できる 教材の 試作版です。',
@@ -1194,6 +1251,36 @@ Object.assign(I18N.ja,{
   ab_note:'※ これは 体験用の 試作版（モック）です。公式の 競技システムでは ありません。小中学生が 遊びやすいように、盤面の 大きさや 抜き型の 種類などを 本番より 小さく しています。正式な ルールは 各大会の 募集要項を ご覧ください。'
 });
 Object.assign(I18N.en,{
+  lr_btn:"📚 How to learn & play",
+  lr_title:"How to Learn & Play",
+  lr_video_h:"Watch the video",
+  lr_video_p:"A 2-minute video walks through the whole app (no sound; captions are in Japanese).",
+  lr_video_err:"The video file (howto.mp4) was not found.<br>Put howto.mp4 in the same folder as the app.",
+  lr_steps_h:"Suggested path",
+  lr_s1_h:"Learn the Rules",
+  lr_s1:"Use the slides to see what you need to do. Come back any time you get stuck.",
+  lr_s2_h:"Play Solo",
+  lr_s2:"Start with the smallest board. Don’t worry about time — touch the pieces and see how they move.",
+  lr_s3_h:"Watch the model answer",
+  lr_s3:"When time is up, the model answer plays. Compare it with your own way of solving.",
+  lr_s4_h:"Battle the Robot",
+  lr_s4:"Compare with the computer on the same puzzle. Think about how to use fewer moves.",
+  lr_s5_h:"Solve with Blocks",
+  lr_s5:"Build your own strategy with blocks, then check whether it works on other puzzles too.",
+  lr_s6_h:"On to the real contest",
+  lr_s6:"At KOSEN PROCON, students write their strategy as a real program that gets puzzles from a server and competes.",
+  lr_k_h:"Tips for the 35th contest",
+  lr_k_tips:"<li>Cut-out pieces slide to the edge in the direction you choose, and other pieces fill the gap.</li><li>The basic strategy: match the goal one cell at a time, starting from the top left.</li><li>Big dies move many pieces at once.</li><li>Choose an order that doesn’t break the cells you already matched.</li>",
+  lr_e_h:"Tips for the 36th contest",
+  lr_e_tips:"<li>When you turn an En, the numbers inside turn 90 degrees with it.</li><li>Two equal numbers side by side make a pair.</li><li>A small En (2×2) is handy when you only want to move nearby numbers.</li><li>Making pairs one at a time from the top row keeps finished pairs safe.</li>",
+  lr_t_h:"For teachers and parents",
+  lr_t_p:"An example plan for a 45-minute lesson:",
+  lr_t_plan:"<li>Watch the video (5 min)</li><li>Check the rules with “Learn the Rules” (10 min)</li><li>Try “Play Solo” and “Battle the Robot” (15 min)</li><li>Turn a strategy into blocks with “Solve with Blocks” (10 min)</li><li>Wrap-up: share the ideas you tried (5 min)</li>",
+  lr_t_note:"The timing is only an example — adjust it to your students. Records and settings are saved only in this device’s browser.",
+  lr_link_h:"Want to know more?",
+  lr_link_p:"The official site of the National KOSEN Programming Contest (KOSEN PROCON) has the latest contest news (in Japanese).",
+  ab_site_h:"Official site",
+  ab_site:"National KOSEN Programming Contest",
   info_h:'About', rel_btn:'📝 Release notes', about_btn:'ℹ️ About this app',
   rel_title:'📝 Release notes', rel_ver:'Version {v}', about_title:'ℹ️ About this app',
   ab_lead:'A prototype learning tool that lets elementary and junior high school students try the rules of the Competition Section of the National KOSEN Programming Contest (PROCON) using only a web browser on an iPad or similar device.',
@@ -1209,6 +1296,36 @@ Object.assign(I18N.en,{
   ab_note:'※ This is a hands-on prototype (mock), not the official contest system. Board sizes and the set of dies are smaller than in the real contest so children can play easily. See each contest’s official guidelines for the full rules.'
 });
 Object.assign(I18N.vi,{
+  lr_btn:"📚 Cách học & cách chơi",
+  lr_title:"Cách học & cách chơi",
+  lr_video_h:"Xem video",
+  lr_video_p:"Video khoảng 2 phút giới thiệu toàn bộ cách dùng ứng dụng (không có tiếng; phụ đề tiếng Nhật).",
+  lr_video_err:"Không tìm thấy tệp video (howto.mp4).<br>Hãy đặt howto.mp4 cùng thư mục với ứng dụng.",
+  lr_steps_h:"Lộ trình gợi ý",
+  lr_s1_h:"Tìm hiểu luật chơi",
+  lr_s1:"Xem các trang trình bày để biết cần làm gì. Khi chưa hiểu, hãy quay lại bất cứ lúc nào.",
+  lr_s2_h:"Chơi một mình",
+  lr_s2:"Bắt đầu với bảng nhỏ nhất. Đừng lo về thời gian — hãy chạm và xem các mảnh di chuyển ra sao.",
+  lr_s3_h:"Xem đáp án mẫu",
+  lr_s3:"Khi hết giờ, đáp án mẫu sẽ chạy. Hãy so sánh với cách giải của bạn.",
+  lr_s4_h:"Đấu với rô-bốt",
+  lr_s4:"So sánh với máy tính trên cùng một đề. Hãy nghĩ cách dùng ít lượt hơn.",
+  lr_s5_h:"Giải bằng khối lệnh",
+  lr_s5:"Ghép cách giải của riêng bạn bằng khối lệnh, rồi thử xem nó có dùng được cho đề khác không.",
+  lr_s6_h:"Đến cuộc thi thật",
+  lr_s6:"Ở PROCON KOSEN, các bạn viết cách giải thành chương trình thật, nhận đề từ máy chủ và thi đấu.",
+  lr_k_h:"Gợi ý cho lần thứ 35",
+  lr_k_tips:"<li>Các mảnh bị cắt ra sẽ dồn về mép theo hướng bạn chọn, và các mảnh khác lấp vào chỗ trống.</li><li>Chiến thuật cơ bản: khớp với mục tiêu từng ô một, bắt đầu từ góc trên bên trái.</li><li>Khuôn lớn giúp di chuyển nhiều mảnh cùng lúc.</li><li>Hãy chọn thứ tự không làm hỏng những ô đã khớp.</li>",
+  lr_e_h:"Gợi ý cho lần thứ 36",
+  lr_e_tips:"<li>Khi xoay một En, các số bên trong cũng xoay 90 độ theo.</li><li>Hai số giống nhau nằm cạnh nhau tạo thành một cặp.</li><li>En nhỏ (2×2) tiện khi chỉ muốn di chuyển các số ở gần.</li><li>Tạo từng cặp một từ hàng trên cùng sẽ giữ được các cặp đã làm xong.</li>",
+  lr_t_h:"Dành cho giáo viên và phụ huynh",
+  lr_t_p:"Ví dụ cách dùng trong một tiết học 45 phút:",
+  lr_t_plan:"<li>Xem video (5 phút)</li><li>Xem luật với “Tìm hiểu luật chơi” (10 phút)</li><li>Trải nghiệm “Chơi một mình” và “Đấu với rô-bốt” (15 phút)</li><li>Biến cách giải thành khối lệnh với “Giải bằng khối lệnh” (10 phút)</li><li>Tổng kết: chia sẻ các ý tưởng đã thử (5 phút)</li>",
+  lr_t_note:"Phân bổ thời gian chỉ là ví dụ — hãy điều chỉnh theo học sinh. Kết quả và cài đặt chỉ được lưu trong trình duyệt của thiết bị này.",
+  lr_link_h:"Muốn tìm hiểu thêm?",
+  lr_link_p:"Trang chính thức của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON KOSEN) có tin tức mới nhất về cuộc thi (tiếng Nhật).",
+  ab_site_h:"Trang chính thức",
+  ab_site:"Cuộc thi Lập trình KOSEN Toàn quốc",
   info_h:'Ứng dụng', rel_btn:'📝 Ghi chú phát hành', about_btn:'ℹ️ Giới thiệu ứng dụng',
   rel_title:'📝 Ghi chú phát hành', rel_ver:'Phiên bản {v}', about_title:'ℹ️ Giới thiệu ứng dụng',
   ab_lead:'Bản thử nghiệm của một công cụ học tập giúp học sinh tiểu học và trung học cơ sở trải nghiệm luật phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON) chỉ bằng trình duyệt web trên iPad hoặc thiết bị tương tự.',
@@ -1398,6 +1515,36 @@ I18N.th={
   k_note_stuck:'(“ทำซ้ำจนกว่า…” หยุดก่อนกำหนด เพราะไม่มีอะไรเปลี่ยนแล้ว)',
   k_err_die:'⚠ โจทย์นี้ไม่มีแม่พิมพ์หมายเลขนั้น (บล็อกที่มีกรอบสีแดง)',
   k_err_out:'⚠ แม่พิมพ์ไม่ได้ทับกระดานเลย (บล็อกที่มีกรอบสีแดง)',
+  lr_btn:"📚 วิธีเรียนและวิธีเล่น",
+  lr_title:"วิธีเรียนและวิธีเล่น",
+  lr_video_h:"ดูวิดีโอ",
+  lr_video_p:"วิดีโอประมาณ 2 นาทีแนะนำการใช้แอปทั้งหมด (ไม่มีเสียง คำบรรยายเป็นภาษาญี่ปุ่น)",
+  lr_video_err:"ไม่พบไฟล์วิดีโอ (howto.mp4)<br>กรุณาวาง howto.mp4 ไว้ในโฟลเดอร์เดียวกับแอป",
+  lr_steps_h:"ลำดับที่แนะนำ",
+  lr_s1_h:"เรียนรู้กติกา",
+  lr_s1:"ดูสไลด์เพื่อเข้าใจว่าต้องทำอะไร ถ้าไม่เข้าใจก็กลับมาดูได้ทุกเมื่อ",
+  lr_s2_h:"เล่นคนเดียว",
+  lr_s2:"เริ่มจากกระดานที่เล็กที่สุด ไม่ต้องห่วงเรื่องเวลา ลองแตะแล้วดูว่าชิ้นส่วนเคลื่อนที่อย่างไร",
+  lr_s3_h:"ดูคำตอบตัวอย่าง",
+  lr_s3:"เมื่อหมดเวลา คำตอบตัวอย่างจะเล่นให้ดู ลองเปรียบเทียบกับวิธีของตัวเอง",
+  lr_s4_h:"ประลองกับหุ่นยนต์",
+  lr_s4:"เปรียบเทียบกับคอมพิวเตอร์ในโจทย์เดียวกัน แล้วคิดว่าจะลดจำนวนครั้งได้อย่างไร",
+  lr_s5_h:"แก้โจทย์ด้วยบล็อก",
+  lr_s5:"สร้างกลยุทธ์ของคุณเองด้วยบล็อก แล้วลองดูว่าใช้กับโจทย์อื่นได้ด้วยหรือไม่",
+  lr_s6_h:"สู่การแข่งขันจริง",
+  lr_s6:"ในโปรคอนโคเซ็น นักเรียนเขียนกลยุทธ์เป็นโปรแกรมจริง รับโจทย์จากเซิร์ฟเวอร์ แล้วแข่งขันกัน",
+  lr_k_h:"คำแนะนำสำหรับครั้งที่ 35",
+  lr_k_tips:"<li>ชิ้นส่วนที่ถูกตัดออกจะเลื่อนไปชิดขอบตามทิศที่เลือก และชิ้นอื่นจะเลื่อนมาเติมช่องว่าง</li><li>กลยุทธ์พื้นฐาน: ทำให้ตรงกับเป้าหมายทีละช่อง เริ่มจากมุมซ้ายบน</li><li>แม่พิมพ์ขนาดใหญ่ช่วยย้ายชิ้นส่วนได้หลายชิ้นในครั้งเดียว</li><li>เลือกลำดับที่ไม่ทำให้ช่องที่ทำเสร็จแล้วเสียไป</li>",
+  lr_e_h:"คำแนะนำสำหรับครั้งที่ 36",
+  lr_e_tips:"<li>เมื่อหมุน En ตัวเลขข้างในจะหมุนไป 90 องศาด้วย</li><li>ตัวเลขเดียวกันสองตัวที่อยู่ติดกันจะเป็นคู่</li><li>En ขนาดเล็ก (2×2) สะดวกเมื่ออยากย้ายเฉพาะตัวเลขที่อยู่ใกล้ ๆ</li><li>ทำทีละคู่จากแถวบนสุด จะช่วยไม่ให้คู่ที่ทำเสร็จแล้วเสีย</li>",
+  lr_t_h:"สำหรับครูและผู้ปกครอง",
+  lr_t_p:"ตัวอย่างการใช้ในคาบเรียน 45 นาที:",
+  lr_t_plan:"<li>ดูวิดีโอ (5 นาที)</li><li>ทบทวนกติกาด้วย “เรียนรู้กติกา” (10 นาที)</li><li>ลองเล่น “เล่นคนเดียว” และ “ประลองกับหุ่นยนต์” (15 นาที)</li><li>เปลี่ยนวิธีแก้เป็นบล็อกด้วย “แก้โจทย์ด้วยบล็อก” (10 นาที)</li><li>สรุป: นำเสนอแนวคิดที่ได้ลอง (5 นาที)</li>",
+  lr_t_note:"การแบ่งเวลาเป็นเพียงตัวอย่าง ปรับได้ตามผู้เรียน ผลการเล่นและการตั้งค่าจะบันทึกไว้ในเบราว์เซอร์ของอุปกรณ์นี้เท่านั้น",
+  lr_link_h:"อยากรู้เพิ่มเติม",
+  lr_link_p:"เว็บไซต์ทางการของการแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น (โปรคอนโคเซ็น) มีข่าวล่าสุดของการแข่งขัน (ภาษาญี่ปุ่น)",
+  ab_site_h:"เว็บไซต์ทางการ",
+  ab_site:"การแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น",
   info_h:'เกี่ยวกับแอป', rel_btn:'📝 บันทึกการเปลี่ยนแปลง', about_btn:'ℹ️ เกี่ยวกับแอปนี้',
   rel_title:'📝 บันทึกการเปลี่ยนแปลง', rel_ver:'เวอร์ชัน {v}', about_title:'ℹ️ เกี่ยวกับแอปนี้',
   ab_lead:'สื่อการเรียนรู้รุ่นทดลองที่ให้นักเรียนประถมและมัธยมต้นได้ลองเล่นกติกาประเภทการแข่งขันของการแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น (โปรคอน) โดยใช้เพียงเว็บเบราว์เซอร์บน iPad หรืออุปกรณ์ที่คล้ายกัน',
@@ -1587,6 +1734,36 @@ I18N.mn={
   k_note_stuck:'(“…болтол давтах” юу ч өөрчлөгдөхгүй болсон тул эрт зогслоо.)',
   k_err_die:'⚠ Энэ бодлогод тийм дугаартай хэв байхгүй (улаан хүрээтэй блок).',
   k_err_out:'⚠ Хэв самбартай огт давхцахгүй байна (улаан хүрээтэй блок).',
+  lr_btn:"📚 Суралцах ба тоглох арга",
+  lr_title:"Суралцах ба тоглох арга",
+  lr_video_h:"Видео үзэх",
+  lr_video_p:"2 орчим минутын видеогоор апп-ыг бүхэлд нь хэрхэн ашиглахыг үзнэ (дуугүй; тайлбар нь япон хэлээр).",
+  lr_video_err:"Видео файл (howto.mp4) олдсонгүй.<br>howto.mp4-ийг апп-тай нэг хавтсанд байрлуулна уу.",
+  lr_steps_h:"Санал болгох дараалал",
+  lr_s1_h:"Дүрэм судлах",
+  lr_s1:"Слайдаас юу хийх ёстойгоо ойлго. Ойлгохгүй бол хэзээ ч буцаж ирж болно.",
+  lr_s2_h:"Ганцаараа тоглох",
+  lr_s2:"Хамгийн жижиг самбараас эхэл. Цагийг бүү бод — хүрч үзээд хэсгүүд хэрхэн хөдлөхийг шалга.",
+  lr_s3_h:"Жишээ хариулт үзэх",
+  lr_s3:"Хугацаа дуусахад жишээ хариулт тоглогдоно. Өөрийн аргатайгаа харьцуулж үз.",
+  lr_s4_h:"Роботтой өрсөлдөх",
+  lr_s4:"Ижил бодлого дээр компьютертэй харьцуул. Алхмыг яаж цөөлөхийг бод.",
+  lr_s5_h:"Блокоор бодох",
+  lr_s5:"Өөрийн бодох аргыг блокоор бүтээгээд, өөр бодлогод ч ажиллах эсэхийг туршаарай.",
+  lr_s6_h:"Жинхэнэ тэмцээн рүү",
+  lr_s6:"Косэн Проконд оюутнууд энэ аргаа жинхэнэ програм болгон бичиж, серверээс бодлого авч өрсөлддөг.",
+  lr_k_h:"35 дахь тэмцээний зөвлөгөө",
+  lr_k_tips:"<li>Хэвээр тасалсан хэсгүүд сонгосон чиглэлийн зах руу шилжиж, бусад хэсэг хоосон зайг нөхнө.</li><li>Үндсэн стратеги: зүүн дээд булангаас эхлэн нэг нүдээр зорилготой тааруулах.</li><li>Том хэв нэг дор олон хэсгийг хөдөлгөнө.</li><li>Аль хэдийн тааруулсан нүдээ эвдэхгүй дараалал сонго.</li>",
+  lr_e_h:"36 дахь тэмцээний зөвлөгөө",
+  lr_e_tips:"<li>En-ийг эргүүлэхэд доторх тоонууд хамт 90 градус эргэнэ.</li><li>Ижил хоёр тоо зэрэгцвэл хос болно.</li><li>Жижиг En (2×2) нь зөвхөн ойрын тоог хөдөлгөхөд тохиромжтой.</li><li>Дээд мөрөөс нэг нэгээр хос үүсгэвэл бэлэн болсон хос эвдрэхгүй.</li>",
+  lr_t_h:"Багш, эцэг эхчүүдэд",
+  lr_t_p:"45 минутын хичээлд ашиглах жишээ:",
+  lr_t_plan:"<li>Видео үзэх (5 мин)</li><li>“Дүрэм судлах”-аар дүрмийг шалгах (10 мин)</li><li>“Ганцаараа тоглох”, “Роботтой өрсөлдөх”-ийг туршиж үзэх (15 мин)</li><li>“Блокоор бодох”-оор бодох аргыг блок болгох (10 мин)</li><li>Дүгнэлт: туршсан санаагаа танилцуулах (5 мин)</li>",
+  lr_t_note:"Цагийн хуваарь зөвхөн жишээ — сурагчиддаа тааруулан өөрчилнө үү. Үр дүн ба тохиргоо зөвхөн энэ төхөөрөмжийн хөтөч дотор хадгалагдана.",
+  lr_link_h:"Илүү ихийг мэдэхийг хүсвэл",
+  lr_link_p:"Японы Үндэсний Косэн Програмчлалын Тэмцээний (Косэн Прокон) албан ёсны сайтаас тэмцээний сүүлийн мэдээг үзэх боломжтой (япон хэлээр).",
+  ab_site_h:"Албан ёсны сайт",
+  ab_site:"Японы Үндэсний Косэн Програмчлалын Тэмцээн",
   info_h:'Апп-ын тухай', rel_btn:'📝 Шинэчлэлийн тэмдэглэл', about_btn:'ℹ️ Энэ апп-ын тухай',
   rel_title:'📝 Шинэчлэлийн тэмдэглэл', rel_ver:'Хувилбар {v}', about_title:'ℹ️ Энэ апп-ын тухай',
   ab_lead:'Бага болон дунд ангийн сурагчид Японы Үндэсний Косэн Програмчлалын тэмцээний (Прокон) тэмцээний төрлийн дүрмийг iPad зэрэг төхөөрөмжийн вэб хөтчөөр л туршиж үзэх боломжтой сургалтын хэрэгслийн туршилтын хувилбар.',
@@ -2012,6 +2189,7 @@ ${t('json_a')}
   setupTitles();
   BOARDS.forEach(b=>{ if(b.host.isConnected){ if(b.drawSel) b.drawSel(); else b.drawDie(); } });
   renderHome(); renderSetup(); kRulesJson();
+  if($('s-learn').classList.contains('on')) renderLearn();
   if(typeof INFO!=='undefined'){ if(INFO==='rel') showRelease(); else if(INFO==='about') showAbout(); }
   if(typeof KG!=='undefined' && KG && !KG.ended){ kUpd(KG.board); kUpdSubs(); kTick(); kUpdPos(); $('kDieName').textContent=dieName(KG.die); if(KG.hintKey) $('kHint').innerHTML=t(KG.hintKey); }
   if(G && !G.ended){ updStats(G.board); updSubs(); tick(); if(G.hintKey) $('hint').innerHTML=t(G.hintKey); }
@@ -2019,9 +2197,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.5', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.6', APP_DATE='2026-11-11';
 const RELEASES=[
-  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with a program”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng chương trình»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้ด้วยโปรแกรม»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Программаар бодох»: хэвийг дүрсээр нь харж сонгох']}},
+  {v:'0.9.6',items:{ja:['設定に「勉強の仕方・遊び方」ページを追加（遊び方の動画・おすすめの進め方・ヒント・授業での使い方の例）','「このアプリについて」に 高専プロコン公式サイトへの リンクを追加'],en:['Added a “How to learn & play” page in Settings (how-to video, suggested path, tips, lesson plan example)','Added a link to the official KOSEN PROCON site in “About this app”'],vi:['Thêm trang «Cách học & cách chơi» trong Cài đặt (video hướng dẫn, lộ trình gợi ý, mẹo, ví dụ tiết học)','Thêm liên kết đến trang chính thức của PROCON KOSEN trong «Giới thiệu ứng dụng»'],th:['เพิ่มหน้า «วิธีเรียนและวิธีเล่น» ในการตั้งค่า (วิดีโอสอนเล่น ลำดับที่แนะนำ คำแนะนำ ตัวอย่างแผนการสอน)','เพิ่มลิงก์ไปยังเว็บไซต์ทางการของโปรคอนโคเซ็นใน «เกี่ยวกับแอปนี้»'],mn:['Тохиргоонд «Суралцах ба тоглох арга» хуудас нэмэв (заавар видео, санал болгох дараалал, зөвлөгөө, хичээлийн жишээ)','«Энэ апп-ын тухай» хэсэгт Косэн Проконы албан ёсны сайтын холбоос нэмэв']}},
+  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with Blocks”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng khối lệnh»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้โจทย์ด้วยบล็อก»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Блокоор бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
     th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
@@ -2063,6 +2242,7 @@ function showAbout(){
       <dt>${t('ab_for_h')}</dt><dd>${t('ab_for')}</dd>
       <dt>${t('ab_env_h')}</dt><dd>${t('ab_env')}</dd>
       <dt>${t('ab_lang_h')}</dt><dd>日本語 / English / Tiếng Việt / ไทย / Монгол</dd>
+      <dt>${t('ab_site_h')}</dt><dd><a href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')}</a><br><span class="url">${PROCON_URL}</span></dd>
       <dt>${t('ab_src_h')}</dt><dd>${t('ab_src')}</dd>
       <dt>${t('ab_data_h')}</dt><dd>${t('ab_data')}</dd>
       <dt>${t('ab_credit_h')}</dt><dd>${t('ab_credit')}</dd>
@@ -2071,6 +2251,49 @@ function showAbout(){
   $('infoModal').classList.add('on'); $('infoModal').querySelector('.box').scrollTop=0; INFO='about';
 }
 let INFO=null;
+/* ---- 勉強の仕方・遊び方 ---- */
+const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4';
+let LEARN_FROM='home';
+function renderLearn(){
+  const box=$('learnBody'); if(!box) return;
+  const v=box.querySelector('video'); const tm=v? v.currentTime:0;
+  const steps=[1,2,3,4,5,6].map(i=>`<li><b>${t('lr_s'+i+'_h')}</b><span>${t('lr_s'+i)}</span></li>`).join('');
+  box.innerHTML=`
+  <div class="panel lrn">
+    <h3>🎬 ${t('lr_video_h')}</h3>
+    <p class="lrlead">${t('lr_video_p')}</p>
+    <div class="lrvid"><video controls playsinline preload="metadata" src="${HOWTO_VIDEO}"></video><div class="lrerr" hidden>${t('lr_video_err')}</div></div>
+  </div>
+  <div class="panel lrn">
+    <h3>🪜 ${t('lr_steps_h')}</h3>
+    <ol class="lrsteps">${steps}</ol>
+  </div>
+  <div class="lrtips">
+    <div class="panel lrn"><h3>🏯 ${t('lr_k_h')}</h3><ul>${t('lr_k_tips')}</ul></div>
+    <div class="panel lrn"><h3>🔁 ${t('lr_e_h')}</h3><ul>${t('lr_e_tips')}</ul></div>
+  </div>
+  <div class="panel lrn">
+    <h3>🧑‍🏫 ${t('lr_t_h')}</h3>
+    <p>${t('lr_t_p')}</p>
+    <ol class="lrplan">${t('lr_t_plan')}</ol>
+    <p class="lrsmall">${t('lr_t_note')}</p>
+  </div>
+  <div class="panel lrn lrlink">
+    <h3>🔗 ${t('lr_link_h')}</h3>
+    <p>${t('lr_link_p')}</p>
+    <a class="btn sub" href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')} ↗</a>
+  </div>`;
+  const nv=box.querySelector('video');
+  nv.addEventListener('error',()=>{ nv.hidden=true; box.querySelector('.lrerr').hidden=false; });
+  if(tm) nv.addEventListener('loadedmetadata',()=>{ nv.currentTime=tm; },{once:true});
+}
+function openLearn(){
+  const cur=document.querySelector('.screen.on'); LEARN_FROM=cur&&cur.id!=='s-learn'? cur.id.slice(2) : 'home';
+  $('settings').classList.remove('on');
+  renderLearn(); show('learn');
+}
+$('learnBtn').onclick=openLearn;
+$('learnBack').onclick=()=>{ const v=document.querySelector('#learnBody video'); if(v) v.pause(); show(LEARN_FROM); };
 $('relBtn').onclick=showRelease; $('aboutBtn').onclick=showAbout;
 $('infoClose').onclick=()=>{ $('infoModal').classList.remove('on'); INFO=null; };
 $('infoModal').addEventListener('click',e=>{ if(e.target.id==='infoModal'){ $('infoModal').classList.remove('on'); INFO=null; } });
