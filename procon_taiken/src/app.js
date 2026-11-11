@@ -3,6 +3,7 @@
 const $=id=>document.getElementById(id);
 let mode='solo';
 function show(name){
+  if(typeof closeDiePop==='function') closeDiePop();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   $('s-'+name).classList.add('on'); window.scrollTo(0,0);
   if(name==='rules') initRules();
@@ -95,8 +96,9 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.4', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.5', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with a program”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng chương trình»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้ด้วยโปรแกรม»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Программаар бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
     th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],

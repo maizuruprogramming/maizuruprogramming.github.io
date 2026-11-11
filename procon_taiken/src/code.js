@@ -49,16 +49,49 @@ function blockLabelHTML(b,editable){
   return t(def.label).replace(/\{(\w)\}/g,(m,k)=>{
     const kind=def.fields[k]; if(!kind) return m;
     const val=b? b.p[k] : (DEFAULTS[b.type]||{})[k];
+    if(kind==='die'){ const d=codeDie(val); const pic=d? dieThumb(d,editable?24:18) : '';
+      return editable? `<button type="button" class="diepick" data-f="${k}" aria-label="${t('k_pick_die')}">${pic}<b>${val}</b><em>▾</em></button>` : `<i class="chip chipdie">${pic}${val}</i>`; }
     if(!editable) return `<i class="chip">${optLabel(kind,val)}</i>`;
     return `<select data-f="${k}">${FIELD_OPTS[kind]().map(o=>`<option value="${o}" ${o===val?'selected':''}>${optLabel(kind,o)}</option>`).join('')}</select>`;
   });
+}
+
+/* ---- 抜き型を 絵で えらぶ ---- */
+function codeDies(){ return CODE.prob&&CODE.prob.dies? CODE.prob.dies : kDiesFor(K_SAMPLE.general); }
+function codeDie(v){ return dieByP(codeDies(),+v); }
+function closeDiePop(){ const p=document.getElementById('diePop'); if(p) p.remove(); document.removeEventListener('pointerdown',diePopOutside,true); document.removeEventListener('keydown',diePopKey); }
+function diePopOutside(e){ const p=document.getElementById('diePop'); if(p && !p.contains(e.target) && !e.target.closest('.diepick')) closeDiePop(); }
+function diePopKey(e){ if(e.key==='Escape') closeDiePop(); }
+function openDiePop(btn,cur,onPick){
+  closeDiePop();
+  const P=CODE.prob, dies=codeDies(), W=P?P.W:99, H=P?P.H:99;
+  const usable=dies.filter(d=>d.p>=25 || d.w<=Math.max(W,H) || String(d.p)===String(cur));
+  const pop=document.createElement('div'); pop.id='diePop'; pop.className='diepop'; pop.setAttribute('role','dialog');
+  const curD=codeDie(cur);
+  pop.innerHTML=`<div class="dph"><b>${t('k_pick_die')}</b><button type="button" class="dpx" aria-label="close">✕</button></div>
+    <div class="dpgrid">${usable.map(d=>`<button type="button" class="kdb${String(d.p)===String(cur)?' on':''}" data-p="${d.p}">${dieThumb(d,34)}<span>${d.p}</span></button>`).join('')}</div>
+    <div class="dpname">${curD? dieName(curD):''}</div>`;
+  document.body.appendChild(pop);
+  const name=pop.querySelector('.dpname');
+  pop.querySelectorAll('.kdb').forEach(k=>{
+    const d=codeDie(k.dataset.p);
+    k.onpointerenter=()=>{ name.textContent=dieName(d); };
+    k.onclick=()=>{ closeDiePop(); onPick(k.dataset.p); };
+  });
+  pop.querySelector('.dpx').onclick=closeDiePop;
+  // 位置：ボタンの下（はみ出すときは 上）
+  const r=btn.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight, vw=window.innerWidth, vh=window.innerHeight;
+  let x=Math.min(Math.max(8,r.left), vw-pw-8), y=r.bottom+6;
+  if(y+ph>vh-8) y=Math.max(8, r.top-ph-6);
+  pop.style.left=x+'px'; pop.style.top=y+'px';
+  setTimeout(()=>{ document.addEventListener('pointerdown',diePopOutside,true); document.addEventListener('keydown',diePopKey); },0);
 }
 
 /* ---- プログラムの表示 ---- */
 let SLOTS=[];
 function findParent(list,id){ for(let i=0;i<list.length;i++){ const b=list[i]; if(b.id===id) return {list,i}; if(b.body){ const r=findParent(b.body,id); if(r) return r; } } return null; }
 function renderProg(){
-  SLOTS=[];
+  SLOTS=[]; closeDiePop();
   const ws=$('prog'); ws.innerHTML='';
   if(!CODE.cursor || !listAlive(CODE.cursor.list)) CODE.cursor={list:CODE.prog,index:CODE.prog.length};
   ws.appendChild(renderList(CODE.prog));
@@ -83,6 +116,7 @@ function renderBlock(b,list,i){
   const el=document.createElement('div'); el.className='blk k-'+def.kind+(def.body?' has-body':''); el.dataset.id=b.id;
   el.innerHTML=`<div class="brow"><span class="blab">${blockLabelHTML(b,true)}</span><span class="btools"><button data-t="up" aria-label="up">▲</button><button data-t="down" aria-label="down">▼</button><button data-t="del" aria-label="delete">✕</button></span></div>`;
   el.querySelectorAll('select').forEach(s=>s.onchange=()=>{ b.p[s.dataset.f]=s.value; saveProg(); });
+  el.querySelectorAll('.diepick').forEach(btn=>btn.onclick=e=>{ e.stopPropagation(); openDiePop(btn,b.p[btn.dataset.f],v=>{ b.p[btn.dataset.f]=v; renderProg(); }); });
   el.querySelector('[data-t=up]').onclick=()=>{ if(i>0){ [list[i-1],list[i]]=[list[i],list[i-1]]; renderProg(); } };
   el.querySelector('[data-t=down]').onclick=()=>{ if(i<list.length-1){ [list[i+1],list[i]]=[list[i],list[i+1]]; renderProg(); } };
   el.querySelector('[data-t=del]').onclick=()=>{ list.splice(i,1); CODE.cursor={list,index:Math.min(i,list.length)}; renderProg(); };

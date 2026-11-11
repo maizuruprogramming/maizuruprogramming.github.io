@@ -305,4 +305,17 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 @keyframes popin{from{transform:scale(.92);opacity:.4}to{transform:none;opacity:1}}
 .hint.bad{color:var(--shu);font-weight:700}
 .hint.good{color:var(--moss);font-weight:700}
+/* 抜き型を 絵で えらぶ */
+.blk .diepick{display:inline-flex;align-items:center;gap:5px;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:8px;padding:3px 6px;margin:0 3px;background:rgba(255,255,255,.92);color:#2b2420;vertical-align:middle;cursor:pointer}
+.blk .diepick em{font-style:normal;font-size:11px;opacity:.6}
+.diepick .dthumb,.chipdie .dthumb{background:#fff;padding:1px;border-radius:3px}
+.blk .chipdie{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
+.diepop{position:fixed;z-index:80;background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:10px 12px 12px;width:min(360px,calc(100vw - 16px))}
+.diepop .dph{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:15px}
+.diepop .dpx{border:none;background:none;font-size:18px;color:var(--ink);cursor:pointer;padding:2px 6px}
+.diepop .dpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px}
+.diepop .kdb{min-height:64px;justify-content:center;cursor:pointer}
+.diepop .kdb span{font-size:13px}
+.diepop .dpname{margin-top:8px;font-size:13px;font-weight:700;min-height:1.3em;text-align:center}
+.diepick .dthumb i,.chipdie .dthumb i{background:#e3dccf}.diepick .dthumb i.on,.chipdie .dthumb i.on{background:#2b2420}
 </style>

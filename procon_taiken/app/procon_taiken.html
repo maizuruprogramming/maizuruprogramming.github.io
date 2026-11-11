@@ -314,6 +314,19 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 @keyframes popin{from{transform:scale(.92);opacity:.4}to{transform:none;opacity:1}}
 .hint.bad{color:var(--shu);font-weight:700}
 .hint.good{color:var(--moss);font-weight:700}
+/* 抜き型を 絵で えらぶ */
+.blk .diepick{display:inline-flex;align-items:center;gap:5px;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:8px;padding:3px 6px;margin:0 3px;background:rgba(255,255,255,.92);color:#2b2420;vertical-align:middle;cursor:pointer}
+.blk .diepick em{font-style:normal;font-size:11px;opacity:.6}
+.diepick .dthumb,.chipdie .dthumb{background:#fff;padding:1px;border-radius:3px}
+.blk .chipdie{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
+.diepop{position:fixed;z-index:80;background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:10px 12px 12px;width:min(360px,calc(100vw - 16px))}
+.diepop .dph{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:15px}
+.diepop .dpx{border:none;background:none;font-size:18px;color:var(--ink);cursor:pointer;padding:2px 6px}
+.diepop .dpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px}
+.diepop .kdb{min-height:64px;justify-content:center;cursor:pointer}
+.diepop .kdb span{font-size:13px}
+.diepop .dpname{margin-top:8px;font-size:13px;font-weight:700;min-height:1.3em;text-align:center}
+.diepick .dthumb i,.chipdie .dthumb i{background:#e3dccf}.diepick .dthumb i.on,.chipdie .dthumb i.on{background:#2b2420}
 </style>
 </head>
 <body>
@@ -988,7 +1001,7 @@ Object.assign(I18N.ja,{
   k_r1_p1:'抜き型は ピースを ぬきとる 道具。<b>1 の ところ</b>の ピースが ぬけるよ（0 の ところは ぬけない）。',
   k_r1_p2:'どの 問題にも、3タイプ（Ⅰ ぜんぶ1・Ⅱ 1行おき・Ⅲ 1列おき）× いろいろな 大きさの「定型抜き型」が あるよ。問題ごとの「一般抜き型」も あるよ。',
   k_r1_note:'下は 大きさ 4 の 定型抜き型と、図4 の 一般抜き型（黒い ところが 1）だよ。',
-  k_type1:'タイプⅠ', k_type2:'タイプⅡ', k_type3:'タイプⅢ', k_general:'一般抜き型', k_gen_short:'一般',
+  k_type1:'タイプⅠ', k_type2:'タイプⅡ', k_type3:'タイプⅢ', k_general:'一般抜き型', k_gen_short:'一般', k_pick_die:'抜き型を えらぶ',
   k_r2_h:'③ <em>型抜き</em>して <em>よせる</em>',
   k_r2_p1:'① 抜き型の 1 の ところの ピースを ぬく → ② のこりの ピースを えらんだ 方向に よせる → ③ 空いた ところに ぬいた ピースを <b>ならびの まま</b> もどす。これで 1手！',
   k_r2_p2:'抜き型は ボードから はみ出しても いいよ（はみ出た ところは 何も しない）。',
@@ -1052,7 +1065,7 @@ Object.assign(I18N.en,{
   k_r1_p1:'A die is a tool for cutting out pieces. Pieces under the <b>1 cells</b> are cut out (0 cells leave pieces alone).',
   k_r1_p2:'Every puzzle has “standard dies” in 3 types (I all 1s, II every other row, III every other column) and many sizes, plus puzzle-specific “general dies”.',
   k_r1_note:'Below: standard dies of size 4, and the general dies from Figure 4 (dark cells are 1s).',
-  k_type1:'Type I', k_type2:'Type II', k_type3:'Type III', k_general:'General die', k_gen_short:'gen.',
+  k_type1:'Type I', k_type2:'Type II', k_type3:'Type III', k_general:'General die', k_gen_short:'gen.', k_pick_die:'Choose a die',
   k_r2_h:'③ <em>Cut</em> and <em>Slide</em>',
   k_r2_p1:'① Cut out the pieces under the 1s → ② slide the remaining pieces in the chosen direction → ③ put the cut pieces back into the gap <b>in the same order</b>. That is one move!',
   k_r2_p2:'A die may stick out of the board (the part outside does nothing).',
@@ -1116,7 +1129,7 @@ Object.assign(I18N.vi,{
   k_r1_p1:'Khuôn cắt là dụng cụ lấy mảnh ra. Mảnh nằm dưới <b>ô số 1</b> sẽ bị lấy ra (ô số 0 thì không).',
   k_r1_p2:'Đề nào cũng có “khuôn tiêu chuẩn” gồm 3 kiểu (I toàn số 1, II cách một hàng, III cách một cột) với nhiều kích thước, cùng các “khuôn riêng” của từng đề.',
   k_r1_note:'Bên dưới là khuôn tiêu chuẩn cỡ 4 và khuôn riêng ở Hình 4 (ô màu đậm là số 1).',
-  k_type1:'Kiểu I', k_type2:'Kiểu II', k_type3:'Kiểu III', k_general:'Khuôn riêng', k_gen_short:'riêng',
+  k_type1:'Kiểu I', k_type2:'Kiểu II', k_type3:'Kiểu III', k_general:'Khuôn riêng', k_gen_short:'riêng', k_pick_die:'Chọn khuôn',
   k_r2_h:'③ <em>Cắt</em> và <em>dồn</em>',
   k_r2_p1:'① Lấy các mảnh dưới ô số 1 ra → ② dồn các mảnh còn lại theo hướng đã chọn → ③ đặt các mảnh đã lấy vào chỗ trống <b>theo đúng thứ tự</b>. Đó là một lượt!',
   k_r2_p2:'Khuôn được phép vượt ra ngoài bảng (phần bên ngoài không có tác dụng).',
@@ -1338,7 +1351,7 @@ I18N.th={
   k_r1_p1:'แม่พิมพ์คือเครื่องมือสำหรับตัดชิ้นส่วนออก ชิ้นที่อยู่ใต้<b>ช่องที่เป็น 1</b> จะถูกตัดออก (ช่องที่เป็น 0 ไม่ตัด)',
   k_r1_p2:'ทุกโจทย์มี “แม่พิมพ์มาตรฐาน” 3 แบบ (I เป็น 1 ทั้งหมด, II เว้นแถว, III เว้นคอลัมน์) หลายขนาด และยังมี “แม่พิมพ์ทั่วไป” เฉพาะของแต่ละโจทย์',
   k_r1_note:'ด้านล่างคือแม่พิมพ์มาตรฐานขนาด 4 และแม่พิมพ์ทั่วไปจากรูปที่ 4 (ช่องสีเข้มคือ 1)',
-  k_type1:'แบบ I', k_type2:'แบบ II', k_type3:'แบบ III', k_general:'แม่พิมพ์ทั่วไป', k_gen_short:'ทั่วไป',
+  k_type1:'แบบ I', k_type2:'แบบ II', k_type3:'แบบ III', k_general:'แม่พิมพ์ทั่วไป', k_gen_short:'ทั่วไป', k_pick_die:'เลือกแม่พิมพ์',
   k_r2_h:'③ <em>ตัด</em>แล้ว<em>เลื่อน</em>',
   k_r2_p1:'① ตัดชิ้นที่อยู่ใต้ช่อง 1 ออก → ② เลื่อนชิ้นที่เหลือไปตามทิศที่เลือก → ③ ใส่ชิ้นที่ตัดออกกลับลงในช่องว่าง<b>ตามลำดับเดิม</b> นี่คือหนึ่งครั้ง!',
   k_r2_p2:'แม่พิมพ์ยื่นออกนอกกระดานได้ (ส่วนที่อยู่นอกกระดานไม่มีผล)',
@@ -1527,7 +1540,7 @@ I18N.mn={
   k_r1_p1:'Хэв нь хэсгүүдийг огтлон авах хэрэгсэл. <b>1 гэсэн нүд</b>ний доорх хэсгүүд огтлогдоно (0 гэсэн нүд огтлохгүй).',
   k_r1_p2:'Бодлого бүрт 3 төрлийн (I бүгд 1, II мөр алгасах, III багана алгасах) олон хэмжээтэй “стандарт хэв”, мөн тухайн бодлогын “ерөнхий хэв” байдаг.',
   k_r1_note:'Доор 4 хэмжээтэй стандарт хэвүүд болон 4-р зургийн ерөнхий хэвүүд байна (бараан нүд нь 1).',
-  k_type1:'I төрөл', k_type2:'II төрөл', k_type3:'III төрөл', k_general:'Ерөнхий хэв', k_gen_short:'ерөнх.',
+  k_type1:'I төрөл', k_type2:'II төрөл', k_type3:'III төрөл', k_general:'Ерөнхий хэв', k_gen_short:'ерөнх.', k_pick_die:'Хэв сонгох',
   k_r2_h:'③ <em>Огтлоод</em> <em>шилжүүлэх</em>',
   k_r2_p1:'① 1-ийн доорх хэсгүүдийг огтолж авна → ② үлдсэн хэсгүүдийг сонгосон чиглэлд шилжүүлнэ → ③ огтолсон хэсгүүдийг хоосон зайд <b>анхны дарааллаар нь</b> буцааж тавина. Энэ бол нэг алхам!',
   k_r2_p2:'Хэв самбараас цухуйж болно (гадна талын хэсэг юу ч хийхгүй).',
@@ -1913,6 +1926,7 @@ Board.prototype.setField=function(f){this.gen=(this.gen||0)+1; this.busy=false; 
 const $=id=>document.getElementById(id);
 let mode='solo';
 function show(name){
+  if(typeof closeDiePop==='function') closeDiePop();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   $('s-'+name).classList.add('on'); window.scrollTo(0,0);
   if(name==='rules') initRules();
@@ -2005,8 +2019,9 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.4', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.5', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with a program”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng chương trình»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้ด้วยโปรแกรม»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Программаар бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
     th:['หน้าจอเกมของการแข่งขันครั้งที่ 35 แสดงครบในหน้าเดียวเมื่อวางแนวนอน (แผงควบคุมสองคอลัมน์)'],mn:['35 дахь тэмцээний тоглоомын дэлгэц хэвтээ байрлалд нэг дэлгэцэнд багтдаг болсон (хоёр баганатай удирдлага)']}},
   {v:'0.9.3',items:{ja:['ホーム画面の競技切り替えで、第35回を左側に','第35回・第36回のタイトルを同じ文字の大きさに','競技を切り替えても、ボタンやカードの位置が動かないように'],
@@ -2714,16 +2729,49 @@ function blockLabelHTML(b,editable){
   return t(def.label).replace(/\{(\w)\}/g,(m,k)=>{
     const kind=def.fields[k]; if(!kind) return m;
     const val=b? b.p[k] : (DEFAULTS[b.type]||{})[k];
+    if(kind==='die'){ const d=codeDie(val); const pic=d? dieThumb(d,editable?24:18) : '';
+      return editable? `<button type="button" class="diepick" data-f="${k}" aria-label="${t('k_pick_die')}">${pic}<b>${val}</b><em>▾</em></button>` : `<i class="chip chipdie">${pic}${val}</i>`; }
     if(!editable) return `<i class="chip">${optLabel(kind,val)}</i>`;
     return `<select data-f="${k}">${FIELD_OPTS[kind]().map(o=>`<option value="${o}" ${o===val?'selected':''}>${optLabel(kind,o)}</option>`).join('')}</select>`;
   });
+}
+
+/* ---- 抜き型を 絵で えらぶ ---- */
+function codeDies(){ return CODE.prob&&CODE.prob.dies? CODE.prob.dies : kDiesFor(K_SAMPLE.general); }
+function codeDie(v){ return dieByP(codeDies(),+v); }
+function closeDiePop(){ const p=document.getElementById('diePop'); if(p) p.remove(); document.removeEventListener('pointerdown',diePopOutside,true); document.removeEventListener('keydown',diePopKey); }
+function diePopOutside(e){ const p=document.getElementById('diePop'); if(p && !p.contains(e.target) && !e.target.closest('.diepick')) closeDiePop(); }
+function diePopKey(e){ if(e.key==='Escape') closeDiePop(); }
+function openDiePop(btn,cur,onPick){
+  closeDiePop();
+  const P=CODE.prob, dies=codeDies(), W=P?P.W:99, H=P?P.H:99;
+  const usable=dies.filter(d=>d.p>=25 || d.w<=Math.max(W,H) || String(d.p)===String(cur));
+  const pop=document.createElement('div'); pop.id='diePop'; pop.className='diepop'; pop.setAttribute('role','dialog');
+  const curD=codeDie(cur);
+  pop.innerHTML=`<div class="dph"><b>${t('k_pick_die')}</b><button type="button" class="dpx" aria-label="close">✕</button></div>
+    <div class="dpgrid">${usable.map(d=>`<button type="button" class="kdb${String(d.p)===String(cur)?' on':''}" data-p="${d.p}">${dieThumb(d,34)}<span>${d.p}</span></button>`).join('')}</div>
+    <div class="dpname">${curD? dieName(curD):''}</div>`;
+  document.body.appendChild(pop);
+  const name=pop.querySelector('.dpname');
+  pop.querySelectorAll('.kdb').forEach(k=>{
+    const d=codeDie(k.dataset.p);
+    k.onpointerenter=()=>{ name.textContent=dieName(d); };
+    k.onclick=()=>{ closeDiePop(); onPick(k.dataset.p); };
+  });
+  pop.querySelector('.dpx').onclick=closeDiePop;
+  // 位置：ボタンの下（はみ出すときは 上）
+  const r=btn.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight, vw=window.innerWidth, vh=window.innerHeight;
+  let x=Math.min(Math.max(8,r.left), vw-pw-8), y=r.bottom+6;
+  if(y+ph>vh-8) y=Math.max(8, r.top-ph-6);
+  pop.style.left=x+'px'; pop.style.top=y+'px';
+  setTimeout(()=>{ document.addEventListener('pointerdown',diePopOutside,true); document.addEventListener('keydown',diePopKey); },0);
 }
 
 /* ---- プログラムの表示 ---- */
 let SLOTS=[];
 function findParent(list,id){ for(let i=0;i<list.length;i++){ const b=list[i]; if(b.id===id) return {list,i}; if(b.body){ const r=findParent(b.body,id); if(r) return r; } } return null; }
 function renderProg(){
-  SLOTS=[];
+  SLOTS=[]; closeDiePop();
   const ws=$('prog'); ws.innerHTML='';
   if(!CODE.cursor || !listAlive(CODE.cursor.list)) CODE.cursor={list:CODE.prog,index:CODE.prog.length};
   ws.appendChild(renderList(CODE.prog));
@@ -2748,6 +2796,7 @@ function renderBlock(b,list,i){
   const el=document.createElement('div'); el.className='blk k-'+def.kind+(def.body?' has-body':''); el.dataset.id=b.id;
   el.innerHTML=`<div class="brow"><span class="blab">${blockLabelHTML(b,true)}</span><span class="btools"><button data-t="up" aria-label="up">▲</button><button data-t="down" aria-label="down">▼</button><button data-t="del" aria-label="delete">✕</button></span></div>`;
   el.querySelectorAll('select').forEach(s=>s.onchange=()=>{ b.p[s.dataset.f]=s.value; saveProg(); });
+  el.querySelectorAll('.diepick').forEach(btn=>btn.onclick=e=>{ e.stopPropagation(); openDiePop(btn,b.p[btn.dataset.f],v=>{ b.p[btn.dataset.f]=v; renderProg(); }); });
   el.querySelector('[data-t=up]').onclick=()=>{ if(i>0){ [list[i-1],list[i]]=[list[i],list[i-1]]; renderProg(); } };
   el.querySelector('[data-t=down]').onclick=()=>{ if(i<list.length-1){ [list[i+1],list[i]]=[list[i],list[i+1]]; renderProg(); } };
   el.querySelector('[data-t=del]').onclick=()=>{ list.splice(i,1); CODE.cursor={list,index:Math.min(i,list.length)}; renderProg(); };
