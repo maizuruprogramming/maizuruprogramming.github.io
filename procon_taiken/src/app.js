@@ -108,8 +108,9 @@ ${t('json_a')}
   if(typeof hRelabel==='function') hRelabel();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.14', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.15', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.15',items:{ja:['「先生方へ」にチュートリアル集（PDF）を追加。学習指導案・ワークシートと同じ書式にそろえた'],en:['Added the tutorial collection (PDF) to “For teachers”, in the same layout as the lesson plan and worksheets'],vi:['Thêm bộ hướng dẫn (PDF) vào «Dành cho giáo viên», cùng bố cục với giáo án và phiếu học tập'],th:['เพิ่มชุดบทแนะนำ (PDF) ใน «สำหรับครู» ในรูปแบบเดียวกับแผนการสอนและใบงาน'],mn:['«Багш нарт» хэсэгт зааврын эмхтгэл (PDF) нэмж, төлөвлөгөө, ажлын хуудастай ижил хэлбэрт оруулав']}},
   {v:'0.9.14',items:{ja:['「先生方へ」に授業用ワークシート（PDF、全3時間＋ふりかえりシート）を追加'],en:['Added class worksheets (PDF, 3 lessons + reflection sheet) to “For teachers”'],vi:['Thêm phiếu học tập (PDF, 3 tiết + phiếu tự đánh giá) vào «Dành cho giáo viên»'],th:['เพิ่มใบงาน (PDF, 3 คาบ + ใบสะท้อนการเรียนรู้) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн ажлын хуудас (PDF, 3 цаг + эргэцүүлэх хуудас) нэмэв']}},
   {v:'0.9.13',items:{ja:['「先生方へ」に学習指導案と授業用スライド（PDF）を開くボタンを追加'],en:['Added buttons in “For teachers” to open the lesson plan and class slides (PDF)'],vi:['Thêm nút mở giáo án và trang trình chiếu (PDF) trong «Dành cho giáo viên»'],th:['เพิ่มปุ่มเปิดแผนการสอนและสไลด์ประกอบการสอน (PDF) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн төлөвлөгөө, слайд (PDF) нээх товч нэмэв']}},
   {v:'0.9.12',items:{ja:['「勉強の仕方・遊び方」の最後に「先生方へ」を追加（学習指導要領との関連・3時間の授業例・評価のヒント・準備）','遊び方の動画を第37回を含む内容に撮り直し'],en:['Added “For teachers” at the end of “How to learn & play” (curriculum links, a 3-lesson plan, assessment tips, preparation)','Re-recorded the how-to video to include the 37th contest'],vi:['Thêm «Dành cho giáo viên» ở cuối «Cách học & cách chơi» (liên hệ chương trình, ví dụ 3 tiết, gợi ý đánh giá, chuẩn bị)','Quay lại video hướng dẫn, có cả lần 37'],th:['เพิ่ม «สำหรับครู» ท้าย «วิธีเรียนและวิธีเล่น» (ความเชื่อมโยงกับหลักสูตร ตัวอย่าง 3 คาบ คำแนะนำการประเมิน การเตรียมตัว)','ถ่ายวิดีโอวิธีเล่นใหม่ ให้มีครั้งที่ 37 ด้วย'],mn:['«Суралцах ба тоглох арга»-ын төгсгөлд «Багш нарт» хэсэг нэмэв (сургалтын хөтөлбөртэй холбоо, 3 цагийн жишээ, үнэлгээний зөвлөгөө, бэлтгэл)','Тоглох аргын видеог 37 дахь тэмцээнийг оруулан дахин бичив']}},
@@ -171,7 +172,7 @@ function showAbout(){
 }
 let INFO=null;
 /* ---- 勉強の仕方・遊び方 ---- */
-const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4', LESSON_PDF='lesson_plan.pdf', SLIDES_PDF='class_slides.pdf', WS_PDF='worksheet.pdf';
+const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4', LESSON_PDF='lesson_plan.pdf', SLIDES_PDF='class_slides.pdf', WS_PDF='worksheet.pdf', TUT_PDF='tutorials.pdf';
 let LEARN_FROM='home';
 function renderLearn(){
   const box=$('learnBody'); if(!box) return;
@@ -201,7 +202,7 @@ function renderLearn(){
     <h3>🧑‍🏫 ${t('lr_tc_h')}</h3>
     <p>${t('lr_tc_lead')}</p>
     <div class="lrdl"><h4>📄 ${t('lr_tc_dl_h')}</h4>
-      <div class="lrdlbtns"><a class="btn sub" href="${LESSON_PDF}" target="_blank" rel="noopener">📝 ${t('lr_tc_plan')}</a><a class="btn sub" href="${SLIDES_PDF}" target="_blank" rel="noopener">🖥️ ${t('lr_tc_slides')}</a><a class="btn sub" href="${WS_PDF}" target="_blank" rel="noopener">✏️ ${t('lr_tc_ws')}</a></div>
+      <div class="lrdlbtns"><a class="btn sub" href="${LESSON_PDF}" target="_blank" rel="noopener">📝 ${t('lr_tc_plan')}</a><a class="btn sub" href="${SLIDES_PDF}" target="_blank" rel="noopener">🖥️ ${t('lr_tc_slides')}</a><a class="btn sub" href="${WS_PDF}" target="_blank" rel="noopener">✏️ ${t('lr_tc_ws')}</a><a class="btn sub" href="${TUT_PDF}" target="_blank" rel="noopener">📘 ${t('lr_tc_tut')}</a></div>
       <p class="lrsmall">${t('lr_tc_dl_note')}</p></div>
     ${t('lr_tc_body')}
   </div>`;
