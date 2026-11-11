@@ -25,28 +25,34 @@ BRAND = {'ja': ('ブロックで プログラミング　ワークシート', '�
 CSS = """
 @page { size: A4; margin: 12mm 13mm 14mm; }
 * { box-sizing: border-box; }
-body { font-family: 'DejaVu Sans', 'Noto Sans CJK JP', 'Noto Sans CJK TC', 'Noto Color Emoji', sans-serif; font-size: 11pt;
-       line-height: 1.45; color: #222; margin: 0; }
+body { font-family: 'Noto Sans CJK JP', 'DejaVu Sans', 'Noto Color Emoji', sans-serif; font-size: 10.5pt;
+       line-height: 1.5; color: #222; margin: 0; }
+html[lang=en] body { font-family: 'DejaVu Sans', 'Noto Sans CJK JP', 'Noto Color Emoji', sans-serif; }
 .sheet { break-after: page; }
 .sheet:last-child { break-after: auto; }
-.brand { font-size: 8.5pt; color: #777; border-bottom: 1px solid #bbb; padding-bottom: 2mm; margin-bottom: 3mm;
-         display: flex; justify-content: space-between; }
-h2 { font-size: 16pt; margin: 0 0 3mm; padding: 2mm 3mm; background: #fff4d6; border-left: 6px solid #f2a33a;
-     border-radius: 2mm; }
-p { margin: 2mm 0; }
+.hd { display: flex; align-items: center; gap: 4mm; padding-bottom: 2.5mm; border-bottom: 1.5px solid #333; }
+.badge { background: #c4552b; color: #fff; font-weight: 700; font-size: 11pt; padding: 1.6mm 3.5mm; border-radius: 1.6mm; white-space: nowrap; }
+.hd h1 { margin: 0; font-size: 15pt; line-height: 1.3; }
+.hd .sub { font-size: 8.6pt; color: #555; margin-top: .6mm; }
+.meta { font-size: 10.5pt; padding: 2.5mm 1mm; border-bottom: 1px solid #999; margin: 0 0 3mm; white-space: pre-wrap; }
+h2 { display: flex; align-items: center; gap: 2.5mm; font-size: 12pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+h2 .no { background: #b8432a; color: #fff; width: 6.2mm; height: 6.2mm; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10pt; flex: none; }
+h2.plain { font-size: 14pt; }
+p { margin: 1.5mm 0; }
+p.lead { background: #fff6df; border: 1.5px solid #e3a33b; border-radius: 2.5mm; padding: 2mm 4mm; }
 ul { margin: 1mm 0 2mm; padding-left: 6mm; }
-table { border-collapse: collapse; width: 100%; margin: 2mm 0 3.5mm; break-inside: avoid; }
-th, td { border: 1px solid #555; padding: 1.2mm 2mm; vertical-align: middle; }
-th { background: #eef3fb; font-weight: bold; text-align: left; }
+table { border-collapse: collapse; width: 100%; margin: 1.5mm 0 3mm; break-inside: avoid; }
+th, td { border: 1px solid #d5c09c; padding: 1.2mm 2mm; vertical-align: middle; }
+th { background: #f6e8cf; font-weight: bold; text-align: left; }
 td.blank { height: 8mm; }
 table.wide td.blank { height: 12mm; }          /* 1れつの かきこみ らん */
 table.grid { width: auto; }
-table.grid th, table.grid td { width: 11.5mm; height: 11.5mm; text-align: center; padding: 0; }
-table.grid th:first-child, table.grid td:first-child { width: 8mm; background: #eef3fb; }
+table.grid th, table.grid td { width: 11.5mm; height: 11.5mm; text-align: center; padding: 0; border-color: #9c8a6a; }
+table.grid th:first-child, table.grid td:first-child { width: 8mm; background: #f6e8cf; }
 table.check td, table.check th { text-align: center; padding: 1mm; }
 table.check td:first-child, table.check th:first-child { text-align: left; white-space: nowrap; }
 table.check td.blank { height: 8.5mm; width: 9mm; }
-td.dash { color: #bbb; background: #f2f2f2; }
+td.dash { color: #bbb; background: #f4efe6; }
 """
 
 
@@ -112,7 +118,15 @@ def block(el):
             return ''
         if lv:
             return f'<h{int(lv) + 1}>{body}</h{int(lv) + 1}>'
-        return f'<p>{body}</p>' if body.strip() else ''
+        if not body.strip():
+            return ''
+        m = re.match(r'^<b>(\d)\.\s*(.*?)</b>(.*)$', body, re.S)
+        if m:   # 「1. めいろを うつそう」→ まる すうじの みだし
+            rest = m.group(3).lstrip('：: ')
+            return f'<h2><span class="no">{m.group(1)}</span>{m.group(2)}</h2>' + (f'<p>{rest}</p>' if rest.strip() else '')
+        if re.match(r'^(なまえ|ねん|Name|Class)', body):
+            return f'<div class="meta">{body}</div>'
+        return f'<p>{body}</p>'
     if tag == 'table':
         return table(el)
     if tag == 'list':
@@ -129,6 +143,7 @@ def sections(doc):
         if el.tag == 'paragraph' and el.get('heading') == '2':
             cur = {'title': ''.join(el.itertext()).strip(), 'html': []}
             secs.append(cur)
+            continue
         if cur is not None:
             cur['html'].append(block(el))
     return secs
@@ -149,10 +164,11 @@ def translate(doc, table):
 
 
 def page(sheets, lang):
-    left, right = BRAND[lang]
+    badge = 'ワークシート' if lang == 'ja' else 'Worksheet'
+    sub = ('ブロックで プログラミング ｜ ' + BRAND['ja'][1]) if lang == 'ja' else ('Block Programming ｜ ' + BRAND['en'][1])
     body = ''.join(
-        f'<section class="sheet"><div class="brand"><span>{left}</span>'
-        f'<span>{right}</span></div>{"".join(s["html"])}</section>' for s in sheets)
+        f'<section class="sheet"><div class="hd"><span class="badge">{badge}</span><div><h1>{html.escape(s["title"])}</h1>'
+        f'<div class="sub">{sub}</div></div></div>{"".join(s["html"])}</section>' for s in sheets)
     return f'<!DOCTYPE html><html lang="{lang}"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>'
 
 
@@ -174,7 +190,11 @@ def main(src, lang='ja'):
         jobs.append(('worksheets-all', secs))
         for name, ss in jobs:
             pg.set_content(page(ss, lang), wait_until='load')
-            pg.pdf(path=str(out / f'{name}.pdf'), format='A4', prefer_css_page_size=True, print_background=True)
+            ft = html.escape((ss[0]['title'] if len(ss) == 1 else ('ワークシート 一式' if lang == 'ja' else 'All worksheets')) +
+                             (' ｜ ブロックで プログラミング ｜ ワークシート' if lang == 'ja' else ' ｜ Block Programming ｜ Worksheet'))
+            pg.pdf(path=str(out / f'{name}.pdf'), format='A4', prefer_css_page_size=True, print_background=True,
+                   display_header_footer=True, header_template='<div></div>',
+                   footer_template=f'<div style="width:100%;text-align:center;font-size:7px;color:#666;font-family:Noto Sans CJK JP">{ft}　<span class="pageNumber"></span> / <span class="totalPages"></span></div>')
             print(name, ss[0]['title'] if len(ss) == 1 else 'all')
         b.close()
 
