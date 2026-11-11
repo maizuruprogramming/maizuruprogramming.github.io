@@ -330,7 +330,7 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 .lrsteps li{counter-increment:st;background:var(--bg);border-radius:14px;padding:12px 14px 12px 54px;position:relative;line-height:1.7;font-size:14px}
 .lrsteps li::before{content:counter(st);position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--shu);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
 .lrsteps b{display:block;font-size:16px}
-.lrtips{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lrtips{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .lrtips ul{margin:0;padding-left:1.2em;font-size:15px;line-height:1.8}
 .lrtips li{margin:4px 0}
 .lrplan{margin:6px 0;padding-left:1.4em;font-size:15px;line-height:1.9}
@@ -340,4 +340,64 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 .about dd .url{font-size:12px;color:var(--sub)}
 @media (max-width:760px){.lrtips{grid-template-columns:1fr}}
 .infobtns #learnBtn{flex-basis:100%}
+/* ===== 第37回 ヘキサうどん ===== */
+.card.soon{opacity:.55;cursor:default}.card.soon:hover{border-color:var(--line)}
+.hsvg{display:block;max-width:100%;height:auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hsvg.hint{cursor:pointer}.hsvg .hag{cursor:pointer}
+.hpop{animation:hpop .9s ease-out forwards}@keyframes hpop{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+.hgame{grid-template-columns:1fr 420px}
+.hmapw{display:flex;flex-direction:column;align-items:center;gap:8px}
+.hlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--sub);justify-content:center}
+.hlegend span{display:inline-flex;align-items:center;gap:4px}
+.hsw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:4px;border:1px solid rgba(0,0,0,.15)}
+.hctl .hstats{grid-template-columns:repeat(4,1fr)}
+.hctl .stat b{font-size:20px}
+.hkrow{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.hk{display:inline-flex;align-items:center;gap:4px;padding:4px 8px 4px 4px;border-radius:99px;border:2px dashed var(--line);font-size:12px;color:var(--sub);opacity:.75}
+.hk.today{border-style:solid;border-color:var(--gold);opacity:1}
+.hk.got{background:color-mix(in srgb,var(--gold) 22%,var(--paper));border-style:solid;color:var(--ink);opacity:1}
+.hkdot{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;color:#fff;font-style:normal;font-size:11px;font-weight:800;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.hcards{display:flex;flex-direction:column;gap:6px}
+#hTypeCards{flex-direction:row;flex-wrap:wrap}
+#hTypeCards .hcard{flex:1;min-width:84px;flex-direction:column;padding:10px 6px}
+.hcard{display:flex;align-items:center;gap:8px;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:6px 8px;color:var(--ink);text-align:left;font-family:inherit}
+.hcard b{font-size:16px}.hcard span{font-size:13px;font-weight:700}.hcard em{font-style:normal;font-size:11px;color:var(--sub)}
+.hcard.on{border-color:var(--agc,var(--shu));box-shadow:0 0 0 2px var(--agc,var(--shu))}
+.hcard.bad{border-color:#d00}
+.hagn{width:22px;height:22px;border-radius:50%;background:var(--agc);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.hty{width:70px;flex:none}
+.hbars{flex:1;display:grid;grid-template-columns:auto 1fr auto;gap:2px 6px;align-items:center;min-width:0}
+.hbars small{font-size:11px;color:var(--sub);white-space:nowrap}
+.hbars b{font-size:12px;text-align:right;white-space:nowrap}
+.hbars b.inf{grid-column:2 / 4;text-align:left;font-weight:700}
+.trk{height:8px;border-radius:99px;background:var(--line);overflow:hidden;min-width:30px}
+.trk i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.trk.fuel i{background:#2f9e6e}
+.hbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hbtns .btn{flex:1;padding:9px 8px;font-size:14px;min-width:0}
+.hbig{width:100%;font-size:19px!important;padding:13px!important}
+.hbtns .hbig{flex:2}
+.hplansum{font-size:14px;margin-top:8px;text-align:center}
+.hnote{font-size:13px;color:var(--sub);line-height:1.6;margin:8px 0}
+#hRunBox{margin-top:6px}
+.hprob{font-size:13px;color:var(--sub);margin-left:10px}
+.htbl{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+.htbl th,.htbl td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:center}
+.htbl th{color:var(--sub);font-weight:700;font-size:12px}
+.htbl tr.me td{font-weight:800;background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.htbl.big{font-size:15px}
+.htbl.terr{max-width:360px;font-size:15px}.htbl.terr td:first-child{text-align:left}
+.hteam{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.hklegend{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;font-size:15px}
+.hklegend span{display:inline-flex;align-items:center;gap:6px}
+.hd2info{font-size:15px;text-align:center;line-height:1.7;min-height:52px}
+.hflow{font-size:16px;line-height:1.8;padding-left:1.4em;margin:6px 0 12px}
+.hcap{font-size:14px;color:var(--sub);margin:0}
+.hpb{display:flex;justify-content:center}
+@media (max-width:900px){.hgame{grid-template-columns:1fr}}
+.hty{width:auto;min-width:70px;white-space:nowrap}
+@media (max-width:900px){.hstartrow{position:sticky;bottom:8px;z-index:5;background:var(--paper);padding:6px;border-radius:14px;box-shadow:0 -4px 14px rgba(0,0,0,.08)}}
+.hcleg{display:flex;gap:14px;justify-content:center;font-size:12px;color:var(--sub);margin-top:6px}.hcleg b{font-weight:700}
+.lrteach h4{margin:14px 0 4px;font-size:16px}.lrteach ul,.lrteach ol{margin:4px 0;padding-left:1.4em;font-size:15px;line-height:1.8}.lrteach{border-color:var(--gold)}
+.lrdl{margin:10px 0 6px;padding:12px 14px;border:2px dashed var(--gold);border-radius:14px}.lrdl h4{margin:0 0 8px!important}.lrdlbtns{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px}.lrdlbtns .btn{text-decoration:none;display:inline-block;font-size:16px;padding:10px 16px}
 </style>

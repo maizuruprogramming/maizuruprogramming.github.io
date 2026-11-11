@@ -29,9 +29,9 @@ const EN_SAMPLES={
 
 SAMPLES=EN_SAMPLES;
 const CODE={game:'en',prog:[],cursor:null,S:6,field0:null,runner:null,result:null,loaded:{},progs:{},probs:{}};
-function saveProg(){ try{ localStorage.setItem('enmusubi-program'+(CODE.game==='kata'?'-kata':''),JSON.stringify(CODE.prog)); }catch(e){} }
+function saveProg(){ try{ localStorage.setItem('enmusubi-program'+(CODE.game==='en'?'':'-'+CODE.game),JSON.stringify(CODE.prog)); }catch(e){} }
 function loadProg(){
-  try{ const p=JSON.parse(localStorage.getItem('enmusubi-program'+(CODE.game==='kata'?'-kata':''))||'null'); if(Array.isArray(p)){ const fix=l=>l.forEach(b=>{ b.id='b'+(nextBid++); if(b.body) fix(b.body); }); fix(p); return p; } }catch(e){}
+  try{ const p=JSON.parse(localStorage.getItem('enmusubi-program'+(CODE.game==='en'?'':'-'+CODE.game))||'null'); if(Array.isArray(p)){ const fix=l=>l.forEach(b=>{ b.id='b'+(nextBid++); if(b.body) fix(b.body); }); fix(p); return p; } }catch(e){}
   return SAMPLES.smp1();
 }
 function validProg(p){ const ok=l=>l.every(b=>BLOCKS[b.type]&&(!b.body||ok(b.body))); return ok(p); }
@@ -39,7 +39,9 @@ function validProg(p){ const ok=l=>l.every(b=>BLOCKS[b.type]&&(!b.body||ok(b.bod
 /* ---- ブロックの文字（えらぶ欄つき） ---- */
 function optLabel(kind,v){
   if(kind==='pos' && CODE.game==='kata') return v;
-  if(kind==='cond') return t((CODE.game==='kata'?'kc_':'c_')+v);
+  if(kind==='cond') return t(({kata:'kc_',hexa:'hc_'}[CODE.game]||'c_')+v);
+  if(kind==='hdir') return t('h_d'+v);
+  if(kind==='carno') return v;
   if(kind==='dir') return t('k_d'+v);
   if(kind==='die'){ const d=CODE.prob&&CODE.prob.dies? dieByP(CODE.prob.dies,+v):null; return d? dieName(d) : v; }
   return v;
@@ -134,8 +136,8 @@ function insertBlock(type,slot){
 
 /* ---- パレット（タップ または ドラッグで入れる） ---- */
 function renderPalette(){
-  const groups=CODE.game==='kata'? [['pal_act',['kcut','kfix','kbest']],['pal_ctrl',['repeat','kuntil','kforxy','kif','stop']]] : [['pal_act',['rotate','try','best']],['pal_ctrl',['repeat','until','forxy','if','stop']]];
-  $('palette').innerHTML=groups.map(([h,types])=>`<h5>${t(h)}</h5>`+types.map(ty=>`<div class="pblk blk k-${BLOCKS[ty].kind}" data-type="${ty}"><span class="blab">${blockLabelHTML({type:ty,p:DEFAULTS[ty]||{}},false)}</span></div>`).join('')).join('')+`<p class="ptip">${t(CODE.game==='kata'?'k_code_tip':'code_tip')}</p>`;
+  const groups=CODE.game==='hexa'? [['pal_act',['hgo','hnear','hmeet','hmove','hwait']],['h_pal_if',['hif','hifcar']]] : CODE.game==='kata'? [['pal_act',['kcut','kfix','kbest']],['pal_ctrl',['repeat','kuntil','kforxy','kif','stop']]] : [['pal_act',['rotate','try','best']],['pal_ctrl',['repeat','until','forxy','if','stop']]];
+  $('palette').innerHTML=groups.map(([h,types])=>`<h5>${t(h)}</h5>`+types.map(ty=>`<div class="pblk blk k-${BLOCKS[ty].kind}" data-type="${ty}"><span class="blab">${blockLabelHTML({type:ty,p:DEFAULTS[ty]||{}},false)}</span></div>`).join('')).join('')+`<p class="ptip">${t({kata:'k_code_tip',hexa:'h_code_tip'}[CODE.game]||'code_tip')}</p>`;
   $('palette').querySelectorAll('.pblk').forEach(bindPaletteDrag);
 }
 function bindPaletteDrag(el){
@@ -276,6 +278,68 @@ function execKata(prog,P){
   return {ops:ctx.ops,trace:ctx.trace,board:ctx.b,miss:kMiss(ctx.b,goal),err:ctx.err,errId:ctx.errId,notes:[...ctx.notes]};
 }
 
+/* ---- 第37回 用の ブロック（車が 次の 行動を きめる たびに 上から 実行） ---- */
+const H_BLOCKS={
+  hgo:   {kind:'act',  label:'hb_go',    fields:{}},
+  hnear: {kind:'act',  label:'hb_near',  fields:{}},
+  hmeet: {kind:'act',  label:'hb_meet',  fields:{}},
+  hmove: {kind:'act',  label:'hb_move',  fields:{d:'hdir'}},
+  hwait: {kind:'act',  label:'hb_wait',  fields:{}},
+  hif:   {kind:'cond', label:'b_if',     fields:{c:'cond'}, body:true},
+  hifcar:{kind:'cond', label:'hb_ifcar', fields:{n:'carno'}, body:true}
+};
+const H_DEFAULTS={hmove:{d:'2'},hif:{c:'lowfuel'},hifcar:{n:'1'}};
+const H_FIELD_OPTS={ hdir:()=>['0','1','2','3','4','5'], carno:()=>['1','2','3','4'], cond:()=>['patrol','supply','lowfuel','halffuel','together','allkinds'] };
+const H_SAMPLES={
+  smp1:()=>[mkBlock('hgo')],
+  smp2:()=>{ const a=mkBlock('hif',{c:'lowfuel'}); a.body.push(mkBlock('hmeet')); const b=mkBlock('hif',{c:'supply'}); b.body.push(mkBlock('hmeet')); return [a,b,mkBlock('hgo')]; },
+  smp3:()=>{ const a=mkBlock('hif',{c:'allkinds'}); a.body.push(mkBlock('hnear')); const b=mkBlock('hif',{c:'lowfuel'}); b.body.push(mkBlock('hmeet')); const c=mkBlock('hif',{c:'supply'}); c.body.push(mkBlock('hmeet')); return [b,c,a,mkBlock('hgo')]; }
+};
+// 1台の 車の 次の 行動を プログラムで きめる
+function hProgDecide(prog,ctx,i,E){
+  const {P,A,stock,taken,t,S}=ctx, a=A[i], mem=ctx.mem; mem.claim=mem.claim||{}; mem.D=mem.D||{};
+  const canMove=()=> t+hTime(P.terr[a.cur],ctx.roads[a.cur])<=S && (a.type!=='p'||a.fuel>=H_FUEL[P.terr[a.cur]]);
+  const go=onlyNew=>hActGo(ctx,i,onlyNew), meet=()=>hActMeet(ctx,i);
+  const cond=c=>{ switch(c){
+    case 'patrol': return a.type==='p'; case 'supply': return a.type==='s';
+    case 'lowfuel': return a.type==='p'&&a.fuel<=P.fuelMax/4; case 'halffuel': return a.type==='p'&&a.fuel<=P.fuelMax/2;
+    case 'together': return A.some((b,j)=>j!==i&&b.type!==a.type&&b.cur===a.cur);
+    case 'allkinds': return ctx.todayKinds.size>=P.kinds; } return false; };
+  let out=null, n=0;
+  const run=list=>{ for(const b of list){ if(out||E.err) return; if(++n>2000){ E.err='err_limit'; E.errId=b.id; return; }
+    const p=b.p||{};
+    switch(b.type){
+      case 'hgo': out={act:go(true),id:b.id}; break;
+      case 'hnear': out={act:go(false),id:b.id}; break;
+      case 'hmeet': out={act:meet(),id:b.id}; break;
+      case 'hwait': out={act:'w',id:b.id}; break;
+      case 'hmove': { const nb=hNb(P.W,P.H,a.cur,+p.d); if(nb<0||P.terr[nb]===2){ E.err='h_err_pond'; E.errId=b.id; return; }
+        if(!canMove()){ E.notes.add('h_note_wait'); out={act:'w',id:b.id}; } else out={act:+p.d,id:b.id}; break; }
+      case 'hif': if(cond(p.c)) run(b.body); break;
+      case 'hifcar': if(i+1===+p.n) run(b.body); break;
+    } } };
+  run(prog);
+  return out||{act:'w',id:null};
+}
+function execHexa(prog,P){
+  const E={err:null,errId:null,notes:new Set()}, types=hRobotTypes(P,2); let team=hInitTeam(P,types); const stays=[], days=[], trace=[];
+  for(let d=0;d<P.days&&!E.err;d++){
+    const roads=hRoadStates(P,stays,1); team=hNewDayStock(P,team); const start=[JSON.parse(JSON.stringify({agents:team.agents}))], ids={};
+    const r=hRunTeam(P,d,roads,team,(ctx,i)=>{ if(E.err) return null; const o=hProgDecide(prog,ctx,i,E); if(o.id&&ids[ctx.t]===undefined) ids[ctx.t]=o.id; return E.err? null : o.act; });
+    team=r.st; stays.push(r.stays.slice());
+    days.push({roads,start,res:[r],time:[0],plans:[r.acts]});
+    for(let tt=1;tt<=r.S;tt++){ let id=null; for(let q=tt-1;q>=0;q--){ if(ids[q]!==undefined){ id=ids[q]; break; } } trace.push({day:d,tau:tt,id}); }
+  }
+  const sc=hScore(days,0);
+  // お手本チームを 同じ マップに かさねて 見せる（自分=こい色、お手本=うすい色）
+  const MM=hModelMatch(P), view=days.map((d,j)=>({roads:d.roads,start:[d.start[0],MM.days[j].start[0]],res:[d.res[0],MM.days[j].res[0]]}));
+  let me0=0,mo0=0; const base=days.map((d,j)=>{ const b=[me0,mo0]; me0+=d.res[0].udon; mo0+=MM.days[j].res[0].udon; return b; });
+  trace.forEach(tr=>{ const b=base[tr.day]; tr.me=b[0]+days[tr.day].res[0].events.filter(e=>e.t<=tr.tau).length; tr.mo=b[1]+MM.days[tr.day].res[0].events.filter(e=>e.t<=tr.tau).length; });
+  return {days,view,trace,ops:trace,score:sc,err:E.err,errId:E.errId,notes:[...E.notes]};
+}
+function hModelMatch(P){ if(!P._mm) P._mm=hRobotMatch(P,[3]); return P._mm; }
+function hModel(P){ if(!P._model) P._model=hScore(hModelMatch(P).days,0); return P._model; }
+
 /* ---- 競技ごとの ちがい ---- */
 const GDEF={
   en:{
@@ -304,6 +368,27 @@ const GDEF={
       return {win,me:`${t('k_l_miss')} <b>${res.miss}</b> / ${all}<br>${t('l_moves')} <b>${res.ops.length}</b>`, model:`${t('k_l_miss')} <b>${model.miss}</b> / ${all}<br>${t('l_moves')} <b>${model.ops.length}</b>`, json:kAnswerJSON(res.ops)}; }
   }
 };
+GDEF.hexa={
+  blocks:H_BLOCKS, defaults:H_DEFAULTS, opts:H_FIELD_OPTS, samples:H_SAMPLES, smpKeys:['h_smp1','h_smp2','h_smp3'], sizes:[8,10,12],
+  newProblem:S=>hMakeProblem(S,'mid'),
+  mount(P,w){ const bd=new HBoard($('codeBoard'),{P,maxW:Math.min(w-8,440),maxH:380});
+    $('codeBoard').insertAdjacentHTML('afterend',`<div class="hcleg" id="hcLeg"><span><i class="hteam" style="background:${HTEAMC[0]}"></i><b data-i18n="h_leg_me">${t('h_leg_me')}</b></span><span><i class="hteam" style="background:${HTEAMC[1]};opacity:.5"></i><b data-i18n="h_leg_model">${t('h_leg_model')}</b></span></div>`);
+    this.reset(bd,P); return bd; },
+  look:k=>k? {color:HTEAMC[1],ghost:true} : {color:HTEAMC[0],ghost:false},
+  reset(bd,P){ bd.curDay=null; if(bd.anim){ bd.anim=null; } const ag=hRobotTypes(P,2).map((ty,i)=>({type:ty,pos:P.starts[i]}));
+    bd.set({roads:new Array(P.N).fill(0),stock:null,plans:[],teams:[{agents:ag,...this.look(0)},{agents:ag,...this.look(1)}]}); },
+  final(bd,res){ const d=res.view[res.view.length-1]; if(!d) return; bd.curDay=null; bd.state.roads=d.roads; const A=new HAnim(bd,d,this.look); A.tau=d.res[0].S; A.frame(); bd.render(); },
+  step(bd,tr,anim,cb){ const rec=CODE.result.view[tr.day];
+    if(bd.curDay!==tr.day){ bd.curDay=tr.day; bd.state.roads=rec.roads; bd.anim=new HAnim(bd,rec,this.look,{popAll:true}); bd.anim.tau=tr.tau-1; bd.anim.frame(); bd.render(); }
+    const A=bd.anim, from=tr.tau-1, to=tr.tau;
+    if(!anim){ A.tau=to; A.frame(); cb(); return; }
+    const t0=performance.now(), dur=260; const go=now=>{ const f=Math.min(1,(now-t0)/dur); A.tau=from+(to-from)*f; A.frame(); if(f<1) requestAnimationFrame(go); else cb(); }; requestAnimationFrame(go); },
+  exec:(prog,P)=>execHexa(prog,P),
+  done(res,P){ const s=res.score; return {html:t('h_st_done',{k:s.kinds,n:P.kinds,d:s.daily,u:s.udon}),good:s.kinds===P.kinds}; },
+  compare(res,P){ const s=res.score, m=hModel(P), win=!res.err&&hCompare(s,{...m,time:0})[0]<=0;
+    const L=x=>`${t('h_c_kinds')} <b>${x.kinds}</b> / ${P.kinds}<br>${t('h_c_daily')} <b>${x.daily}</b><br>${t('h_c_udon')} <b>${x.udon}</b>`;
+    return {win,me:L(s),model:L(m),modelKey:'h_model_title',json:res.days.map((d,j)=>`// ${t('h_day_n',{d:j+1})}\n[\n`+d.res[0].out.map(a=>'  '+JSON.stringify(a)).join(',\n')+'\n]').join('\n\n')}; }
+};
 const D=()=>GDEF[CODE.game];
 
 /* ---- ためす（盤面での 再生と ブロックの 光） ---- */
@@ -317,13 +402,16 @@ function codeSetup(game){
     if(CODE.progs[game]) CODE.prog=CODE.progs[game];
     else { CODE.prog=loadProg(); if(!validProg(CODE.prog)) CODE.prog=SAMPLES.smp1(); }
     CODE.loaded[game]=true;
+    const sizes=g.sizes||[4,6,8]; CODE.sz=CODE.sz||{}; CODE.S=CODE.sz[game]||(game==='hexa'?8:6);
+    $('codeSize').innerHTML=sizes.map(s=>`<button data-v="${s}" class="${s===CODE.S?'on':''}">${s}×${s}</button>`).join('');
+    $('codeSize').querySelectorAll('button').forEach(b=>b.onclick=()=>{ setSeg('codeSize',b.dataset.v); CODE.S=+b.dataset.v; CODE.sz[CODE.game]=CODE.S; newCodeProblem(); });
     if(!CODE.prob) CODE.prob=g.newProblem(CODE.S);
     mountCodeBoard();
   } else if(!CODE.board||!CODE.board.wrap.isConnected) mountCodeBoard();
   relabelCode();
 }
-function newCodeProblem(){ codeStop(); CODE.prob=D().newProblem(CODE.S); CODE.result=null; mountCodeBoard(); $('codeResult').innerHTML=''; renderProg(); codeStatus(t('st_ready')); }
-function mountCodeBoard(){ const w=$('codeBoardWrap').clientWidth||340; CODE.board=D().mount(CODE.prob,w); }
+function newCodeProblem(){ codeStop(); CODE.prob=D().newProblem(CODE.S); CODE.result=null; mountCodeBoard(); $('codeResult').innerHTML=''; renderProg(); codeStatus(t({kata:'k_st_ready',hexa:'h_st_ready'}[CODE.game]||'st_ready')); }
+function mountCodeBoard(){ const w=$('codeBoardWrap').clientWidth||340; const lg=$('hcLeg'); if(lg) lg.remove(); CODE.board=D().mount(CODE.prob,w); }
 function codeStatus(html,cls){ const s=$('codeStatus'); s.innerHTML=html; s.className='hint'+(cls?' '+cls:''); }
 function hlBlock(id){ document.querySelectorAll('#prog .blk.run').forEach(e=>e.classList.remove('run')); if(id){ const el=document.querySelector(`#prog [data-id="${id}"]`); if(el){ el.classList.add('run'); el.scrollIntoView({block:'nearest'}); } } }
 function errBlock(id){ document.querySelectorAll('#prog .blk.err').forEach(e=>e.classList.remove('err')); if(id){ const el=document.querySelector(`#prog [data-id="${id}"]`); if(el) el.classList.add('err'); } }
@@ -340,7 +428,7 @@ function codeRun(animated){
     if(CODE.runner!==R) return;
     if(R.k>=res.trace.length){ hlBlock(null); CODE.runner=null; $('codeRun').disabled=false; finishCode(res); return; }
     const tr=res.trace[R.k++]; hlBlock(tr.id);
-    codeStatus(t('st_running',{k:R.k,n:res.trace.length}));
+    codeStatus(t(CODE.game==='hexa'?'h_st_running':'st_running',{k:R.k,n:res.trace.length,d:(tr.day||0)+1,t:tr.tau||0,me:tr.me||0,mo:tr.mo||0}));
     const ms=stepMs(), anim=ms>=400;
     g.step(CODE.board,tr,anim,()=>{ if(CODE.runner===R) R.timer=setTimeout(tick, anim? Math.max(60,ms-480+120) : ms); });
   };
@@ -352,10 +440,9 @@ function finishCode(res){
   else { const d=g.done(res,CODE.prob); codeStatus(d.html+(res.notes.length?'<br>'+res.notes.map(n=>t(n)).join(''):''), d.good?'good':''); }
   const c=g.compare(res,CODE.prob);
   $('codeResult').innerHTML=`<div class="vs" style="grid-template-columns:1fr 1fr;margin:10px 0"><div class="side ${c.win?'win':''}"><h5>${t('code_you')}</h5><div>${c.me}</div></div>
-    <div class="side"><h5>${t('model_title')}</h5><div>${c.model}</div></div></div>
+    <div class="side"><h5>${t(c.modelKey||'model_title')}</h5><div>${c.model}</div></div></div>
     <details><summary>${t('code_json')}</summary><pre class="json" style="margin-top:8px">${c.json}</pre></details>`;
 }
-document.querySelectorAll('#codeSize button').forEach(b=>b.addEventListener('click',()=>{ setSeg('codeSize',b.dataset.v); CODE.S=+b.dataset.v; newCodeProblem(); }));
 document.querySelectorAll('#codeSpeed button').forEach(b=>b.addEventListener('click',()=>setSeg('codeSpeed',b.dataset.v)));
 $('codeNew').onclick=newCodeProblem;
 $('codeRun').onclick=()=>codeRun(true);
@@ -369,7 +456,7 @@ function relabelCode(){
   renderPalette(); renderProg();
   const g=D();
   $('codeSample').innerHTML=`<option value="">${t('sample_pick')}</option>`+['smp1','smp2','smp3'].map((k,i)=>`<option value="${k}">${t(g.smpKeys[i])}</option>`).join('');
-  if(!CODE.runner) codeStatus(t(CODE.game==='kata'?'k_st_ready':'st_ready'));
+  if(!CODE.runner) codeStatus(t({kata:'k_st_ready',hexa:'h_st_ready'}[CODE.game]||'st_ready'));
   if(CODE.result && !CODE.runner) finishCode(CODE.result);
   if(CODE.board && CODE.board.drawDie) CODE.board.drawDie();
 }

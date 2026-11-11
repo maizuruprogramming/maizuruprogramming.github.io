@@ -8,11 +8,12 @@ function show(name){
   $('s-'+name).classList.add('on'); window.scrollTo(0,0);
   if(name==='rules') initRules();
   if(name==='krules') initKRules();
+  if(name==='hrules') initHRules();
   if(name==='code') codeSetup(SETTINGS.game); else if(typeof codeStop==='function') codeStop();
 }
 function setupTitles(){
   const s=t(mode==='robot'?'robot_title':'solo_title');
-  $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s;
+  $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s; $('hgameTitle').textContent=s;
 }
 /* ---- 2つの 競技（第36回「エ。ー縁結びの誘導についてー」／第35回「シン・よみがえれ世界遺産」） ---- */
 const GAMEPAL=()=>[0,1,2,3,1,2,3,0,2,3,0,1,3,0,1,2].map(v=>kColor(v,SETTINGS.theme));
@@ -22,19 +23,28 @@ function renderHome(){
   $('hBadge').innerHTML=t(k?'k_badge':'badge');
   $('hLogoEn').innerHTML=t('logo'); $('hTagEn').innerHTML=t('tag'); $('hFootEn').innerHTML=t('foot');
   $('hLogoK').innerHTML=t('k_logo'); $('hTagK').innerHTML=t('k_tag'); $('hFootK').innerHTML=t('k_foot');
-  $('hSoloS').innerHTML=t(k?'k_m_solo_s':'m_solo_s');
+  $('hLogoH').innerHTML=t('h_logo'); $('hTagH').innerHTML=t('h_tag'); $('hFootH').innerHTML=t('h_foot');
+  const hx=SETTINGS.game==='hexa';
+  $('hSoloS').innerHTML=t(hx?'h_m_solo_s':k?'k_m_solo_s':'m_solo_s'); $('hRulesS').innerHTML=t(hx?'h_m_rules_s':'m_rules_s');
+
   document.querySelectorAll('#s-home .head').forEach(el=>{ const on=el.dataset.g===SETTINGS.game; el.classList.toggle('on',on); el.setAttribute('aria-hidden',on?'false':'true'); });
   $('logoKata').innerHTML=GAMEPAL().map(c=>`<i style="background:${c}"></i>`).join('');
 }
 document.querySelectorAll('#gameSw button').forEach(b=>b.onclick=()=>{ SETTINGS.game=b.dataset.g; saveSettings(); renderHome(); renderSetup(); });
 function renderSetup(){
-  const k=SETTINGS.game==='kata', keepSize=document.querySelector('#segSize button.on'), keepProb=document.querySelector('#segProb button.on');
-  const sizes=k?[4,6,8]:[4,6,8,10,12], probs=k?['easy','mid','hard','sample']:['rand','sample'];
-  const sv=keepSize&&sizes.includes(+keepSize.dataset.v)?keepSize.dataset.v:(k?'4':'6');
-  const pv=keepProb&&probs.includes(keepProb.dataset.v)?keepProb.dataset.v:probs[k?1:0];
+  const k=SETTINGS.game==='kata', hx=SETTINGS.game==='hexa', keepSize=document.querySelector('#segSize button.on'), keepProb=document.querySelector('#segProb button.on');
+  const sizes=hx?[8,10,12]:k?[4,6,8]:[4,6,8,10,12], probs=hx?['easy','mid','hard']:k?['easy','mid','hard','sample']:['rand','sample'];
+  const sv=keepSize&&sizes.includes(+keepSize.dataset.v)?keepSize.dataset.v:(hx?'8':k?'4':'6');
+  const pv=keepProb&&probs.includes(keepProb.dataset.v)?keepProb.dataset.v:probs[hx?0:k?1:0];
   $('segSize').innerHTML=sizes.map(s=>`<button data-v="${s}" class="${String(s)===sv?'on':''}">${s}×${s}</button>`).join('');
-  $('segProb').innerHTML=probs.map(p=>`<button data-v="${p}" class="${p===pv?'on':''}">${t(k?'k_prob_'+p:(p==='rand'?'prob_rand':'prob_sample'))}</button>`).join('');
-  $('sizeP').innerHTML=t(k?'k_size_p':'size_p'); $('botP').innerHTML=t(k?'k_bot_p':'bot_p');
+  $('segProb').innerHTML=probs.map(p=>`<button data-v="${p}" class="${p===pv?'on':''}">${t(hx?'h_prob_'+p:k?'k_prob_'+p:(p==='rand'?'prob_rand':'prob_sample'))}</button>`).join('');
+  $('sizeP').innerHTML=t(hx?'h_size_p':k?'k_size_p':'size_p'); $('botP').innerHTML=t(hx?'h_bot_p':k?'k_bot_p':'bot_p');
+  $('sizeH').innerHTML=t(hx?'h_size_h':'size_h'); $('timeH').innerHTML=t(hx?'h_time_h':'time_h'); $('probH').innerHTML=t(hx?'h_prob_h':'prob_h');
+  $('oppBox').style.display=hx?'':'none';
+  { const cur=document.querySelector('#segTime button.on'), vals=hx?[0,60,120]:[0,180,300], keys=hx?['time_none','h_time_1','h_time_2']:['time_none','time_3','time_5'];
+    const keep=cur&&vals.includes(+cur.dataset.v)?cur.dataset.v:'0';
+    $('segTime').innerHTML=vals.map((v,i)=>`<button data-v="${v}" class="${String(v)===keep?'on':''}">${t(keys[i])}</button>`).join('');
+    $('segTime').querySelectorAll('button').forEach(b=>b.onclick=()=>setSeg('segTime',b.dataset.v)); }
   ['segSize','segProb'].forEach(id=>document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
     setSeg(id,b.dataset.v);
     if(id==='segProb'&&b.dataset.v==='sample'&&!k) setSeg('segSize','4');
@@ -47,14 +57,14 @@ document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=
     mode=g==='setup-robot'?'robot':'solo';
     setupTitles();
     $('robotPanel').style.display=mode==='robot'?'':'none';
-    if(mode==='robot'){ setSeg('segTime','180'); }
+    if(mode==='robot'){ setSeg('segTime',SETTINGS.game==='hexa'?'0':'180'); }
     show('setup');
-  } else if(g==='rules') show(SETTINGS.game==='kata'?'krules':'rules');
+  } else if(g==='rules') show(SETTINGS.game==='kata'?'krules':SETTINGS.game==='hexa'?'hrules':'rules');
   else show(g);
 }));
 function segVal(id){return document.querySelector('#'+id+' button.on').dataset.v;}
 function setSeg(id,v){document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));}
-['segTime','segBot'].forEach(id=>{
+['segTime','segBot','segOpp'].forEach(id=>{
   document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
     setSeg(id,b.dataset.v);
     if(id==='segProb'&&b.dataset.v==='sample') setSeg('segSize','4');
@@ -95,10 +105,19 @@ ${t('json_a')}
   if(G && !G.ended){ updStats(G.board); updSubs(); tick(); if(G.hintKey) $('hint').innerHTML=t(G.hintKey); }
   PLAYERS.forEach(p=>p.relabel());
   relabelCode();
+  if(typeof hRelabel==='function') hRelabel();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.6', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.14', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.14',items:{ja:['「先生方へ」に授業用ワークシート（PDF、全3時間＋ふりかえりシート）を追加'],en:['Added class worksheets (PDF, 3 lessons + reflection sheet) to “For teachers”'],vi:['Thêm phiếu học tập (PDF, 3 tiết + phiếu tự đánh giá) vào «Dành cho giáo viên»'],th:['เพิ่มใบงาน (PDF, 3 คาบ + ใบสะท้อนการเรียนรู้) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн ажлын хуудас (PDF, 3 цаг + эргэцүүлэх хуудас) нэмэв']}},
+  {v:'0.9.13',items:{ja:['「先生方へ」に学習指導案と授業用スライド（PDF）を開くボタンを追加'],en:['Added buttons in “For teachers” to open the lesson plan and class slides (PDF)'],vi:['Thêm nút mở giáo án và trang trình chiếu (PDF) trong «Dành cho giáo viên»'],th:['เพิ่มปุ่มเปิดแผนการสอนและสไลด์ประกอบการสอน (PDF) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн төлөвлөгөө, слайд (PDF) нээх товч нэмэв']}},
+  {v:'0.9.12',items:{ja:['「勉強の仕方・遊び方」の最後に「先生方へ」を追加（学習指導要領との関連・3時間の授業例・評価のヒント・準備）','遊び方の動画を第37回を含む内容に撮り直し'],en:['Added “For teachers” at the end of “How to learn & play” (curriculum links, a 3-lesson plan, assessment tips, preparation)','Re-recorded the how-to video to include the 37th contest'],vi:['Thêm «Dành cho giáo viên» ở cuối «Cách học & cách chơi» (liên hệ chương trình, ví dụ 3 tiết, gợi ý đánh giá, chuẩn bị)','Quay lại video hướng dẫn, có cả lần 37'],th:['เพิ่ม «สำหรับครู» ท้าย «วิธีเรียนและวิธีเล่น» (ความเชื่อมโยงกับหลักสูตร ตัวอย่าง 3 คาบ คำแนะนำการประเมิน การเตรียมตัว)','ถ่ายวิดีโอวิธีเล่นใหม่ ให้มีครั้งที่ 37 ด้วย'],mn:['«Суралцах ба тоглох арга»-ын төгсгөлд «Багш нарт» хэсэг нэмэв (сургалтын хөтөлбөртэй холбоо, 3 цагийн жишээ, үнэлгээний зөвлөгөө, бэлтгэл)','Тоглох аргын видеог 37 дахь тэмцээнийг оруулан дахин бичив']}},
+  {v:'0.9.11',items:{ja:['第37回のルール説明の見本マップで、山地・池の上にあったスポットを平地に移した'],en:['37th rules: spots on the sample map that were on a mountain and a pond were moved onto plains'],vi:['Luật lần 37: chuyển các điểm trên bản đồ mẫu đang nằm trên núi và ao sang đồng bằng'],th:['กติกาครั้งที่ 37: ย้ายจุดบนแผนที่ตัวอย่างที่อยู่บนภูเขาและบ่อน้ำไปไว้บนที่ราบ'],mn:['37 дахь дүрэм: жишээ газрын зураг дээр уул, цөөрөм дээр байсан цэгүүдийг тал руу шилжүүлэв']}},
+  {v:'0.9.10',items:{ja:['第37回「プログラムでとく」で、お手本チームの車も同じマップにうすい色で表示し、玉数をくらべながら再生できるように'],en:['37th “Solve with Blocks”: the model team’s cars now appear faded on the same map, with both bowl counts shown during replay'],vi:['Lần 37 «Giải bằng khối lệnh»: xe của đội mẫu hiện mờ trên cùng bản đồ, kèm số bát của hai đội khi xem lại'],th:['ครั้งที่ 37 «แก้โจทย์ด้วยบล็อก»: แสดงรถของทีมตัวอย่างแบบสีจางบนแผนที่เดียวกัน พร้อมจำนวนชามของทั้งสองทีมระหว่างเล่นซ้ำ'],mn:['37 дахь «Блокоор бодох»: жишээ багийн машиныг нэг газрын зураг дээр бүдгээр харуулж, давталтын үед хоёр багийн аягын тоог харуулна']}},
+  {v:'0.9.9',items:{ja:['第37回の「プログラムでとく」を追加（車が行動をきめるたびに上から実行する作戦ブロック、3日間の再生、お手本チームとの比較、本番形式の回答）','「勉強の仕方・遊び方」に第37回のヒントを追加'],en:['Added “Solve with Blocks” for the 37th (strategy blocks run top-down each time a car decides, 3-day replay, comparison with the model team, official-format answer)','Added 37th tips to “How to learn & play”'],vi:['Thêm «Giải bằng khối lệnh» cho lần 37 (khối chiến thuật chạy từ trên xuống mỗi khi xe quyết định, xem lại 3 ngày, so với đội mẫu, đáp án dạng chính thức)','Thêm mẹo lần 37 vào «Cách học & cách chơi»'],th:['เพิ่ม «แก้โจทย์ด้วยบล็อก» ของครั้งที่ 37 (บล็อกกลยุทธ์ทำงานจากบนลงล่างทุกครั้งที่รถตัดสินใจ ดูย้อนหลัง 3 วัน เทียบกับทีมตัวอย่าง คำตอบรูปแบบทางการ)','เพิ่มคำแนะนำครั้งที่ 37 ใน «วิธีเรียนและวิธีเล่น»'],mn:['37 дахь «Блокоор бодох»-ыг нэмэв (машин шийдвэр гаргах бүрт дээрээс доош ажиллах стратегийн блок, 3 өдрийн давталт, жишээ багтай харьцуулах, албан ёсны хэлбэрийн хариулт)','«Суралцах ба тоглох арга»-д 37 дахь зөвлөгөө нэмэв']}},
+  {v:'0.9.8',items:{ja:['第37回の動きを公式のQ&A・補足資料に合わせた（燃料の消費・うどんの獲得・補給・交通量の順番、方向の番号、燃料の上限）','第37回の回答を本番と同じJSONの形で表示'],en:['37th: movement now follows the official Q&A and supplement (order of fuel use, udon pickup, refueling and traffic; direction numbers; fuel limit)','37th: answers are shown in the official JSON format'],vi:['Lần 37: cách di chuyển nay theo Hỏi đáp và tài liệu bổ sung chính thức (thứ tự trừ nhiên liệu, lấy udon, tiếp nhiên liệu và lưu lượng; số hướng; giới hạn nhiên liệu)','Lần 37: đáp án hiện theo dạng JSON chính thức'],th:['ครั้งที่ 37: การเคลื่อนที่เป็นไปตามถาม-ตอบและเอกสารเสริมทางการ (ลำดับการใช้น้ำมัน การรับอุด้ง การเติมน้ำมัน และปริมาณจราจร หมายเลขทิศ ขีดจำกัดน้ำมัน)','ครั้งที่ 37: แสดงคำตอบในรูปแบบ JSON ทางการ'],mn:['37 дахь: хөдөлгөөнийг албан ёсны асуулт-хариулт, нэмэлт материалд нийцүүлэв (түлш зарцуулах, удон авах, түлш нэмэх, замын ачааллын дараалал; чиглэлийн дугаар; түлшний дээд хэмжээ)','37 дахь: хариултыг албан ёсны JSON хэлбэрээр харуулна']}},
+  {v:'0.9.7',items:{ja:['第37回「ヘキサうどん」を追加（ルール説明6枚・ひとりであそぶ・ロボットとしょうぶ・結果と試合の再生・お手本チーム）'],en:['Added the 37th contest “Hexa Udon” (6 rule slides, solo play, robot battle, results with match replay and a model team)'],vi:['Thêm phần thi lần 37 «Hexa Udon» (6 trang luật, chơi một mình, đấu rô-bốt, kết quả kèm xem lại trận và đội mẫu)'],th:['เพิ่มการแข่งขันครั้งที่ 37 «เฮกซะอุด้ง» (สไลด์กติกา 6 แผ่น เล่นคนเดียว ประลองกับหุ่นยนต์ ผลลัพธ์พร้อมดูย้อนหลังและทีมตัวอย่าง)'],mn:['37 дахь «Хекса удон» тэмцээнийг нэмэв (дүрмийн 6 слайд, ганцаараа тоглох, роботтой өрсөлдөх, давталттай үр дүн, жишээ баг)']}},
   {v:'0.9.6',items:{ja:['設定に「勉強の仕方・遊び方」ページを追加（遊び方の動画・おすすめの進め方・ヒント・授業での使い方の例）','「このアプリについて」に 高専プロコン公式サイトへの リンクを追加'],en:['Added a “How to learn & play” page in Settings (how-to video, suggested path, tips, lesson plan example)','Added a link to the official KOSEN PROCON site in “About this app”'],vi:['Thêm trang «Cách học & cách chơi» trong Cài đặt (video hướng dẫn, lộ trình gợi ý, mẹo, ví dụ tiết học)','Thêm liên kết đến trang chính thức của PROCON KOSEN trong «Giới thiệu ứng dụng»'],th:['เพิ่มหน้า «วิธีเรียนและวิธีเล่น» ในการตั้งค่า (วิดีโอสอนเล่น ลำดับที่แนะนำ คำแนะนำ ตัวอย่างแผนการสอน)','เพิ่มลิงก์ไปยังเว็บไซต์ทางการของโปรคอนโคเซ็นใน «เกี่ยวกับแอปนี้»'],mn:['Тохиргоонд «Суралцах ба тоглох арга» хуудас нэмэв (заавар видео, санал болгох дараалал, зөвлөгөө, хичээлийн жишээ)','«Энэ апп-ын тухай» хэсэгт Косэн Проконы албан ёсны сайтын холбоос нэмэв']}},
   {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with Blocks”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng khối lệnh»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้โจทย์ด้วยบล็อก»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Блокоор бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
@@ -152,7 +171,7 @@ function showAbout(){
 }
 let INFO=null;
 /* ---- 勉強の仕方・遊び方 ---- */
-const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4';
+const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4', LESSON_PDF='lesson_plan.pdf', SLIDES_PDF='class_slides.pdf', WS_PDF='worksheet.pdf';
 let LEARN_FROM='home';
 function renderLearn(){
   const box=$('learnBody'); if(!box) return;
@@ -171,17 +190,20 @@ function renderLearn(){
   <div class="lrtips">
     <div class="panel lrn"><h3>🏯 ${t('lr_k_h')}</h3><ul>${t('lr_k_tips')}</ul></div>
     <div class="panel lrn"><h3>🔁 ${t('lr_e_h')}</h3><ul>${t('lr_e_tips')}</ul></div>
-  </div>
-  <div class="panel lrn">
-    <h3>🧑‍🏫 ${t('lr_t_h')}</h3>
-    <p>${t('lr_t_p')}</p>
-    <ol class="lrplan">${t('lr_t_plan')}</ol>
-    <p class="lrsmall">${t('lr_t_note')}</p>
+    <div class="panel lrn"><h3>🍜 ${t('lr_h_h')}</h3><ul>${t('lr_h_tips')}</ul></div>
   </div>
   <div class="panel lrn lrlink">
     <h3>🔗 ${t('lr_link_h')}</h3>
     <p>${t('lr_link_p')}</p>
     <a class="btn sub" href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')} ↗</a>
+  </div>
+  <div class="panel lrn lrteach" id="lrTeach">
+    <h3>🧑‍🏫 ${t('lr_tc_h')}</h3>
+    <p>${t('lr_tc_lead')}</p>
+    <div class="lrdl"><h4>📄 ${t('lr_tc_dl_h')}</h4>
+      <div class="lrdlbtns"><a class="btn sub" href="${LESSON_PDF}" target="_blank" rel="noopener">📝 ${t('lr_tc_plan')}</a><a class="btn sub" href="${SLIDES_PDF}" target="_blank" rel="noopener">🖥️ ${t('lr_tc_slides')}</a><a class="btn sub" href="${WS_PDF}" target="_blank" rel="noopener">✏️ ${t('lr_tc_ws')}</a></div>
+      <p class="lrsmall">${t('lr_tc_dl_note')}</p></div>
+    ${t('lr_tc_body')}
   </div>`;
   const nv=box.querySelector('video');
   nv.addEventListener('error',()=>{ nv.hidden=true; box.querySelector('.lrerr').hidden=false; });
@@ -236,7 +258,7 @@ $('demo2reset').onclick=()=>d2.setField(SAMPLE);
 
 /* ============ game ============ */
 let G=null;
-$('startBtn').onclick=()=>{ if(SETTINGS.game==='kata') startKata(); else startGame(); };
+$('startBtn').onclick=()=>{ if(SETTINGS.game==='kata') startKata(); else if(SETTINGS.game==='hexa') startHexa(); else startGame(); };
 function startGame(){
   stopPlayers();
   const S=+segVal('segSize'), limit=+segVal('segTime');

@@ -339,7 +339,7 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 .lrsteps li{counter-increment:st;background:var(--bg);border-radius:14px;padding:12px 14px 12px 54px;position:relative;line-height:1.7;font-size:14px}
 .lrsteps li::before{content:counter(st);position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--shu);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
 .lrsteps b{display:block;font-size:16px}
-.lrtips{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lrtips{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .lrtips ul{margin:0;padding-left:1.2em;font-size:15px;line-height:1.8}
 .lrtips li{margin:4px 0}
 .lrplan{margin:6px 0;padding-left:1.4em;font-size:15px;line-height:1.9}
@@ -349,6 +349,66 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 .about dd .url{font-size:12px;color:var(--sub)}
 @media (max-width:760px){.lrtips{grid-template-columns:1fr}}
 .infobtns #learnBtn{flex-basis:100%}
+/* ===== 第37回 ヘキサうどん ===== */
+.card.soon{opacity:.55;cursor:default}.card.soon:hover{border-color:var(--line)}
+.hsvg{display:block;max-width:100%;height:auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hsvg.hint{cursor:pointer}.hsvg .hag{cursor:pointer}
+.hpop{animation:hpop .9s ease-out forwards}@keyframes hpop{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+.hgame{grid-template-columns:1fr 420px}
+.hmapw{display:flex;flex-direction:column;align-items:center;gap:8px}
+.hlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--sub);justify-content:center}
+.hlegend span{display:inline-flex;align-items:center;gap:4px}
+.hsw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:middle;margin-right:4px;border:1px solid rgba(0,0,0,.15)}
+.hctl .hstats{grid-template-columns:repeat(4,1fr)}
+.hctl .stat b{font-size:20px}
+.hkrow{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.hk{display:inline-flex;align-items:center;gap:4px;padding:4px 8px 4px 4px;border-radius:99px;border:2px dashed var(--line);font-size:12px;color:var(--sub);opacity:.75}
+.hk.today{border-style:solid;border-color:var(--gold);opacity:1}
+.hk.got{background:color-mix(in srgb,var(--gold) 22%,var(--paper));border-style:solid;color:var(--ink);opacity:1}
+.hkdot{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;color:#fff;font-style:normal;font-size:11px;font-weight:800;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.hcards{display:flex;flex-direction:column;gap:6px}
+#hTypeCards{flex-direction:row;flex-wrap:wrap}
+#hTypeCards .hcard{flex:1;min-width:84px;flex-direction:column;padding:10px 6px}
+.hcard{display:flex;align-items:center;gap:8px;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:6px 8px;color:var(--ink);text-align:left;font-family:inherit}
+.hcard b{font-size:16px}.hcard span{font-size:13px;font-weight:700}.hcard em{font-style:normal;font-size:11px;color:var(--sub)}
+.hcard.on{border-color:var(--agc,var(--shu));box-shadow:0 0 0 2px var(--agc,var(--shu))}
+.hcard.bad{border-color:#d00}
+.hagn{width:22px;height:22px;border-radius:50%;background:var(--agc);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.hty{width:70px;flex:none}
+.hbars{flex:1;display:grid;grid-template-columns:auto 1fr auto;gap:2px 6px;align-items:center;min-width:0}
+.hbars small{font-size:11px;color:var(--sub);white-space:nowrap}
+.hbars b{font-size:12px;text-align:right;white-space:nowrap}
+.hbars b.inf{grid-column:2 / 4;text-align:left;font-weight:700}
+.trk{height:8px;border-radius:99px;background:var(--line);overflow:hidden;min-width:30px}
+.trk i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.trk.fuel i{background:#2f9e6e}
+.hbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hbtns .btn{flex:1;padding:9px 8px;font-size:14px;min-width:0}
+.hbig{width:100%;font-size:19px!important;padding:13px!important}
+.hbtns .hbig{flex:2}
+.hplansum{font-size:14px;margin-top:8px;text-align:center}
+.hnote{font-size:13px;color:var(--sub);line-height:1.6;margin:8px 0}
+#hRunBox{margin-top:6px}
+.hprob{font-size:13px;color:var(--sub);margin-left:10px}
+.htbl{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+.htbl th,.htbl td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:center}
+.htbl th{color:var(--sub);font-weight:700;font-size:12px}
+.htbl tr.me td{font-weight:800;background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.htbl.big{font-size:15px}
+.htbl.terr{max-width:360px;font-size:15px}.htbl.terr td:first-child{text-align:left}
+.hteam{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.hklegend{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;font-size:15px}
+.hklegend span{display:inline-flex;align-items:center;gap:6px}
+.hd2info{font-size:15px;text-align:center;line-height:1.7;min-height:52px}
+.hflow{font-size:16px;line-height:1.8;padding-left:1.4em;margin:6px 0 12px}
+.hcap{font-size:14px;color:var(--sub);margin:0}
+.hpb{display:flex;justify-content:center}
+@media (max-width:900px){.hgame{grid-template-columns:1fr}}
+.hty{width:auto;min-width:70px;white-space:nowrap}
+@media (max-width:900px){.hstartrow{position:sticky;bottom:8px;z-index:5;background:var(--paper);padding:6px;border-radius:14px;box-shadow:0 -4px 14px rgba(0,0,0,.08)}}
+.hcleg{display:flex;gap:14px;justify-content:center;font-size:12px;color:var(--sub);margin-top:6px}.hcleg b{font-weight:700}
+.lrteach h4{margin:14px 0 4px;font-size:16px}.lrteach ul,.lrteach ol{margin:4px 0;padding-left:1.4em;font-size:15px;line-height:1.8}.lrteach{border-color:var(--gold)}
+.lrdl{margin:10px 0 6px;padding:12px 14px;border:2px dashed var(--gold);border-radius:14px}.lrdl h4{margin:0 0 8px!important}.lrdlbtns{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px}.lrdlbtns .btn{text-decoration:none;display:inline-block;font-size:16px;padding:10px 16px}
 </style>
 </head>
 <body>
@@ -357,7 +417,7 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 <!-- ================= HOME ================= -->
 <section class="screen on" id="s-home">
   <div class="home">
-    <div class="gsw" id="gameSw"><button data-g="kata" data-i18n="game_kata"></button><button data-g="en" data-i18n="game_en"></button></div>
+    <div class="gsw" id="gameSw"><button data-g="kata" data-i18n="game_kata"></button><button data-g="en" data-i18n="game_en"></button><button data-g="hexa" data-i18n="game_hexa"></button></div>
     <div class="badge" id="hBadge"></div>
     <!-- 2つの競技の見出しを同じ場所に重ね、高いほうに合わせる（切り替えてもボタンの位置が動かない） -->
     <div class="heads">
@@ -375,14 +435,24 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
         <h1 class="logo" id="hLogoK"></h1>
         <p class="tag" id="hTagK"></p>
       </div>
+      <div class="head" data-g="hexa">
+        <div class="hicon"><svg viewBox="0 0 132 72" height="72" aria-hidden="true">
+          <polygon points="22,6 40,16 40,36 22,46 4,36 4,16" fill="#a8d983"/><polygon points="58,6 76,16 76,36 58,46 40,36 40,16" fill="#c9c9c9"/><polygon points="94,6 112,16 112,36 94,46 76,36 76,16" fill="#7cc4ea"/>
+          <polygon points="40,36 58,46 58,66 40,76 22,66 22,46" fill="#c58250" transform="translate(0,-6)"/><polygon points="76,36 94,46 94,66 76,76 58,66 58,46" fill="#a8d983" transform="translate(0,-6)"/>
+          <circle cx="76" cy="55" r="11" fill="var(--shu)" stroke="#fff" stroke-width="3"/><path d="M69 53 h14 a7 7 0 0 1 -14 0z" fill="#fff"/><path d="M71 50 q2-4 0-7 M76 50 q2-4 0-7 M81 50 q2-4 0-7" stroke="#fff" stroke-width="1.6" fill="none"/>
+          <circle cx="22" cy="26" r="8" fill="#fff" stroke="var(--shu)" stroke-width="2.5"/><path d="M16 28 l0-2.5 3-.2 2.4-3.4 4.6 0 2 3.6 2.6.3 0 2.2z" fill="var(--shu)"/>
+        </svg></div>
+        <h1 class="logo" id="hLogoH"></h1>
+        <p class="tag" id="hTagH"></p>
+      </div>
     </div>
     <div class="menu">
-      <button class="card" data-go="rules"><div class="ic">📜</div><b data-i18n="m_rules_b"></b><span data-i18n="m_rules_s"></span></button>
+      <button class="card" data-go="rules"><div class="ic">📜</div><b data-i18n="m_rules_b"></b><span id="hRulesS"></span></button>
       <button class="card" data-go="setup-solo"><div class="ic">🧩</div><b data-i18n="m_solo_b"></b><span id="hSoloS"></span></button>
       <button class="card" data-go="setup-robot"><div class="ic">🤖</div><b data-i18n="m_robot_b"></b><span data-i18n="m_robot_s"></span></button>
       <button class="card" data-go="code"><div class="ic">🧱</div><b data-i18n="m_code_b"></b><span data-i18n="m_code_s"></span></button>
     </div>
-    <div class="heads feet"><div class="foot head" data-g="en" id="hFootEn"></div><div class="foot head" data-g="kata" id="hFootK"></div></div>
+    <div class="heads feet"><div class="foot head" data-g="en" id="hFootEn"></div><div class="foot head" data-g="kata" id="hFootK"></div><div class="foot head" data-g="hexa" id="hFootH"></div></div>
   </div>
 </section>
 
@@ -462,21 +532,22 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
   <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 id="setupTitle"></h2></div>
   <div class="setup">
     <div class="panel">
-      <h3 data-i18n="size_h"></h3>
+      <h3 id="sizeH"></h3>
       <div class="seg" id="segSize"></div>
       <p id="sizeP"></p>
     </div>
     <div class="panel">
-      <h3 data-i18n="time_h"></h3>
+      <h3 id="timeH"></h3>
       <div class="seg" id="segTime"><button data-v="0" class="on" data-i18n="time_none"></button><button data-v="180" data-i18n="time_3"></button><button data-v="300" data-i18n="time_5"></button></div>
     </div>
     <div class="panel" id="robotPanel" style="display:none">
       <h3 data-i18n="bot_h"></h3>
       <div class="seg" id="segBot"><button data-v="1" data-i18n="bot_1"></button><button data-v="2" class="on" data-i18n="bot_2"></button><button data-v="3" data-i18n="bot_3"></button></div>
       <p id="botP"></p>
+      <div id="oppBox"><h3 data-i18n="h_opp_h"></h3><div class="seg" id="segOpp"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3" class="on">3</button></div></div>
     </div>
     <div class="panel" id="problemPanel">
-      <h3 data-i18n="prob_h"></h3>
+      <h3 id="probH"></h3>
       <div class="seg" id="segProb"></div>
     </div>
     <button class="btn main" style="width:100%;font-size:22px;padding:18px" id="startBtn" data-i18n="start"></button>
@@ -574,6 +645,74 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
       <div class="robot-line" id="kSubInfo"></div>
       <label class="toggle"><input type="checkbox" id="kMissChk" checked> <span data-i18n="k_miss_toggle"></span></label>
     </div></div>
+  </div>
+</section>
+
+
+<!-- ================= 第37回 RULES ================= -->
+<section class="screen" id="s-hrules">
+  <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 data-i18n="rules_title"></h2></div>
+  <div class="rules">
+    <div class="slide" data-i="0">
+      <div><h3 data-i18n="h_r0_h"></h3><p data-i18n="h_r0_p1"></p><p data-i18n="h_r0_p2"></p><div class="note" data-i18n="h_r0_note"></div></div>
+      <div class="demo"><div id="hdemo0"></div><table class="htbl terr" id="hTerrTbl"></table></div>
+    </div>
+    <div class="slide" data-i="1">
+      <div><h3 data-i18n="h_r1_h"></h3><p data-i18n="h_r1_p1"></p><p data-i18n="h_r1_p2"></p><div class="note" data-i18n="h_r1_note"></div></div>
+      <div class="demo"><div id="hdemo1"></div><div class="hklegend" id="hKindLegend"></div></div>
+    </div>
+    <div class="slide" data-i="2">
+      <div><h3 data-i18n="h_r2_h"></h3><p data-i18n="h_r2_p1"></p><p data-i18n="h_r2_p2"></p><div class="note" data-i18n="h_r2_note"></div></div>
+      <div class="demo"><div id="hdemo2"></div><div class="hd2info" id="hd2info"></div>
+        <div class="hbtns"><button class="btn main" id="hd2move" data-i18n="h_d2_move"></button><button class="btn main" id="hd2sup" data-i18n="h_d2_sup"></button></div>
+        <button class="btn sub" id="hd2reset" data-i18n="reset_demo"></button></div>
+    </div>
+    <div class="slide" data-i="3">
+      <div><h3 data-i18n="h_r3_h"></h3><p data-i18n="h_r3_p1"></p><ol class="hflow"><li data-i18n="h_flow1"></li><li data-i18n="h_flow2"></li><li data-i18n="h_flow3"></li></ol><div class="note" data-i18n="h_r3_note"></div></div>
+      <div class="demo"><p class="hcap" data-i18n="h_r3_cap"></p><div id="hdemo3"></div><div class="hklegend" id="hRoadLegend"></div></div>
+    </div>
+    <div class="slide" data-i="4">
+      <div><h3 data-i18n="h_r4_h"></h3><p data-i18n="h_r4_p"></p>
+        <ol class="rank"><li data-i18n="h_rank1"></li><li data-i18n="h_rank2"></li><li data-i18n="h_rank3"></li><li data-i18n="h_rank4"></li></ol></div>
+      <div class="demo"><div class="facts" style="width:100%">
+        <div class="fact"><b data-i18n="h_f1b"></b><span data-i18n="h_f1s"></span></div>
+        <div class="fact"><b data-i18n="h_f2b"></b><span data-i18n="h_f2s"></span></div>
+        <div class="fact"><b data-i18n="h_f3b"></b><span data-i18n="h_f3s"></span></div>
+        <div class="fact"><b data-i18n="h_f4b"></b><span data-i18n="h_f4s"></span></div></div></div>
+    </div>
+    <div class="slide" data-i="5">
+      <div><h3 data-i18n="h_r5_h"></h3><p data-i18n="h_r5_p1"></p><p data-i18n="h_r5_p2"></p><div class="note" data-i18n="h_r5_note"></div></div>
+      <div class="demo" style="width:100%"><pre class="json" id="hrulesJson"></pre><button class="btn main" data-go="setup-solo" data-i18n="try_btn"></button></div>
+    </div>
+    <div class="dots" id="hdots"></div>
+    <div class="nav"><button class="btn sub" id="hprev" data-i18n="prev"></button><button class="btn main" id="hnext" data-i18n="next"></button></div>
+  </div>
+</section>
+
+<!-- ================= 第37回 GAME ================= -->
+<section class="screen wide" id="s-hgame">
+  <div class="bar"><button class="back" id="hQuit" data-i18n="quit"></button><h2 id="hgameTitle"></h2><span class="hprob" id="hProbNo"></span><div class="spacer"></div></div>
+  <div class="game hgame">
+    <div class="hmapw"><div id="hBoard"></div><div class="hlegend" id="hLegend"></div></div>
+    <div class="panel ctl hctl">
+      <div class="stats hstats">
+        <div class="stat"><small data-i18n="h_st_day"></small><b id="hDay"></b></div>
+        <div class="stat hi"><small data-i18n="h_c_kinds"></small><b id="hKinds"></b></div>
+        <div class="stat"><small data-i18n="h_c_udon"></small><b id="hUdon"></b></div>
+        <div class="stat"><small id="hTimeL"></small><b id="hTime">0:00</b></div>
+      </div>
+      <div class="hkrow" id="hKindRow"></div>
+      <div id="hTypesBox"><h4 data-i18n="h_types_h"></h4><div class="hcards" id="hTypeCards"></div><p class="hnote" id="hTypeNote"></p><button class="btn gold hbig" id="hTypesOk" data-i18n="h_types_ok"></button></div>
+      <div id="hPlanBox">
+        <div class="hcards" id="hAgents"></div>
+        <div class="hbtns"><button class="btn sub" id="hMeetBtn" data-i18n="h_meet"></button><button class="btn sub" id="hWaitBtn" data-i18n="h_wait"></button><button class="btn sub" id="hUndoBtn" data-i18n="undo"></button><button class="btn sub" id="hClearBtn" data-i18n="h_clear"></button></div>
+        <div class="hplansum" id="hPlanSum"></div>
+        <div class="hbtns hstartrow"><button class="btn sub" id="hAuto" data-i18n="h_auto"></button><button class="btn gold hbig" id="hStart"></button></div>
+      </div>
+      <div id="hRunBox"><button class="btn sub hbig" id="hFast" data-i18n="h_fast"></button></div>
+      <div class="hint" id="hHint"></div>
+      <div id="hTeams"></div>
+    </div>
   </div>
 </section>
 
@@ -921,7 +1060,7 @@ vi:{
   close:'Đóng'
 }};
 const SETTINGS={theme:'normal',lang:'ja',game:'en'};
-try{ const s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}'); if(['ja','en','vi','th','mn'].includes(s.lang)) SETTINGS.lang=s.lang; if(['normal','night','eye','cud'].includes(s.theme)) SETTINGS.theme=s.theme; if(['en','kata'].includes(s.game)) SETTINGS.game=s.game; }catch(e){}
+try{ const s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}'); if(['ja','en','vi','th','mn'].includes(s.lang)) SETTINGS.lang=s.lang; if(['normal','night','eye','cud'].includes(s.theme)) SETTINGS.theme=s.theme; if(['en','kata','hexa'].includes(s.game)) SETTINGS.game=s.game; }catch(e){}
 function t(key,params){
   let s=(I18N[SETTINGS.lang]&&I18N[SETTINGS.lang][key]) ?? I18N.ja[key] ?? key;
   if(params) s=s.replace(/\{(\w+)\}/g,(m,k)=>params[k]!==undefined?params[k]:m);
@@ -1241,7 +1380,7 @@ Object.assign(I18N.ja,{
   ab_lead:'小学生・中学生が、全国高等専門学校プログラミングコンテスト（高専プロコン）競技部門の ルールを、iPad などの Web ブラウザだけで 体験できる 教材の 試作版です。',
   ab_name_h:'名前', ab_name:'高専プロコン競技部門 体験',
   ab_ver_h:'バージョン', ab_games_h:'収録している 競技',
-  ab_games:'第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
+  ab_games:'第37回（高松大会）「ヘキサうどん」<br>第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
   ab_for_h:'対象', ab_for:'小学生・中学生（先生・保護者と いっしょに）',
   ab_env_h:'動作環境', ab_env:'iPad などの タブレット、パソコンの Web ブラウザ。HTML 1ファイルで動き、サーバーは 不要です（文字の フォントだけ インターネットから 読みこみます）。',
   ab_lang_h:'ことば',
@@ -1286,7 +1425,7 @@ Object.assign(I18N.en,{
   ab_lead:'A prototype learning tool that lets elementary and junior high school students try the rules of the Competition Section of the National KOSEN Programming Contest (PROCON) using only a web browser on an iPad or similar device.',
   ab_name_h:'Name', ab_name:'KOSEN PROCON Competition Experience',
   ab_ver_h:'Version', ab_games_h:'Contests included',
-  ab_games:'36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
+  ab_games:'37th (Takamatsu): “Hexa Udon”<br>36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
   ab_for_h:'For', ab_for:'Elementary and junior high school students (with teachers or parents)',
   ab_env_h:'Runs on', ab_env:'Web browsers on tablets such as the iPad, and on computers. It is a single HTML file and needs no server (only the font is loaded from the internet).',
   ab_lang_h:'Languages',
@@ -1331,7 +1470,7 @@ Object.assign(I18N.vi,{
   ab_lead:'Bản thử nghiệm của một công cụ học tập giúp học sinh tiểu học và trung học cơ sở trải nghiệm luật phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON) chỉ bằng trình duyệt web trên iPad hoặc thiết bị tương tự.',
   ab_name_h:'Tên', ab_name:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   ab_ver_h:'Phiên bản', ab_games_h:'Các phần thi',
-  ab_games:'Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
+  ab_games:'Lần 37 (Takamatsu): “Hexa Udon”<br>Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
   ab_for_h:'Đối tượng', ab_for:'Học sinh tiểu học và trung học cơ sở (cùng giáo viên hoặc phụ huynh)',
   ab_env_h:'Môi trường', ab_env:'Trình duyệt web trên máy tính bảng như iPad và trên máy tính. Ứng dụng là một tệp HTML duy nhất, không cần máy chủ (chỉ phông chữ được tải từ internet).',
   ab_lang_h:'Ngôn ngữ',
@@ -1550,7 +1689,7 @@ I18N.th={
   ab_lead:'สื่อการเรียนรู้รุ่นทดลองที่ให้นักเรียนประถมและมัธยมต้นได้ลองเล่นกติกาประเภทการแข่งขันของการแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น (โปรคอน) โดยใช้เพียงเว็บเบราว์เซอร์บน iPad หรืออุปกรณ์ที่คล้ายกัน',
   ab_name_h:'ชื่อ', ab_name:'ลองเล่นประเภทการแข่งขันโปรคอนโคเซ็น',
   ab_ver_h:'เวอร์ชัน', ab_games_h:'การแข่งขันที่มีในแอป',
-  ab_games:'ครั้งที่ 36 (มัตสึเอะ): “エ。ー縁結びの誘導についてー” (“E. — การนำทางสายสัมพันธ์ —”)<br>ครั้งที่ 35 (นารา): “ฟื้นคืนมรดกโลก”',
+  ab_games:'ครั้งที่ 37 (ทากามัตสึ): “เฮกซะอุด้ง”<br>ครั้งที่ 36 (มัตสึเอะ): “エ。ー縁結びの誘導についてー” (“E. — การนำทางสายสัมพันธ์ —”)<br>ครั้งที่ 35 (นารา): “ฟื้นคืนมรดกโลก”',
   ab_for_h:'กลุ่มเป้าหมาย', ab_for:'นักเรียนประถมและมัธยมต้น (ร่วมกับครูหรือผู้ปกครอง)',
   ab_env_h:'ใช้งานบน', ab_env:'เว็บเบราว์เซอร์บนแท็บเล็ตอย่าง iPad และคอมพิวเตอร์ เป็นไฟล์ HTML ไฟล์เดียว ไม่ต้องใช้เซิร์ฟเวอร์ (โหลดเฉพาะฟอนต์จากอินเทอร์เน็ต)',
   ab_lang_h:'ภาษา',
@@ -1769,7 +1908,7 @@ I18N.mn={
   ab_lead:'Бага болон дунд ангийн сурагчид Японы Үндэсний Косэн Програмчлалын тэмцээний (Прокон) тэмцээний төрлийн дүрмийг iPad зэрэг төхөөрөмжийн вэб хөтчөөр л туршиж үзэх боломжтой сургалтын хэрэгслийн туршилтын хувилбар.',
   ab_name_h:'Нэр', ab_name:'Косэн Проконы тэмцээний туршлага',
   ab_ver_h:'Хувилбар', ab_games_h:'Багтсан тэмцээнүүд',
-  ab_games:'36 дахь (Мацүэ): “エ。ー縁結びの誘導についてー” (“E. — Хувь заяаны зангилааг чиглүүлэх —”)<br>35 дахь (Нара): “Дэлхийн өвийг сэргээ”',
+  ab_games:'37 дахь (Такамацү): “Хекса удон”<br>36 дахь (Мацүэ): “エ。ー縁結びの誘導についてー” (“E. — Хувь заяаны зангилааг чиглүүлэх —”)<br>35 дахь (Нара): “Дэлхийн өвийг сэргээ”',
   ab_for_h:'Хэнд зориулсан', ab_for:'Бага болон дунд ангийн сурагчид (багш эсвэл эцэг эхийн хамт)',
   ab_env_h:'Ажиллах орчин', ab_env:'iPad зэрэг таблет болон компьютерийн вэб хөтөч. Нэг HTML файл бөгөөд сервер шаардлагагүй (зөвхөн фонтыг интернэтээс ачаална).',
   ab_lang_h:'Хэлнүүд',
@@ -1778,6 +1917,670 @@ I18N.mn={
   ab_credit_h:'Ашигласан зүйлс', ab_credit:'“M PLUS Rounded 1c” ба “Noto Sans Thai” фонт (SIL Open Font License) / өнгө ялгалтын дэмжлэгийн өнгөний багц: Okabe & Ito',
   ab_note:'※ Энэ бол туршиж үзэх зориулалттай туршилтын хувилбар (макет) бөгөөд албан ёсны тэмцээний систем биш. Хүүхдүүд амархан тоглох боломжтой байхаар самбарын хэмжээ, хэвийн төрлийг жинхэнэ тэмцээнээс жижиг болгосон. Бүрэн дүрмийг тэмцээн тус бүрийн албан ёсны удирдамжаас үзнэ үү.'
 };
+
+/* ============ 第37回「ヘキサうどん」の ことば ============ */
+const HX={};
+HX.ja={
+  lr_tc_body:'<h4>学習指導要領（平成29年告示）との関連</h4><ul><li>主に D(1)「生活や社会を支える情報の技術」のア（処理の自動化などの基礎的な技術の仕組み）とイ（技術に込められた問題解決の工夫）</li><li>D(2)・(3) のイ「情報処理の手順を具体化し、制作の過程や結果の評価、改善及び修正について考える」の導入</li><li>小学校のプログラミング体験と、高等学校「情報Ⅰ」の「コンピュータとプログラミング」をつなぐ位置づけ</li></ul><h4>3時間の授業例（中学校第2学年）</h4><ol><li>第36回を手で解き、時間切れ後の模範回答と比べて「人の解き方」と「手順で解く方法」の違いを話し合う</li><li>第35回の「プログラムでとく」で、順次・分岐・反復を使って手順を作り、模範回答と「ちがう数・手数」を比べて改善する</li><li>第37回で、燃料や渋滞のある中で車に役割を分担させる作戦をブロックで作り、お手本チームと比べる。宅配やバスの運行など社会の問題と結びつけてふり返る</li></ol><h4>評価のヒント</h4><ul><li>知識・技能：順次・分岐・反復を手順に当てはめて説明できるか。ブロックで手順を作り、動作を確かめて直せるか</li><li>思考・判断・表現：結果の数値（ちがう数・手数・玉数）を根拠に、改善点とその理由を説明しているか</li><li>主体的に学習に取り組む態度：うまくいかないときも手順を直して何度も試しているか</li></ul><h4>準備と環境</h4><ul><li>HTML 1ファイルで動き、サーバーは不要。インターネットにつながらなくても使える（文字のフォントだけ外から読む）</li><li>保存するのは設定と作ったプログラムだけで、端末のブラウザの中に留まる。個人情報は扱わない</li><li>色覚サポート・目にやさしい配色・ナイトモード、5言語の切り替えができる</li></ul><h4>配布資料</h4><p>一式（zip）の docs フォルダに、学習指導案、授業用スライド（PDF）、チュートリアル集が入っています。</p><p class="lrsmall">指導案と時間配分は一例です。学校や生徒の実態に合わせて変えてください。次期学習指導要領が告示されたら対応を見直します。</p>',
+  lr_tc_dl_h:'学習指導案・授業用スライド・ワークシート', lr_tc_ws:'ワークシート（PDF）', lr_tc_plan:'学習指導案（PDF）', lr_tc_slides:'授業用スライド（PDF）', lr_tc_dl_note:'日本語のPDFです。iPad では新しいタブで開き、共有メニューから保存・印刷できます。アプリと同じフォルダに置いたまま使ってください。',
+  lr_tc_lead:'このアプリは、中学校 技術・家庭科（技術分野）の内容D「情報の技術」で、プログラミングによる問題解決の導入に使えるように作っています。競技の問題を「手で解く → 手順にする → コンピュータに任せる → お手本と比べて直す」の順に体験できます。',
+  lr_tc_h:'先生方へ',
+  h_leg_model:'お手本チーム（うすい色）',
+  h_leg_me:'あなたの チーム',
+  lr_s3:'時間が 来ると 模範回答が 流れるよ（第37回は「お手本チーム」）。自分の やり方と どこが ちがうか くらべてみよう。',
+  lr_video_p:'2分ほどの 動画で、アプリの 使い方を ひととおり 見られます（第35回・第36回の 画面。音は ありません）。',
+  lr_h_tips:'<li>巡回車を 種類ごとに 分けて 行かせると、たくさんの 種類が 集まるよ。</li><li>燃料が へってきたら「⛽ 合流」。補給車と いっしょに 動けば 燃料は へらないよ。</li><li>道路は 速いけど 燃料を 多く 使い、みんなが 通ると 次の日に 混むよ。</li><li>「毎日の 種類の 合計」も 勝ち負けに 関係するので、毎日 ぜんぶの 種類を ねらおう。</li>',
+  lr_h_h:'第37回の ヒント',
+  h_note_wait:'（時間か 燃料が 足りなくて、まった ところが あったよ）',
+  h_err_pond:'その 方向には 進めないよ（池か マップの 外）。',
+  h_st_done:'できた！ {k} / {n}種類・毎日の 合計 {d}・{u}玉',
+  h_st_running:'じっこう中… {d}日目 {t}ステップ　｜　あなた {me}玉・お手本 {mo}玉',
+  h_st_ready:'作戦を ブロックで 組み立てて「じっこう」を おそう。3日間の 試合を 1ステップずつ 見られるよ。',
+  h_code_tip:'💡 車が 次の 行動を きめる たびに、プログラムを 上から 実行します。最初に 当たった 動きの ブロックで その車の 行動が きまり、どれにも 当たらないと 1ステップ まちます。「仲間と 合流する」は、巡回車なら 補給車へ、補給車なら 燃料の 少ない 巡回車へ 向かいます（補給車が スポットの ブロックに 当たったときも 同じ）。車は 4台（巡回車3台・補給車1台）です。',
+  h_smp3:'ぜんぶ 取ったら 近い スポットへ',
+  h_smp2:'燃料が へったら 合流する',
+  h_smp1:'まだ 取っていない 種類を ねらう',
+  h_d5:'← 左',
+  h_d4:'↙ 左下',
+  h_d3:'↘ 右下',
+  h_d2:'→ 右',
+  h_d1:'↗ 右上',
+  h_d0:'↖ 左上',
+  hc_allkinds:'今日 ぜんぶの 種類を 取った',
+  hc_together:'仲間と 同じ セルに いる',
+  hc_halffuel:'燃料が 半分 以下',
+  hc_lowfuel:'燃料が 1/4 以下',
+  hc_supply:'この車が 補給車',
+  hc_patrol:'この車が 巡回車',
+  hb_ifcar:'もし この車が {n}番 なら',
+  hb_wait:'1ステップ まつ',
+  hb_move:'{d} へ 1セル 進む',
+  hb_meet:'仲間と 合流する',
+  hb_near:'いちばん 近い スポットへ 進む',
+  hb_go:'まだ 今日 取っていない 種類の スポットへ 進む',
+  h_pal_if:'もし（じょうけん）',
+  h_hint_meet:'補給車が 来るまで 巡回車が まつように したよ。満タンに なったら、続きの 道を 引こう。',
+  h_m_rules_s:'6まいの スライドで<br>あそびかたを おぼえよう',
+  game_hexa:'第37回 ヘキサうどん',
+  h_logo:'ヘキサ<span class="e">うどん</span>',
+  h_tag:'<ruby>巡回車<rt>じゅんかいしゃ</rt></ruby>と <ruby>補給車<rt>ほきゅうしゃ</rt></ruby>を 動かして、<br>香川の うどんを たくさん 集めよう！',
+  h_foot:'第37回 全国高専プログラミングコンテスト 競技部門「ヘキサうどん」のルールを もとにした 体験用モックです。',
+  h_m_solo_s:'3日間で<br>うどんを 集めよう',
+  h_code_soon:'第37回は<br>じゅんびちゅう',
+  h_kind_names:'かけ,ぶっかけ,ざる,かまたま,しょうゆ',
+  h_size_h:'マップの 大きさ', h_size_p:'はじめては 8×8 が おすすめ。本番の 大会では 最大 32×32！',
+  h_time_h:'1日の 計画時間', h_time_1:'1日 1分', h_time_2:'1日 2分',
+  h_prob_h:'むずかしさ', h_prob_easy:'かんたん（3種類・3日・車3台）', h_prob_mid:'ふつう（4種類・3日・車4台）', h_prob_hard:'むずかしい（5種類・4日・車4台）',
+  h_bot_p:'よわい：近い スポットから 回り、仲間と 行き先を 分けない。ふつう：新しい 種類を 優先し、補給車と 協力する。つよい：道路の 混み具合や、種類の 分担まで 考える。',
+  h_opp_h:'相手の チーム数',
+  h_r0_h:'① <em>六角形</em>の マップ',
+  h_r0_p1:'マップは 六角形の「セル」で できていて、となりの 6方向へ 動けます。',
+  h_r0_p2:'地形は 平地・山地・池・道路の 4つ。動くのに かかる 時間（ステップ）と 燃料は、<b>いま いる セルの 地形</b>で きまります。',
+  h_r0_note:'本番の マップは 縦・横 8〜32 セル。この体験版は 8〜12 セルです。',
+  h_th_time:'時間（ステップ）', h_th_fuel:'燃料',
+  h_terr0:'平地', h_terr1:'山地', h_terr2:'池', h_terr3:'道路', h_noentry:'入れない',
+  h_r1_h:'② <em>スポット</em>で うどんを ゲット',
+  h_r1_p1:'平地の ところどころに「スポット」が あります。巡回車が スポットに いると（着いた ときや、そこで 待っている とき）、うどんを 1玉 もらえます。',
+  h_r1_p2:'スポットごとに うどんの「種類」が ちがいます。1台の 巡回車が 1つの スポットで もらえるのは、1日 1玉まで。',
+  h_r1_note:'スポットの 右上の 数字は 在庫です。在庫は チームごとに べつべつで、毎日 はじめに 元に もどります。',
+  h_r2_h:'③ <em>巡回車</em>と <em>補給車</em>',
+  h_r2_p1:'巡回車は うどんを 集めますが、動くたびに 燃料を 使います。燃料が 足りないと 動けません。',
+  h_r2_p2:'補給車は うどんを 集められませんが、燃料なしで 動けます。巡回車と 補給車が 同じ セルに いると、その ステップの 終わりに 巡回車の 燃料が 満タンに なります。',
+  h_r2_note:'燃料は 移動が 終わる ときに 使います。燃料の 上限は 1日目の ステップ数の 1〜3倍（この体験版は 1倍）。どの車を 巡回車に するかは 試合の 前に きめ、とちゅうで 変えられません。',
+  h_d2_move:'🚗 巡回車を 1セル 進める', h_d2_sup:'⛽ 補給車を 合流させる',
+  h_d2_info:'巡回車の 燃料 <b>{f}</b> / {m}　｜　つかった 時間 {s} ステップ',
+  h_d2_moved:'{t}ステップ かかって、燃料を {n} 使ったよ。',
+  h_d2_nofuel:'燃料が 足りなくて 動けない！ 補給車を 呼ぼう。',
+  h_d2_refuel:'補給車と 同じ セルに なって、燃料が 満タンに なった！',
+  h_d2_same:'もう 同じ セルに いるよ。',
+  h_d2_end:'うどんを ゲット！「最初から」で もう一度 ためせるよ。',
+  h_r3_h:'④ 1日の 流れと <em>渋滞</em>',
+  h_r3_p1:'試合は 何日かに 分かれていて、1日に 使える ステップ数が きまっています。毎日 つぎの 3つを くりかえします。',
+  h_flow1:'その日の 動き方を、全部の 車について 計画して 送る',
+  h_flow2:'すべての チームの 車が 同時に 動く',
+  h_flow3:'次の日へ。道路の 混み具合が 変わる',
+  h_r3_note:'道路は、前の日と その前の日に みんなの 車が どれだけ 道路に いたかで「順調・混雑・渋滞」が きまります。相手チームの 車も 影響するので、読み合いが 大切です。',
+  h_r3_cap:'道路の 状態と、そこから 1セル 進むのに かかる 時間',
+  h_rs0:'順調', h_rs1:'混雑', h_rs2:'渋滞', h_rs_t:'{n}ステップ',
+  h_r4_h:'⑤ <em>勝ち負け</em>の きまり',
+  h_r4_p:'試合が 終わったら、次の じゅんばんで くらべます。',
+  h_rank1:'集めた うどんの <b>種類</b>が 多い', h_rank2:'<b>毎日の 種類の 合計</b>が 多い', h_rank3:'うどんの <b>玉数</b>が 多い', h_rank4:'回答に かかった <b>時間</b>が 短い',
+  h_f1b:'4〜10日', h_f1s:'本番の 1試合の 日数', h_f2b:'3〜8台', h_f2s:'1チームの 車の 数', h_f3b:'最大 32×32', h_f3s:'マップの 大きさ', h_f4b:'何チームも 同時に', h_f4s:'同じ マップで いっせいに 試合',
+  h_r5_h:'⑥ 本物の大会では <em>プログラム</em>が 計画する！',
+  h_r5_p1:'本番では、サーバーから 毎日の マップ情報を 受け取り、プログラムが 全部の 車の 動きを 計算して 送ります。',
+  h_r5_p2:'どの スポットを どの じゅんばんで 回るか、いつ 補給するか、混みそうな 道を さけるか ── 考えることが たくさん あります。',
+  h_r5_note:'データは JSON 形式で やりとりします。右は 公式の フォーマット資料に 合わせた 例です。地形は 0=平地・1=道路・2=山地・3=池、移動の 向きは 0=左上 から 時計回りに 5=左、マイナスは 待機です。',
+  h_json_q:'// 試合前の マップ構成（本番の 形・一部）', h_json_a:'// 1日の 行動計画の 回答（本番の 形）',
+  h_st_day:'日', h_day_of:'{d} / {n}',
+  h_c_kinds:'種類', h_c_udon:'うどん（玉）', h_c_daily:'毎日の 種類の 合計', h_c_time:'時間', h_c_rank:'順位', h_c_day:'日',
+  h_types_h:'車の 役わりを きめよう',
+  h_types_note:'巡回車 {p}台・補給車 {s}台。試合が はじまったら 変えられないよ。',
+  h_tap_change:'タッチで 切りかえ', h_types_ok:'この チームで はじめる',
+  h_patrol:'巡回車', h_supply:'補給車', h_steps:'時間', h_fuel:'燃料', h_fuel_inf:'いらない',
+  h_meet:'⛽ 合流', h_wait:'⏸ まつ', h_clear:'けす', h_auto:'🤖 おまかせ',
+  h_start_day:'▶ {d}日目を スタート', h_fast:'⏩ はやおくり',
+  h_plan_sum:'この 計画で：<b>{k}種類・{u}玉</b>',
+  h_hint_types:'巡回車は うどんを 集める車、補給車は 燃料を 届ける車。何台ずつに するか きめよう。',
+  h_hint_plan:'車を えらんで、行きたい セルを タッチすると 道が 引けるよ。燃料が 足りなく なったら「⛽ 合流」で 補給車と 会おう。',
+  h_hint_next:'新しい 日です。道路の「!」は 混雑、「!!」は 渋滞。時間が かかるので 気をつけよう。',
+  h_hint_got:'✓ の スポットで うどんが もらえる 予定だよ。ほかの 車の 計画も 立てよう。',
+  h_hint_auto:'ロボットの 作戦で 計画したよ。気に なる ところを 変えてから スタートしよう。',
+  h_hint_run:'みんなの 車が 同時に 動いているよ。',
+  h_day_sum:'{d}日目：{k}種類・{u}玉 ゲット！',
+  h_day_jam:'　道路は 混雑 {a}か所・渋滞 {b}か所に なったよ。', h_day_nojam:'　道路は すいているよ。',
+  h_toast_day:'{d}日目 おわり：{k}種類・{u}玉',
+  h_toast_pond:'そこへは 行けないよ（池）',
+  h_toast_fuel:'燃料が 足りないので、とちゅうまでに したよ。補給車と 合流しよう。',
+  h_toast_steps:'この日の 時間が 足りないので、とちゅうまでに したよ。',
+  h_toast_timeup:'時間切れ！ いまの 計画で スタート',
+  h_toast_nosup:'補給車が いないよ', h_toast_nopat:'巡回車が いないよ',
+  h_prob_no:'問題 No.{n}', h_robot_n:'ロボット{n}', h_leg_tf:'{t}・燃料{f}',
+  h_rank:'{n}位！',
+  h_why1:'「種類の 数」で きまりました（{who}と くらべて）。',
+  h_why2:'種類の 数が 同じだったので、「毎日の 種類の 合計」で きまりました（{who}と くらべて）。',
+  h_why3:'種類も 合計も 同じだったので、「玉数」で きまりました（{who}と くらべて）。',
+  h_why4:'ぜんぶ 同じだったので、「回答時間」で きまりました（{who}と くらべて）。',
+  h_perfect:'ぜんぶの 種類を 集めた！',
+  h_msg_perfect:'すごい！ 次は 毎日 ぜんぶの 種類を 集めて、「毎日の 合計」を ふやしてみよう。',
+  h_msg_tip:'巡回車を 種類ごとに 分けて 行かせると、たくさんの 種類が 集まるよ。燃料が へったら 補給車と 合流しよう。',
+  h_day_n:'{d}日目',
+  h_replay_all:'🎬 試合の 再生', h_replay_all_d:'自分の チームは こく、ロボットの チームは うすく 表示しています。',
+  h_replay_me:'🎬 あなたの 試合の 再生', h_replay_me_d:'日ごとに、車の 動きと うどんを 集めた ところを 見られます。',
+  h_show_model:'📘 お手本チームを 見る', h_model_title:'📘 お手本チーム（つよい ロボット）',
+  h_model_d:'同時に 動く 試合には ただ1つの 正解が ないので、つよい ロボットの 動きを お手本に しています。お手本は {k}種類・毎日の 合計 {d}・{u}玉（あなたは 毎日の 合計 {me}・{mu}玉）。',
+  h_p_prog:'{d}日目 / {n}　{t} / {s} ステップ　｜　うどん {u}玉',
+  h_json_mine:'📄 あなたの 回答（本番と 同じ 形）',
+  h_json_note:'本番と 同じ 形です。0=左上・1=右上・2=右・3=右下・4=左下・5=左、マイナスは 待機（-3 は 3ステップ 待つ）。1日の ステップ数ちょうどに なるよう 最後に 待機を 入れています。',
+};
+HX.en={
+  lr_tc_body:'<h4>Links to Japan’s Course of Study (2017)</h4><ul><li>Mainly D(1) “Information technology that supports daily life and society”: (a) the basic mechanisms such as automation of processing, and (b) the problem-solving ideas built into technology</li><li>An introduction to D(2)(3)(b): making information-processing steps concrete and thinking about evaluating, improving and fixing them</li><li>A bridge between elementary-school programming and “Information I” in high school</li></ul><h4>A 3-lesson plan (junior high grade 8)</h4><ol><li>Solve the 36th contest by hand, compare with the model answer, and discuss the difference between solving by intuition and solving by steps</li><li>In the 35th “Solve with Blocks”, build steps with sequence, selection and repetition, compare mismatches and moves with the model answer, and improve</li><li>In the 37th, build a team strategy that splits roles under fuel and traffic limits, compare with the model team, and relate it to delivery or bus scheduling</li></ol><h4>Assessment tips</h4><ul><li>Knowledge and skills: can students explain sequence, selection and repetition in their steps, and build, test and fix a block program?</li><li>Thinking, judgment and expression: do they explain improvements with evidence from the numbers (mismatches, moves, bowls)?</li><li>Attitude: do they keep revising and trying when things go wrong?</li></ul><h4>Preparation</h4><ul><li>Runs as a single HTML file with no server, and works offline (only the fonts are loaded from the internet)</li><li>Only settings and programs are saved, inside the device’s browser; no personal information is handled</li><li>Color-vision support, eye-friendly and night themes, and 5 languages</li></ul><h4>Handouts</h4><p>The docs folder in the package (zip) contains a lesson plan, class slides (PDF) and a tutorial collection (currently in Japanese).</p><p class="lrsmall">The plan and timing are only an example — adapt them to your school and students.</p>',
+  lr_tc_dl_h:'Lesson plan, class slides and worksheets', lr_tc_ws:'Worksheets (PDF)', lr_tc_plan:'Lesson plan (PDF)', lr_tc_slides:'Class slides (PDF)', lr_tc_dl_note:'PDFs in Japanese. They open in a new tab, where you can save or print them. Keep them in the same folder as the app.',
+  lr_tc_lead:'This app is designed as an introduction to problem solving with programming in Japanese junior high school Technology (Content D “Information Technology”). Students experience the contest problems in the order “solve by hand → turn it into steps → let the computer do it → compare with the model and improve”.',
+  lr_tc_h:'For teachers',
+  h_leg_model:'Model team (faded)',
+  h_leg_me:'Your team',
+  lr_s3:'When time is up, the model answer plays (for the 37th, the “model team”). Compare it with your own way of solving.',
+  lr_video_p:'A 2-minute video walks through the whole app (screens from the 35th and 36th contests; no sound; captions are in Japanese).',
+  lr_h_tips:'<li>Send patrol cars to different kinds to collect more kinds.</li><li>When fuel runs low, use “⛽ Meet up”. Moving together with the supply car uses no fuel.</li><li>Roads are fast but use more fuel, and roads everyone uses get busy the next day.</li><li>The daily sum of kinds also counts, so aim for every kind every day.</li>',
+  lr_h_h:'Tips for the 37th contest',
+  h_note_wait:'(Some waits happened because time or fuel ran short.)',
+  h_err_pond:'You can’t move that way (pond or off the map).',
+  h_st_done:'Done! {k} / {n} kinds, daily sum {d}, {u} bowls',
+  h_st_running:'Running… day {d}, step {t}　|　you {me} bowls, model {mo} bowls',
+  h_st_ready:'Build a strategy with blocks and press “Run”. You can watch the 3-day match step by step.',
+  h_code_tip:'💡 Each time a car decides its next action, the program runs from the top. The first movement block reached decides that car’s action; if none is reached, it waits 1 step. “Meet up” sends a patrol car to the supply car, and a supply car to the patrol car with the least fuel (the same happens when a supply car reaches a spot block). You have 4 cars (3 patrol, 1 supply).',
+  h_smp3:'After all kinds, go to the nearest spot',
+  h_smp2:'Meet up when fuel runs low',
+  h_smp1:'Aim for kinds not taken yet',
+  h_d5:'← left',
+  h_d4:'↙ down-left',
+  h_d3:'↘ down-right',
+  h_d2:'→ right',
+  h_d1:'↗ up-right',
+  h_d0:'↖ up-left',
+  hc_allkinds:'every kind was taken today',
+  hc_together:'a teammate is in the same cell',
+  hc_halffuel:'fuel is half or less',
+  hc_lowfuel:'fuel is 1/4 or less',
+  hc_supply:'this is a supply car',
+  hc_patrol:'this is a patrol car',
+  hb_ifcar:'If this is car {n}',
+  hb_wait:'Wait 1 step',
+  hb_move:'Move 1 cell {d}',
+  hb_meet:'Meet up with a teammate',
+  hb_near:'Go toward the nearest spot',
+  hb_go:'Go toward a spot of a kind not yet taken today',
+  h_pal_if:'If (conditions)',
+  h_hint_meet:'The patrol car now waits until the supply car arrives. Once the tank is full, draw the rest of the route.',
+  h_m_rules_s:'Learn how to play<br>in 6 slides',
+  game_hexa:'37th: Hexa Udon',
+  h_logo:'Hexa <span class="e">Udon</span>',
+  h_tag:'Drive patrol cars and supply cars<br>to collect lots of Kagawa udon!',
+  h_foot:'A hands-on mock based on the rules of the 37th National KOSEN Programming Contest Competition Section, “Hexa Udon”.',
+  h_m_solo_s:'Collect udon<br>over 3 days',
+  h_code_soon:'Coming soon<br>for the 37th',
+  h_kind_names:'Kake,Bukkake,Zaru,Kamatama,Shoyu',
+  h_size_h:'Map size', h_size_p:'Start with 8×8. The real contest goes up to 32×32!',
+  h_time_h:'Planning time per day', h_time_1:'1 min / day', h_time_2:'2 min / day',
+  h_prob_h:'Difficulty', h_prob_easy:'Easy (3 kinds, 3 days, 3 cars)', h_prob_mid:'Normal (4 kinds, 3 days, 4 cars)', h_prob_hard:'Hard (5 kinds, 4 days, 4 cars)',
+  h_bot_p:'Weak: visits the nearest spots and does not split targets with teammates. Normal: prefers new kinds and works with a supply car. Strong: also thinks about traffic and splitting up the kinds.',
+  h_opp_h:'Number of rival teams',
+  h_r0_h:'① A <em>Hexagon</em> Map',
+  h_r0_p1:'The map is made of hexagon “cells”. A car can move to any of the 6 neighboring cells.',
+  h_r0_p2:'There are 4 kinds of terrain: plain, mountain, pond and road. The time (steps) and fuel a move takes depend on <b>the terrain of the cell you are leaving</b>.',
+  h_r0_note:'Real maps are 8–32 cells wide and tall. This mock uses 8–12.',
+  h_th_time:'Time (steps)', h_th_fuel:'Fuel',
+  h_terr0:'Plain', h_terr1:'Mountain', h_terr2:'Pond', h_terr3:'Road', h_noentry:'No entry',
+  h_r1_h:'② Get Udon at <em>Spots</em>',
+  h_r1_p1:'Some plains have “spots”. When a patrol car is at a spot (arriving there or waiting there), it gets 1 bowl of udon.',
+  h_r1_p2:'Each spot serves its own kind of udon. One patrol car can get only 1 bowl per spot per day.',
+  h_r1_note:'The number at the top right of a spot is its stock. Each team has its own stock, and it refills at the start of every day.',
+  h_r2_h:'③ <em>Patrol</em> Cars and <em>Supply</em> Cars',
+  h_r2_p1:'Patrol cars collect udon, but use fuel every time they move. Without enough fuel they cannot move.',
+  h_r2_p2:'Supply cars cannot collect udon, but move without fuel. When a patrol car and a supply car are in the same cell, the patrol car’s tank is filled up at the end of that step.',
+  h_r2_note:'Fuel is used when a move finishes. The tank holds 1–3 times the number of steps on day 1 (this mock uses 1×). You choose which cars are patrol cars before the match and cannot change it later.',
+  h_d2_move:'🚗 Move the patrol car 1 cell', h_d2_sup:'⛽ Bring the supply car',
+  h_d2_info:'Patrol car fuel <b>{f}</b> / {m}　|　time used {s} steps',
+  h_d2_moved:'That took {t} steps and {n} fuel.',
+  h_d2_nofuel:'Not enough fuel to move! Call the supply car.',
+  h_d2_refuel:'The supply car is in the same cell — the tank is full!',
+  h_d2_same:'They are already in the same cell.',
+  h_d2_end:'Got the udon! Press “Reset” to try again.',
+  h_r3_h:'④ A Day’s Flow and <em>Traffic Jams</em>',
+  h_r3_p1:'A match is split into several days, and each day has a set number of steps. Every day repeats these 3 stages:',
+  h_flow1:'Plan the moves of all your cars for that day and send them',
+  h_flow2:'All teams’ cars move at the same time',
+  h_flow3:'Next day — road traffic changes',
+  h_r3_note:'Each road becomes “clear”, “busy” or “jammed” depending on how long all cars stayed on it over the previous two days. Rival teams’ cars count too, so it pays to guess what they will do.',
+  h_r3_cap:'Road state and the time it takes to move on from it',
+  h_rs0:'Clear', h_rs1:'Busy', h_rs2:'Jammed', h_rs_t:'{n} steps',
+  h_r4_h:'⑤ How to <em>Win</em>',
+  h_r4_p:'After the match, teams are compared in this order:',
+  h_rank1:'More <b>kinds</b> of udon collected', h_rank2:'Larger <b>sum of kinds per day</b>', h_rank3:'More <b>bowls</b> of udon', h_rank4:'Shorter <b>answer time</b>',
+  h_f1b:'4–10 days', h_f1s:'Days in one real match', h_f2b:'3–8 cars', h_f2s:'Cars per team', h_f3b:'Up to 32×32', h_f3s:'Map size', h_f4b:'Many teams at once', h_f4s:'All play on the same map together',
+  h_r5_h:'⑥ In the Real Contest, <em>Programs</em> Plan!',
+  h_r5_p1:'In the real contest, a server sends the map every day, and the team’s program works out every car’s moves and sends them back.',
+  h_r5_p2:'Which spots to visit and in what order, when to refuel, which busy roads to avoid — there is a lot to think about.',
+  h_r5_note:'Data is exchanged as JSON. On the right is an example that follows the official format document. Terrain: 0=plain, 1=road, 2=mountain, 3=pond. Directions go clockwise from 0=up-left to 5=left; negative numbers mean waiting.',
+  h_json_q:'// Map setup before the match (official format, excerpt)', h_json_a:'// Answer: one day’s action plan (official format)',
+  h_st_day:'Day', h_day_of:'{d} / {n}',
+  h_c_kinds:'Kinds', h_c_udon:'Udon (bowls)', h_c_daily:'Sum of kinds per day', h_c_time:'Time', h_c_rank:'Rank', h_c_day:'Day',
+  h_types_h:'Choose each car’s role',
+  h_types_note:'{p} patrol, {s} supply. You cannot change this once the match starts.',
+  h_tap_change:'Tap to switch', h_types_ok:'Start with this team',
+  h_patrol:'Patrol car', h_supply:'Supply car', h_steps:'Time', h_fuel:'Fuel', h_fuel_inf:'not needed',
+  h_meet:'⛽ Meet up', h_wait:'⏸ Wait', h_clear:'Clear', h_auto:'🤖 Auto plan',
+  h_start_day:'▶ Start day {d}', h_fast:'⏩ Fast forward',
+  h_plan_sum:'With this plan: <b>{k} kinds, {u} bowls</b>',
+  h_hint_types:'Patrol cars collect udon; supply cars bring fuel. Decide how many of each.',
+  h_hint_plan:'Pick a car, then tap a cell to draw a route. When fuel runs low, use “⛽ Meet up” to meet a supply car.',
+  h_hint_next:'A new day. “!” on a road means busy and “!!” means jammed — they take longer.',
+  h_hint_got:'Spots with ✓ will give you udon. Plan your other cars too.',
+  h_hint_auto:'Planned with the robot’s strategy. Change anything you like, then start.',
+  h_hint_run:'All cars are moving at the same time.',
+  h_day_sum:'Day {d}: {k} kinds, {u} bowls!',
+  h_day_jam:'  Roads: {a} busy, {b} jammed.', h_day_nojam:'  The roads are clear.',
+  h_toast_day:'End of day {d}: {k} kinds, {u} bowls',
+  h_toast_pond:'You can’t go there (pond)',
+  h_toast_fuel:'Not enough fuel, so the route stops partway. Meet a supply car.',
+  h_toast_steps:'Not enough time left today, so the route stops partway.',
+  h_toast_timeup:'Time’s up! Starting with the current plan',
+  h_toast_nosup:'You have no supply car', h_toast_nopat:'You have no patrol car',
+  h_prob_no:'Puzzle No.{n}', h_robot_n:'Robot {n}', h_leg_tf:'{t}, fuel {f}',
+  h_rank:'Rank {n}!',
+  h_why1:'Decided by the number of kinds (compared with {who}).',
+  h_why2:'Same number of kinds, so decided by the sum of kinds per day (compared with {who}).',
+  h_why3:'Same kinds and sum, so decided by the number of bowls (compared with {who}).',
+  h_why4:'Everything else was equal, so decided by answer time (compared with {who}).',
+  h_perfect:'You collected every kind!',
+  h_msg_perfect:'Amazing! Next, try collecting every kind every day to raise the daily sum.',
+  h_msg_tip:'Send patrol cars to different kinds to collect more kinds. Meet a supply car when fuel gets low.',
+  h_day_n:'Day {d}',
+  h_replay_all:'🎬 Match replay', h_replay_all_d:'Your team is shown solid; robot teams are faded.',
+  h_replay_me:'🎬 Replay of your match', h_replay_me_d:'See, day by day, how your cars moved and where they got udon.',
+  h_show_model:'📘 See the model team', h_model_title:'📘 Model team (strong robot)',
+  h_model_d:'A match where everyone moves at once has no single right answer, so the strong robot serves as the model. It got {k} kinds, a daily sum of {d} and {u} bowls (you: daily sum {me}, {mu} bowls).',
+  h_p_prog:'Day {d} / {n}　{t} / {s} steps　|　udon {u}',
+  h_json_mine:'📄 Your answer (official format)',
+  h_json_note:'Same format as the real contest. 0=up-left, 1=up-right, 2=right, 3=down-right, 4=down-left, 5=left; negative numbers mean waiting (-3 = wait 3 steps). A wait is added at the end so each day uses exactly its number of steps.',
+};
+HX.vi={
+  lr_tc_body:'<h4>Liên hệ với Chương trình giáo dục của Nhật Bản (2017)</h4><ul><li>Chủ yếu là D(1) «Công nghệ thông tin hỗ trợ đời sống và xã hội»: (a) cơ chế cơ bản như tự động hóa xử lý, (b) ý tưởng giải quyết vấn đề trong công nghệ</li><li>Mở đầu cho D(2)(3)(b): cụ thể hóa các bước xử lý thông tin và suy nghĩ về đánh giá, cải tiến, sửa chữa</li><li>Cầu nối giữa lập trình ở tiểu học và môn «Tin học I» ở trung học phổ thông</li></ul><h4>Ví dụ 3 tiết học (lớp 8)</h4><ol><li>Giải lần 36 bằng tay, so với đáp án mẫu và thảo luận sự khác nhau giữa giải theo cảm tính và giải theo các bước</li><li>Trong «Giải bằng khối lệnh» lần 35, tạo các bước với tuần tự, rẽ nhánh và lặp, so số ô sai và số lượt với đáp án mẫu rồi cải tiến</li><li>Ở lần 37, tạo chiến thuật chia vai trò trong giới hạn nhiên liệu và tắc đường, so với đội mẫu và liên hệ với giao hàng hay lịch xe buýt</li></ol><h4>Gợi ý đánh giá</h4><ul><li>Kiến thức và kỹ năng: học sinh có giải thích được tuần tự, rẽ nhánh, lặp trong các bước, và tạo, thử, sửa chương trình khối không</li><li>Tư duy, phán đoán và diễn đạt: có giải thích cải tiến bằng số liệu (số ô sai, số lượt, số bát) không</li><li>Thái độ: có tiếp tục sửa và thử khi chưa thành công không</li></ul><h4>Chuẩn bị</h4><ul><li>Chạy bằng một tệp HTML, không cần máy chủ, dùng được khi không có mạng (chỉ phông chữ tải từ internet)</li><li>Chỉ lưu cài đặt và chương trình trong trình duyệt của thiết bị; không xử lý thông tin cá nhân</li><li>Hỗ trợ sắc giác, chế độ dịu mắt, chế độ ban đêm và 5 ngôn ngữ</li></ul><h4>Tài liệu</h4><p>Thư mục docs trong gói (zip) có giáo án, trang trình chiếu (PDF) và bộ hướng dẫn (hiện bằng tiếng Nhật).</p><p class="lrsmall">Giáo án và thời gian chỉ là ví dụ — hãy điều chỉnh cho phù hợp với trường và học sinh.</p>',
+  lr_tc_dl_h:'Giáo án, trang trình chiếu và phiếu học tập', lr_tc_ws:'Phiếu học tập (PDF)', lr_tc_plan:'Giáo án (PDF)', lr_tc_slides:'Trang trình chiếu (PDF)', lr_tc_dl_note:'Tệp PDF bằng tiếng Nhật. Mở trong thẻ mới để lưu hoặc in. Hãy để chúng cùng thư mục với ứng dụng.',
+  lr_tc_lead:'Ứng dụng được thiết kế để mở đầu việc giải quyết vấn đề bằng lập trình trong môn Công nghệ ở trung học cơ sở Nhật Bản (nội dung D «Công nghệ thông tin»). Học sinh trải nghiệm theo thứ tự «giải bằng tay → biến thành các bước → để máy tính làm → so với mẫu và cải tiến».',
+  lr_tc_h:'Dành cho giáo viên',
+  h_leg_model:'Đội mẫu (màu nhạt)',
+  h_leg_me:'Đội của bạn',
+  lr_s3:'Khi hết giờ, đáp án mẫu sẽ chạy (lần 37 là «đội mẫu»). Hãy so sánh với cách giải của bạn.',
+  lr_video_p:'Video khoảng 2 phút giới thiệu toàn bộ cách dùng ứng dụng (màn hình của lần 35 và 36; không có tiếng; phụ đề tiếng Nhật).',
+  lr_h_tips:'<li>Cho các xe tuần tra đi tới những loại khác nhau sẽ thu được nhiều loại hơn.</li><li>Sắp hết nhiên liệu thì dùng «⛽ Gặp nhau». Đi cùng xe tiếp nhiên liệu thì không tốn nhiên liệu.</li><li>Đường đi nhanh nhưng tốn nhiều nhiên liệu, và đường nhiều xe đi sẽ đông vào hôm sau.</li><li>Tổng số loại mỗi ngày cũng được tính, nên hãy nhắm đủ mọi loại mỗi ngày.</li>',
+  lr_h_h:'Gợi ý cho lần thứ 37',
+  h_note_wait:'(Có lúc phải chờ vì thiếu thời gian hoặc nhiên liệu.)',
+  h_err_pond:'Không đi hướng đó được (ao hoặc ngoài bản đồ).',
+  h_st_done:'Xong! {k} / {n} loại, tổng mỗi ngày {d}, {u} bát',
+  h_st_running:'Đang chạy… ngày {d}, bước {t}　|　bạn {me} bát, đội mẫu {mo} bát',
+  h_st_ready:'Ghép chiến thuật bằng khối lệnh rồi bấm «Chạy». Bạn có thể xem trận 3 ngày từng bước.',
+  h_code_tip:'💡 Mỗi khi một xe quyết định hành động tiếp theo, chương trình chạy từ trên xuống. Khối di chuyển đầu tiên gặp được sẽ quyết định hành động của xe; không gặp khối nào thì xe chờ 1 bước. «Gặp đồng đội» đưa xe tuần tra tới xe tiếp nhiên liệu, và đưa xe tiếp nhiên liệu tới xe tuần tra ít nhiên liệu nhất (xe tiếp nhiên liệu gặp khối điểm cũng vậy). Đội có 4 xe (3 xe tuần tra, 1 xe tiếp nhiên liệu).',
+  h_smp3:'Đủ loại rồi thì tới điểm gần nhất',
+  h_smp2:'Sắp hết nhiên liệu thì gặp nhau',
+  h_smp1:'Nhắm vào loại chưa lấy',
+  h_d5:'← trái',
+  h_d4:'↙ dưới trái',
+  h_d3:'↘ dưới phải',
+  h_d2:'→ phải',
+  h_d1:'↗ trên phải',
+  h_d0:'↖ trên trái',
+  hc_allkinds:'hôm nay đã lấy đủ mọi loại',
+  hc_together:'có đồng đội ở cùng ô',
+  hc_halffuel:'nhiên liệu còn một nửa trở xuống',
+  hc_lowfuel:'nhiên liệu còn 1/4 trở xuống',
+  hc_supply:'đây là xe tiếp nhiên liệu',
+  hc_patrol:'đây là xe tuần tra',
+  hb_ifcar:'Nếu đây là xe số {n}',
+  hb_wait:'Chờ 1 bước',
+  hb_move:'Đi 1 ô về {d}',
+  hb_meet:'Gặp đồng đội',
+  hb_near:'Đi tới điểm gần nhất',
+  hb_go:'Đi tới điểm có loại hôm nay chưa lấy',
+  h_pal_if:'Nếu (điều kiện)',
+  h_hint_meet:'Xe tuần tra sẽ chờ tới khi xe tiếp nhiên liệu tới. Khi bình đầy, hãy vẽ tiếp đường đi.',
+  h_m_rules_s:'Học cách chơi<br>qua 6 trang',
+  game_hexa:'Lần 37: Hexa Udon',
+  h_logo:'Hexa <span class="e">Udon</span>',
+  h_tag:'Điều khiển xe tuần tra và xe tiếp nhiên liệu<br>để thu thập thật nhiều udon Kagawa!',
+  h_foot:'Bản mô phỏng trải nghiệm dựa trên luật phần thi Thi đấu “Hexa Udon” của Cuộc thi Lập trình KOSEN Toàn quốc lần thứ 37.',
+  h_m_solo_s:'Thu thập udon<br>trong 3 ngày',
+  h_code_soon:'Lần 37<br>đang chuẩn bị',
+  h_kind_names:'Kake,Bukkake,Zaru,Kamatama,Shoyu',
+  h_size_h:'Kích thước bản đồ', h_size_p:'Lần đầu nên chọn 8×8. Cuộc thi thật có bản đồ tới 32×32!',
+  h_time_h:'Thời gian lập kế hoạch mỗi ngày', h_time_1:'1 phút / ngày', h_time_2:'2 phút / ngày',
+  h_prob_h:'Độ khó', h_prob_easy:'Dễ (3 loại, 3 ngày, 3 xe)', h_prob_mid:'Vừa (4 loại, 3 ngày, 4 xe)', h_prob_hard:'Khó (5 loại, 4 ngày, 4 xe)',
+  h_bot_p:'Yếu: đi tới các điểm gần nhất, không chia điểm đến với đồng đội. Vừa: ưu tiên loại mới và phối hợp với xe tiếp nhiên liệu. Mạnh: còn tính cả tắc đường và chia nhau các loại.',
+  h_opp_h:'Số đội đối thủ',
+  h_r0_h:'① Bản đồ <em>lục giác</em>',
+  h_r0_p1:'Bản đồ gồm các «ô» hình lục giác. Xe có thể đi sang 6 ô bên cạnh.',
+  h_r0_p2:'Có 4 loại địa hình: đồng bằng, núi, ao và đường. Thời gian (bước) và nhiên liệu để di chuyển phụ thuộc vào <b>địa hình của ô đang đứng</b>.',
+  h_r0_note:'Bản đồ thật rộng 8–32 ô mỗi chiều. Bản mô phỏng này dùng 8–12 ô.',
+  h_th_time:'Thời gian (bước)', h_th_fuel:'Nhiên liệu',
+  h_terr0:'Đồng bằng', h_terr1:'Núi', h_terr2:'Ao', h_terr3:'Đường', h_noentry:'Không vào được',
+  h_r1_h:'② Lấy udon ở <em>điểm</em>',
+  h_r1_p1:'Một số ô đồng bằng có «điểm». Khi xe tuần tra ở điểm (lúc tới nơi hoặc lúc chờ ở đó), xe nhận được 1 bát udon.',
+  h_r1_p2:'Mỗi điểm có một loại udon riêng. Một xe tuần tra chỉ nhận được 1 bát ở mỗi điểm trong một ngày.',
+  h_r1_note:'Con số ở góc trên bên phải của điểm là số udon còn lại. Mỗi đội có kho riêng, và kho được bổ sung đầy vào đầu mỗi ngày.',
+  h_r2_h:'③ Xe <em>tuần tra</em> và xe <em>tiếp nhiên liệu</em>',
+  h_r2_p1:'Xe tuần tra thu thập udon nhưng tốn nhiên liệu mỗi lần di chuyển. Thiếu nhiên liệu thì không đi được.',
+  h_r2_p2:'Xe tiếp nhiên liệu không thu được udon nhưng đi không tốn nhiên liệu. Khi xe tuần tra và xe tiếp nhiên liệu ở cùng ô, bình của xe tuần tra được đổ đầy vào cuối bước đó.',
+  h_r2_note:'Nhiên liệu bị trừ khi di chuyển xong. Bình chứa gấp 1–3 lần số bước của ngày 1 (bản mô phỏng này dùng 1 lần). Bạn chọn xe nào là xe tuần tra trước trận và không thể đổi giữa chừng.',
+  h_d2_move:'🚗 Cho xe tuần tra đi 1 ô', h_d2_sup:'⛽ Đưa xe tiếp nhiên liệu tới',
+  h_d2_info:'Nhiên liệu xe tuần tra <b>{f}</b> / {m}　|　đã dùng {s} bước',
+  h_d2_moved:'Mất {t} bước và {n} nhiên liệu.',
+  h_d2_nofuel:'Không đủ nhiên liệu để đi! Hãy gọi xe tiếp nhiên liệu.',
+  h_d2_refuel:'Xe tiếp nhiên liệu đã ở cùng ô — bình đầy rồi!',
+  h_d2_same:'Hai xe đã ở cùng ô rồi.',
+  h_d2_end:'Lấy được udon! Bấm «Làm lại» để thử lần nữa.',
+  h_r3_h:'④ Một ngày diễn ra thế nào và <em>tắc đường</em>',
+  h_r3_p1:'Trận đấu chia thành nhiều ngày, mỗi ngày có số bước nhất định. Mỗi ngày lặp lại 3 bước sau:',
+  h_flow1:'Lập kế hoạch di chuyển cho tất cả xe trong ngày và gửi đi',
+  h_flow2:'Xe của tất cả các đội di chuyển cùng lúc',
+  h_flow3:'Sang ngày mới — tình trạng đường thay đổi',
+  h_r3_note:'Mỗi ô đường trở nên «thông thoáng», «đông» hoặc «tắc» tùy theo số bước mà tất cả các xe đã dừng trên đó trong hai ngày trước. Xe của đội đối thủ cũng được tính, nên cần đoán xem họ sẽ làm gì.',
+  h_r3_cap:'Tình trạng đường và thời gian để đi tiếp từ ô đó',
+  h_rs0:'Thông thoáng', h_rs1:'Đông', h_rs2:'Tắc', h_rs_t:'{n} bước',
+  h_r4_h:'⑤ Luật <em>thắng thua</em>',
+  h_r4_p:'Khi trận đấu kết thúc, các đội được so sánh theo thứ tự sau:',
+  h_rank1:'Thu được nhiều <b>loại</b> udon hơn', h_rank2:'<b>Tổng số loại mỗi ngày</b> lớn hơn', h_rank3:'Nhiều <b>bát</b> udon hơn', h_rank4:'<b>Thời gian trả lời</b> ngắn hơn',
+  h_f1b:'4–10 ngày', h_f1s:'Số ngày của một trận thật', h_f2b:'3–8 xe', h_f2s:'Số xe của một đội', h_f3b:'Tối đa 32×32', h_f3s:'Kích thước bản đồ', h_f4b:'Nhiều đội cùng lúc', h_f4s:'Cùng thi trên một bản đồ',
+  h_r5_h:'⑥ Ở cuộc thi thật, <em>chương trình</em> lập kế hoạch!',
+  h_r5_p1:'Ở cuộc thi thật, máy chủ gửi thông tin bản đồ mỗi ngày, và chương trình của đội tính toán đường đi của mọi xe rồi gửi lại.',
+  h_r5_p2:'Đi những điểm nào theo thứ tự nào, khi nào tiếp nhiên liệu, có tránh đường đông không — có rất nhiều điều phải nghĩ.',
+  h_r5_note:'Dữ liệu được trao đổi dạng JSON. Bên phải là ví dụ theo tài liệu định dạng chính thức. Địa hình: 0=đồng bằng, 1=đường, 2=núi, 3=ao. Hướng đi theo chiều kim đồng hồ từ 0=trên trái tới 5=trái; số âm là chờ.',
+  h_json_q:'// Cấu hình bản đồ trước trận (dạng chính thức, trích)', h_json_a:'// Đáp án: kế hoạch một ngày (dạng chính thức)',
+  h_st_day:'Ngày', h_day_of:'{d} / {n}',
+  h_c_kinds:'Loại', h_c_udon:'Udon (bát)', h_c_daily:'Tổng số loại mỗi ngày', h_c_time:'Thời gian', h_c_rank:'Hạng', h_c_day:'Ngày',
+  h_types_h:'Chọn vai trò cho từng xe',
+  h_types_note:'{p} xe tuần tra, {s} xe tiếp nhiên liệu. Khi trận bắt đầu thì không đổi được.',
+  h_tap_change:'Chạm để đổi', h_types_ok:'Bắt đầu với đội này',
+  h_patrol:'Xe tuần tra', h_supply:'Xe tiếp nhiên liệu', h_steps:'Thời gian', h_fuel:'Nhiên liệu', h_fuel_inf:'không cần',
+  h_meet:'⛽ Gặp nhau', h_wait:'⏸ Chờ', h_clear:'Xóa', h_auto:'🤖 Tự lập kế hoạch',
+  h_start_day:'▶ Bắt đầu ngày {d}', h_fast:'⏩ Tua nhanh',
+  h_plan_sum:'Với kế hoạch này: <b>{k} loại, {u} bát</b>',
+  h_hint_types:'Xe tuần tra thu thập udon, xe tiếp nhiên liệu mang nhiên liệu tới. Hãy quyết định mỗi loại mấy xe.',
+  h_hint_plan:'Chọn một xe rồi chạm vào ô muốn tới để vẽ đường. Khi sắp hết nhiên liệu, dùng «⛽ Gặp nhau» để gặp xe tiếp nhiên liệu.',
+  h_hint_next:'Ngày mới. «!» trên đường là đông, «!!» là tắc — đi sẽ lâu hơn.',
+  h_hint_got:'Các điểm có ✓ sẽ cho bạn udon. Hãy lập kế hoạch cho các xe khác nữa.',
+  h_hint_auto:'Đã lập kế hoạch theo chiến thuật của rô-bốt. Sửa chỗ bạn muốn rồi bắt đầu.',
+  h_hint_run:'Tất cả các xe đang di chuyển cùng lúc.',
+  h_day_sum:'Ngày {d}: được {k} loại, {u} bát!',
+  h_day_jam:'  Đường: {a} chỗ đông, {b} chỗ tắc.', h_day_nojam:'  Đường đang thông thoáng.',
+  h_toast_day:'Hết ngày {d}: {k} loại, {u} bát',
+  h_toast_pond:'Không đi tới đó được (ao)',
+  h_toast_fuel:'Không đủ nhiên liệu nên đường đi dừng giữa chừng. Hãy gặp xe tiếp nhiên liệu.',
+  h_toast_steps:'Không đủ thời gian trong ngày nên đường đi dừng giữa chừng.',
+  h_toast_timeup:'Hết giờ! Bắt đầu với kế hoạch hiện tại',
+  h_toast_nosup:'Bạn không có xe tiếp nhiên liệu', h_toast_nopat:'Bạn không có xe tuần tra',
+  h_prob_no:'Đề số {n}', h_robot_n:'Rô-bốt {n}', h_leg_tf:'{t}, nhiên liệu {f}',
+  h_rank:'Hạng {n}!',
+  h_why1:'Quyết định bằng số loại (so với {who}).',
+  h_why2:'Số loại bằng nhau nên quyết định bằng tổng số loại mỗi ngày (so với {who}).',
+  h_why3:'Số loại và tổng bằng nhau nên quyết định bằng số bát (so với {who}).',
+  h_why4:'Mọi thứ khác đều bằng nhau nên quyết định bằng thời gian trả lời (so với {who}).',
+  h_perfect:'Bạn đã thu đủ mọi loại!',
+  h_msg_perfect:'Tuyệt vời! Lần tới hãy thử thu đủ mọi loại mỗi ngày để tăng tổng mỗi ngày.',
+  h_msg_tip:'Cho các xe tuần tra đi tới những loại khác nhau sẽ thu được nhiều loại hơn. Sắp hết nhiên liệu thì gặp xe tiếp nhiên liệu.',
+  h_day_n:'Ngày {d}',
+  h_replay_all:'🎬 Xem lại trận đấu', h_replay_all_d:'Đội của bạn hiện đậm, các đội rô-bốt hiện mờ.',
+  h_replay_me:'🎬 Xem lại trận của bạn', h_replay_me_d:'Xem theo từng ngày các xe đã đi thế nào và lấy udon ở đâu.',
+  h_show_model:'📘 Xem đội mẫu', h_model_title:'📘 Đội mẫu (rô-bốt mạnh)',
+  h_model_d:'Trận đấu mà mọi người cùng di chuyển không có một đáp án đúng duy nhất, nên rô-bốt mạnh được dùng làm mẫu. Đội mẫu được {k} loại, tổng mỗi ngày {d}, {u} bát (bạn: tổng mỗi ngày {me}, {mu} bát).',
+  h_p_prog:'Ngày {d} / {n}　{t} / {s} bước　|　udon {u}',
+  h_json_mine:'📄 Đáp án của bạn (dạng chính thức)',
+  h_json_note:'Cùng dạng với cuộc thi thật. 0=trên trái, 1=trên phải, 2=phải, 3=dưới phải, 4=dưới trái, 5=trái; số âm là chờ (-3 = chờ 3 bước). Cuối mỗi ngày có thêm lệnh chờ để dùng đúng số bước của ngày.',
+};
+HX.th={
+  lr_tc_body:'<h4>ความเชื่อมโยงกับหลักสูตรของญี่ปุ่น (ปี 2017)</h4><ul><li>หลักคือ D(1) «เทคโนโลยีสารสนเทศที่สนับสนุนชีวิตและสังคม»: (ก) กลไกพื้นฐาน เช่น การประมวลผลอัตโนมัติ (ข) แนวคิดการแก้ปัญหาในเทคโนโลยี</li><li>บทนำของ D(2)(3)(ข): ทำให้ขั้นตอนการประมวลผลเป็นรูปธรรม และคิดเรื่องการประเมิน ปรับปรุง และแก้ไข</li><li>เชื่อมการเขียนโปรแกรมในประถมกับวิชา «สารสนเทศ I» ในมัธยมปลาย</li></ul><h4>ตัวอย่าง 3 คาบ (ม.2)</h4><ol><li>แก้โจทย์ครั้งที่ 36 ด้วยมือ เทียบกับคำตอบตัวอย่าง แล้วอภิปรายความต่างระหว่างการแก้ด้วยความรู้สึกกับการแก้ตามขั้นตอน</li><li>ใน «แก้โจทย์ด้วยบล็อก» ครั้งที่ 35 สร้างขั้นตอนด้วยลำดับ ทางเลือก และการทำซ้ำ เทียบจำนวนที่ต่างและจำนวนครั้งกับคำตอบตัวอย่าง แล้วปรับปรุง</li><li>ในครั้งที่ 37 สร้างกลยุทธ์แบ่งหน้าที่ภายใต้ข้อจำกัดน้ำมันและการจราจร เทียบกับทีมตัวอย่าง และเชื่อมกับการส่งพัสดุหรือการเดินรถโดยสาร</li></ol><h4>คำแนะนำการประเมิน</h4><ul><li>ความรู้และทักษะ: อธิบายลำดับ ทางเลือก การทำซ้ำในขั้นตอนได้ไหม สร้าง ทดสอบ และแก้โปรแกรมบล็อกได้ไหม</li><li>การคิด การตัดสินใจ และการแสดงออก: อธิบายการปรับปรุงโดยใช้ตัวเลข (จำนวนที่ต่าง จำนวนครั้ง จำนวนชาม) เป็นหลักฐานไหม</li><li>เจตคติ: เมื่อยังไม่สำเร็จยังแก้และลองซ้ำไหม</li></ul><h4>การเตรียมตัว</h4><ul><li>ทำงานด้วยไฟล์ HTML ไฟล์เดียว ไม่ต้องมีเซิร์ฟเวอร์ ใช้ได้แม้ไม่มีอินเทอร์เน็ต (โหลดเฉพาะฟอนต์)</li><li>บันทึกเพียงการตั้งค่าและโปรแกรมในเบราว์เซอร์ของอุปกรณ์ ไม่จัดการข้อมูลส่วนบุคคล</li><li>รองรับการมองเห็นสี โหมดถนอมสายตา โหมดกลางคืน และ 5 ภาษา</li></ul><h4>เอกสารประกอบ</h4><p>โฟลเดอร์ docs ในชุดไฟล์ (zip) มีแผนการสอน สไลด์ประกอบการสอน (PDF) และชุดบทแนะนำ (ตอนนี้เป็นภาษาญี่ปุ่น)</p><p class="lrsmall">แผนและเวลาเป็นเพียงตัวอย่าง ปรับได้ตามโรงเรียนและผู้เรียน</p>',
+  lr_tc_dl_h:'แผนการสอน สไลด์ และใบงาน', lr_tc_ws:'ใบงาน (PDF)', lr_tc_plan:'แผนการสอน (PDF)', lr_tc_slides:'สไลด์ประกอบการสอน (PDF)', lr_tc_dl_note:'ไฟล์ PDF ภาษาญี่ปุ่น เปิดในแท็บใหม่เพื่อบันทึกหรือพิมพ์ได้ ให้วางไว้ในโฟลเดอร์เดียวกับแอป',
+  lr_tc_lead:'แอปนี้ออกแบบไว้เป็นบทนำของการแก้ปัญหาด้วยการเขียนโปรแกรมในวิชาเทคโนโลยีระดับมัธยมต้นของญี่ปุ่น (เนื้อหา D «เทคโนโลยีสารสนเทศ») นักเรียนจะได้ลองตามลำดับ «แก้ด้วยมือ → เปลี่ยนเป็นขั้นตอน → ให้คอมพิวเตอร์ทำ → เทียบกับตัวอย่างแล้วปรับปรุง»',
+  lr_tc_h:'สำหรับครู',
+  h_leg_model:'ทีมตัวอย่าง (สีจาง)',
+  h_leg_me:'ทีมของคุณ',
+  lr_s3:'เมื่อหมดเวลา คำตอบตัวอย่างจะเล่นให้ดู (ครั้งที่ 37 คือ “ทีมตัวอย่าง”) ลองเปรียบเทียบกับวิธีของตัวเอง',
+  lr_video_p:'วิดีโอประมาณ 2 นาทีแนะนำการใช้แอปทั้งหมด (หน้าจอของครั้งที่ 35 และ 36 ไม่มีเสียง คำบรรยายเป็นภาษาญี่ปุ่น)',
+  lr_h_tips:'<li>ส่งรถลาดตระเวนแยกไปคนละชนิด จะได้หลายชนิดขึ้น</li><li>เมื่อน้ำมันใกล้หมดให้ใช้ “⛽ ไปพบกัน” ถ้าเคลื่อนที่ไปพร้อมรถเติมน้ำมันน้ำมันจะไม่ลด</li><li>ถนนเร็วแต่ใช้น้ำมันมาก และถนนที่ทุกคนใช้จะหนาแน่นในวันถัดไป</li><li>ผลรวมชนิดของแต่ละวันก็มีผลต่อแพ้ชนะ จึงควรเก็บให้ครบทุกชนิดทุกวัน</li>',
+  lr_h_h:'คำแนะนำสำหรับครั้งที่ 37',
+  h_note_wait:'(มีช่วงที่ต้องรอเพราะเวลาหรือน้ำมันไม่พอ)',
+  h_err_pond:'ไปทางนั้นไม่ได้ (บ่อน้ำหรือนอกแผนที่)',
+  h_st_done:'เสร็จแล้ว! {k} / {n} ชนิด ผลรวมรายวัน {d} {u} ชาม',
+  h_st_running:'กำลังทำงาน… วันที่ {d} สเต็ป {t}　|　คุณ {me} ชาม ทีมตัวอย่าง {mo} ชาม',
+  h_st_ready:'สร้างกลยุทธ์ด้วยบล็อกแล้วกด “รัน” ดูการแข่ง 3 วันได้ทีละสเต็ป',
+  h_code_tip:'💡 ทุกครั้งที่รถตัดสินใจการกระทำถัดไป โปรแกรมจะทำงานจากบนลงล่าง บล็อกเคลื่อนที่บล็อกแรกที่ถึงจะเป็นตัวกำหนดการกระทำของรถ ถ้าไม่ถึงบล็อกใดเลยรถจะรอ 1 สเต็ป “ไปพบเพื่อนร่วมทีม” จะส่งรถลาดตระเวนไปหารถเติมน้ำมัน และส่งรถเติมน้ำมันไปหารถลาดตระเวนที่น้ำมันน้อยที่สุด (รถเติมน้ำมันที่ถึงบล็อกจุดก็เช่นกัน) มีรถ 4 คัน (รถลาดตระเวน 3 คัน รถเติมน้ำมัน 1 คัน)',
+  h_smp3:'ครบทุกชนิดแล้วไปจุดที่ใกล้ที่สุด',
+  h_smp2:'น้ำมันใกล้หมดให้ไปพบกัน',
+  h_smp1:'มุ่งไปชนิดที่ยังไม่ได้',
+  h_d5:'← ซ้าย',
+  h_d4:'↙ ซ้ายล่าง',
+  h_d3:'↘ ขวาล่าง',
+  h_d2:'→ ขวา',
+  h_d1:'↗ ขวาบน',
+  h_d0:'↖ ซ้ายบน',
+  hc_allkinds:'วันนี้ได้ครบทุกชนิดแล้ว',
+  hc_together:'มีเพื่อนร่วมทีมอยู่ช่องเดียวกัน',
+  hc_halffuel:'น้ำมันเหลือครึ่งหรือน้อยกว่า',
+  hc_lowfuel:'น้ำมันเหลือ 1/4 หรือน้อยกว่า',
+  hc_supply:'รถคันนี้เป็นรถเติมน้ำมัน',
+  hc_patrol:'รถคันนี้เป็นรถลาดตระเวน',
+  hb_ifcar:'ถ้ารถคันนี้คือคันที่ {n}',
+  hb_wait:'รอ 1 สเต็ป',
+  hb_move:'ไป 1 ช่องทาง{d}',
+  hb_meet:'ไปพบเพื่อนร่วมทีม',
+  hb_near:'ไปยังจุดที่ใกล้ที่สุด',
+  hb_go:'ไปยังจุดของชนิดที่วันนี้ยังไม่ได้',
+  h_pal_if:'ถ้า (เงื่อนไข)',
+  h_hint_meet:'ให้รถลาดตระเวนรอจนรถเติมน้ำมันมาถึงแล้ว เมื่อน้ำมันเต็มถัง ให้วาดเส้นทางต่อ',
+  h_m_rules_s:'เรียนวิธีเล่น<br>จาก 6 สไลด์',
+  game_hexa:'ครั้งที่ 37: เฮกซะอุด้ง',
+  h_logo:'เฮกซะ<span class="e">อุด้ง</span>',
+  h_tag:'ขับรถลาดตระเวนและรถเติมน้ำมัน<br>เพื่อสะสมอุด้งของคางาวะให้ได้มากที่สุด!',
+  h_foot:'แบบจำลองสำหรับทดลองเล่น อ้างอิงกติกาประเภทการแข่งขัน “เฮกซะอุด้ง” ของการแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น ครั้งที่ 37',
+  h_m_solo_s:'สะสมอุด้ง<br>ใน 3 วัน',
+  h_code_soon:'ครั้งที่ 37<br>กำลังเตรียม',
+  h_kind_names:'คาเกะ,บุคคาเกะ,ซารุ,คามาทามะ,โชยุ',
+  h_size_h:'ขนาดแผนที่', h_size_p:'ครั้งแรกแนะนำ 8×8 การแข่งขันจริงใหญ่ได้ถึง 32×32!',
+  h_time_h:'เวลาวางแผนต่อวัน', h_time_1:'วันละ 1 นาที', h_time_2:'วันละ 2 นาที',
+  h_prob_h:'ความยาก', h_prob_easy:'ง่าย (3 ชนิด 3 วัน รถ 3 คัน)', h_prob_mid:'ปานกลาง (4 ชนิด 3 วัน รถ 4 คัน)', h_prob_hard:'ยาก (5 ชนิด 4 วัน รถ 4 คัน)',
+  h_bot_p:'อ่อน: ไปจุดที่ใกล้ที่สุด ไม่แบ่งจุดหมายกับเพื่อนร่วมทีม ปานกลาง: เน้นชนิดใหม่และร่วมมือกับรถเติมน้ำมัน เก่ง: คิดถึงการจราจรและการแบ่งชนิดกันด้วย',
+  h_opp_h:'จำนวนทีมคู่แข่ง',
+  h_r0_h:'① แผนที่<em>หกเหลี่ยม</em>',
+  h_r0_p1:'แผนที่ประกอบด้วย “ช่อง” รูปหกเหลี่ยม รถเคลื่อนไปยังช่องข้างเคียงได้ 6 ทิศ',
+  h_r0_p2:'ภูมิประเทศมี 4 แบบ: ที่ราบ ภูเขา บ่อน้ำ และถนน เวลา (สเต็ป) และน้ำมันที่ใช้ในการเคลื่อนที่ขึ้นกับ<b>ภูมิประเทศของช่องที่อยู่ตอนนี้</b>',
+  h_r0_note:'แผนที่จริงกว้างและยาว 8–32 ช่อง แบบจำลองนี้ใช้ 8–12 ช่อง',
+  h_th_time:'เวลา (สเต็ป)', h_th_fuel:'น้ำมัน',
+  h_terr0:'ที่ราบ', h_terr1:'ภูเขา', h_terr2:'บ่อน้ำ', h_terr3:'ถนน', h_noentry:'เข้าไม่ได้',
+  h_r1_h:'② รับอุด้งที่<em>จุด</em>',
+  h_r1_p1:'ที่ราบบางช่องมี “จุด” เมื่อรถลาดตระเวนอยู่ที่จุด (ตอนไปถึงหรือตอนรออยู่ที่นั่น) จะได้อุด้ง 1 ชาม',
+  h_r1_p2:'แต่ละจุดมีอุด้งคนละชนิด รถลาดตระเวน 1 คันรับอุด้งที่จุดเดียวกันได้วันละ 1 ชามเท่านั้น',
+  h_r1_note:'ตัวเลขมุมขวาบนของจุดคือจำนวนที่เหลือ แต่ละทีมมีของเหลือแยกกัน และจะเติมเต็มทุกต้นวัน',
+  h_r2_h:'③ รถ<em>ลาดตระเวน</em>และรถ<em>เติมน้ำมัน</em>',
+  h_r2_p1:'รถลาดตระเวนเก็บอุด้งได้ แต่ใช้น้ำมันทุกครั้งที่เคลื่อนที่ ถ้าน้ำมันไม่พอจะเคลื่อนที่ไม่ได้',
+  h_r2_p2:'รถเติมน้ำมันเก็บอุด้งไม่ได้ แต่เคลื่อนที่ได้โดยไม่ใช้น้ำมัน เมื่อรถลาดตระเวนและรถเติมน้ำมันอยู่ช่องเดียวกัน น้ำมันของรถลาดตระเวนจะเต็มถังเมื่อจบสเต็ปนั้น',
+  h_r2_note:'น้ำมันจะถูกใช้เมื่อเคลื่อนที่เสร็จ ถังน้ำมันจุได้ 1–3 เท่าของจำนวนสเต็ปในวันที่ 1 (แบบจำลองนี้ใช้ 1 เท่า) ต้องเลือกว่ารถคันไหนเป็นรถลาดตระเวนก่อนเริ่มแข่ง และเปลี่ยนระหว่างแข่งไม่ได้',
+  h_d2_move:'🚗 ให้รถลาดตระเวนไป 1 ช่อง', h_d2_sup:'⛽ ให้รถเติมน้ำมันมาสมทบ',
+  h_d2_info:'น้ำมันรถลาดตระเวน <b>{f}</b> / {m}　|　ใช้เวลาไป {s} สเต็ป',
+  h_d2_moved:'ใช้ {t} สเต็ปและน้ำมัน {n}',
+  h_d2_nofuel:'น้ำมันไม่พอ เคลื่อนที่ไม่ได้! เรียกรถเติมน้ำมันกันเถอะ',
+  h_d2_refuel:'รถเติมน้ำมันมาอยู่ช่องเดียวกันแล้ว — น้ำมันเต็มถัง!',
+  h_d2_same:'อยู่ช่องเดียวกันแล้ว',
+  h_d2_end:'ได้อุด้งแล้ว! กด “เริ่มใหม่” เพื่อลองอีกครั้ง',
+  h_r3_h:'④ ลำดับของหนึ่งวันและ<em>รถติด</em>',
+  h_r3_p1:'การแข่งขันแบ่งเป็นหลายวัน แต่ละวันมีจำนวนสเต็ปที่กำหนด ทุกวันจะทำ 3 ขั้นนี้ซ้ำ:',
+  h_flow1:'วางแผนการเคลื่อนที่ของรถทุกคันสำหรับวันนั้นแล้วส่ง',
+  h_flow2:'รถของทุกทีมเคลื่อนที่พร้อมกัน',
+  h_flow3:'ไปวันถัดไป — สภาพถนนเปลี่ยน',
+  h_r3_note:'ถนนแต่ละช่องจะเป็น “คล่องตัว” “หนาแน่น” หรือ “ติดขัด” ตามเวลาที่รถทุกคันอยู่บนถนนนั้นในสองวันก่อนหน้า รถของทีมคู่แข่งก็นับด้วย จึงต้องเดาใจกัน',
+  h_r3_cap:'สภาพถนนและเวลาที่ใช้เคลื่อนที่ต่อจากช่องนั้น',
+  h_rs0:'คล่องตัว', h_rs1:'หนาแน่น', h_rs2:'ติดขัด', h_rs_t:'{n} สเต็ป',
+  h_r4_h:'⑤ กติกา<em>แพ้ชนะ</em>',
+  h_r4_p:'เมื่อจบการแข่งขัน จะเปรียบเทียบตามลำดับนี้:',
+  h_rank1:'สะสมอุด้งได้หลาย<b>ชนิด</b>กว่า', h_rank2:'<b>ผลรวมจำนวนชนิดของแต่ละวัน</b>มากกว่า', h_rank3:'ได้อุด้งหลาย<b>ชาม</b>กว่า', h_rank4:'<b>เวลาตอบ</b>สั้นกว่า',
+  h_f1b:'4–10 วัน', h_f1s:'จำนวนวันในการแข่งจริง 1 นัด', h_f2b:'3–8 คัน', h_f2s:'จำนวนรถของ 1 ทีม', h_f3b:'สูงสุด 32×32', h_f3s:'ขนาดแผนที่', h_f4b:'หลายทีมพร้อมกัน', h_f4s:'แข่งบนแผนที่เดียวกันพร้อมกัน',
+  h_r5_h:'⑥ ในการแข่งขันจริง <em>โปรแกรม</em>เป็นผู้วางแผน!',
+  h_r5_p1:'ในการแข่งขันจริง เซิร์ฟเวอร์จะส่งข้อมูลแผนที่ทุกวัน แล้วโปรแกรมของทีมคำนวณการเคลื่อนที่ของรถทุกคันแล้วส่งกลับ',
+  h_r5_p2:'จะไปจุดไหนตามลำดับใด จะเติมน้ำมันเมื่อไร จะเลี่ยงถนนที่น่าจะติดไหม — มีเรื่องให้คิดมากมาย',
+  h_r5_note:'ข้อมูลรับส่งในรูปแบบ JSON ด้านขวาเป็นตัวอย่างตามเอกสารรูปแบบทางการ ภูมิประเทศ: 0=ที่ราบ 1=ถนน 2=ภูเขา 3=บ่อน้ำ ทิศเรียงตามเข็มนาฬิกาจาก 0=ซ้ายบน ถึง 5=ซ้าย ตัวเลขติดลบคือการรอ',
+  h_json_q:'// การตั้งค่าแผนที่ก่อนแข่ง (รูปแบบจริง บางส่วน)', h_json_a:'// คำตอบ: แผนการเคลื่อนที่ 1 วัน (รูปแบบจริง)',
+  h_st_day:'วัน', h_day_of:'{d} / {n}',
+  h_c_kinds:'ชนิด', h_c_udon:'อุด้ง (ชาม)', h_c_daily:'ผลรวมชนิดของแต่ละวัน', h_c_time:'เวลา', h_c_rank:'อันดับ', h_c_day:'วัน',
+  h_types_h:'เลือกหน้าที่ของรถแต่ละคัน',
+  h_types_note:'รถลาดตระเวน {p} คัน รถเติมน้ำมัน {s} คัน เมื่อเริ่มแข่งแล้วเปลี่ยนไม่ได้',
+  h_tap_change:'แตะเพื่อสลับ', h_types_ok:'เริ่มด้วยทีมนี้',
+  h_patrol:'รถลาดตระเวน', h_supply:'รถเติมน้ำมัน', h_steps:'เวลา', h_fuel:'น้ำมัน', h_fuel_inf:'ไม่ต้องใช้',
+  h_meet:'⛽ ไปพบกัน', h_wait:'⏸ รอ', h_clear:'ลบ', h_auto:'🤖 วางแผนให้',
+  h_start_day:'▶ เริ่มวันที่ {d}', h_fast:'⏩ เร่งเร็ว',
+  h_plan_sum:'ตามแผนนี้: <b>{k} ชนิด {u} ชาม</b>',
+  h_hint_types:'รถลาดตระเวนเก็บอุด้ง รถเติมน้ำมันนำน้ำมันมาให้ เลือกว่าจะมีอย่างละกี่คัน',
+  h_hint_plan:'เลือกรถ แล้วแตะช่องที่อยากไปเพื่อวาดเส้นทาง เมื่อน้ำมันใกล้หมด ใช้ “⛽ ไปพบกัน” เพื่อไปพบรถเติมน้ำมัน',
+  h_hint_next:'วันใหม่แล้ว “!” บนถนนคือหนาแน่น “!!” คือติดขัด จะใช้เวลานานขึ้น',
+  h_hint_got:'จุดที่มี ✓ จะได้อุด้ง อย่าลืมวางแผนให้รถคันอื่นด้วย',
+  h_hint_auto:'วางแผนตามกลยุทธ์ของหุ่นยนต์แล้ว แก้ส่วนที่อยากแก้แล้วกดเริ่ม',
+  h_hint_run:'รถทุกคันกำลังเคลื่อนที่พร้อมกัน',
+  h_day_sum:'วันที่ {d}: ได้ {k} ชนิด {u} ชาม!',
+  h_day_jam:'  ถนน: หนาแน่น {a} จุด ติดขัด {b} จุด', h_day_nojam:'  ถนนโล่ง',
+  h_toast_day:'จบวันที่ {d}: {k} ชนิด {u} ชาม',
+  h_toast_pond:'ไปที่นั่นไม่ได้ (บ่อน้ำ)',
+  h_toast_fuel:'น้ำมันไม่พอ เส้นทางจึงหยุดกลางทาง ไปพบรถเติมน้ำมันกันเถอะ',
+  h_toast_steps:'เวลาของวันนี้ไม่พอ เส้นทางจึงหยุดกลางทาง',
+  h_toast_timeup:'หมดเวลา! เริ่มด้วยแผนตอนนี้',
+  h_toast_nosup:'ไม่มีรถเติมน้ำมัน', h_toast_nopat:'ไม่มีรถลาดตระเวน',
+  h_prob_no:'โจทย์หมายเลข {n}', h_robot_n:'หุ่นยนต์ {n}', h_leg_tf:'{t} น้ำมัน {f}',
+  h_rank:'อันดับ {n}!',
+  h_why1:'ตัดสินด้วยจำนวนชนิด (เทียบกับ{who})',
+  h_why2:'จำนวนชนิดเท่ากัน จึงตัดสินด้วยผลรวมชนิดของแต่ละวัน (เทียบกับ{who})',
+  h_why3:'ชนิดและผลรวมเท่ากัน จึงตัดสินด้วยจำนวนชาม (เทียบกับ{who})',
+  h_why4:'อย่างอื่นเท่ากันหมด จึงตัดสินด้วยเวลาตอบ (เทียบกับ{who})',
+  h_perfect:'สะสมได้ครบทุกชนิด!',
+  h_msg_perfect:'เยี่ยมมาก! ครั้งหน้าลองเก็บให้ครบทุกชนิดทุกวัน เพื่อเพิ่มผลรวมของแต่ละวัน',
+  h_msg_tip:'ส่งรถลาดตระเวนแยกไปคนละชนิด จะได้หลายชนิดขึ้น เมื่อน้ำมันเหลือน้อยให้ไปพบรถเติมน้ำมัน',
+  h_day_n:'วันที่ {d}',
+  h_replay_all:'🎬 ดูการแข่งย้อนหลัง', h_replay_all_d:'ทีมของคุณแสดงสีเข้ม ทีมหุ่นยนต์แสดงสีจาง',
+  h_replay_me:'🎬 ดูการแข่งของคุณย้อนหลัง', h_replay_me_d:'ดูทีละวันว่ารถเคลื่อนที่อย่างไรและได้อุด้งที่ไหน',
+  h_show_model:'📘 ดูทีมตัวอย่าง', h_model_title:'📘 ทีมตัวอย่าง (หุ่นยนต์เก่ง)',
+  h_model_d:'การแข่งที่ทุกทีมเคลื่อนที่พร้อมกันไม่มีคำตอบที่ถูกเพียงหนึ่งเดียว จึงใช้หุ่นยนต์เก่งเป็นตัวอย่าง ทีมตัวอย่างได้ {k} ชนิด ผลรวมรายวัน {d} และ {u} ชาม (คุณ: ผลรวมรายวัน {me}, {mu} ชาม)',
+  h_p_prog:'วันที่ {d} / {n}　{t} / {s} สเต็ป　|　อุด้ง {u} ชาม',
+  h_json_mine:'📄 คำตอบของคุณ (รูปแบบเดียวกับการแข่งจริง)',
+  h_json_note:'รูปแบบเดียวกับการแข่งจริง 0=ซ้ายบน 1=ขวาบน 2=ขวา 3=ขวาล่าง 4=ซ้ายล่าง 5=ซ้าย ตัวเลขติดลบคือการรอ (-3 = รอ 3 สเต็ป) มีการรอต่อท้ายเพื่อให้ครบจำนวนสเต็ปของวันพอดี',
+};
+HX.mn={
+  lr_tc_body:'<h4>Японы сургалтын хөтөлбөртэй холбоо (2017)</h4><ul><li>Голлох нь D(1) «Амьдрал, нийгмийг дэмжих мэдээллийн технологи»: (а) боловсруулалтыг автоматжуулах зэрэг үндсэн зарчим, (б) технологид шингэсэн асуудал шийдэх санаа</li><li>D(2)(3)(б)-ийн оршил: мэдээлэл боловсруулах алхмыг тодорхой болгож, үнэлэх, сайжруулах, засахыг бодох</li><li>Бага сургуулийн програмчлал ба ахлах сургуулийн «Мэдээлэл I»-ийг холбох байр суурь</li></ul><h4>3 цагийн хичээлийн жишээ (8-р анги)</h4><ol><li>36 дахь тэмцээнийг гараар бодож, жишээ хариулттай харьцуулан мэдрэмжээр бодох ба алхмаар бодохын ялгааг ярилцах</li><li>35 дахь «Блокоор бодох»-д дараалал, салаалалт, давталтаар алхам бүтээж, ялгаатай тоо ба алхмын тоог жишээтэй харьцуулан сайжруулах</li><li>37 дахь тэмцээнд түлш, түгжрэлийн хязгаартай нөхцөлд үүргээ хуваах стратеги бүтээж, жишээ багтай харьцуулан хүргэлт, автобусны хуваарь зэрэгтэй холбох</li></ol><h4>Үнэлгээний зөвлөгөө</h4><ul><li>Мэдлэг, чадвар: алхамдаа дараалал, салаалалт, давталтыг тайлбарлаж, блок програм бүтээж, туршиж, засаж чадаж байна уу</li><li>Сэтгэх, шийдэх, илэрхийлэх: тоон үр дүнг (ялгаатай тоо, алхам, аяга) үндэслэн сайжруулалтаа тайлбарлаж байна уу</li><li>Хандлага: бүтэхгүй үед ч алхмаа засаж дахин туршиж байна уу</li></ul><h4>Бэлтгэл</h4><ul><li>Нэг HTML файлаар ажиллах ба сервер шаардлагагүй, интернэтгүй ч ашиглана (зөвхөн фонтыг интернэтээс уншина)</li><li>Зөвхөн тохиргоо ба програмыг төхөөрөмжийн хөтөч дотор хадгална; хувийн мэдээлэл ашиглахгүй</li><li>Өнгө ялгалтын дэмжлэг, нүдэнд ээлтэй, шөнийн горим, 5 хэл</li></ul><h4>Тараах материал</h4><p>Багцын (zip) docs хавтсанд хичээлийн төлөвлөгөө, хичээлийн слайд (PDF), заавар (одоогоор япон хэлээр) багтсан.</p><p class="lrsmall">Төлөвлөгөө ба цагийн хуваарь нь зөвхөн жишээ — сургууль, сурагчдадаа тааруулан өөрчилнө үү.</p>',
+  lr_tc_dl_h:'Хичээлийн төлөвлөгөө, слайд, ажлын хуудас', lr_tc_ws:'Ажлын хуудас (PDF)', lr_tc_plan:'Хичээлийн төлөвлөгөө (PDF)', lr_tc_slides:'Хичээлийн слайд (PDF)', lr_tc_dl_note:'Япон хэл дээрх PDF. Шинэ табд нээгдэж, хадгалах эсвэл хэвлэх боломжтой. Аппын хамт нэг хавтсанд байрлуулна уу.',
+  lr_tc_lead:'Энэ апп нь Японы дунд сургуулийн Технологийн хичээлийн D «Мэдээллийн технологи» агуулгад програмчлалаар асуудал шийдэх сэдвийн оршил болгон ашиглахаар бүтээгдсэн. Сурагчид «гараар бодох → алхам болгох → компьютерт даатгах → жишээтэй харьцуулж сайжруулах» дарааллаар туршина.',
+  lr_tc_h:'Багш нарт',
+  h_leg_model:'Жишээ баг (бүдэг өнгө)',
+  h_leg_me:'Таны баг',
+  lr_s3:'Хугацаа дуусахад жишээ хариулт тоглогдоно (37 дахь нь “жишээ баг”). Өөрийн аргатайгаа харьцуулж үз.',
+  lr_video_p:'2 орчим минутын видеогоор апп-ыг бүхэлд нь хэрхэн ашиглахыг үзнэ (35, 36 дахь тэмцээний дэлгэц; дуугүй; тайлбар нь япон хэлээр).',
+  lr_h_tips:'<li>Эргүүлийн машинуудыг өөр өөр төрөл рүү илгээвэл олон төрөл цуглуулна.</li><li>Түлш багасвал “⛽ Уулзах”-ыг ашигла. Түлшний машинтай хамт явбал түлш багасахгүй.</li><li>Зам хурдан ч түлш их зарцуулна, бүгд явсан зам дараагийн өдөр ачаалалтай болно.</li><li>Өдөр бүрийн төрлийн нийлбэр ч ялалтад нөлөөлөх тул өдөр бүр бүх төрлийг онил.</li>',
+  lr_h_h:'37 дахь тэмцээний зөвлөгөө',
+  h_note_wait:'(Хугацаа эсвэл түлш хүрэлцээгүйгээс хүлээсэн үе байсан.)',
+  h_err_pond:'Тэр зүг рүү явж болохгүй (цөөрөм эсвэл газрын зургийн гадна).',
+  h_st_done:'Боллоо! {k} / {n} төрөл, өдөр бүрийн нийлбэр {d}, {u} аяга',
+  h_st_running:'Ажиллаж байна… {d} дэх өдөр, {t} дэх алхам　|　та {me} аяга, жишээ {mo} аяга',
+  h_st_ready:'Блокоор стратеги бүтээгээд “Ажиллуулах”-ыг дар. 3 өдрийн тэмцээнийг алхам алхмаар үзнэ.',
+  h_code_tip:'💡 Машин дараагийн үйлдлээ шийдэх бүрт програм дээрээс доош ажиллана. Хамгийн түрүүнд хүрсэн хөдөлгөөний блок тэр машины үйлдлийг шийднэ; аль нь ч хүрэхгүй бол 1 алхам хүлээнэ. “Багийнхантайгаа уулзах” нь эргүүлийн машиныг түлшний машин руу, түлшний машиныг түлш хамгийн бага эргүүлийн машин руу явуулна (түлшний машин цэгийн блокт хүрэхэд ч мөн адил). 4 машинтай (эргүүлийн 3, түлшний 1).',
+  h_smp3:'Бүгдийг авбал ойрын цэг рүү',
+  h_smp2:'Түлш багасвал уулзах',
+  h_smp1:'Аваагүй төрлийг онилох',
+  h_d5:'← зүүн',
+  h_d4:'↙ зүүн доош',
+  h_d3:'↘ баруун доош',
+  h_d2:'→ баруун',
+  h_d1:'↗ баруун дээш',
+  h_d0:'↖ зүүн дээш',
+  hc_allkinds:'өнөөдөр бүх төрлийг авсан',
+  hc_together:'багийн машин нэг нүдэнд байна',
+  hc_halffuel:'түлш тал буюу түүнээс бага',
+  hc_lowfuel:'түлш 1/4 буюу түүнээс бага',
+  hc_supply:'энэ машин түлшний машин',
+  hc_patrol:'энэ машин эргүүлийн машин',
+  hb_ifcar:'Хэрэв энэ машин {n}-р машин бол',
+  hb_wait:'1 алхам хүлээх',
+  hb_move:'{d} 1 нүд явах',
+  hb_meet:'Багийнхантайгаа уулзах',
+  hb_near:'Хамгийн ойрын цэг рүү явах',
+  hb_go:'Өнөөдөр аваагүй төрлийн цэг рүү явах',
+  h_pal_if:'Хэрэв (нөхцөл)',
+  h_hint_meet:'Эргүүлийн машин түлшний машиныг иртэл хүлээхээр болголоо. Түлш дүүрмэгц замаа үргэлжлүүлэн зур.',
+  h_m_rules_s:'6 слайдаар<br>тоглох аргыг сурна',
+  game_hexa:'37 дахь: Хекса удон',
+  h_logo:'Хекса <span class="e">удон</span>',
+  h_tag:'Эргүүлийн машин, түлшний машинаа жолоодож,<br>Кагавагийн удоноос аль болох олныг цуглуул!',
+  h_foot:'Японы Үндэсний Косэн Програмчлалын 37 дахь тэмцээний “Хекса удон” тэмцээний төрлийн дүрэмд үндэслэсэн туршилтын загвар.',
+  h_m_solo_s:'3 өдрийн турш<br>удон цуглуул',
+  h_code_soon:'37 дахь<br>бэлтгэгдэж байна',
+  h_kind_names:'Каке,Буккаке,Зару,Каматама,Шоюу',
+  h_size_h:'Газрын зургийн хэмжээ', h_size_p:'Эхлээд 8×8-аас эхэл. Жинхэнэ тэмцээнд 32×32 хүртэл байдаг!',
+  h_time_h:'Өдөрт төлөвлөх хугацаа', h_time_1:'Өдөрт 1 мин', h_time_2:'Өдөрт 2 мин',
+  h_prob_h:'Хүндрэл', h_prob_easy:'Амархан (3 төрөл, 3 өдөр, 3 машин)', h_prob_mid:'Дунд (4 төрөл, 3 өдөр, 4 машин)', h_prob_hard:'Хэцүү (5 төрөл, 4 өдөр, 4 машин)',
+  h_bot_p:'Сул: хамгийн ойрын цэгүүдийг тойрох ба багийнхантайгаа зорилгоо хуваахгүй. Дунд: шинэ төрлийг түрүүлж, түлшний машинтай хамтарна. Хүчтэй: замын түгжрэл, төрлөө хуваахыг ч бодно.',
+  h_opp_h:'Өрсөлдөгч багийн тоо',
+  h_r0_h:'① <em>Зургаан өнцөгт</em> газрын зураг',
+  h_r0_p1:'Газрын зураг нь зургаан өнцөгт “нүд”-нээс тогтоно. Машин хөрш 6 нүд рүү шилжиж чадна.',
+  h_r0_p2:'Тал, уул, цөөрөм, зам гэсэн 4 төрлийн газар бий. Шилжихэд зарцуулах хугацаа (алхам) ба түлш нь <b>одоо байгаа нүдний газрын төрлөөс</b> хамаарна.',
+  h_r0_note:'Жинхэнэ газрын зураг 8–32 нүдтэй. Энэ загвар 8–12 нүдтэй.',
+  h_th_time:'Хугацаа (алхам)', h_th_fuel:'Түлш',
+  h_terr0:'Тал', h_terr1:'Уул', h_terr2:'Цөөрөм', h_terr3:'Зам', h_noentry:'Орж болохгүй',
+  h_r1_h:'② <em>Цэг</em> дээр удон авах',
+  h_r1_p1:'Зарим тал нүдэнд “цэг” бий. Эргүүлийн машин цэг дээр байхад (хүрэх үед эсвэл тэнд хүлээж байхад) 1 аяга удон авна.',
+  h_r1_p2:'Цэг бүр өөр төрлийн удонтой. Нэг эргүүлийн машин нэг цэгээс өдөрт 1 аяга л авч чадна.',
+  h_r1_note:'Цэгийн баруун дээд талын тоо нь үлдэгдэл. Баг бүр тусдаа үлдэгдэлтэй бөгөөд өдөр бүрийн эхэнд дахин дүүргэгдэнэ.',
+  h_r2_h:'③ <em>Эргүүлийн</em> ба <em>түлшний</em> машин',
+  h_r2_p1:'Эргүүлийн машин удон цуглуулдаг ч хөдлөх бүртээ түлш зарцуулна. Түлш хүрэхгүй бол хөдөлж чадахгүй.',
+  h_r2_p2:'Түлшний машин удон цуглуулж чадахгүй ч түлшгүй хөдөлнө. Эргүүлийн машин ба түлшний машин нэг нүдэнд байвал тухайн алхмын төгсгөлд эргүүлийн машины түлш дүүрнэ.',
+  h_r2_note:'Түлшийг шилжилт дуусах үед зарцуулна. Түлшний дээд хэмжээ 1 дэх өдрийн алхмын тооны 1–3 дахин (энэ загварт 1 дахин). Аль машиныг эргүүлийн машин болгохыг тэмцээний өмнө сонгох ба дундаас нь солих боломжгүй.',
+  h_d2_move:'🚗 Эргүүлийн машиныг 1 нүд урагшлуулах', h_d2_sup:'⛽ Түлшний машиныг нийлүүлэх',
+  h_d2_info:'Эргүүлийн машины түлш <b>{f}</b> / {m}　|　зарцуулсан хугацаа {s} алхам',
+  h_d2_moved:'{t} алхам, {n} түлш зарцуулсан.',
+  h_d2_nofuel:'Түлш хүрэхгүй тул хөдөлж чадахгүй! Түлшний машиныг дууд.',
+  h_d2_refuel:'Түлшний машин нэг нүдэнд ирлээ — түлш дүүрлээ!',
+  h_d2_same:'Аль хэдийн нэг нүдэнд байна.',
+  h_d2_end:'Удон авлаа! “Дахин эхлэх”-ийг дарж дахин туршаарай.',
+  h_r3_h:'④ Нэг өдрийн дараалал ба <em>түгжрэл</em>',
+  h_r3_p1:'Тэмцээн хэд хэдэн өдөрт хуваагдах ба өдөр бүр тодорхой тооны алхамтай. Өдөр бүр дараах 3 үе шат давтагдана:',
+  h_flow1:'Тухайн өдрийн бүх машины хөдөлгөөнийг төлөвлөж илгээх',
+  h_flow2:'Бүх багийн машин зэрэг хөдөлнө',
+  h_flow3:'Дараагийн өдөр — замын нөхцөл өөрчлөгдөнө',
+  h_r3_note:'Зам бүр өмнөх хоёр өдөрт бүх машин түүн дээр хэр удаан байснаас хамааран “чөлөөтэй”, “ачаалалтай”, “түгжрэлтэй” болно. Өрсөлдөгч багийн машин ч тооцогдох тул бие биеийнхээ санааг таах нь чухал.',
+  h_r3_cap:'Замын нөхцөл ба тэндээс 1 нүд урагшлахад зарцуулах хугацаа',
+  h_rs0:'Чөлөөтэй', h_rs1:'Ачаалалтай', h_rs2:'Түгжрэлтэй', h_rs_t:'{n} алхам',
+  h_r4_h:'⑤ <em>Ялалт, ялагдлын</em> дүрэм',
+  h_r4_p:'Тэмцээн дуусахад дараах дарааллаар харьцуулна:',
+  h_rank1:'Илүү олон <b>төрлийн</b> удон цуглуулсан', h_rank2:'<b>Өдөр бүрийн төрлийн нийлбэр</b> их', h_rank3:'Илүү олон <b>аяга</b> удон', h_rank4:'<b>Хариулах хугацаа</b> богино',
+  h_f1b:'4–10 өдөр', h_f1s:'Жинхэнэ нэг тоглолтын өдрийн тоо', h_f2b:'3–8 машин', h_f2s:'Нэг багийн машины тоо', h_f3b:'Хамгийн ихдээ 32×32', h_f3s:'Газрын зургийн хэмжээ', h_f4b:'Олон баг зэрэг', h_f4s:'Нэг газрын зураг дээр зэрэг өрсөлдөнө',
+  h_r5_h:'⑥ Жинхэнэ тэмцээнд <em>програм</em> төлөвлөнө!',
+  h_r5_p1:'Жинхэнэ тэмцээнд сервер өдөр бүр газрын зургийн мэдээллийг илгээж, багийн програм бүх машины хөдөлгөөнийг тооцоолоод буцааж илгээнэ.',
+  h_r5_p2:'Аль цэгүүдийг ямар дарааллаар тойрох, хэзээ түлш нэмэх, түгжрэх магадлалтай замаас зайлсхийх эсэх — бодох зүйл их бий.',
+  h_r5_note:'Өгөгдлийг JSON хэлбэрээр солилцоно. Баруун талд албан ёсны хэлбэрийн баримт бичигт нийцүүлсэн жишээ байна. Газар: 0=тал, 1=зам, 2=уул, 3=цөөрөм. Чиглэл 0=зүүн дээшээс цагийн зүүний дагуу 5=зүүн хүртэл, сөрөг тоо нь хүлээх.',
+  h_json_q:'// Тэмцээний өмнөх газрын зургийн тохиргоо (жинхэнэ хэлбэр, хэсэг)', h_json_a:'// Хариулт: нэг өдрийн хөдөлгөөний төлөвлөгөө (жинхэнэ хэлбэр)',
+  h_st_day:'Өдөр', h_day_of:'{d} / {n}',
+  h_c_kinds:'Төрөл', h_c_udon:'Удон (аяга)', h_c_daily:'Өдөр бүрийн төрлийн нийлбэр', h_c_time:'Хугацаа', h_c_rank:'Байр', h_c_day:'Өдөр',
+  h_types_h:'Машин бүрийн үүргийг сонго',
+  h_types_note:'Эргүүлийн {p}, түлшний {s} машин. Тэмцээн эхэлсний дараа солих боломжгүй.',
+  h_tap_change:'Хүрч солих', h_types_ok:'Энэ багаар эхлэх',
+  h_patrol:'Эргүүлийн машин', h_supply:'Түлшний машин', h_steps:'Хугацаа', h_fuel:'Түлш', h_fuel_inf:'шаардлагагүй',
+  h_meet:'⛽ Уулзах', h_wait:'⏸ Хүлээх', h_clear:'Арилгах', h_auto:'🤖 Автоматаар төлөвлөх',
+  h_start_day:'▶ {d} дэх өдрийг эхлүүлэх', h_fast:'⏩ Хурдасгах',
+  h_plan_sum:'Энэ төлөвлөгөөгөөр: <b>{k} төрөл, {u} аяга</b>',
+  h_hint_types:'Эргүүлийн машин удон цуглуулна, түлшний машин түлш хүргэнэ. Тус бүр хэдэн машин байхыг шийд.',
+  h_hint_plan:'Машинаа сонгоод очих нүдэндээ хүрвэл зам зурагдана. Түлш дуусах дөхвөл “⛽ Уулзах”-аар түлшний машинтай уулз.',
+  h_hint_next:'Шинэ өдөр. Зам дээрх “!” нь ачаалалтай, “!!” нь түгжрэлтэй — удаан явна.',
+  h_hint_got:'✓ тэмдэгтэй цэгүүдээс удон авна. Бусад машиныхаа төлөвлөгөөг ч гарга.',
+  h_hint_auto:'Роботын стратегиар төлөвлөлөө. Хүссэн хэсгээ өөрчлөөд эхлүүл.',
+  h_hint_run:'Бүх машин зэрэг хөдөлж байна.',
+  h_day_sum:'{d} дэх өдөр: {k} төрөл, {u} аяга авлаа!',
+  h_day_jam:'  Зам: ачаалалтай {a}, түгжрэлтэй {b} газар.', h_day_nojam:'  Зам чөлөөтэй байна.',
+  h_toast_day:'{d} дэх өдөр дууслаа: {k} төрөл, {u} аяга',
+  h_toast_pond:'Тийшээ явах боломжгүй (цөөрөм)',
+  h_toast_fuel:'Түлш хүрэлцэхгүй тул зам дундаа зогслоо. Түлшний машинтай уулз.',
+  h_toast_steps:'Өнөөдрийн хугацаа хүрэлцэхгүй тул зам дундаа зогслоо.',
+  h_toast_timeup:'Хугацаа дууслаа! Одоогийн төлөвлөгөөгөөр эхэллээ',
+  h_toast_nosup:'Түлшний машин алга', h_toast_nopat:'Эргүүлийн машин алга',
+  h_prob_no:'Бодлого №{n}', h_robot_n:'Робот {n}', h_leg_tf:'{t}, түлш {f}',
+  h_rank:'{n}-р байр!',
+  h_why1:'Төрлийн тоогоор шийдэгдлээ ({who}-тай харьцуулбал).',
+  h_why2:'Төрлийн тоо тэнцүү тул өдөр бүрийн төрлийн нийлбэрээр шийдэгдлээ ({who}-тай харьцуулбал).',
+  h_why3:'Төрөл ба нийлбэр тэнцүү тул аяганы тоогоор шийдэгдлээ ({who}-тай харьцуулбал).',
+  h_why4:'Бусад бүх зүйл тэнцүү тул хариулах хугацаагаар шийдэгдлээ ({who}-тай харьцуулбал).',
+  h_perfect:'Бүх төрлийг цуглууллаа!',
+  h_msg_perfect:'Гайхалтай! Дараагийн удаа өдөр бүр бүх төрлийг цуглуулж, өдөр бүрийн нийлбэрээ нэмэгдүүлээрэй.',
+  h_msg_tip:'Эргүүлийн машинуудыг өөр өөр төрөл рүү илгээвэл олон төрөл цуглуулна. Түлш багасвал түлшний машинтай уулз.',
+  h_day_n:'{d} дэх өдөр',
+  h_replay_all:'🎬 Тэмцээний давталт', h_replay_all_d:'Таны багийг тод, роботын багуудыг бүдэг харуулж байна.',
+  h_replay_me:'🎬 Таны тэмцээний давталт', h_replay_me_d:'Өдөр өдрөөр машин хэрхэн хөдөлж, хаанаас удон авсныг харна.',
+  h_show_model:'📘 Жишээ багийг үзэх', h_model_title:'📘 Жишээ баг (хүчтэй робот)',
+  h_model_d:'Бүгд зэрэг хөдөлдөг тэмцээнд ганц зөв хариулт байдаггүй тул хүчтэй роботыг жишээ болгосон. Жишээ баг {k} төрөл, өдөр бүрийн нийлбэр {d}, {u} аяга авсан (та: өдөр бүрийн нийлбэр {me}, {mu} аяга).',
+  h_p_prog:'{d} дэх өдөр / {n}　{t} / {s} алхам　|　удон {u}',
+  h_json_mine:'📄 Таны хариулт (жинхэнэ хэлбэр)',
+  h_json_note:'Жинхэнэ тэмцээнтэй ижил хэлбэр. 0=зүүн дээш, 1=баруун дээш, 2=баруун, 3=баруун доош, 4=зүүн доош, 5=зүүн; сөрөг тоо нь хүлээх (-3 = 3 алхам хүлээх). Өдрийн алхмын тоонд яг таарахаар төгсгөлд нь хүлээх нэмсэн.',
+};
+for(const l in HX) Object.assign(I18N[l],HX[l]);
 
 /* ============ core rules ============ */
 const SAMPLE = [[6,3,4,0],[1,5,3,5],[2,7,0,6],[1,2,7,4]];
@@ -2108,11 +2911,12 @@ function show(name){
   $('s-'+name).classList.add('on'); window.scrollTo(0,0);
   if(name==='rules') initRules();
   if(name==='krules') initKRules();
+  if(name==='hrules') initHRules();
   if(name==='code') codeSetup(SETTINGS.game); else if(typeof codeStop==='function') codeStop();
 }
 function setupTitles(){
   const s=t(mode==='robot'?'robot_title':'solo_title');
-  $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s;
+  $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s; $('hgameTitle').textContent=s;
 }
 /* ---- 2つの 競技（第36回「エ。ー縁結びの誘導についてー」／第35回「シン・よみがえれ世界遺産」） ---- */
 const GAMEPAL=()=>[0,1,2,3,1,2,3,0,2,3,0,1,3,0,1,2].map(v=>kColor(v,SETTINGS.theme));
@@ -2122,19 +2926,28 @@ function renderHome(){
   $('hBadge').innerHTML=t(k?'k_badge':'badge');
   $('hLogoEn').innerHTML=t('logo'); $('hTagEn').innerHTML=t('tag'); $('hFootEn').innerHTML=t('foot');
   $('hLogoK').innerHTML=t('k_logo'); $('hTagK').innerHTML=t('k_tag'); $('hFootK').innerHTML=t('k_foot');
-  $('hSoloS').innerHTML=t(k?'k_m_solo_s':'m_solo_s');
+  $('hLogoH').innerHTML=t('h_logo'); $('hTagH').innerHTML=t('h_tag'); $('hFootH').innerHTML=t('h_foot');
+  const hx=SETTINGS.game==='hexa';
+  $('hSoloS').innerHTML=t(hx?'h_m_solo_s':k?'k_m_solo_s':'m_solo_s'); $('hRulesS').innerHTML=t(hx?'h_m_rules_s':'m_rules_s');
+
   document.querySelectorAll('#s-home .head').forEach(el=>{ const on=el.dataset.g===SETTINGS.game; el.classList.toggle('on',on); el.setAttribute('aria-hidden',on?'false':'true'); });
   $('logoKata').innerHTML=GAMEPAL().map(c=>`<i style="background:${c}"></i>`).join('');
 }
 document.querySelectorAll('#gameSw button').forEach(b=>b.onclick=()=>{ SETTINGS.game=b.dataset.g; saveSettings(); renderHome(); renderSetup(); });
 function renderSetup(){
-  const k=SETTINGS.game==='kata', keepSize=document.querySelector('#segSize button.on'), keepProb=document.querySelector('#segProb button.on');
-  const sizes=k?[4,6,8]:[4,6,8,10,12], probs=k?['easy','mid','hard','sample']:['rand','sample'];
-  const sv=keepSize&&sizes.includes(+keepSize.dataset.v)?keepSize.dataset.v:(k?'4':'6');
-  const pv=keepProb&&probs.includes(keepProb.dataset.v)?keepProb.dataset.v:probs[k?1:0];
+  const k=SETTINGS.game==='kata', hx=SETTINGS.game==='hexa', keepSize=document.querySelector('#segSize button.on'), keepProb=document.querySelector('#segProb button.on');
+  const sizes=hx?[8,10,12]:k?[4,6,8]:[4,6,8,10,12], probs=hx?['easy','mid','hard']:k?['easy','mid','hard','sample']:['rand','sample'];
+  const sv=keepSize&&sizes.includes(+keepSize.dataset.v)?keepSize.dataset.v:(hx?'8':k?'4':'6');
+  const pv=keepProb&&probs.includes(keepProb.dataset.v)?keepProb.dataset.v:probs[hx?0:k?1:0];
   $('segSize').innerHTML=sizes.map(s=>`<button data-v="${s}" class="${String(s)===sv?'on':''}">${s}×${s}</button>`).join('');
-  $('segProb').innerHTML=probs.map(p=>`<button data-v="${p}" class="${p===pv?'on':''}">${t(k?'k_prob_'+p:(p==='rand'?'prob_rand':'prob_sample'))}</button>`).join('');
-  $('sizeP').innerHTML=t(k?'k_size_p':'size_p'); $('botP').innerHTML=t(k?'k_bot_p':'bot_p');
+  $('segProb').innerHTML=probs.map(p=>`<button data-v="${p}" class="${p===pv?'on':''}">${t(hx?'h_prob_'+p:k?'k_prob_'+p:(p==='rand'?'prob_rand':'prob_sample'))}</button>`).join('');
+  $('sizeP').innerHTML=t(hx?'h_size_p':k?'k_size_p':'size_p'); $('botP').innerHTML=t(hx?'h_bot_p':k?'k_bot_p':'bot_p');
+  $('sizeH').innerHTML=t(hx?'h_size_h':'size_h'); $('timeH').innerHTML=t(hx?'h_time_h':'time_h'); $('probH').innerHTML=t(hx?'h_prob_h':'prob_h');
+  $('oppBox').style.display=hx?'':'none';
+  { const cur=document.querySelector('#segTime button.on'), vals=hx?[0,60,120]:[0,180,300], keys=hx?['time_none','h_time_1','h_time_2']:['time_none','time_3','time_5'];
+    const keep=cur&&vals.includes(+cur.dataset.v)?cur.dataset.v:'0';
+    $('segTime').innerHTML=vals.map((v,i)=>`<button data-v="${v}" class="${String(v)===keep?'on':''}">${t(keys[i])}</button>`).join('');
+    $('segTime').querySelectorAll('button').forEach(b=>b.onclick=()=>setSeg('segTime',b.dataset.v)); }
   ['segSize','segProb'].forEach(id=>document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
     setSeg(id,b.dataset.v);
     if(id==='segProb'&&b.dataset.v==='sample'&&!k) setSeg('segSize','4');
@@ -2147,14 +2960,14 @@ document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=
     mode=g==='setup-robot'?'robot':'solo';
     setupTitles();
     $('robotPanel').style.display=mode==='robot'?'':'none';
-    if(mode==='robot'){ setSeg('segTime','180'); }
+    if(mode==='robot'){ setSeg('segTime',SETTINGS.game==='hexa'?'0':'180'); }
     show('setup');
-  } else if(g==='rules') show(SETTINGS.game==='kata'?'krules':'rules');
+  } else if(g==='rules') show(SETTINGS.game==='kata'?'krules':SETTINGS.game==='hexa'?'hrules':'rules');
   else show(g);
 }));
 function segVal(id){return document.querySelector('#'+id+' button.on').dataset.v;}
 function setSeg(id,v){document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));}
-['segTime','segBot'].forEach(id=>{
+['segTime','segBot','segOpp'].forEach(id=>{
   document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
     setSeg(id,b.dataset.v);
     if(id==='segProb'&&b.dataset.v==='sample') setSeg('segSize','4');
@@ -2195,10 +3008,19 @@ ${t('json_a')}
   if(G && !G.ended){ updStats(G.board); updSubs(); tick(); if(G.hintKey) $('hint').innerHTML=t(G.hintKey); }
   PLAYERS.forEach(p=>p.relabel());
   relabelCode();
+  if(typeof hRelabel==='function') hRelabel();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.6', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.14', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.14',items:{ja:['「先生方へ」に授業用ワークシート（PDF、全3時間＋ふりかえりシート）を追加'],en:['Added class worksheets (PDF, 3 lessons + reflection sheet) to “For teachers”'],vi:['Thêm phiếu học tập (PDF, 3 tiết + phiếu tự đánh giá) vào «Dành cho giáo viên»'],th:['เพิ่มใบงาน (PDF, 3 คาบ + ใบสะท้อนการเรียนรู้) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн ажлын хуудас (PDF, 3 цаг + эргэцүүлэх хуудас) нэмэв']}},
+  {v:'0.9.13',items:{ja:['「先生方へ」に学習指導案と授業用スライド（PDF）を開くボタンを追加'],en:['Added buttons in “For teachers” to open the lesson plan and class slides (PDF)'],vi:['Thêm nút mở giáo án và trang trình chiếu (PDF) trong «Dành cho giáo viên»'],th:['เพิ่มปุ่มเปิดแผนการสอนและสไลด์ประกอบการสอน (PDF) ใน «สำหรับครู»'],mn:['«Багш нарт» хэсэгт хичээлийн төлөвлөгөө, слайд (PDF) нээх товч нэмэв']}},
+  {v:'0.9.12',items:{ja:['「勉強の仕方・遊び方」の最後に「先生方へ」を追加（学習指導要領との関連・3時間の授業例・評価のヒント・準備）','遊び方の動画を第37回を含む内容に撮り直し'],en:['Added “For teachers” at the end of “How to learn & play” (curriculum links, a 3-lesson plan, assessment tips, preparation)','Re-recorded the how-to video to include the 37th contest'],vi:['Thêm «Dành cho giáo viên» ở cuối «Cách học & cách chơi» (liên hệ chương trình, ví dụ 3 tiết, gợi ý đánh giá, chuẩn bị)','Quay lại video hướng dẫn, có cả lần 37'],th:['เพิ่ม «สำหรับครู» ท้าย «วิธีเรียนและวิธีเล่น» (ความเชื่อมโยงกับหลักสูตร ตัวอย่าง 3 คาบ คำแนะนำการประเมิน การเตรียมตัว)','ถ่ายวิดีโอวิธีเล่นใหม่ ให้มีครั้งที่ 37 ด้วย'],mn:['«Суралцах ба тоглох арга»-ын төгсгөлд «Багш нарт» хэсэг нэмэв (сургалтын хөтөлбөртэй холбоо, 3 цагийн жишээ, үнэлгээний зөвлөгөө, бэлтгэл)','Тоглох аргын видеог 37 дахь тэмцээнийг оруулан дахин бичив']}},
+  {v:'0.9.11',items:{ja:['第37回のルール説明の見本マップで、山地・池の上にあったスポットを平地に移した'],en:['37th rules: spots on the sample map that were on a mountain and a pond were moved onto plains'],vi:['Luật lần 37: chuyển các điểm trên bản đồ mẫu đang nằm trên núi và ao sang đồng bằng'],th:['กติกาครั้งที่ 37: ย้ายจุดบนแผนที่ตัวอย่างที่อยู่บนภูเขาและบ่อน้ำไปไว้บนที่ราบ'],mn:['37 дахь дүрэм: жишээ газрын зураг дээр уул, цөөрөм дээр байсан цэгүүдийг тал руу шилжүүлэв']}},
+  {v:'0.9.10',items:{ja:['第37回「プログラムでとく」で、お手本チームの車も同じマップにうすい色で表示し、玉数をくらべながら再生できるように'],en:['37th “Solve with Blocks”: the model team’s cars now appear faded on the same map, with both bowl counts shown during replay'],vi:['Lần 37 «Giải bằng khối lệnh»: xe của đội mẫu hiện mờ trên cùng bản đồ, kèm số bát của hai đội khi xem lại'],th:['ครั้งที่ 37 «แก้โจทย์ด้วยบล็อก»: แสดงรถของทีมตัวอย่างแบบสีจางบนแผนที่เดียวกัน พร้อมจำนวนชามของทั้งสองทีมระหว่างเล่นซ้ำ'],mn:['37 дахь «Блокоор бодох»: жишээ багийн машиныг нэг газрын зураг дээр бүдгээр харуулж, давталтын үед хоёр багийн аягын тоог харуулна']}},
+  {v:'0.9.9',items:{ja:['第37回の「プログラムでとく」を追加（車が行動をきめるたびに上から実行する作戦ブロック、3日間の再生、お手本チームとの比較、本番形式の回答）','「勉強の仕方・遊び方」に第37回のヒントを追加'],en:['Added “Solve with Blocks” for the 37th (strategy blocks run top-down each time a car decides, 3-day replay, comparison with the model team, official-format answer)','Added 37th tips to “How to learn & play”'],vi:['Thêm «Giải bằng khối lệnh» cho lần 37 (khối chiến thuật chạy từ trên xuống mỗi khi xe quyết định, xem lại 3 ngày, so với đội mẫu, đáp án dạng chính thức)','Thêm mẹo lần 37 vào «Cách học & cách chơi»'],th:['เพิ่ม «แก้โจทย์ด้วยบล็อก» ของครั้งที่ 37 (บล็อกกลยุทธ์ทำงานจากบนลงล่างทุกครั้งที่รถตัดสินใจ ดูย้อนหลัง 3 วัน เทียบกับทีมตัวอย่าง คำตอบรูปแบบทางการ)','เพิ่มคำแนะนำครั้งที่ 37 ใน «วิธีเรียนและวิธีเล่น»'],mn:['37 дахь «Блокоор бодох»-ыг нэмэв (машин шийдвэр гаргах бүрт дээрээс доош ажиллах стратегийн блок, 3 өдрийн давталт, жишээ багтай харьцуулах, албан ёсны хэлбэрийн хариулт)','«Суралцах ба тоглох арга»-д 37 дахь зөвлөгөө нэмэв']}},
+  {v:'0.9.8',items:{ja:['第37回の動きを公式のQ&A・補足資料に合わせた（燃料の消費・うどんの獲得・補給・交通量の順番、方向の番号、燃料の上限）','第37回の回答を本番と同じJSONの形で表示'],en:['37th: movement now follows the official Q&A and supplement (order of fuel use, udon pickup, refueling and traffic; direction numbers; fuel limit)','37th: answers are shown in the official JSON format'],vi:['Lần 37: cách di chuyển nay theo Hỏi đáp và tài liệu bổ sung chính thức (thứ tự trừ nhiên liệu, lấy udon, tiếp nhiên liệu và lưu lượng; số hướng; giới hạn nhiên liệu)','Lần 37: đáp án hiện theo dạng JSON chính thức'],th:['ครั้งที่ 37: การเคลื่อนที่เป็นไปตามถาม-ตอบและเอกสารเสริมทางการ (ลำดับการใช้น้ำมัน การรับอุด้ง การเติมน้ำมัน และปริมาณจราจร หมายเลขทิศ ขีดจำกัดน้ำมัน)','ครั้งที่ 37: แสดงคำตอบในรูปแบบ JSON ทางการ'],mn:['37 дахь: хөдөлгөөнийг албан ёсны асуулт-хариулт, нэмэлт материалд нийцүүлэв (түлш зарцуулах, удон авах, түлш нэмэх, замын ачааллын дараалал; чиглэлийн дугаар; түлшний дээд хэмжээ)','37 дахь: хариултыг албан ёсны JSON хэлбэрээр харуулна']}},
+  {v:'0.9.7',items:{ja:['第37回「ヘキサうどん」を追加（ルール説明6枚・ひとりであそぶ・ロボットとしょうぶ・結果と試合の再生・お手本チーム）'],en:['Added the 37th contest “Hexa Udon” (6 rule slides, solo play, robot battle, results with match replay and a model team)'],vi:['Thêm phần thi lần 37 «Hexa Udon» (6 trang luật, chơi một mình, đấu rô-bốt, kết quả kèm xem lại trận và đội mẫu)'],th:['เพิ่มการแข่งขันครั้งที่ 37 «เฮกซะอุด้ง» (สไลด์กติกา 6 แผ่น เล่นคนเดียว ประลองกับหุ่นยนต์ ผลลัพธ์พร้อมดูย้อนหลังและทีมตัวอย่าง)'],mn:['37 дахь «Хекса удон» тэмцээнийг нэмэв (дүрмийн 6 слайд, ганцаараа тоглох, роботтой өрсөлдөх, давталттай үр дүн, жишээ баг)']}},
   {v:'0.9.6',items:{ja:['設定に「勉強の仕方・遊び方」ページを追加（遊び方の動画・おすすめの進め方・ヒント・授業での使い方の例）','「このアプリについて」に 高専プロコン公式サイトへの リンクを追加'],en:['Added a “How to learn & play” page in Settings (how-to video, suggested path, tips, lesson plan example)','Added a link to the official KOSEN PROCON site in “About this app”'],vi:['Thêm trang «Cách học & cách chơi» trong Cài đặt (video hướng dẫn, lộ trình gợi ý, mẹo, ví dụ tiết học)','Thêm liên kết đến trang chính thức của PROCON KOSEN trong «Giới thiệu ứng dụng»'],th:['เพิ่มหน้า «วิธีเรียนและวิธีเล่น» ในการตั้งค่า (วิดีโอสอนเล่น ลำดับที่แนะนำ คำแนะนำ ตัวอย่างแผนการสอน)','เพิ่มลิงก์ไปยังเว็บไซต์ทางการของโปรคอนโคเซ็นใน «เกี่ยวกับแอปนี้»'],mn:['Тохиргоонд «Суралцах ба тоглох арга» хуудас нэмэв (заавар видео, санал болгох дараалал, зөвлөгөө, хичээлийн жишээ)','«Энэ апп-ын тухай» хэсэгт Косэн Проконы албан ёсны сайтын холбоос нэмэв']}},
   {v:'0.9.5',items:{ja:['第35回「プログラムでとく」で、抜き型を 形の絵を見ながら えらべるように'],en:['35th “Solve with Blocks”: choose dies by looking at their shapes'],vi:['Lần 35 «Giải bằng khối lệnh»: chọn khuôn bằng cách xem hình dạng'],th:['ครั้งที่ 35 «แก้โจทย์ด้วยบล็อก»: เลือกแม่พิมพ์โดยดูจากรูปทรง'],mn:['35 дахь «Блокоор бодох»: хэвийг дүрсээр нь харж сонгох']}},
   {v:'0.9.4',items:{ja:['第35回のゲーム画面を、横向きでも1画面に収まるように（操作パネルを2列に）'],en:['The 35th contest’s game screen now fits on one screen in landscape (two-column controls)'],vi:['Màn hình chơi phần thi lần 35 nay vừa một màn hình khi để ngang (bảng điều khiển hai cột)'],
@@ -2252,7 +3074,7 @@ function showAbout(){
 }
 let INFO=null;
 /* ---- 勉強の仕方・遊び方 ---- */
-const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4';
+const PROCON_URL='https://www.procon.gr.jp/', HOWTO_VIDEO='howto.mp4', LESSON_PDF='lesson_plan.pdf', SLIDES_PDF='class_slides.pdf', WS_PDF='worksheet.pdf';
 let LEARN_FROM='home';
 function renderLearn(){
   const box=$('learnBody'); if(!box) return;
@@ -2271,17 +3093,20 @@ function renderLearn(){
   <div class="lrtips">
     <div class="panel lrn"><h3>🏯 ${t('lr_k_h')}</h3><ul>${t('lr_k_tips')}</ul></div>
     <div class="panel lrn"><h3>🔁 ${t('lr_e_h')}</h3><ul>${t('lr_e_tips')}</ul></div>
-  </div>
-  <div class="panel lrn">
-    <h3>🧑‍🏫 ${t('lr_t_h')}</h3>
-    <p>${t('lr_t_p')}</p>
-    <ol class="lrplan">${t('lr_t_plan')}</ol>
-    <p class="lrsmall">${t('lr_t_note')}</p>
+    <div class="panel lrn"><h3>🍜 ${t('lr_h_h')}</h3><ul>${t('lr_h_tips')}</ul></div>
   </div>
   <div class="panel lrn lrlink">
     <h3>🔗 ${t('lr_link_h')}</h3>
     <p>${t('lr_link_p')}</p>
     <a class="btn sub" href="${PROCON_URL}" target="_blank" rel="noopener">${t('ab_site')} ↗</a>
+  </div>
+  <div class="panel lrn lrteach" id="lrTeach">
+    <h3>🧑‍🏫 ${t('lr_tc_h')}</h3>
+    <p>${t('lr_tc_lead')}</p>
+    <div class="lrdl"><h4>📄 ${t('lr_tc_dl_h')}</h4>
+      <div class="lrdlbtns"><a class="btn sub" href="${LESSON_PDF}" target="_blank" rel="noopener">📝 ${t('lr_tc_plan')}</a><a class="btn sub" href="${SLIDES_PDF}" target="_blank" rel="noopener">🖥️ ${t('lr_tc_slides')}</a><a class="btn sub" href="${WS_PDF}" target="_blank" rel="noopener">✏️ ${t('lr_tc_ws')}</a></div>
+      <p class="lrsmall">${t('lr_tc_dl_note')}</p></div>
+    ${t('lr_tc_body')}
   </div>`;
   const nv=box.querySelector('video');
   nv.addEventListener('error',()=>{ nv.hidden=true; box.querySelector('.lrerr').hidden=false; });
@@ -2336,7 +3161,7 @@ $('demo2reset').onclick=()=>d2.setField(SAMPLE);
 
 /* ============ game ============ */
 let G=null;
-$('startBtn').onclick=()=>{ if(SETTINGS.game==='kata') startKata(); else startGame(); };
+$('startBtn').onclick=()=>{ if(SETTINGS.game==='kata') startKata(); else if(SETTINGS.game==='hexa') startHexa(); else startGame(); };
 function startGame(){
   stopPlayers();
   const S=+segVal('segSize'), limit=+segVal('segTime');
@@ -2901,6 +3726,691 @@ KPlayer.prototype.loop=function(){
   const ms=SPEEDS[this.speed], anim=ms>=400;
   this.step(anim,()=>{ if(this.playing) this.timer=setTimeout(()=>this.loop(), anim? Math.max(60,ms-700+200) : ms); });
 };
+/* ============ 第37回「ヘキサうどん」：しくみ ============ */
+// 地形 0:平地 1:山地 2:池 3:道路 ／ 道路の状態 0:順調 1:混雑 2:渋滞
+const H_TIME=[2,3,99,1], H_ROADT=[1,2,4], H_FUEL=[1,2,0,2];
+function hTime(terr,rs){ return terr===3? H_ROADT[rs||0] : H_TIME[terr]; }
+// 方向の 番号は 公式と 同じ：0 左上 1 右上 2 右 3 右下 4 左下 5 左
+const HDIR=['NW','NE','E','SE','SW','W'];
+// 偶数行（0,2,4…）が 半分 右に ずれた 並び（募集要項 図1・Q&A Q1）
+function hNb(W,H,c,d){
+  const x=c%W, y=(c-x)/W, ev=y%2===0; let nx=x, ny=y;
+  if(d===2) nx=x+1; else if(d===5) nx=x-1;
+  else if(d===0){ ny=y-1; nx=ev?x:x-1; } else if(d===1){ ny=y-1; nx=ev?x+1:x; }
+  else if(d===3){ ny=y+1; nx=ev?x+1:x; } else { ny=y+1; nx=ev?x:x-1; }
+  return (nx<0||ny<0||nx>=W||ny>=H)? -1 : ny*W+nx;
+}
+function hDirTo(W,H,a,b){ for(let d=0;d<6;d++) if(hNb(W,H,a,d)===b) return d; return -1; }
+function hCube(W,c){ const x=c%W, y=(c-x)/W, q=x-(y+(y&1))/2; return [q,y,-q-y]; }
+function hDist(W,a,b){ const A=hCube(W,a),B=hCube(W,b); return Math.max(Math.abs(A[0]-B[0]),Math.abs(A[1]-B[1]),Math.abs(A[2]-B[2])); }
+function hRng(seed){ let a=seed>>>0; return ()=>{ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+const H_LEVEL={easy:{kinds:3,days:3,agents:3},mid:{kinds:4,days:3,agents:4},hard:{kinds:5,days:4,agents:4}};
+const H_SIZE={8:{steps:20,per:2},10:{steps:24,per:2},12:{steps:28,per:2}};
+
+/* ---- 問題（マップ）を つくる ---- */
+function hMakeProblem(S,lv,seed){
+  seed=seed||(1000+Math.floor(Math.random()*9000));
+  const L=H_LEVEL[lv]||H_LEVEL.mid, Z=H_SIZE[S]||H_SIZE[10];
+  const R=hRng(seed*7919+S*131+({easy:1,mid:2,hard:3}[lv]||2));
+  const W=S,H=S,N=W*H, terr=new Array(N).fill(0), ri=n=>Math.floor(R()*n);
+  const blob=(type,count,size)=>{ for(let k=0;k<count;k++){ let c=ri(N); for(let i=0;i<size;i++){ terr[c]=type; const n=hNb(W,H,c,ri(6)); if(n>=0) c=n; } } };
+  blob(1,Math.round(N/26),5); blob(2,Math.round(N/36),4);
+  // 道路：横に 1〜2本、たてに 1本（まっすぐ）
+  const rows=[1+ri(Math.floor(H/2)-1)]; if(S>=10) rows.push(Math.floor(H/2)+1+ri(Math.floor(H/2)-2));
+  rows.forEach(r=>{ for(let x=0;x<W;x++) terr[r*W+x]=3; });
+  let c=Math.floor(W/3)+ri(Math.ceil(W/3)); for(let y=0;y<H;y++){ terr[y*W+(c%W)]=3; }
+  // 通れる セルを ぜんぶ つなげる
+  for(let guard=0;guard<50;guard++){
+    const start=terr.findIndex(v=>v!==2), seen=new Uint8Array(N), q=[start]; seen[start]=1;
+    while(q.length){ const a=q.pop(); for(let d=0;d<6;d++){ const b=hNb(W,H,a,d); if(b>=0&&!seen[b]&&terr[b]!==2){ seen[b]=1; q.push(b); } } }
+    const lost=[]; for(let i=0;i<N;i++) if(terr[i]!==2&&!seen[i]) lost.push(i);
+    if(!lost.length) break;
+    let fixed=false;
+    for(let i=0;i<N&&!fixed;i++) if(terr[i]===2){ let toSeen=false,toLost=false; for(let d=0;d<6;d++){ const b=hNb(W,H,i,d); if(b<0) continue; if(seen[b]) toSeen=true; else if(terr[b]!==2) toLost=true; } if(toSeen&&toLost){ terr[i]=0; fixed=true; } }
+    if(!fixed) lost.forEach(i=>terr[i]=2);
+  }
+  // スタート地点：まんなかに 近い 平地
+  const mid=Math.floor(H/2)*W+Math.floor(W/2), plains=[]; for(let i=0;i<N;i++) if(terr[i]===0) plains.push(i);
+  plains.sort((a,b)=>hDist(W,a,mid)-hDist(W,b,mid));
+  const starts=plains.slice(0,L.agents);
+  // スポット：平地に、なるべく はなして
+  const cand=plains.filter(i=>!starts.includes(i)&&hDist(W,i,mid)>=2).sort(()=>R()-0.5);
+  const spots=[], nSpot=Math.max(L.agents,Math.min(L.kinds*Z.per,Math.max(W,H)));
+  for(const minD of [3,2,1]){ for(const i of cand){ if(spots.length>=nSpot) break; if(spots.some(s=>hDist(W,s.c,i)<minD)) continue; spots.push({c:i}); } if(spots.length>=nSpot) break; }
+  spots.forEach((s,k)=>{ s.kind=k%L.kinds; s.max=Math.min(L.agents,1+(R()<0.35?1:0)); });
+  const steps=Array.from({length:L.days},(_,d)=>Z.steps+[0,2,-2,0][d%4]);
+  return {seed,lv,S,W,H,N,terr,spots,starts,kinds:L.kinds,days:L.days,agents:L.agents,steps,fuelMax:steps[0],congest:3,jam:6};
+}
+function hSpotAt(P){ if(!P._sa){ P._sa=new Array(P.N).fill(-1); P.spots.forEach((s,i)=>P._sa[s.c]=i); } return P._sa; }
+
+/* ---- いちばん 早く 着く 道（出発する セルの 地形で 時間が きまる） ---- */
+function hDijkstra(P,roads,from){
+  const N=P.N, dist=new Array(N).fill(Infinity), fuel=new Array(N).fill(0), prev=new Array(N).fill(-1), done=new Uint8Array(N);
+  dist[from]=0;
+  for(;;){
+    let a=-1,best=Infinity; for(let i=0;i<N;i++) if(!done[i]&&dist[i]<best){ best=dist[i]; a=i; }
+    if(a<0) break; done[a]=1;
+    const tt=hTime(P.terr[a],roads[a]), ff=H_FUEL[P.terr[a]];
+    for(let d=0;d<6;d++){ const b=hNb(P.W,P.H,a,d); if(b<0||P.terr[b]===2) continue;
+      const nd=dist[a]+tt+ (fuel[a]+ff)*0.001;
+      if(nd<dist[b]){ dist[b]=nd; fuel[b]=fuel[a]+ff; prev[b]=a; } }
+  }
+  for(let i=0;i<N;i++) if(dist[i]<Infinity) dist[i]=Math.round(dist[i]-fuel[i]*0.001);
+  return {dist,fuel,prev};
+}
+function hPath(D,to){ const p=[]; let c=to; while(c>=0&&D.prev[c]>=0){ p.push(c); c=D.prev[c]; } return p.reverse(); }
+
+/* ---- 1チームの 1日を 動かす（decide が 行動を きめる） ---- */
+// st = {agents:[{type:'p'|'s',pos,fuel}], stock:[], kinds:Set(試合で とった 種類)}
+// 公式の 順番：0ステップ目は アクションのみ。1〜N ステップ目は 反映フェーズ
+//   （燃料の消費 → 移動の反映 → うどんの獲得 → 燃料の補給 → 交通量の更新）の あと アクション。最終ステップは 反映のみ。
+function hRunTeam(P,day,roads,st,decide){
+  const S=P.steps[day], sa=hSpotAt(P), A=st.agents.map(a=>({...a,cur:a.pos,res:null,busy:0,stop:false}));
+  const stock=st.stock.slice(), taken=A.map(()=>new Set()), acts=A.map(()=>[]), invalid=A.map(()=>-1);
+  const moves=[], events=[], stays=new Array(P.N).fill(0), todayKinds=new Set();
+  const ctx={P,day,roads,S,A,stock,taken,todayKinds,kinds:st.kinds,t:0,mem:{}};
+  for(let t=0;t<=S;t++){
+    ctx.t=t;
+    if(t>=1){
+      A.forEach((a,i)=>{ if(a.res&&a.res.at===t){                                                             // 消費 → 移動
+        if(a.type==='p'&&a.fuel<a.res.need){ a.stop=true; a.why='fuel'; invalid[i]=a.res.k; acts[i].length=a.res.k; moves.splice(moves.indexOf(a.res.mv),1); a.res=null; return; }
+        if(a.type==='p') a.fuel-=a.res.need; a.cur=a.res.to; a.res=null; } });
+      A.forEach((a,i)=>{ const s=sa[a.cur]; if(a.type==='p'&&s>=0&&!taken[i].has(s)&&stock[s]>0){ stock[s]--; taken[i].add(s); todayKinds.add(P.spots[s].kind); events.push({t,a:i,s,kind:P.spots[s].kind,c:a.cur}); } }); // 獲得（若い番号から）
+      A.forEach(a=>{ if(a.type==='p'&&A.some(b=>b.type==='s'&&b.cur===a.cur)) a.fuel=P.fuelMax; });            // 補給
+      A.forEach(a=>{ if(P.terr[a.cur]===3) stays[a.cur]++; });                                                 // 交通量
+    }
+    if(t===S) break;
+    A.forEach((a,i)=>{
+      if(a.stop||a.busy>t||a.res) return;
+      const act=decide(ctx,i);
+      if(act===null||act===undefined){ a.stop=true; return; }
+      if(act==='w'){ acts[i].push('w'); a.busy=t+1; return; }
+      const n=hNb(P.W,P.H,a.cur,act), tt=hTime(P.terr[a.cur],roads[a.cur]), need=a.type==='p'?H_FUEL[P.terr[a.cur]]:0;
+      let why=null; if(n<0||P.terr[n]===2) why='pond'; else if(t+tt>S) why='steps';
+      if(why){ a.stop=true; invalid[i]=acts[i].length; a.why=why; return; }
+      const mv={a:i,from:a.cur,to:n,t0:t,t1:t+tt}; a.res={to:n,at:t+tt,need,k:acts[i].length,mv}; acts[i].push(act); a.busy=t+tt; moves.push(mv);
+    });
+  }
+  const kinds=new Set(st.kinds); todayKinds.forEach(k=>kinds.add(k));
+  // 本番の 回答の 形（移動は 0〜5、待機は −n、1日の ステップ数ちょうどに そろえる）
+  const out=A.map((a,i)=>{ const r=[]; let w=0, used=0; const mv=moves.filter(m=>m.a===i); let k=0;
+    acts[i].forEach(x=>{ if(x==='w'){ w++; used++; } else { if(w){ r.push(-w); w=0; } r.push(x); used+=mv[k].t1-mv[k].t0; k++; } });
+    w+=S-used; if(w) r.push(-w); return r; });
+  return {st:{agents:A.map(a=>({type:a.type,pos:a.cur,fuel:a.fuel})),stock,kinds},endT:A.map(a=>Math.min(a.busy,S)),acts,out,invalid,why:A.map(a=>a.why||null),moves,events,stays,todayKinds:todayKinds.size,udon:events.length,S};
+}
+// きまった 行動の ならび（プレイヤーの 計画）で 動かす
+function hRunPlan(P,day,roads,st,plans){
+  const k=plans.map(()=>0);
+  return hRunTeam(P,day,roads,st,(ctx,i)=>{ const p=plans[i]||[]; return k[i]<p.length? p[k[i]++] : null; });
+}
+
+/* ---- ロボットの 作戦 ---- */
+// 1:よわい（種類を 気にしない・道路の 混み具合を 見ない・補給車なし） 2:ふつう 3:つよい（2つ先まで 考える）
+function hRobotTypes(P,level){ const n=P.agents; return Array.from({length:n},(_,i)=> i===n-1?'s':'p'); }
+function hRobotDecide(level,jit){
+  jit=jit||0;
+  if(level===3) return (ctx,i)=>hActGo(ctx,i,true,jit);   // つよい：種類を 分担して いちばん 早く 着く ところへ（道路の 混み具合も 計算）
+  return (ctx,i)=>{
+    const {P,A,stock,taken,t,S}=ctx, a=A[i], left=S-t, roads=level<3? ZERO_ROADS(P) : ctx.roads;
+    const mem=ctx.mem; mem.claim=mem.claim||{}; mem.D=mem.D||{};
+    const G=c=>mem.D[c]||(mem.D[c]=hDijkstra(P,roads,c)), D=G(a.cur), sup=A.filter(b=>b.type==='s');
+    const value=s=>{ const k=P.spots[s].kind; if(level===1) return 1;
+      if(level===3&&P.S<=8&&!ctx.todayKinds.has(k)&&Object.entries(mem.claim).some(([j,v])=>+j!==i&&P.spots[v].kind===k)) return 2; return !ctx.kinds.has(k)&&!ctx.todayKinds.has(k)? 10 : !ctx.todayKinds.has(k)? 5 : 1; };
+    const freeStock=s=>level===1? stock[s] : stock[s]-Object.entries(mem.claim).filter(([j,v])=>+j!==i&&v===s).length; // よわい：仲間と 行き先を 分けない
+    const real=(D2,c)=>D2.dist[c];
+    const step=c=>{ const p=hPath(D,c); return p.length? hDirTo(P.W,P.H,a.cur,p[0]) : 'w'; };
+    if(a.type==='p'){
+      delete mem.claim[i];
+      let best=null,bs=-1e9;
+      P.spots.forEach((sp,s)=>{
+        if(taken[i].has(s)||freeStock(s)<=0) return;
+        const tm=real(D,sp.c), fu=D.fuel[sp.c]; if(tm>left||fu>a.fuel||tm===Infinity) return;
+        let sc=value(s)*12-tm+(jit? ((s*37+jit*101+i*13)%7)*0.7 : 0);
+        if(level===3&&P.S<=8){ const D2=G(sp.c); let b2=0; P.spots.forEach((s2,j)=>{ if(j===s||taken[i].has(j)||freeStock(j)<=0) return; const t2=D2.dist[s2.c]; if(tm+t2<=left&&fu+D2.fuel[s2.c]<=a.fuel+ (sup.length?P.fuelMax:0)) b2=Math.max(b2,value(j)*12-t2); }); sc+=b2*0.5; }
+        if(sc>bs){ bs=sc; best=s; }
+      });
+      // 燃料が へってきたら 補給車へ（ふつう・つよい）
+      const near=sup.length? sup.reduce((m,b)=>D.dist[b.cur]<D.dist[m.cur]?b:m) : null;
+      const low= level>1 && near && a.fuel<=Math.max(2,Math.round(P.fuelMax*0.2)) && D.dist[near.cur]<=6;
+      if(best!==null && !low){ mem.claim[i]=best; return step(P.spots[best].c); }
+      if(near){ if(near.cur===a.cur) return a.fuel<P.fuelMax? 'w' : (best!==null? step(P.spots[best].c) : 'w');
+        const need=H_FUEL[P.terr[a.cur]], tt=hTime(P.terr[a.cur],ctx.roads[a.cur]); if(a.fuel>=need&&t+tt<=S) return step(near.cur); return 'w'; }
+      return null;
+    }
+    // 補給車：燃料の 少ない 巡回車に むかう
+    const pats=A.map((b,j)=>({b,j})).filter(o=>o.b.type==='p');
+    if(!pats.length) return null;
+    const tgt=pats.reduce((m,o)=>{ const sc=o.b.fuel*4+D.dist[o.b.cur]; return sc<m.sc?{o,sc}:m; },{o:null,sc:Infinity}).o;
+    if(!tgt) return null;
+    let goal=tgt.b.cur;
+    if(level===9 && tgt.b.fuel>3 && mem.claim[tgt.j]!==undefined) goal=P.spots[mem.claim[tgt.j]].c;
+    if(goal===a.cur) return 'w';
+    const tt=hTime(P.terr[a.cur],ctx.roads[a.cur]); if(t+tt>S) return 'w';
+    return step(goal);
+  };
+}
+// 共通の 動き：まだ 取っていない 種類の いちばん 早く 着く スポットへ（仲間と 種類・スポットを 分ける）／仲間と 合流
+function hActMeet(ctx,i){
+  const {P,A,t,S}=ctx, a=A[i], mem=ctx.mem; mem.D=mem.D||{};
+  const G=c=>mem.D[c]||(mem.D[c]=hDijkstra(P,ctx.roads,c)), D=G(a.cur);
+  const others=A.map((b,j)=>j).filter(j=>j!==i&&A[j].type!==a.type); if(!others.length) return 'w';
+  const j= a.type==='p'? others.reduce((m,k)=>D.dist[A[k].cur]<D.dist[A[m].cur]?k:m) : others.reduce((m,k)=>A[k].fuel<A[m].fuel?k:m);
+  return hStepTo(ctx,i,A[j].cur);
+}
+function hStepTo(ctx,i,c){
+  const {P,A,t,S}=ctx, a=A[i], mem=ctx.mem; mem.D=mem.D||{};
+  if(c===a.cur) return 'w';
+  if(t+hTime(P.terr[a.cur],ctx.roads[a.cur])>S || (a.type==='p'&&a.fuel<H_FUEL[P.terr[a.cur]])) return 'w';
+  const D=mem.D[a.cur]||(mem.D[a.cur]=hDijkstra(P,ctx.roads,a.cur)), p=hPath(D,c);
+  return p.length? hDirTo(P.W,P.H,a.cur,p[0]) : 'w';
+}
+function hActGo(ctx,i,onlyNew,jit){
+  const {P,A,stock,taken,t,S}=ctx, a=A[i], mem=ctx.mem; mem.claim=mem.claim||{}; mem.D=mem.D||{};
+  if(a.type!=='p') return hActMeet(ctx,i);
+  const D=mem.D[a.cur]||(mem.D[a.cur]=hDijkstra(P,ctx.roads,a.cur));
+  delete mem.claim[i];
+  const claimedKind=new Set(Object.entries(mem.claim).filter(([j])=>+j!==i).map(([,s])=>P.spots[s].kind));
+  const free=s=>stock[s]-Object.entries(mem.claim).filter(([j,v])=>+j!==i&&v===s).length;
+  let best=null,bs=Infinity;
+  for(const pass of onlyNew?[0,1]:[1]){
+    P.spots.forEach((sp,s)=>{ if(taken[i].has(s)||free(s)<=0) return; const tm=D.dist[sp.c];
+      if(tm===Infinity||tm>S-t||D.fuel[sp.c]>a.fuel) return;
+      if(pass===0&&(ctx.todayKinds.has(sp.kind)||claimedKind.has(sp.kind))) return;
+      const sc=tm+(jit? ((s*37+jit*101+i*13)%7)*0.45 : 0); if(sc<bs){ bs=sc; best=s; } });
+    if(best!==null) break;
+  }
+  if(best===null) return 'w';
+  mem.claim[i]=best; return hStepTo(ctx,i,P.spots[best].c);
+}
+function ZERO_ROADS(P){ if(!P._z) P._z=new Array(P.N).fill(0); return P._z; }
+function hRobotDay(P,day,roads,st,level,jit){ return hRunTeam(P,day,roads,st,hRobotDecide(level,jit)); }
+
+/* ---- 試合ぜんたい ---- */
+function hInitTeam(P,types){ return {agents:types.map((ty,i)=>({type:ty,pos:P.starts[i],fuel:P.fuelMax})),stock:P.spots.map(s=>s.max),kinds:new Set()}; }
+function hRoadStates(P,stayHist,nTeams){
+  const r=new Array(P.N).fill(0); if(!stayHist.length) return r;
+  const a=stayHist[stayHist.length-1], b=stayHist.length>1? stayHist[stayHist.length-2] : null;
+  for(let i=0;i<P.N;i++) if(P.terr[i]===3){ const v=(a[i]+(b?b[i]:0))/nTeams; r[i]= v>=P.jam?2 : v>=P.congest?1 : 0; }
+  return r;
+}
+function hNewDayStock(P,st){ return {...st,stock:P.spots.map(s=>s.max)}; }
+// 成績：①種類数 ②日ごとの種類数の合計 ③玉数 ④回答時間の合計
+function hScore(days,teamIdx){ const ks=new Set(); let daily=0,udon=0,time=0;
+  days.forEach(d=>{ const r=d.res[teamIdx]; r.events.forEach(e=>ks.add(e.kind)); daily+=r.todayKinds; udon+=r.udon; time+=d.time[teamIdx]||0; });
+  return {kinds:ks.size,daily,udon,time}; }
+function hCompare(a,b){ if(a.kinds!==b.kinds) return [b.kinds-a.kinds,1]; if(a.daily!==b.daily) return [b.daily-a.daily,2]; if(a.udon!==b.udon) return [b.udon-a.udon,3]; if(a.time!==b.time) return [a.time-b.time,4]; return [0,5]; }
+// ロボットだけで 1試合（お手本チーム・テスト用）
+function hRobotMatch(P,levels){
+  const teams=levels.map(l=>hInitTeam(P,hRobotTypes(P,l))), stays=[], days=[];
+  for(let d=0;d<P.days;d++){
+    const roads=hRoadStates(P,stays,teams.length), start=teams.map(s=>JSON.parse(JSON.stringify({agents:s.agents})));
+    const res=teams.map((s,k)=>hRobotDay(P,d,roads,hNewDayStock(P,s),levels[k],k));
+    res.forEach((r,k)=>teams[k]=r.st);
+    const sum=new Array(P.N).fill(0); res.forEach(r=>r.stays.forEach((v,i)=>sum[i]+=v)); stays.push(sum);
+    days.push({roads,start,res,time:levels.map(()=>30)});
+  }
+  return {days,teams};
+}
+/* ============ 第37回「ヘキサうどん」：画面 ============ */
+const SQ3=Math.sqrt(3);
+const HTERR={normal:['#a8d983','#c58250','#7cc4ea','#c9c9c9'],night:['#47703a','#7a4d31','#2d5c78','#55575d'],eye:['#b6c99c','#b4907a','#98b5c6','#c7c1b4'],cud:['#cfe8a8','#c98a4b','#56B4E9','#c4c4c4']};
+const HKIND={normal:['#e2a63b','#d4574a','#3f7fc8','#8e5bc8','#2f9e6e'],night:['#b9862f','#a9473c','#36699f','#734aa3','#2a7d58'],eye:['#c9a35e','#b77a68','#6f8fae','#957ba8','#6f9a7c'],cud:['#E69F00','#D55E00','#0072B2','#CC79A7','#009E73']};
+const HKSYM=['●','▲','■','◆','★'];
+const HTEAMC=['#c8452f','#2f6fd0','#23926a','#8a4bbd'];
+const HAGC=['#E69F00','#0072B2','#009E73','#CC79A7'];
+const HDASH=['', '6 4', '2 4', '10 3 2 3'];
+const HROADC={normal:['', '#f0a020','#d83a2a'],night:['','#c98418','#b33224'],eye:['','#d1a25a','#b8705f'],cud:['','#E69F00','#D55E00']};
+const H_CAR='M-0.42 0.08 L-0.42 -0.06 L-0.27 -0.07 L-0.16 -0.26 L0.18 -0.26 L0.3 -0.07 L0.42 -0.05 L0.42 0.08 Z';
+const H_DROP='M0 -0.42 C0.24 -0.12 0.3 0.02 0.3 0.1 A0.3 0.3 0 0 1 -0.3 0.1 C-0.3 0.02 -0.24 -0.12 0 -0.42 Z';
+function hKindName(k){ return (t('h_kind_names')||'').split(',')[k]||('#'+k); }
+function hKindChip(k,th){ const c=(HKIND[th||SETTINGS.theme]||HKIND.normal)[k]; return `<i class="hkdot" style="background:${c}">${HKSYM[k]}︎</i>`; }
+function hAgentIcon(type,color,size){ size=size||22; return `<svg class="hai" width="${size}" height="${size}" viewBox="-0.5 -0.5 1 1"><circle r="0.47" fill="#fff" stroke="${color}" stroke-width="0.07"/><g transform="scale(0.8)" fill="${color}">${type==='p'?`<path d="${H_CAR}"/><circle cx="-0.24" cy="0.11" r="0.1"/><circle cx="0.24" cy="0.11" r="0.1"/>`:`<path d="${H_DROP}"/>`}</g></svg>`; }
+
+/* ---- 六角形の ボード（SVG） ---- */
+let HBID=1;
+function HBoard(host,opts){
+  this.host=host; this.opts=opts||{}; this.P=opts.P; this.bid=HBID++; this.busy=false;
+  this.state={roads:new Array(this.P.N).fill(0),teams:[],stock:null,plans:[],sel:-1,pops:[],marks:[]};
+  BOARDS.push(this); this.mount();
+}
+HBoard.prototype.mount=function(){
+  const P=this.P, mw=this.opts.maxW||480, mh=this.opts.maxH||480;
+  this.r=Math.max(8,Math.min(mw/(SQ3*(P.W+0.5)), mh/(1.5*P.H+0.5)));
+  this.pad=2; this.w=SQ3*this.r*(P.W+0.5)+this.pad*2; this.h=this.r*(1.5*P.H+0.5)+this.pad*2;
+  this.host.innerHTML=`<svg class="hsvg${this.opts.interactive?' hint':''}" width="${Math.round(this.w)}" height="${Math.round(this.h)}" viewBox="0 0 ${this.w} ${this.h}"><g class="hs"></g><g class="hp"></g><g class="ha"></g><g class="hx"></g></svg>`;
+  this.svg=this.host.querySelector('svg'); this.wrap=this.svg; this.gS=this.svg.querySelector('.hs'); this.gP=this.svg.querySelector('.hp'); this.gA=this.svg.querySelector('.ha'); this.gX=this.svg.querySelector('.hx');
+  if(this.opts.interactive) this.svg.addEventListener('click',e=>{
+    const ag=e.target.closest('[data-ag]'); if(ag&&this.opts.onAgent){ this.opts.onAgent(+ag.dataset.ag); return; }
+    const pt=this.svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; const p=pt.matrixTransform(this.svg.getScreenCTM().inverse());
+    const c=this.cellAt(p.x,p.y); if(c>=0&&this.opts.onCell) this.opts.onCell(c);
+  });
+  this.render();
+};
+HBoard.prototype.cxy=function(c){ const W=this.P.W, x=c%W, y=(c-x)/W, r=this.r; return [this.pad+SQ3*r*(x+0.5+(y%2===0?0.5:0)), this.pad+r+1.5*r*y]; };
+HBoard.prototype.cellAt=function(px,py){ let best=-1,bd=1e9; for(let c=0;c<this.P.N;c++){ const [x,y]=this.cxy(c), d=(x-px)**2+(y-py)**2; if(d<bd){bd=d;best=c;} } return bd<=this.r*this.r? best : -1; };
+HBoard.prototype.hexPts=function(c,k){ const [x,y]=this.cxy(c), r=this.r*(k||0.96); let s=''; for(let i=0;i<6;i++){ const a=Math.PI/180*(60*i-90); s+=(x+r*Math.cos(a)).toFixed(1)+','+(y+r*Math.sin(a)).toFixed(1)+' '; } return s; };
+HBoard.prototype.set=function(o){ Object.assign(this.state,o); this.render(); };
+HBoard.prototype.drawDie=function(){ this.render(); };
+HBoard.prototype.render=function(){
+  const P=this.P, th=SETTINGS.theme, TC=HTERR[th]||HTERR.normal, RC=HROADC[th]||HROADC.normal, KC=HKIND[th]||HKIND.normal, r=this.r, st=this.state, sa=hSpotAt(P);
+  let s='';
+  for(let c=0;c<P.N;c++){
+    const tr=P.terr[c], [x,y]=this.cxy(c), tf=`translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${r.toFixed(2)})`;
+    s+=`<polygon points="${this.hexPts(c)}" fill="${TC[tr]}" class="hc"/>`;
+    if(tr===1) s+=`<path transform="${tf}" d="M-0.48 0.3 L-0.14 -0.32 L0.04 -0.02 L0.18 -0.22 L0.5 0.3 Z" fill="rgba(0,0,0,.22)"/>`;
+    else if(tr===2) s+=`<path transform="${tf}" d="M-0.5 -0.12 q0.125 -0.16 0.25 0 t0.25 0 t0.25 0 t0.25 0 M-0.5 0.2 q0.125 -0.16 0.25 0 t0.25 0 t0.25 0 t0.25 0" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.08"/>`;
+    else if(tr===3){ const rs=st.roads[c]||0;
+      if(rs) s+=`<polygon points="${this.hexPts(c,0.9)}" fill="${RC[rs]}" opacity="0.7"/>`;
+      s+=`<path transform="${tf}" d="M-0.45 -0.22 h0.9 M-0.45 0.22 h0.9" stroke="rgba(255,255,255,.8)" stroke-width="0.07" stroke-dasharray="0.18 0.1"/>`;
+      if(rs) s+=`<text x="${x}" y="${y+r*0.2}" text-anchor="middle" font-size="${r*0.62}" font-weight="800" fill="#fff" stroke="rgba(0,0,0,.45)" stroke-width="${r*0.06}" paint-order="stroke">${rs===1?'!':'!!'}</text>`; }
+  }
+  P.spots.forEach((sp,i)=>{
+    const [x,y]=this.cxy(sp.c), left=st.stock? st.stock[i] : sp.max, empty=left<=0;
+    s+=`<g opacity="${empty?0.35:1}"><circle cx="${x}" cy="${y}" r="${r*0.5}" fill="${KC[sp.kind]}" stroke="#fff" stroke-width="${r*0.09}"/>
+      <text x="${x}" y="${y+r*0.2}" text-anchor="middle" font-size="${r*0.55}" fill="#fff" font-weight="800">${HKSYM[sp.kind]}︎</text></g>`;
+    if(this.opts.stockBadge!==false){ s+=`<circle cx="${x+r*0.48}" cy="${y-r*0.45}" r="${r*0.26}" fill="var(--paper)" stroke="var(--ink)" stroke-width="${r*0.05}"/><text x="${x+r*0.48}" y="${y-r*0.36}" text-anchor="middle" font-size="${r*0.3}" font-weight="800" fill="var(--ink)">${left}</text>`; }
+  });
+  (st.marks||[]).forEach(m=>{ const [x,y]=this.cxy(m.c); s+=`<polygon points="${this.hexPts(m.c,0.98)}" fill="none" stroke="${m.color||'var(--gold)'}" stroke-width="${r*0.14}"/>`; });
+  this.gS.innerHTML=s;
+  // 計画の 道
+  let p='';
+  (st.plans||[]).forEach((pl,i)=>{
+    if(!pl||!pl.cells||pl.cells.length<2&&!pl.waits) return;
+    const pts=pl.cells.map(c=>this.cxy(c)), off=(i-1.5)*r*0.09, col=pl.color||HAGC[i%4];
+    const good=pl.bad>=0? pts.slice(0,pl.bad+1) : pts, bad=pl.bad>=0? pts.slice(pl.bad) : [];
+    const poly=a=>a.map(([x,y])=>(x+off).toFixed(1)+','+(y+off).toFixed(1)).join(' ');
+    if(good.length>1) p+=`<polyline points="${poly(good)}" fill="none" stroke="${col}" stroke-width="${r*0.16}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${HDASH[i%4].split(' ').map(v=>v*r/14).join(' ')}" opacity="${pl.dim?0.35:0.95}"/>`;
+    if(bad.length>1) p+=`<polyline points="${poly(bad)}" fill="none" stroke="#d00" stroke-width="${r*0.12}" stroke-dasharray="${r*0.2} ${r*0.15}"/>`;
+    if(!pl.dim&&pts.length>1){ const [ex,ey]=pts[pts.length-1]; p+=`<circle cx="${ex+off}" cy="${ey+off}" r="${r*0.16}" fill="${col}" stroke="#fff" stroke-width="${r*0.05}"/>`; }
+    (pl.gets||[]).forEach(c=>{ const [x,y]=this.cxy(c); p+=`<text x="${x-r*0.5}" y="${y-r*0.3}" font-size="${r*0.42}" font-weight="800" fill="${col}" stroke="#fff" stroke-width="${r*0.08}" paint-order="stroke">✓</text>`; });
+  });
+  this.gP.innerHTML=p;
+  this.drawAgents();
+};
+// teams: [{agents:[{type,pos,fuel}], color, ghost, at:[[x,y]...] (アニメ中の 位置)}]
+HBoard.prototype.drawAgents=function(){
+  const r=this.r, st=this.state, groups={}; let a='';
+  (st.teams||[]).forEach((tm,k)=>tm.agents.forEach((ag,i)=>{ const xy=tm.at? tm.at[i] : this.cxy(ag.pos); const key=Math.round(xy[0]/(r*0.6))+':'+Math.round(xy[1]/(r*0.6)); (groups[key]=groups[key]||[]).push({tm,k,ag,i,xy}); }));
+  const order=[]; Object.values(groups).forEach(g=>g.forEach((o,j)=>{ const n=g.length, ang=Math.PI*2*j/n-Math.PI/2, rr=n>1? r*0.36 : 0; order.push({...o,x:o.xy[0]+rr*Math.cos(ang),y:o.xy[1]+rr*Math.sin(ang),small:n>1}); }));
+  order.sort((p,q)=>(q.tm.ghost?1:0)-(p.tm.ghost?1:0));
+  order.forEach(o=>{
+    const sz=r*(o.small?0.42:0.56), col=o.tm.color, selk=!o.tm.ghost&&st.sel===o.i;
+    a+=`<g transform="translate(${o.x.toFixed(1)},${o.y.toFixed(1)}) scale(${sz.toFixed(2)})" opacity="${o.tm.ghost?0.5:1}" ${o.tm.ghost?'':`data-ag="${o.i}"`} class="${o.tm.ghost?'':'hag'}">
+      ${selk?`<circle r="0.95" fill="none" stroke="var(--gold)" stroke-width="0.22"/>`:''}
+      <circle r="0.75" fill="#fff" stroke="${col}" stroke-width="0.16"/>
+      <g fill="${col}" transform="scale(1.05)">${o.ag.type==='p'?`<path d="${H_CAR}"/><circle cx="-0.24" cy="0.11" r="0.1"/><circle cx="0.24" cy="0.11" r="0.1"/>`:`<path d="${H_DROP}"/>`}</g>
+      ${o.tm.ghost?'':`<circle cx="0.62" cy="0.58" r="0.34" fill="${HAGC[o.i%4]}" stroke="#fff" stroke-width="0.08"/><text x="0.62" y="0.72" text-anchor="middle" font-size="0.42" font-weight="800" fill="#fff">${o.i+1}</text>`}
+    </g>`;
+  });
+  this.gA.innerHTML=a;
+};
+HBoard.prototype.pop=function(c,kind,color){
+  const [x,y]=this.cxy(c), r=this.r, KC=HKIND[SETTINGS.theme]||HKIND.normal, g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('class','hpop'); g.innerHTML=`<circle cx="${x}" cy="${y-r*0.9}" r="${r*0.42}" fill="${KC[kind]}" stroke="${color||'#fff'}" stroke-width="${r*0.1}"/><text x="${x}" y="${y-r*0.74}" text-anchor="middle" font-size="${r*0.45}" font-weight="800" fill="#fff">+1</text>`;
+  this.gX.appendChild(g); setTimeout(()=>g.remove(),900);
+};
+
+/* ---- 1日の 動きを 再生する（ぜんチーム 同時に） ---- */
+function hPosAt(board,start,moves,tau){
+  const at=start.map(a=>board.cxy(a.pos));
+  moves.forEach(m=>{ if(tau>=m.t1) at[m.a]=board.cxy(m.to); else if(tau>m.t0){ const f=(tau-m.t0)/(m.t1-m.t0), A=board.cxy(m.from), B=board.cxy(m.to); at[m.a]=[A[0]+(B[0]-A[0])*f, A[1]+(B[1]-A[1])*f]; } });
+  return at;
+}
+// rec = {roads,start:[{agents}],res:[...],S}; look = (k)=>({color,ghost})
+function HAnim(board,rec,look,opts){
+  this.board=board; this.rec=rec; this.look=look; this.opts=opts||{}; this.tau=0; this.fired=0; this.stop=false;
+  this.evs=[]; rec.res.forEach((r,k)=>r.events.forEach(e=>this.evs.push({...e,k}))); this.evs.sort((a,b)=>a.t-b.t||a.k-b.k);
+  this.stock=rec.res.map(()=>this.board.P.spots.map(s=>s.max));
+  this.S=rec.res[0].S;
+}
+HAnim.prototype.frame=function(){
+  const b=this.board, rec=this.rec;
+  while(this.fired<this.evs.length && this.evs[this.fired].t<=this.tau){ const e=this.evs[this.fired++]; this.stock[e.k][e.s]--; if(!this.look(e.k).ghost||this.opts.popAll) b.pop(e.c,e.kind,this.look(e.k).color); this.opts.onEvent&&this.opts.onEvent(e); }
+  const teams=rec.start.map((s,k)=>({agents:s.agents,...this.look(k),at:hPosAt(b,s.agents,rec.res[k].moves,this.tau)}));
+  b.state.teams=teams; b.state.stock=this.stock[this.opts.stockOf||0];
+  if(this.fired!==this._lastF){ this._lastF=this.fired; b.render(); } else b.drawAgents();
+  this.opts.onStep&&this.opts.onStep(this.tau);
+};
+HAnim.prototype.run=function(msPerStep,cb){
+  this.board.busy=true; let last=performance.now();
+  const go=now=>{ if(this.stop){ this.board.busy=false; return; }
+    this.tau=Math.min(this.S,this.tau+(now-last)/msPerStep()); last=now; this.frame();
+    if(this.tau>=this.S){ this.board.busy=false; cb&&cb(); return; }
+    this.raf=requestAnimationFrame(go); };
+  this.raf=requestAnimationFrame(go);
+};
+HAnim.prototype.skip=function(){ this.tau=this.S; };
+HAnim.prototype.cancel=function(){ this.stop=true; cancelAnimationFrame(this.raf); this.board.busy=false; };
+
+/* ============ 第37回：ルール説明 ============ */
+let hrulesReady=false, hslide=0, HDEMO={};
+const H_RULE_MAP=(()=>{ // 7×5 の 見本マップ
+  const W=7,H=5,N=W*H, terr=[0,0,1,1,0,2,2, 3,3,3,3,3,3,3, 0,0,0,1,0,0,2, 0,2,0,3,0,0,0, 0,2,0,3,1,1,0];
+  return {W,H,N,terr,spots:[{c:1,kind:0,max:2},{c:4,kind:1,max:1},{c:16,kind:2,max:1},{c:21,kind:0,max:1},{c:34,kind:1,max:2}],starts:[18,19],steps:[12],fuelMax:4,days:1,kinds:3,agents:2,S:7};
+})();
+function initHRules(){
+  if(!hrulesReady){
+    hrulesReady=true;
+    const mw=Math.min(440,window.innerWidth-80);
+    HDEMO.map=new HBoard($('hdemo0'),{P:H_RULE_MAP,maxW:mw,maxH:300,stockBadge:false});
+    HDEMO.spot=new HBoard($('hdemo1'),{P:H_RULE_MAP,maxW:mw,maxH:300});
+    HDEMO.spot.set({teams:[{agents:[{type:'p',pos:18}],color:HTEAMC[0]}]});
+    // 燃料と 補給の デモ（7×1）
+    const F={W:7,H:1,N:7,terr:[0,0,3,3,0,0,0],spots:[{c:6,kind:0,max:1}],starts:[1,0],steps:[30],fuelMax:4,days:1,kinds:1,agents:2,S:7};
+    HDEMO.F=F; HDEMO.fuel=new HBoard($('hdemo2'),{P:F,maxW:mw,maxH:120});
+    hFuelReset();
+    $('hd2move').onclick=()=>hFuelMove('p'); $('hd2sup').onclick=()=>hFuelMove('s'); $('hd2reset').onclick=hFuelReset;
+    HDEMO.road=new HBoard($('hdemo3'),{P:{W:3,H:1,N:3,terr:[3,3,3],spots:[],starts:[],steps:[1],fuelMax:1,S:3},maxW:Math.min(300,mw),maxH:110});
+    HDEMO.road.set({roads:[0,1,2]});
+    $('hdots').innerHTML='<i></i>'.repeat(6);
+  }
+  hRulesText(); goHSlide(hslide);
+}
+function hFuelReset(){ HDEMO.fs={p:1,s:0,fuel:2,steps:0}; hFuelDraw(); }
+function hFuelDraw(msg){
+  const f=HDEMO.fs; HDEMO.fuel.set({teams:[{agents:[{type:'p',pos:f.p},{type:'s',pos:f.s}],color:HTEAMC[0]}],stock:[f.got?0:1]});
+  $('hd2info').innerHTML=t('h_d2_info',{f:f.fuel,m:HDEMO.F.fuelMax,s:f.steps})+(msg?`<br><b>${msg}</b>`:'');
+}
+function hFuelMove(who){
+  const f=HDEMO.fs, F=HDEMO.F;
+  if(who==='p'){
+    if(f.p>=6) return hFuelDraw(t('h_d2_end'));
+    const need=H_FUEL[F.terr[f.p]], tt=hTime(F.terr[f.p],0);
+    if(f.fuel<need) return hFuelDraw(t('h_d2_nofuel'));
+    f.fuel-=need; f.steps+=tt; f.p++; if(f.p===6){ f.got=true; HDEMO.fuel.pop(6,0,HTEAMC[0]); }
+    hFuelDraw(t('h_d2_moved',{t:tt,n:need}));
+  } else {
+    if(f.s<f.p){ f.s=f.p; f.steps+=1; f.fuel=F.fuelMax; hFuelDraw(t('h_d2_refuel')); } else hFuelDraw(t('h_d2_same'));
+  }
+}
+function hRulesText(){
+  $('hTerrTbl').innerHTML=`<tr><th></th><th>${t('h_th_time')}</th><th>${t('h_th_fuel')}</th></tr>`+
+    [[0,'2','1'],[1,'3','2'],[2,t('h_noentry'),'—'],[3,'1 / 2 / 4','2']].map(([k,a,b])=>`<tr><td><i class="hsw" style="background:${(HTERR[SETTINGS.theme]||HTERR.normal)[k]}"></i>${t('h_terr'+k)}</td><td>${a}</td><td>${b}</td></tr>`).join('');
+  $('hKindLegend').innerHTML=[0,1,2].map(k=>`<span>${hKindChip(k)} ${hKindName(k)}</span>`).join('');
+  $('hRoadLegend').innerHTML=[0,1,2].map(k=>`<span><b>${t('h_rs'+k)}</b> ${t('h_rs_t',{n:H_ROADT[k]})}</span>`).join('');
+  $('hrulesJson').textContent=`${t('h_json_q')}
+{"daySteps":[20,22,18],
+ "map":{"height":8,"width":8,
+  "cells":[[0,0,1,2,2,0,3,3],
+           [1,1,1,1,1,1,1,1], ...]},
+ "spots":[{"brand":0,"pos":1,"stocks":2}, ...],
+ "agents":[27,28,35,36],
+ "fuelLimits":20,"players":4,
+ "busyThreshold":3,"jammedThreshold":6}
+
+${t('h_json_a')}
+[[2,2,1,-1,3,-12],
+ [5,4,4,-2,0,-9],
+ [-20],
+ [2,3,-15]]`;
+}
+function goHSlide(i){
+  hslide=Math.max(0,Math.min(5,i));
+  document.querySelectorAll('#s-hrules .slide').forEach(s=>s.classList.toggle('on',+s.dataset.i===hslide));
+  document.querySelectorAll('#hdots i').forEach((d,k)=>d.classList.toggle('on',k===hslide));
+  $('hprev').disabled=hslide===0; $('hnext').style.visibility=hslide===5?'hidden':'visible';
+}
+$('hprev').onclick=()=>goHSlide(hslide-1); $('hnext').onclick=()=>goHSlide(hslide+1);
+
+/* ============ 第37回：ゲーム ============ */
+let HG=null;
+function hMaxWH(){ const wide=window.innerWidth>900; return wide? {w:Math.min(window.innerWidth,1400)-40-420-20-12, h:window.innerHeight-120} : {w:window.innerWidth-40, h:window.innerHeight*0.44}; }
+function startHexa(){
+  stopPlayers(); if(HG&&HG.anim) HG.anim.cancel();
+  const S=+segVal('segSize'), lv=segVal('segProb'), limit=+segVal('segTime');
+  const P=hMakeProblem(S,lv);
+  const nOpp= mode==='robot'? +segVal('segOpp') : 0, lvl=+segVal('segBot');
+  HG={P,limit,mode,nT:1+nOpp,lvl,day:0,phase:'types',types:hRobotTypes(P,2),teams:[],stays:[],days:[],plans:[],segs:[],sel:0,ended:false,times:[],hintKey:'h_hint_types'};
+  setupTitles(); show('hgame');
+  const m=hMaxWH(); HG.board=new HBoard($('hBoard'),{P,maxW:m.w,maxH:m.h,interactive:true,onCell:hTapCell,onAgent:hTapAgent});
+  HG.board.set({teams:[{agents:HG.types.map((ty,i)=>({type:ty,pos:P.starts[i]})),color:HTEAMC[0]}]});
+  $('hProbNo').textContent=t('h_prob_no',{n:P.seed});
+  hRender();
+  clearInterval(HG.tick); HG.tick=setInterval(hTick,250); hTick();
+}
+const hLook=k=>({color:HTEAMC[k%4],ghost:k>0});
+function hConfirmTypes(){
+  const P=HG.P; HG.teams=[hInitTeam(P,HG.types)];
+  for(let k=1;k<HG.nT;k++) HG.teams.push(hInitTeam(P,hRobotTypes(P,HG.lvl)));
+  hBeginDay(0);
+}
+function hBeginDay(d){
+  const P=HG.P; HG.day=d; HG.phase='plan';
+  HG.roads=hRoadStates(P,HG.stays,HG.nT);
+  HG.teams=HG.teams.map(s=>hNewDayStock(P,s));
+  HG.start=HG.teams.map(s=>JSON.parse(JSON.stringify({agents:s.agents})));
+  HG.robotRes=HG.teams.map((s,k)=>k? hRobotDay(P,d,HG.roads,s,HG.lvl,k) : null);
+  HG.plans=HG.teams[0].agents.map(()=>[]); HG.segs=HG.plans.map(()=>[]);
+  HG.sel=HG.teams[0].agents.findIndex(a=>a.type==='p'); if(HG.sel<0) HG.sel=0;
+  HG.planStart=Date.now(); HG.hintKey=d===0?'h_hint_plan':'h_hint_next';
+  hPreview(); hRender();
+}
+function hPreview(){ const P=HG.P; HG.prev=hRunPlan(P,HG.day,HG.roads,HG.teams[0],HG.plans); return HG.prev; }
+function hEndCell(i){ const P=HG.P; let c=HG.teams[0].agents[i].pos; HG.plans[i].forEach(a=>{ if(a!=='w'){ const n=hNb(P.W,P.H,c,a); if(n>=0) c=n; } }); return c; }
+function hPlanCells(i){ const P=HG.P; let c=HG.teams[0].agents[i].pos; const out=[c]; HG.plans[i].forEach(a=>{ if(a!=='w'){ c=hNb(P.W,P.H,c,a); out.push(c); } }); return out; }
+function hTapAgent(i){ if(!HG||HG.phase!=='plan') { if(HG&&HG.phase==='types') hToggleType(i); return; } HG.sel=i; hRender(); }
+function hTapCell(c){
+  if(!HG||HG.phase!=='plan'||HG.ended) return;
+  const P=HG.P, i=HG.sel; if(i<0) return;
+  if(P.terr[c]===2){ toast(t('h_toast_pond')); return; }
+  const from=hEndCell(i);
+  if(c===from){ hWait(); return; }
+  const D=hDijkstra(P,HG.roads,from), path=hPath(D,c); if(!path.length){ toast(t('h_toast_pond')); return; }
+  const old=HG.plans[i].length; let cur=from;
+  path.forEach(n=>{ HG.plans[i].push(hDirTo(P.W,P.H,cur,n)); cur=n; });
+  const pr=hPreview(), bad=pr.invalid[i];
+  if(bad>=0&&bad>=old){ HG.plans[i].length=bad; hPreview(); toast(t(pr.why[i]==='fuel'?'h_toast_fuel':'h_toast_steps')); }
+  if(HG.plans[i].length>old) HG.segs[i].push(HG.plans[i].length-old);
+  HG.hintKey= HG.prev.events.length? 'h_hint_got' : 'h_hint_plan';
+  hRender();
+}
+function hMeet(){
+  if(!HG||HG.phase!=='plan') return; const P=HG.P, i=HG.sel, A=HG.teams[0].agents, me=A[i];
+  const others=A.map((a,j)=>j).filter(j=>j!==i&&A[j].type!==me.type);
+  if(!others.length){ toast(t(me.type==='p'?'h_toast_nosup':'h_toast_nopat')); return; }
+  let pi,si;
+  if(me.type==='p'){ pi=i; const D=hDijkstra(P,HG.roads,hEndCell(i)); si=others.reduce((m,j)=>D.dist[hEndCell(j)]<D.dist[hEndCell(m)]?j:m); }
+  else { si=i; pi=others.reduce((m,j)=>HG.prev.st.agents[j].fuel<HG.prev.st.agents[m].fuel?j:m); }
+  const c=hEndCell(pi), sFrom=hEndCell(si);
+  // 補給車を 巡回車の ところへ
+  if(sFrom!==c){
+    const path=hPath(hDijkstra(P,HG.roads,sFrom),c), old=HG.plans[si].length; let cur=sFrom;
+    path.forEach(n=>{ HG.plans[si].push(hDirTo(P.W,P.H,cur,n)); cur=n; });
+    const pr=hPreview(); if(pr.invalid[si]>=0&&pr.invalid[si]>=old){ HG.plans[si].length=old; hPreview(); toast(t('h_toast_steps')); hRender(); return; }
+    HG.segs[si].push(HG.plans[si].length-old);
+  }
+  // 巡回車は 補給車が 来るまで まつ（+1ステップで 満タン）
+  let pr=hPreview(); const w=Math.max(0,pr.endT[si]-pr.endT[pi]), old=HG.plans[pi].length;
+  for(let k=0;k<w;k++) HG.plans[pi].push('w');
+  pr=hPreview(); if(pr.invalid[pi]>=0&&pr.invalid[pi]>=old){ HG.plans[pi].length=pr.invalid[pi]; hPreview(); toast(t('h_toast_steps')); }
+  if(HG.plans[pi].length>old) HG.segs[pi].push(HG.plans[pi].length-old);
+  HG.sel=pi; HG.hintKey='h_hint_meet'; hRender();
+}
+function hWait(){ if(!HG||HG.phase!=='plan') return; const i=HG.sel; HG.plans[i].push('w'); const pr=hPreview(); if(pr.invalid[i]>=0&&pr.invalid[i]>=HG.plans[i].length-1){ HG.plans[i].pop(); hPreview(); toast(t('h_toast_steps')); } else HG.segs[i].push(1); hRender(); }
+function hUndo(){ if(!HG||HG.phase!=='plan') return; const i=HG.sel, n=HG.segs[i].pop(); if(n){ HG.plans[i].length-=n; hPreview(); hRender(); } }
+function hClear(){ if(!HG||HG.phase!=='plan') return; const i=HG.sel; HG.plans[i]=[]; HG.segs[i]=[]; hPreview(); hRender(); }
+function hAuto(){ if(!HG||HG.phase!=='plan') return; const r=hRobotDay(HG.P,HG.day,HG.roads,HG.teams[0],3); HG.plans=r.acts.map(a=>{ const c=a.slice(); while(c.length&&c[c.length-1]==='w') c.pop(); return c; }); HG.segs=HG.plans.map(p=>p.length?[p.length]:[]); hPreview(); HG.hintKey='h_hint_auto'; hRender(); }
+function hToggleType(i){ if(HG.phase!=='types') return; HG.types[i]=HG.types[i]==='p'?'s':'p'; if(!HG.types.includes('p')) HG.types[i]='p'; HG.board.set({teams:[{agents:HG.types.map((ty,j)=>({type:ty,pos:HG.P.starts[j]})),color:HTEAMC[0]}]}); hRender(); }
+const hElapsed=()=>Math.floor((Date.now()-HG.planStart)/1000);
+function hTick(){
+  if(!HG||HG.ended) return;
+  if(HG.phase!=='plan'){ return; }
+  const e=hElapsed();
+  if(HG.limit){ const r=Math.max(0,HG.limit-e); $('hTimeL').innerHTML=t('st_left'); $('hTime').textContent=fmt(r); $('hTime').style.color=r<=15?'var(--shu)':''; if(r<=0){ toast(t('h_toast_timeup')); hStartDay(); } }
+  else { $('hTimeL').innerHTML=t('st_elapsed'); $('hTime').textContent=fmt(e); $('hTime').style.color=''; }
+}
+function hStartDay(){
+  if(!HG||HG.phase!=='plan') return;
+  const P=HG.P, d=HG.day;
+  // 無効な ところから あとは 消す
+  const pr=hPreview(); pr.invalid.forEach((b,i)=>{ if(b>=0) HG.plans[i].length=b; });
+  const time=Math.min(HG.limit||9999,hElapsed()); HG.times.push(time);
+  const res=[hRunPlan(P,d,HG.roads,HG.teams[0],HG.plans),...HG.robotRes.slice(1)];
+  const rec={roads:HG.roads,start:HG.start,res,time:[time,...res.slice(1).map(()=>30)],plans:HG.plans.map(p=>p.slice())};
+  HG.days.push(rec); HG.phase='run'; HG.hintKey='h_hint_run'; HG.runGot=0; HG.runKinds=new Set();
+  HG.board.set({plans:[],marks:[]}); hRender();
+  HG.anim=new HAnim(HG.board,rec,hLook,{onEvent:e=>{ if(e.k===0){ HG.runGot++; HG.runKinds.add(e.kind); hStats(); } }});
+  HG.anim.run(()=>HG.fast?25:180,()=>hEndDay(rec));
+}
+function hEndDay(rec){
+  const P=HG.P; HG.fast=false;
+  rec.res.forEach((r,k)=>HG.teams[k]=r.st);
+  const sum=new Array(P.N).fill(0); rec.res.forEach(r=>r.stays.forEach((v,i)=>sum[i]+=v)); HG.stays.push(sum);
+  const r0=rec.res[0]; HG.lastMsg=[['h_day_sum',{d:HG.day+1,k:r0.todayKinds,u:r0.udon}]];
+  if(HG.day+1<P.days){
+    const nr=hRoadStates(P,HG.stays,HG.nT), c1=nr.filter(v=>v===1).length, c2=nr.filter(v=>v===2).length;
+    HG.lastMsg.push((c1||c2)? ['h_day_jam',{a:c1,b:c2}] : ['h_day_nojam',{}]);
+    toast(t('h_toast_day',{d:HG.day+1,k:r0.todayKinds,u:r0.udon}));
+    hBeginDay(HG.day+1);
+  } else { HG.phase='end'; hRender(); setTimeout(()=>hFinish(false),600); }
+}
+// 表示の 更新
+function hStats(){
+  if(!HG) return; const P=HG.P, sc=HG.days.length? hScore(HG.days,0) : {kinds:0,udon:0};
+  let kinds=sc.kinds, udon=sc.udon;
+  if(HG.phase==='run'){ const ks=new Set(); HG.days.slice(0,-1).forEach(d=>d.res[0].events.forEach(e=>ks.add(e.kind))); HG.runKinds.forEach(k=>ks.add(k)); kinds=ks.size; udon=hScore(HG.days.slice(0,-1),0).udon+HG.runGot; }
+  $('hDay').textContent=t('h_day_of',{d:Math.min(HG.day+1,P.days),n:P.days}); $('hKinds').textContent=`${kinds} / ${P.kinds}`; $('hUdon').textContent=udon;
+  const got=new Set(); HG.days.forEach((d,j)=>{ if(HG.phase==='run'&&j===HG.days.length-1) return; d.res[0].events.forEach(e=>got.add(e.kind)); }); if(HG.phase==='run') HG.runKinds.forEach(k=>got.add(k));
+  const plan=new Set(HG.phase==='plan'&&HG.prev? HG.prev.events.map(e=>e.kind) : []), today=HG.phase==='run'? HG.runKinds : plan;
+  $('hKindRow').innerHTML=Array.from({length:P.kinds},(_,k)=>`<span class="hk${got.has(k)?' got':''}${today.has(k)?' today':''}">${hKindChip(k)}<small>${hKindName(k)}</small></span>`).join('');
+}
+function hRender(){
+  if(!HG) return; const P=HG.P, ph=HG.phase;
+  hStats();
+  $('hHint').innerHTML=(HG.lastMsg&&ph==='plan'?`<b>${HG.lastMsg.map(([k,p])=>t(k,p)).join('')}</b><br>`:'')+t(HG.hintKey);
+  $('hTypesBox').style.display=ph==='types'?'':'none'; $('hPlanBox').style.display=ph==='plan'?'':'none'; $('hRunBox').style.display=ph==='run'?'':'none';
+  $('hAuto').style.display=HG.mode==='robot'?'none':'';
+  if(ph==='types'){
+    $('hTypeCards').innerHTML=HG.types.map((ty,i)=>`<button class="hcard" data-i="${i}">${hAgentIcon(ty,HTEAMC[0],30)}<b>${i+1}</b><span>${t(ty==='p'?'h_patrol':'h_supply')}</span><em>${t('h_tap_change')}</em></button>`).join('');
+    $('hTypeCards').querySelectorAll('.hcard').forEach(b=>b.onclick=()=>hToggleType(+b.dataset.i));
+    $('hTypeNote').innerHTML=t('h_types_note',{p:HG.types.filter(x=>x==='p').length,s:HG.types.filter(x=>x==='s').length});
+    return;
+  }
+  const S=P.steps[HG.day]||P.steps[0];
+  if(ph==='plan'){
+    const pr=HG.prev;
+    $('hAgents').innerHTML=HG.teams[0].agents.map((a,i)=>{
+      const used=pr.endT[i], fuel=pr.st.agents[i].fuel, bad=pr.invalid[i]>=0;
+      return `<button class="hcard ag${i===HG.sel?' on':''}${bad?' bad':''}" data-i="${i}" style="--agc:${HAGC[i%4]}">
+        <span class="hagn">${i+1}</span>${hAgentIcon(a.type,HTEAMC[0],26)}<span class="hty">${t(a.type==='p'?'h_patrol':'h_supply')}</span>
+        <span class="hbars"><small>${t('h_steps')}</small><span class="trk"><i style="width:${Math.min(100,used/S*100)}%"></i></span><b>${used}/${S}</b>
+        <small>${t('h_fuel')}</small>${a.type==='p'?`<span class="trk fuel"><i style="width:${fuel/P.fuelMax*100}%"></i></span><b>${fuel}/${P.fuelMax}</b>`:`<b class="inf">${t('h_fuel_inf')}</b>`}</span>
+      </button>`; }).join('');
+    $('hAgents').querySelectorAll('.hcard').forEach(b=>b.onclick=()=>{ HG.sel=+b.dataset.i; hRender(); });
+    $('hPlanSum').innerHTML=t('h_plan_sum',{k:new Set(pr.events.map(e=>e.kind)).size,u:pr.events.length});
+    const gets=HG.plans.map(()=>[]); pr.events.forEach(e=>gets[e.a].push(e.c));
+    const plans=HG.plans.map((pl,i)=>({cells:hPlanCells(i),waits:pl.includes('w'),bad:pr.invalid[i]>=0? HG.plans[i].slice(0,pr.invalid[i]).filter(a=>a!=='w').length : -1,gets:gets[i],dim:i!==HG.sel&&false}));
+    const teams=HG.start.map((s,k)=>({agents:s.agents,...hLook(k)}));
+    HG.board.set({roads:HG.roads,stock:HG.teams[0].stock,teams,plans,sel:HG.sel,marks:[]});
+    $('hStart').textContent=t('h_start_day',{d:HG.day+1});
+  }
+  if(ph==='run'){ $('hFast').disabled=!!HG.fast; }
+  hLegend();
+  hScoreboard();
+}
+function hLegend(){
+  const TC=HTERR[SETTINGS.theme]||HTERR.normal, RC=HROADC[SETTINGS.theme]||HROADC.normal;
+  $('hLegend').innerHTML=[0,1,3].map(k=>`<span><i class="hsw" style="background:${TC[k]}"></i>${t('h_terr'+k)} ${t('h_leg_tf',{t:k===3?'1·2·4':H_TIME[k],f:H_FUEL[k]})}</span>`).join('')+
+    `<span><i class="hsw" style="background:${TC[2]}"></i>${t('h_terr2')} ${t('h_noentry')}</span>`+
+    [1,2].map(k=>`<span><i class="hsw" style="background:${RC[k]}"></i>${t('h_rs'+k)} ${k===1?'!':'!!'}</span>`).join('');
+}
+function hScoreboard(){
+  if(!HG||HG.mode!=='robot'||!HG.days.length){ $('hTeams').innerHTML=''; return; }
+  const done=HG.phase==='run'? HG.days.slice(0,-1) : HG.days; if(!done.length){ $('hTeams').innerHTML=''; return; }
+  $('hTeams').innerHTML=`<table class="htbl"><tr><th></th><th>${t('h_c_kinds')}</th><th>${t('h_c_daily')}</th><th>${t('h_c_udon')}</th></tr>`+
+    Array.from({length:HG.nT},(_,k)=>{ const s=hScore(done,k); return `<tr><td><i class="hteam" style="background:${HTEAMC[k]}"></i>${k?t('h_robot_n',{n:k}):t('you')}</td><td>${s.kinds}</td><td>${s.daily}</td><td>${s.udon}</td></tr>`; }).join('')+'</table>';
+}
+$('hTypesOk').onclick=hConfirmTypes;
+$('hWaitBtn').onclick=hWait; $('hMeetBtn').onclick=hMeet; $('hUndoBtn').onclick=hUndo; $('hClearBtn').onclick=hClear; $('hAuto').onclick=hAuto;
+$('hStart').onclick=hStartDay; $('hFast').onclick=()=>{ if(HG){ HG.fast=true; hRender(); } };
+$('hQuit').onclick=()=>{
+  if(!HG) return show('home');
+  if(HG.phase==='types'||(HG.day===0&&HG.phase==='plan'&&!HG.plans.some(p=>p.length))){ clearInterval(HG.tick); HG.ended=true; show('home'); return; }
+  if(HG.phase==='run'){ HG.anim.cancel(); hEndDaySilent(HG.days[HG.days.length-1]); }
+  // 残りの 日は 自分の 車は 動かない ことに して、ロボットだけ 進める
+  while(HG.phase==='plan'&&HG.day<HG.P.days){ HG.plans=HG.plans.map(()=>[]); hStartDayInstant(); }
+  hFinish(false);
+};
+function hEndDaySilent(rec){ const P=HG.P; rec.res.forEach((r,k)=>HG.teams[k]=r.st); const sum=new Array(P.N).fill(0); rec.res.forEach(r=>r.stays.forEach((v,i)=>sum[i]+=v)); HG.stays.push(sum); if(HG.day+1<P.days) hBeginDay(HG.day+1); else HG.phase='end'; }
+function hStartDayInstant(){ const P=HG.P, d=HG.day; HG.times.push(0); const res=[hRunPlan(P,d,HG.roads,HG.teams[0],HG.plans),...HG.robotRes.slice(1)]; const rec={roads:HG.roads,start:HG.start,res,time:[0,...res.slice(1).map(()=>30)],plans:HG.plans.map(p=>p.slice())}; HG.days.push(rec); hEndDaySilent(rec); }
+
+/* ---- 結果 ---- */
+function hActJSON(days){ return days.map((d,j)=>`// ${t('h_day_n',{d:j+1})}\n[\n`+d.res[0].out.map(a=>'  '+JSON.stringify(a)).join(',\n')+'\n]').join('\n\n'); }
+function hFinish(){
+  if(!HG||HG.ended) return; HG.ended=true; clearInterval(HG.tick);
+  const P=HG.P, me=hScore(HG.days,0), all=Array.from({length:HG.nT},(_,k)=>({k,s:hScore(HG.days,k)}));
+  const line=s=>`${t('h_c_kinds')} <b>${s.kinds}</b> / ${P.kinds}<br>${t('h_c_daily')} <b>${s.daily}</b><br>${t('h_c_udon')} <b>${s.udon}</b><br>${t('h_c_time')} ${fmt(s.time)}`;
+  let html='';
+  if(HG.mode==='robot'){
+    const rank=all.slice().sort((a,b)=>hCompare(a.s,b.s)[0]||a.k-b.k), pos=rank.findIndex(o=>o.k===0);
+    const other= pos===0? rank[1] : rank[0], [cmp,why]=hCompare(me,other.s), win=cmp<0? true : cmp>0? false : null;
+    html=`<div class="big">${win===null?'🤝':pos===0?'🏆':pos===1?'🥈':pos===2?'🥉':'🍜'}</div><h3>${t(win===null?'r_draw':win?'r_win':'h_rank',{n:pos+1})}</h3>
+      <table class="htbl big"><tr><th>${t('h_c_rank')}</th><th></th><th>${t('h_c_kinds')}</th><th>${t('h_c_daily')}</th><th>${t('h_c_udon')}</th><th>${t('h_c_time')}</th></tr>`+
+      rank.map((o,j)=>`<tr class="${o.k===0?'me':''}"><td>${j+1}</td><td><i class="hteam" style="background:${HTEAMC[o.k]}"></i>${o.k?t('h_robot_n',{n:o.k}):t('you')}</td><td>${o.s.kinds}</td><td>${o.s.daily}</td><td>${o.s.udon}</td><td>${fmt(o.s.time)}</td></tr>`).join('')+`</table>
+      <p class="why">${why===5?t('why4'):t('h_why'+why,{who:other.k?t('h_robot_n',{n:other.k}):t('you')})}</p>`;
+  } else {
+    const ok=me.kinds===P.kinds;
+    html=`<div class="big">${ok?'🎉':'🌱'}</div><h3>${t(ok?'h_perfect':'good')}</h3>
+      <div class="vs" style="grid-template-columns:1fr"><div class="side"><div style="font-size:17px;line-height:1.9">${line(me)}</div></div></div>
+      <p class="why">${t(ok?'h_msg_perfect':'h_msg_tip')}</p>`;
+  }
+  html+=`<table class="htbl"><tr><th>${t('h_c_day')}</th><th>${t('h_c_kinds')}</th><th>${t('h_c_udon')}</th></tr>`+HG.days.map((d,j)=>`<tr><td>${t('h_day_n',{d:j+1})}</td><td>${d.res[0].todayKinds}</td><td>${d.res[0].udon}</td></tr>`).join('')+'</table>';
+  html+=`<div id="hReplayArea"></div>`;
+  if(HG.mode!=='robot') html+=`<button class="btn sub modelbtn" id="hShowModel">${t('h_show_model')}</button><div id="hModelArea"></div>`;
+  html+=`<details><summary>${t('h_json_mine')}</summary><p class="why" style="font-size:13px">${t('h_json_note')}</p><pre class="json" style="margin-top:8px">${hActJSON(HG.days)}</pre></details>
+    <div class="mbtns"><button class="btn main" id="againBtn">${t('again')}</button><button class="btn sub" id="homeBtn">${t('home')}</button></div>`;
+  $('modalBox').innerHTML=html; $('modal').classList.add('on'); $('modalBox').scrollTop=0;
+  stopPlayers();
+  new HPlayer($('hReplayArea'),{P,days:HG.days,nT:HG.nT,titleKey:HG.mode==='robot'?'h_replay_all':'h_replay_me',desc:()=>t(HG.mode==='robot'?'h_replay_all_d':'h_replay_me_d')});
+  if($('hShowModel')) $('hShowModel').onclick=()=>{ $('hShowModel').remove(); const M=hRobotMatch(P,[3]), s=hScore(M.days,0);
+    new HPlayer($('hModelArea'),{P,days:M.days.map(d=>({...d,plans:d.res.map(r=>r.acts)})),nT:1,titleKey:'h_model_title',desc:()=>t('h_model_d',{k:s.kinds,d:s.daily,u:s.udon,me:me.daily,mu:me.udon}),auto:true}); };
+  $('againBtn').onclick=()=>{ stopPlayers(); $('modal').classList.remove('on'); startHexa(); };
+  $('homeBtn').onclick=()=>{ stopPlayers(); $('modal').classList.remove('on'); show('home'); };
+}
+
+/* ---- 試合の 再生（日ごと） ---- */
+function HPlayer(host,{P,days,nT,titleKey,desc,auto}){
+  this.P=P; this.days=days; this.nT=nT; this.titleKey=titleKey; this.desc=desc; this.d=0; this.playing=false; this.speed='mid'; this.el=host;
+  host.innerHTML=`<div class="model"><h4 class="pt"></h4><p class="pd"></p><div class="hpb"></div><div class="prog"></div>
+    <div class="play"><button class="btn sub" data-a="first">⏮</button><button class="btn sub" data-a="prev">◀</button><button class="btn main" data-a="play"></button><button class="btn sub" data-a="next">▶</button></div>
+    <div class="play"><div class="seg"><button data-v="slow"></button><button data-v="mid" class="on"></button><button data-v="fast"></button></div></div></div>`;
+  this.progEl=host.querySelector('.prog'); this.playBtn=host.querySelector('[data-a=play]');
+  this.board=new HBoard(host.querySelector('.hpb'),{P,maxW:Math.min(520,window.innerWidth-120),maxH:420});
+  const A=a=>host.querySelector(`[data-a=${a}]`);
+  A('first').onclick=()=>{ this.stop(); this.load(0); };
+  A('prev').onclick=()=>{ this.stop(); this.load(Math.max(0,this.d-1)); };
+  A('next').onclick=()=>{ this.stop(); if(this.d<days.length-1) this.load(this.d+1); else this.load(days.length-1,true); };
+  this.playBtn.onclick=()=>{ if(this.playing) this.stop(); else { if(this.done) this.load(0); this.playing=true; this.btn(); this.play(); } };
+  host.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{ host.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b)); this.speed=b.dataset.v; });
+  PLAYERS.push(this); this.load(0); this.relabel();
+  if(auto) setTimeout(()=>{ if(!this.playing) this.playBtn.onclick(); },700);
+}
+HPlayer.prototype.load=function(d,end){
+  if(this.anim) this.anim.cancel(); this.d=d; this.done=false;
+  const rec=this.days[d]; this.board.state.roads=rec.roads;
+  this.anim=new HAnim(this.board,rec,k=>({color:HTEAMC[k%4],ghost:k>0}),{onEvent:()=>this.prog()});
+  if(end){ this.anim.tau=rec.res[0].S; this.done=d===this.days.length-1; }
+  this.anim.frame(); this.board.render(); this.prog();
+};
+HPlayer.prototype.play=function(){
+  if(!this.playing) return;
+  const ms={slow:420,mid:160,fast:40}[this.speed];
+  this.anim.stop=false;
+  this.anim.run(()=>({slow:420,mid:160,fast:40}[this.speed]),()=>{ if(!this.playing) return;
+    if(this.d<this.days.length-1){ this.timer=setTimeout(()=>{ if(this.playing){ this.load(this.d+1); this.play(); } },700); }
+    else { this.done=true; this.stop(); } });
+};
+HPlayer.prototype.prog=function(){ if(!this.anim) return; const rec=this.days[this.d], s=hScore(this.days.slice(0,this.d),0), got=this.anim.evs.slice(0,this.anim.fired).filter(e=>e.k===0);
+  this.progEl.innerHTML=t('h_p_prog',{d:this.d+1,n:this.days.length,t:Math.floor(this.anim.tau),s:rec.res[0].S,u:s.udon+got.length}); };
+HPlayer.prototype.relabel=function(){ const h=this.el; h.querySelector('.pt').innerHTML=t(this.titleKey); h.querySelector('.pd').innerHTML=this.desc();
+  h.querySelector('.seg [data-v=slow]').textContent=t('p_slow'); h.querySelector('.seg [data-v=mid]').textContent=t('p_mid'); h.querySelector('.seg [data-v=fast]').textContent=t('p_fast'); this.btn(); this.prog(); };
+HPlayer.prototype.btn=function(){ this.playBtn.textContent=t(this.playing?'p_pause':'p_play'); };
+HPlayer.prototype.stop=function(){ clearTimeout(this.timer); this.playing=false; if(this.anim){ this.anim.stop=true; cancelAnimationFrame(this.anim.raf); this.board.busy=false; } this.btn(); };
+function hRelabel(){
+  if($('s-hrules').classList.contains('on')||hrulesReady) hRulesText();
+  if(HG&&!HG.ended&&$('s-hgame').classList.contains('on')){ $('hProbNo').textContent=t('h_prob_no',{n:HG.P.seed}); hRender(); }
+}
 
 /* ============ プログラムでとく（ブロック型プログラミング） ============ */
 // ブロックの種類：label はことばのキー、fields は {名前:種類}
@@ -2932,9 +4442,9 @@ const EN_SAMPLES={
 
 SAMPLES=EN_SAMPLES;
 const CODE={game:'en',prog:[],cursor:null,S:6,field0:null,runner:null,result:null,loaded:{},progs:{},probs:{}};
-function saveProg(){ try{ localStorage.setItem('enmusubi-program'+(CODE.game==='kata'?'-kata':''),JSON.stringify(CODE.prog)); }catch(e){} }
+function saveProg(){ try{ localStorage.setItem('enmusubi-program'+(CODE.game==='en'?'':'-'+CODE.game),JSON.stringify(CODE.prog)); }catch(e){} }
 function loadProg(){
-  try{ const p=JSON.parse(localStorage.getItem('enmusubi-program'+(CODE.game==='kata'?'-kata':''))||'null'); if(Array.isArray(p)){ const fix=l=>l.forEach(b=>{ b.id='b'+(nextBid++); if(b.body) fix(b.body); }); fix(p); return p; } }catch(e){}
+  try{ const p=JSON.parse(localStorage.getItem('enmusubi-program'+(CODE.game==='en'?'':'-'+CODE.game))||'null'); if(Array.isArray(p)){ const fix=l=>l.forEach(b=>{ b.id='b'+(nextBid++); if(b.body) fix(b.body); }); fix(p); return p; } }catch(e){}
   return SAMPLES.smp1();
 }
 function validProg(p){ const ok=l=>l.every(b=>BLOCKS[b.type]&&(!b.body||ok(b.body))); return ok(p); }
@@ -2942,7 +4452,9 @@ function validProg(p){ const ok=l=>l.every(b=>BLOCKS[b.type]&&(!b.body||ok(b.bod
 /* ---- ブロックの文字（えらぶ欄つき） ---- */
 function optLabel(kind,v){
   if(kind==='pos' && CODE.game==='kata') return v;
-  if(kind==='cond') return t((CODE.game==='kata'?'kc_':'c_')+v);
+  if(kind==='cond') return t(({kata:'kc_',hexa:'hc_'}[CODE.game]||'c_')+v);
+  if(kind==='hdir') return t('h_d'+v);
+  if(kind==='carno') return v;
   if(kind==='dir') return t('k_d'+v);
   if(kind==='die'){ const d=CODE.prob&&CODE.prob.dies? dieByP(CODE.prob.dies,+v):null; return d? dieName(d) : v; }
   return v;
@@ -3037,8 +4549,8 @@ function insertBlock(type,slot){
 
 /* ---- パレット（タップ または ドラッグで入れる） ---- */
 function renderPalette(){
-  const groups=CODE.game==='kata'? [['pal_act',['kcut','kfix','kbest']],['pal_ctrl',['repeat','kuntil','kforxy','kif','stop']]] : [['pal_act',['rotate','try','best']],['pal_ctrl',['repeat','until','forxy','if','stop']]];
-  $('palette').innerHTML=groups.map(([h,types])=>`<h5>${t(h)}</h5>`+types.map(ty=>`<div class="pblk blk k-${BLOCKS[ty].kind}" data-type="${ty}"><span class="blab">${blockLabelHTML({type:ty,p:DEFAULTS[ty]||{}},false)}</span></div>`).join('')).join('')+`<p class="ptip">${t(CODE.game==='kata'?'k_code_tip':'code_tip')}</p>`;
+  const groups=CODE.game==='hexa'? [['pal_act',['hgo','hnear','hmeet','hmove','hwait']],['h_pal_if',['hif','hifcar']]] : CODE.game==='kata'? [['pal_act',['kcut','kfix','kbest']],['pal_ctrl',['repeat','kuntil','kforxy','kif','stop']]] : [['pal_act',['rotate','try','best']],['pal_ctrl',['repeat','until','forxy','if','stop']]];
+  $('palette').innerHTML=groups.map(([h,types])=>`<h5>${t(h)}</h5>`+types.map(ty=>`<div class="pblk blk k-${BLOCKS[ty].kind}" data-type="${ty}"><span class="blab">${blockLabelHTML({type:ty,p:DEFAULTS[ty]||{}},false)}</span></div>`).join('')).join('')+`<p class="ptip">${t({kata:'k_code_tip',hexa:'h_code_tip'}[CODE.game]||'code_tip')}</p>`;
   $('palette').querySelectorAll('.pblk').forEach(bindPaletteDrag);
 }
 function bindPaletteDrag(el){
@@ -3179,6 +4691,68 @@ function execKata(prog,P){
   return {ops:ctx.ops,trace:ctx.trace,board:ctx.b,miss:kMiss(ctx.b,goal),err:ctx.err,errId:ctx.errId,notes:[...ctx.notes]};
 }
 
+/* ---- 第37回 用の ブロック（車が 次の 行動を きめる たびに 上から 実行） ---- */
+const H_BLOCKS={
+  hgo:   {kind:'act',  label:'hb_go',    fields:{}},
+  hnear: {kind:'act',  label:'hb_near',  fields:{}},
+  hmeet: {kind:'act',  label:'hb_meet',  fields:{}},
+  hmove: {kind:'act',  label:'hb_move',  fields:{d:'hdir'}},
+  hwait: {kind:'act',  label:'hb_wait',  fields:{}},
+  hif:   {kind:'cond', label:'b_if',     fields:{c:'cond'}, body:true},
+  hifcar:{kind:'cond', label:'hb_ifcar', fields:{n:'carno'}, body:true}
+};
+const H_DEFAULTS={hmove:{d:'2'},hif:{c:'lowfuel'},hifcar:{n:'1'}};
+const H_FIELD_OPTS={ hdir:()=>['0','1','2','3','4','5'], carno:()=>['1','2','3','4'], cond:()=>['patrol','supply','lowfuel','halffuel','together','allkinds'] };
+const H_SAMPLES={
+  smp1:()=>[mkBlock('hgo')],
+  smp2:()=>{ const a=mkBlock('hif',{c:'lowfuel'}); a.body.push(mkBlock('hmeet')); const b=mkBlock('hif',{c:'supply'}); b.body.push(mkBlock('hmeet')); return [a,b,mkBlock('hgo')]; },
+  smp3:()=>{ const a=mkBlock('hif',{c:'allkinds'}); a.body.push(mkBlock('hnear')); const b=mkBlock('hif',{c:'lowfuel'}); b.body.push(mkBlock('hmeet')); const c=mkBlock('hif',{c:'supply'}); c.body.push(mkBlock('hmeet')); return [b,c,a,mkBlock('hgo')]; }
+};
+// 1台の 車の 次の 行動を プログラムで きめる
+function hProgDecide(prog,ctx,i,E){
+  const {P,A,stock,taken,t,S}=ctx, a=A[i], mem=ctx.mem; mem.claim=mem.claim||{}; mem.D=mem.D||{};
+  const canMove=()=> t+hTime(P.terr[a.cur],ctx.roads[a.cur])<=S && (a.type!=='p'||a.fuel>=H_FUEL[P.terr[a.cur]]);
+  const go=onlyNew=>hActGo(ctx,i,onlyNew), meet=()=>hActMeet(ctx,i);
+  const cond=c=>{ switch(c){
+    case 'patrol': return a.type==='p'; case 'supply': return a.type==='s';
+    case 'lowfuel': return a.type==='p'&&a.fuel<=P.fuelMax/4; case 'halffuel': return a.type==='p'&&a.fuel<=P.fuelMax/2;
+    case 'together': return A.some((b,j)=>j!==i&&b.type!==a.type&&b.cur===a.cur);
+    case 'allkinds': return ctx.todayKinds.size>=P.kinds; } return false; };
+  let out=null, n=0;
+  const run=list=>{ for(const b of list){ if(out||E.err) return; if(++n>2000){ E.err='err_limit'; E.errId=b.id; return; }
+    const p=b.p||{};
+    switch(b.type){
+      case 'hgo': out={act:go(true),id:b.id}; break;
+      case 'hnear': out={act:go(false),id:b.id}; break;
+      case 'hmeet': out={act:meet(),id:b.id}; break;
+      case 'hwait': out={act:'w',id:b.id}; break;
+      case 'hmove': { const nb=hNb(P.W,P.H,a.cur,+p.d); if(nb<0||P.terr[nb]===2){ E.err='h_err_pond'; E.errId=b.id; return; }
+        if(!canMove()){ E.notes.add('h_note_wait'); out={act:'w',id:b.id}; } else out={act:+p.d,id:b.id}; break; }
+      case 'hif': if(cond(p.c)) run(b.body); break;
+      case 'hifcar': if(i+1===+p.n) run(b.body); break;
+    } } };
+  run(prog);
+  return out||{act:'w',id:null};
+}
+function execHexa(prog,P){
+  const E={err:null,errId:null,notes:new Set()}, types=hRobotTypes(P,2); let team=hInitTeam(P,types); const stays=[], days=[], trace=[];
+  for(let d=0;d<P.days&&!E.err;d++){
+    const roads=hRoadStates(P,stays,1); team=hNewDayStock(P,team); const start=[JSON.parse(JSON.stringify({agents:team.agents}))], ids={};
+    const r=hRunTeam(P,d,roads,team,(ctx,i)=>{ if(E.err) return null; const o=hProgDecide(prog,ctx,i,E); if(o.id&&ids[ctx.t]===undefined) ids[ctx.t]=o.id; return E.err? null : o.act; });
+    team=r.st; stays.push(r.stays.slice());
+    days.push({roads,start,res:[r],time:[0],plans:[r.acts]});
+    for(let tt=1;tt<=r.S;tt++){ let id=null; for(let q=tt-1;q>=0;q--){ if(ids[q]!==undefined){ id=ids[q]; break; } } trace.push({day:d,tau:tt,id}); }
+  }
+  const sc=hScore(days,0);
+  // お手本チームを 同じ マップに かさねて 見せる（自分=こい色、お手本=うすい色）
+  const MM=hModelMatch(P), view=days.map((d,j)=>({roads:d.roads,start:[d.start[0],MM.days[j].start[0]],res:[d.res[0],MM.days[j].res[0]]}));
+  let me0=0,mo0=0; const base=days.map((d,j)=>{ const b=[me0,mo0]; me0+=d.res[0].udon; mo0+=MM.days[j].res[0].udon; return b; });
+  trace.forEach(tr=>{ const b=base[tr.day]; tr.me=b[0]+days[tr.day].res[0].events.filter(e=>e.t<=tr.tau).length; tr.mo=b[1]+MM.days[tr.day].res[0].events.filter(e=>e.t<=tr.tau).length; });
+  return {days,view,trace,ops:trace,score:sc,err:E.err,errId:E.errId,notes:[...E.notes]};
+}
+function hModelMatch(P){ if(!P._mm) P._mm=hRobotMatch(P,[3]); return P._mm; }
+function hModel(P){ if(!P._model) P._model=hScore(hModelMatch(P).days,0); return P._model; }
+
 /* ---- 競技ごとの ちがい ---- */
 const GDEF={
   en:{
@@ -3207,6 +4781,27 @@ const GDEF={
       return {win,me:`${t('k_l_miss')} <b>${res.miss}</b> / ${all}<br>${t('l_moves')} <b>${res.ops.length}</b>`, model:`${t('k_l_miss')} <b>${model.miss}</b> / ${all}<br>${t('l_moves')} <b>${model.ops.length}</b>`, json:kAnswerJSON(res.ops)}; }
   }
 };
+GDEF.hexa={
+  blocks:H_BLOCKS, defaults:H_DEFAULTS, opts:H_FIELD_OPTS, samples:H_SAMPLES, smpKeys:['h_smp1','h_smp2','h_smp3'], sizes:[8,10,12],
+  newProblem:S=>hMakeProblem(S,'mid'),
+  mount(P,w){ const bd=new HBoard($('codeBoard'),{P,maxW:Math.min(w-8,440),maxH:380});
+    $('codeBoard').insertAdjacentHTML('afterend',`<div class="hcleg" id="hcLeg"><span><i class="hteam" style="background:${HTEAMC[0]}"></i><b data-i18n="h_leg_me">${t('h_leg_me')}</b></span><span><i class="hteam" style="background:${HTEAMC[1]};opacity:.5"></i><b data-i18n="h_leg_model">${t('h_leg_model')}</b></span></div>`);
+    this.reset(bd,P); return bd; },
+  look:k=>k? {color:HTEAMC[1],ghost:true} : {color:HTEAMC[0],ghost:false},
+  reset(bd,P){ bd.curDay=null; if(bd.anim){ bd.anim=null; } const ag=hRobotTypes(P,2).map((ty,i)=>({type:ty,pos:P.starts[i]}));
+    bd.set({roads:new Array(P.N).fill(0),stock:null,plans:[],teams:[{agents:ag,...this.look(0)},{agents:ag,...this.look(1)}]}); },
+  final(bd,res){ const d=res.view[res.view.length-1]; if(!d) return; bd.curDay=null; bd.state.roads=d.roads; const A=new HAnim(bd,d,this.look); A.tau=d.res[0].S; A.frame(); bd.render(); },
+  step(bd,tr,anim,cb){ const rec=CODE.result.view[tr.day];
+    if(bd.curDay!==tr.day){ bd.curDay=tr.day; bd.state.roads=rec.roads; bd.anim=new HAnim(bd,rec,this.look,{popAll:true}); bd.anim.tau=tr.tau-1; bd.anim.frame(); bd.render(); }
+    const A=bd.anim, from=tr.tau-1, to=tr.tau;
+    if(!anim){ A.tau=to; A.frame(); cb(); return; }
+    const t0=performance.now(), dur=260; const go=now=>{ const f=Math.min(1,(now-t0)/dur); A.tau=from+(to-from)*f; A.frame(); if(f<1) requestAnimationFrame(go); else cb(); }; requestAnimationFrame(go); },
+  exec:(prog,P)=>execHexa(prog,P),
+  done(res,P){ const s=res.score; return {html:t('h_st_done',{k:s.kinds,n:P.kinds,d:s.daily,u:s.udon}),good:s.kinds===P.kinds}; },
+  compare(res,P){ const s=res.score, m=hModel(P), win=!res.err&&hCompare(s,{...m,time:0})[0]<=0;
+    const L=x=>`${t('h_c_kinds')} <b>${x.kinds}</b> / ${P.kinds}<br>${t('h_c_daily')} <b>${x.daily}</b><br>${t('h_c_udon')} <b>${x.udon}</b>`;
+    return {win,me:L(s),model:L(m),modelKey:'h_model_title',json:res.days.map((d,j)=>`// ${t('h_day_n',{d:j+1})}\n[\n`+d.res[0].out.map(a=>'  '+JSON.stringify(a)).join(',\n')+'\n]').join('\n\n')}; }
+};
 const D=()=>GDEF[CODE.game];
 
 /* ---- ためす（盤面での 再生と ブロックの 光） ---- */
@@ -3220,13 +4815,16 @@ function codeSetup(game){
     if(CODE.progs[game]) CODE.prog=CODE.progs[game];
     else { CODE.prog=loadProg(); if(!validProg(CODE.prog)) CODE.prog=SAMPLES.smp1(); }
     CODE.loaded[game]=true;
+    const sizes=g.sizes||[4,6,8]; CODE.sz=CODE.sz||{}; CODE.S=CODE.sz[game]||(game==='hexa'?8:6);
+    $('codeSize').innerHTML=sizes.map(s=>`<button data-v="${s}" class="${s===CODE.S?'on':''}">${s}×${s}</button>`).join('');
+    $('codeSize').querySelectorAll('button').forEach(b=>b.onclick=()=>{ setSeg('codeSize',b.dataset.v); CODE.S=+b.dataset.v; CODE.sz[CODE.game]=CODE.S; newCodeProblem(); });
     if(!CODE.prob) CODE.prob=g.newProblem(CODE.S);
     mountCodeBoard();
   } else if(!CODE.board||!CODE.board.wrap.isConnected) mountCodeBoard();
   relabelCode();
 }
-function newCodeProblem(){ codeStop(); CODE.prob=D().newProblem(CODE.S); CODE.result=null; mountCodeBoard(); $('codeResult').innerHTML=''; renderProg(); codeStatus(t('st_ready')); }
-function mountCodeBoard(){ const w=$('codeBoardWrap').clientWidth||340; CODE.board=D().mount(CODE.prob,w); }
+function newCodeProblem(){ codeStop(); CODE.prob=D().newProblem(CODE.S); CODE.result=null; mountCodeBoard(); $('codeResult').innerHTML=''; renderProg(); codeStatus(t({kata:'k_st_ready',hexa:'h_st_ready'}[CODE.game]||'st_ready')); }
+function mountCodeBoard(){ const w=$('codeBoardWrap').clientWidth||340; const lg=$('hcLeg'); if(lg) lg.remove(); CODE.board=D().mount(CODE.prob,w); }
 function codeStatus(html,cls){ const s=$('codeStatus'); s.innerHTML=html; s.className='hint'+(cls?' '+cls:''); }
 function hlBlock(id){ document.querySelectorAll('#prog .blk.run').forEach(e=>e.classList.remove('run')); if(id){ const el=document.querySelector(`#prog [data-id="${id}"]`); if(el){ el.classList.add('run'); el.scrollIntoView({block:'nearest'}); } } }
 function errBlock(id){ document.querySelectorAll('#prog .blk.err').forEach(e=>e.classList.remove('err')); if(id){ const el=document.querySelector(`#prog [data-id="${id}"]`); if(el) el.classList.add('err'); } }
@@ -3243,7 +4841,7 @@ function codeRun(animated){
     if(CODE.runner!==R) return;
     if(R.k>=res.trace.length){ hlBlock(null); CODE.runner=null; $('codeRun').disabled=false; finishCode(res); return; }
     const tr=res.trace[R.k++]; hlBlock(tr.id);
-    codeStatus(t('st_running',{k:R.k,n:res.trace.length}));
+    codeStatus(t(CODE.game==='hexa'?'h_st_running':'st_running',{k:R.k,n:res.trace.length,d:(tr.day||0)+1,t:tr.tau||0,me:tr.me||0,mo:tr.mo||0}));
     const ms=stepMs(), anim=ms>=400;
     g.step(CODE.board,tr,anim,()=>{ if(CODE.runner===R) R.timer=setTimeout(tick, anim? Math.max(60,ms-480+120) : ms); });
   };
@@ -3255,10 +4853,9 @@ function finishCode(res){
   else { const d=g.done(res,CODE.prob); codeStatus(d.html+(res.notes.length?'<br>'+res.notes.map(n=>t(n)).join(''):''), d.good?'good':''); }
   const c=g.compare(res,CODE.prob);
   $('codeResult').innerHTML=`<div class="vs" style="grid-template-columns:1fr 1fr;margin:10px 0"><div class="side ${c.win?'win':''}"><h5>${t('code_you')}</h5><div>${c.me}</div></div>
-    <div class="side"><h5>${t('model_title')}</h5><div>${c.model}</div></div></div>
+    <div class="side"><h5>${t(c.modelKey||'model_title')}</h5><div>${c.model}</div></div></div>
     <details><summary>${t('code_json')}</summary><pre class="json" style="margin-top:8px">${c.json}</pre></details>`;
 }
-document.querySelectorAll('#codeSize button').forEach(b=>b.addEventListener('click',()=>{ setSeg('codeSize',b.dataset.v); CODE.S=+b.dataset.v; newCodeProblem(); }));
 document.querySelectorAll('#codeSpeed button').forEach(b=>b.addEventListener('click',()=>setSeg('codeSpeed',b.dataset.v)));
 $('codeNew').onclick=newCodeProblem;
 $('codeRun').onclick=()=>codeRun(true);
@@ -3272,7 +4869,7 @@ function relabelCode(){
   renderPalette(); renderProg();
   const g=D();
   $('codeSample').innerHTML=`<option value="">${t('sample_pick')}</option>`+['smp1','smp2','smp3'].map((k,i)=>`<option value="${k}">${t(g.smpKeys[i])}</option>`).join('');
-  if(!CODE.runner) codeStatus(t(CODE.game==='kata'?'k_st_ready':'st_ready'));
+  if(!CODE.runner) codeStatus(t({kata:'k_st_ready',hexa:'h_st_ready'}[CODE.game]||'st_ready'));
   if(CODE.result && !CODE.runner) finishCode(CODE.result);
   if(CODE.board && CODE.board.drawDie) CODE.board.drawDie();
 }

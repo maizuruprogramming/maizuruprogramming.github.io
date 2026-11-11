@@ -268,7 +268,7 @@ vi:{
   close:'Đóng'
 }};
 const SETTINGS={theme:'normal',lang:'ja',game:'en'};
-try{ const s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}'); if(['ja','en','vi','th','mn'].includes(s.lang)) SETTINGS.lang=s.lang; if(['normal','night','eye','cud'].includes(s.theme)) SETTINGS.theme=s.theme; if(['en','kata'].includes(s.game)) SETTINGS.game=s.game; }catch(e){}
+try{ const s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}'); if(['ja','en','vi','th','mn'].includes(s.lang)) SETTINGS.lang=s.lang; if(['normal','night','eye','cud'].includes(s.theme)) SETTINGS.theme=s.theme; if(['en','kata','hexa'].includes(s.game)) SETTINGS.game=s.game; }catch(e){}
 function t(key,params){
   let s=(I18N[SETTINGS.lang]&&I18N[SETTINGS.lang][key]) ?? I18N.ja[key] ?? key;
   if(params) s=s.replace(/\{(\w+)\}/g,(m,k)=>params[k]!==undefined?params[k]:m);
@@ -588,7 +588,7 @@ Object.assign(I18N.ja,{
   ab_lead:'小学生・中学生が、全国高等専門学校プログラミングコンテスト（高専プロコン）競技部門の ルールを、iPad などの Web ブラウザだけで 体験できる 教材の 試作版です。',
   ab_name_h:'名前', ab_name:'高専プロコン競技部門 体験',
   ab_ver_h:'バージョン', ab_games_h:'収録している 競技',
-  ab_games:'第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
+  ab_games:'第37回（高松大会）「ヘキサうどん」<br>第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
   ab_for_h:'対象', ab_for:'小学生・中学生（先生・保護者と いっしょに）',
   ab_env_h:'動作環境', ab_env:'iPad などの タブレット、パソコンの Web ブラウザ。HTML 1ファイルで動き、サーバーは 不要です（文字の フォントだけ インターネットから 読みこみます）。',
   ab_lang_h:'ことば',
@@ -633,7 +633,7 @@ Object.assign(I18N.en,{
   ab_lead:'A prototype learning tool that lets elementary and junior high school students try the rules of the Competition Section of the National KOSEN Programming Contest (PROCON) using only a web browser on an iPad or similar device.',
   ab_name_h:'Name', ab_name:'KOSEN PROCON Competition Experience',
   ab_ver_h:'Version', ab_games_h:'Contests included',
-  ab_games:'36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
+  ab_games:'37th (Takamatsu): “Hexa Udon”<br>36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
   ab_for_h:'For', ab_for:'Elementary and junior high school students (with teachers or parents)',
   ab_env_h:'Runs on', ab_env:'Web browsers on tablets such as the iPad, and on computers. It is a single HTML file and needs no server (only the font is loaded from the internet).',
   ab_lang_h:'Languages',
@@ -678,7 +678,7 @@ Object.assign(I18N.vi,{
   ab_lead:'Bản thử nghiệm của một công cụ học tập giúp học sinh tiểu học và trung học cơ sở trải nghiệm luật phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON) chỉ bằng trình duyệt web trên iPad hoặc thiết bị tương tự.',
   ab_name_h:'Tên', ab_name:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   ab_ver_h:'Phiên bản', ab_games_h:'Các phần thi',
-  ab_games:'Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
+  ab_games:'Lần 37 (Takamatsu): “Hexa Udon”<br>Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
   ab_for_h:'Đối tượng', ab_for:'Học sinh tiểu học và trung học cơ sở (cùng giáo viên hoặc phụ huynh)',
   ab_env_h:'Môi trường', ab_env:'Trình duyệt web trên máy tính bảng như iPad và trên máy tính. Ứng dụng là một tệp HTML duy nhất, không cần máy chủ (chỉ phông chữ được tải từ internet).',
   ab_lang_h:'Ngôn ngữ',
