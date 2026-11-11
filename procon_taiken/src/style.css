@@ -37,6 +37,8 @@ button{font-family:inherit;cursor:pointer;border:none}
 .badge{font-size:14px;letter-spacing:.1em;color:var(--sub);background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:6px 14px}
 .logo{font-size:clamp(44px,9vw,84px);font-weight:800;letter-spacing:.04em;margin:0;line-height:1.1}
 .logo .e{color:var(--shu)}
+.logo .sub{display:block;font-size:.34em;letter-spacing:.02em;margin-top:.15em;color:var(--ink)}
+.logo .sub .orig{font-size:.62em;color:var(--sub);font-weight:700}
 .tag{font-size:clamp(16px,2.4vw,20px);color:var(--sub);margin:0;line-height:1.7}
 .knot{width:120px;height:72px}
 .menu{display:grid;grid-template-columns:repeat(4,minmax(0,210px));gap:14px;margin-top:10px}

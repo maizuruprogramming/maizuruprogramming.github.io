@@ -1,15 +1,15 @@
 /* ============ ことば（日本語・English・Tiếng Việt） ============ */
 const I18N={
 ja:{
-  doc_title:'エンムスビ体験 ― 高専プロコン競技部門をあそんでみよう',
+  doc_title:'高専プロコン競技部門 体験 ― 第36回「エ。ー縁結びの誘導についてー」・第35回「シン・よみがえれ世界遺産」',
   gear:'⚙ 設定',
   badge:'高専プロコン 競技部門を たいけんしよう',
-  logo:'<span class="e">エ</span>ンムスビ',
+  logo:'<span class="e">エ</span>。<span class="sub">ー縁結びの誘導についてー</span>',
   tag:'おなじ数字を となりどうしに。<br><ruby>園<rt>えん</rt></ruby>を まわして「<ruby>縁<rt>えん</rt></ruby>」を むすぼう！',
   m_rules_b:'ルールを知る', m_rules_s:'5まいのスライドで<br>あそびかたを おぼえよう',
   m_solo_b:'ひとりであそぶ', m_solo_s:'じぶんのペースで<br>ペアを つくろう',
   m_robot_b:'ロボットとしょうぶ', m_robot_s:'おなじ問題で<br>プログラムと たいけつ',
-  foot:'第36回 全国高専プログラミングコンテスト 競技部門「エ。― 縁結びの誘導について ―」のルールをもとにした体験用モックです。',
+  foot:'第36回 全国高専プログラミングコンテスト 競技部門「エ。ー縁結びの誘導についてー」のルールをもとにした体験用モックです。',
   back:'← もどる', quit:'← やめる',
   rules_title:'ルールを知ろう',
   r0_h:'① <em>フィールド</em>と<em>エンティティ</em>',
@@ -90,10 +90,10 @@ ja:{
   close:'とじる'
 },
 en:{
-  doc_title:'EnMusubi — Try the KOSEN PROCON Competition',
+  doc_title:'KOSEN PROCON Competition Experience — 36th “エ。ー縁結びの誘導についてー” and 35th “Revive the World Heritage”',
   gear:'⚙ Settings',
   badge:'Try the KOSEN PROCON Competition Section',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— Guiding the Knots of Fate —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Bring matching numbers side by side.<br>Spin the <b>En</b> (garden) to tie their knot of fate!',
   m_rules_b:'Learn the Rules', m_rules_s:'Learn how to play<br>in 5 slides',
   m_solo_b:'Play Solo', m_solo_s:'Make pairs<br>at your own pace',
@@ -179,10 +179,10 @@ en:{
   close:'Close'
 },
 vi:{
-  doc_title:'En-Musubi — Trải nghiệm phần thi Thi đấu của PROCON KOSEN',
+  doc_title:'Trải nghiệm phần thi PROCON KOSEN — Lần 36 “エ。ー縁結びの誘導についてー” và Lần 35 “Hồi sinh Di sản Thế giới”',
   gear:'⚙ Cài đặt',
   badge:'Trải nghiệm phần thi Thi đấu của PROCON KOSEN',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— Dẫn dắt mối duyên —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Đưa các số giống nhau lại cạnh nhau.<br>Xoay <b>En</b> (khu vườn) để se duyên cho chúng!',
   m_rules_b:'Tìm hiểu luật chơi', m_rules_s:'Học cách chơi<br>qua 5 trang',
   m_solo_b:'Chơi một mình', m_solo_s:'Tạo cặp<br>theo tốc độ của bạn',
@@ -360,7 +360,7 @@ Object.assign(I18N.vi,{
 });
 // ---- 第35回「シン・よみがえれ世界遺産」
 Object.assign(I18N.ja,{
-  game_en:'第36回 エンムスビ', game_kata:'第35回 シン・よみがえれ世界遺産',
+  game_en:'第36回 エ。ー縁結びの誘導についてー', game_kata:'第35回 シン・よみがえれ世界遺産',
   k_badge:'高専プロコン 第35回 競技部門を たいけんしよう',
   k_logo:'シン・よみがえれ<br><span class="e">世界遺産</span>',
   k_tag:'<ruby>抜き型<rt>ぬきがた</rt></ruby>で ピースを ぬいて よせて、<br>こわれた 文化財を もとの すがたに 修復しよう！',
@@ -424,7 +424,7 @@ Object.assign(I18N.ja,{
   k_err_out:'⚠ 抜き型が ボードに まったく かさなって いないよ（赤い わくの ブロック）。'
 });
 Object.assign(I18N.en,{
-  game_en:'36th: En-Musubi', game_kata:'35th: Revive the World Heritage',
+  game_en:'36th: エ。ー縁結びの誘導についてー', game_kata:'35th: Revive the World Heritage',
   k_badge:'Try the 35th KOSEN PROCON Competition Section',
   k_logo:'Revive the<br><span class="e">World Heritage</span>',
   k_tag:'Cut out pieces with dies, slide them,<br>and restore the damaged treasure!',
@@ -488,7 +488,7 @@ Object.assign(I18N.en,{
   k_err_out:'⚠ The die does not overlap the board at all (block with the red frame).'
 });
 Object.assign(I18N.vi,{
-  game_en:'Lần 36: En-Musubi', game_kata:'Lần 35: Hồi sinh Di sản Thế giới',
+  game_en:'Lần 36: エ。ー縁結びの誘導についてー', game_kata:'Lần 35: Hồi sinh Di sản Thế giới',
   k_badge:'Trải nghiệm phần thi Thi đấu PROCON KOSEN lần 35',
   k_logo:'Hồi sinh<br><span class="e">Di sản Thế giới</span>',
   k_tag:'Dùng khuôn cắt để lấy các mảnh ra, dồn chúng lại<br>và phục hồi di sản bị hư hại!',
@@ -558,7 +558,7 @@ Object.assign(I18N.ja,{
   ab_lead:'小学生・中学生が、全国高等専門学校プログラミングコンテスト（高専プロコン）競技部門の ルールを、iPad などの Web ブラウザだけで 体験できる 教材の 試作版です。',
   ab_name_h:'名前', ab_name:'高専プロコン競技部門 体験',
   ab_ver_h:'バージョン', ab_games_h:'収録している 競技',
-  ab_games:'第36回（松江大会）「エ。― 縁結びの誘導について ―」（エンムスビ）<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
+  ab_games:'第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
   ab_for_h:'対象', ab_for:'小学生・中学生（先生・保護者と いっしょに）',
   ab_env_h:'動作環境', ab_env:'iPad などの タブレット、パソコンの Web ブラウザ。HTML 1ファイルで動き、サーバーは 不要です（文字の フォントだけ インターネットから 読みこみます）。',
   ab_lang_h:'ことば',
@@ -573,7 +573,7 @@ Object.assign(I18N.en,{
   ab_lead:'A prototype learning tool that lets elementary and junior high school students try the rules of the Competition Section of the National KOSEN Programming Contest (PROCON) using only a web browser on an iPad or similar device.',
   ab_name_h:'Name', ab_name:'KOSEN PROCON Competition Experience',
   ab_ver_h:'Version', ab_games_h:'Contests included',
-  ab_games:'36th (Matsue): “E. — Guiding the Knots of Fate —” (En-Musubi)<br>35th (Nara): “Revive the World Heritage”',
+  ab_games:'36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
   ab_for_h:'For', ab_for:'Elementary and junior high school students (with teachers or parents)',
   ab_env_h:'Runs on', ab_env:'Web browsers on tablets such as the iPad, and on computers. It is a single HTML file and needs no server (only the font is loaded from the internet).',
   ab_lang_h:'Languages',
@@ -588,7 +588,7 @@ Object.assign(I18N.vi,{
   ab_lead:'Bản thử nghiệm của một công cụ học tập giúp học sinh tiểu học và trung học cơ sở trải nghiệm luật phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON) chỉ bằng trình duyệt web trên iPad hoặc thiết bị tương tự.',
   ab_name_h:'Tên', ab_name:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   ab_ver_h:'Phiên bản', ab_games_h:'Các phần thi',
-  ab_games:'Lần 36 (Matsue): “E. — Dẫn dắt mối duyên —” (En-Musubi)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
+  ab_games:'Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
   ab_for_h:'Đối tượng', ab_for:'Học sinh tiểu học và trung học cơ sở (cùng giáo viên hoặc phụ huynh)',
   ab_env_h:'Môi trường', ab_env:'Trình duyệt web trên máy tính bảng như iPad và trên máy tính. Ứng dụng là một tệp HTML duy nhất, không cần máy chủ (chỉ phông chữ được tải từ internet).',
   ab_lang_h:'Ngôn ngữ',

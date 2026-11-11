@@ -5,7 +5,7 @@ head='''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>エンムスビ体験 ― 高専プロコン競技部門をあそんでみよう</title>
+<title>高専プロコン競技部門 体験</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+Thai:wght@500;700;800&display=swap" rel="stylesheet">
 <script>try{var s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}');if(s.theme)document.documentElement.dataset.theme=s.theme;}catch(e){}</script>

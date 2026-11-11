@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>エンムスビ体験 ― 高専プロコン競技部門をあそんでみよう</title>
+<title>高専プロコン競技部門 体験</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+Thai:wght@500;700;800&display=swap" rel="stylesheet">
 <script>try{var s=JSON.parse(localStorage.getItem('enmusubi-settings')||'{}');if(s.theme)document.documentElement.dataset.theme=s.theme;}catch(e){}</script>
@@ -46,6 +46,8 @@ button{font-family:inherit;cursor:pointer;border:none}
 .badge{font-size:14px;letter-spacing:.1em;color:var(--sub);background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:6px 14px}
 .logo{font-size:clamp(44px,9vw,84px);font-weight:800;letter-spacing:.04em;margin:0;line-height:1.1}
 .logo .e{color:var(--shu)}
+.logo .sub{display:block;font-size:.34em;letter-spacing:.02em;margin-top:.15em;color:var(--ink)}
+.logo .sub .orig{font-size:.62em;color:var(--sub);font-weight:700}
 .tag{font-size:clamp(16px,2.4vw,20px);color:var(--sub);margin:0;line-height:1.7}
 .knot{width:120px;height:72px}
 .menu{display:grid;grid-template-columns:repeat(4,minmax(0,210px));gap:14px;margin-top:10px}
@@ -597,15 +599,15 @@ html[data-theme=eye] .blk.k-act{--bc:#a86c55} html[data-theme=eye] .blk.k-ctrl{-
 /* ============ ことば（日本語・English・Tiếng Việt） ============ */
 const I18N={
 ja:{
-  doc_title:'エンムスビ体験 ― 高専プロコン競技部門をあそんでみよう',
+  doc_title:'高専プロコン競技部門 体験 ― 第36回「エ。ー縁結びの誘導についてー」・第35回「シン・よみがえれ世界遺産」',
   gear:'⚙ 設定',
   badge:'高専プロコン 競技部門を たいけんしよう',
-  logo:'<span class="e">エ</span>ンムスビ',
+  logo:'<span class="e">エ</span>。<span class="sub">ー縁結びの誘導についてー</span>',
   tag:'おなじ数字を となりどうしに。<br><ruby>園<rt>えん</rt></ruby>を まわして「<ruby>縁<rt>えん</rt></ruby>」を むすぼう！',
   m_rules_b:'ルールを知る', m_rules_s:'5まいのスライドで<br>あそびかたを おぼえよう',
   m_solo_b:'ひとりであそぶ', m_solo_s:'じぶんのペースで<br>ペアを つくろう',
   m_robot_b:'ロボットとしょうぶ', m_robot_s:'おなじ問題で<br>プログラムと たいけつ',
-  foot:'第36回 全国高専プログラミングコンテスト 競技部門「エ。― 縁結びの誘導について ―」のルールをもとにした体験用モックです。',
+  foot:'第36回 全国高専プログラミングコンテスト 競技部門「エ。ー縁結びの誘導についてー」のルールをもとにした体験用モックです。',
   back:'← もどる', quit:'← やめる',
   rules_title:'ルールを知ろう',
   r0_h:'① <em>フィールド</em>と<em>エンティティ</em>',
@@ -686,10 +688,10 @@ ja:{
   close:'とじる'
 },
 en:{
-  doc_title:'EnMusubi — Try the KOSEN PROCON Competition',
+  doc_title:'KOSEN PROCON Competition Experience — 36th “エ。ー縁結びの誘導についてー” and 35th “Revive the World Heritage”',
   gear:'⚙ Settings',
   badge:'Try the KOSEN PROCON Competition Section',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— Guiding the Knots of Fate —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Bring matching numbers side by side.<br>Spin the <b>En</b> (garden) to tie their knot of fate!',
   m_rules_b:'Learn the Rules', m_rules_s:'Learn how to play<br>in 5 slides',
   m_solo_b:'Play Solo', m_solo_s:'Make pairs<br>at your own pace',
@@ -775,10 +777,10 @@ en:{
   close:'Close'
 },
 vi:{
-  doc_title:'En-Musubi — Trải nghiệm phần thi Thi đấu của PROCON KOSEN',
+  doc_title:'Trải nghiệm phần thi PROCON KOSEN — Lần 36 “エ。ー縁結びの誘導についてー” và Lần 35 “Hồi sinh Di sản Thế giới”',
   gear:'⚙ Cài đặt',
   badge:'Trải nghiệm phần thi Thi đấu của PROCON KOSEN',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— Dẫn dắt mối duyên —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Đưa các số giống nhau lại cạnh nhau.<br>Xoay <b>En</b> (khu vườn) để se duyên cho chúng!',
   m_rules_b:'Tìm hiểu luật chơi', m_rules_s:'Học cách chơi<br>qua 5 trang',
   m_solo_b:'Chơi một mình', m_solo_s:'Tạo cặp<br>theo tốc độ của bạn',
@@ -956,7 +958,7 @@ Object.assign(I18N.vi,{
 });
 // ---- 第35回「シン・よみがえれ世界遺産」
 Object.assign(I18N.ja,{
-  game_en:'第36回 エンムスビ', game_kata:'第35回 シン・よみがえれ世界遺産',
+  game_en:'第36回 エ。ー縁結びの誘導についてー', game_kata:'第35回 シン・よみがえれ世界遺産',
   k_badge:'高専プロコン 第35回 競技部門を たいけんしよう',
   k_logo:'シン・よみがえれ<br><span class="e">世界遺産</span>',
   k_tag:'<ruby>抜き型<rt>ぬきがた</rt></ruby>で ピースを ぬいて よせて、<br>こわれた 文化財を もとの すがたに 修復しよう！',
@@ -1020,7 +1022,7 @@ Object.assign(I18N.ja,{
   k_err_out:'⚠ 抜き型が ボードに まったく かさなって いないよ（赤い わくの ブロック）。'
 });
 Object.assign(I18N.en,{
-  game_en:'36th: En-Musubi', game_kata:'35th: Revive the World Heritage',
+  game_en:'36th: エ。ー縁結びの誘導についてー', game_kata:'35th: Revive the World Heritage',
   k_badge:'Try the 35th KOSEN PROCON Competition Section',
   k_logo:'Revive the<br><span class="e">World Heritage</span>',
   k_tag:'Cut out pieces with dies, slide them,<br>and restore the damaged treasure!',
@@ -1084,7 +1086,7 @@ Object.assign(I18N.en,{
   k_err_out:'⚠ The die does not overlap the board at all (block with the red frame).'
 });
 Object.assign(I18N.vi,{
-  game_en:'Lần 36: En-Musubi', game_kata:'Lần 35: Hồi sinh Di sản Thế giới',
+  game_en:'Lần 36: エ。ー縁結びの誘導についてー', game_kata:'Lần 35: Hồi sinh Di sản Thế giới',
   k_badge:'Trải nghiệm phần thi Thi đấu PROCON KOSEN lần 35',
   k_logo:'Hồi sinh<br><span class="e">Di sản Thế giới</span>',
   k_tag:'Dùng khuôn cắt để lấy các mảnh ra, dồn chúng lại<br>và phục hồi di sản bị hư hại!',
@@ -1154,7 +1156,7 @@ Object.assign(I18N.ja,{
   ab_lead:'小学生・中学生が、全国高等専門学校プログラミングコンテスト（高専プロコン）競技部門の ルールを、iPad などの Web ブラウザだけで 体験できる 教材の 試作版です。',
   ab_name_h:'名前', ab_name:'高専プロコン競技部門 体験',
   ab_ver_h:'バージョン', ab_games_h:'収録している 競技',
-  ab_games:'第36回（松江大会）「エ。― 縁結びの誘導について ―」（エンムスビ）<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
+  ab_games:'第36回（松江大会）「エ。ー縁結びの誘導についてー」<br>第35回（奈良大会）「シン・よみがえれ世界遺産」',
   ab_for_h:'対象', ab_for:'小学生・中学生（先生・保護者と いっしょに）',
   ab_env_h:'動作環境', ab_env:'iPad などの タブレット、パソコンの Web ブラウザ。HTML 1ファイルで動き、サーバーは 不要です（文字の フォントだけ インターネットから 読みこみます）。',
   ab_lang_h:'ことば',
@@ -1169,7 +1171,7 @@ Object.assign(I18N.en,{
   ab_lead:'A prototype learning tool that lets elementary and junior high school students try the rules of the Competition Section of the National KOSEN Programming Contest (PROCON) using only a web browser on an iPad or similar device.',
   ab_name_h:'Name', ab_name:'KOSEN PROCON Competition Experience',
   ab_ver_h:'Version', ab_games_h:'Contests included',
-  ab_games:'36th (Matsue): “E. — Guiding the Knots of Fate —” (En-Musubi)<br>35th (Nara): “Revive the World Heritage”',
+  ab_games:'36th (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Guiding the Knots of Fate —”)<br>35th (Nara): “Revive the World Heritage”',
   ab_for_h:'For', ab_for:'Elementary and junior high school students (with teachers or parents)',
   ab_env_h:'Runs on', ab_env:'Web browsers on tablets such as the iPad, and on computers. It is a single HTML file and needs no server (only the font is loaded from the internet).',
   ab_lang_h:'Languages',
@@ -1184,7 +1186,7 @@ Object.assign(I18N.vi,{
   ab_lead:'Bản thử nghiệm của một công cụ học tập giúp học sinh tiểu học và trung học cơ sở trải nghiệm luật phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc (PROCON) chỉ bằng trình duyệt web trên iPad hoặc thiết bị tương tự.',
   ab_name_h:'Tên', ab_name:'Trải nghiệm phần thi Thi đấu PROCON KOSEN',
   ab_ver_h:'Phiên bản', ab_games_h:'Các phần thi',
-  ab_games:'Lần 36 (Matsue): “E. — Dẫn dắt mối duyên —” (En-Musubi)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
+  ab_games:'Lần 36 (Matsue): “エ。ー縁結びの誘導についてー” (“E. — Dẫn dắt mối duyên —”)<br>Lần 35 (Nara): “Hồi sinh Di sản Thế giới”',
   ab_for_h:'Đối tượng', ab_for:'Học sinh tiểu học và trung học cơ sở (cùng giáo viên hoặc phụ huynh)',
   ab_env_h:'Môi trường', ab_env:'Trình duyệt web trên máy tính bảng như iPad và trên máy tính. Ứng dụng là một tệp HTML duy nhất, không cần máy chủ (chỉ phông chữ được tải từ internet).',
   ab_lang_h:'Ngôn ngữ',
@@ -1196,10 +1198,10 @@ Object.assign(I18N.vi,{
 
 // ---- ภาษาไทย
 I18N.th={
-  doc_title:'เอ็นมุสุบิ — ลองเล่นการแข่งขันโปรคอนโคเซ็น',
+  doc_title:'ลองเล่นการแข่งขันโปรคอนโคเซ็น — ครั้งที่ 36 “エ。ー縁結びの誘導についてー” และครั้งที่ 35 “ฟื้นคืนมรดกโลก”',
   gear:'⚙ ตั้งค่า',
   badge:'มาลองเล่นประเภทการแข่งขันของโปรคอนโคเซ็นกันเถอะ',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— การนำทางสายสัมพันธ์ —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'พาตัวเลขที่เหมือนกันมาอยู่ติดกัน<br>หมุน <b>เอ็น</b> (สวน) เพื่อผูกสายสัมพันธ์ให้พวกมัน!',
   m_rules_b:'เรียนรู้กติกา', m_rules_s:'เรียนวิธีเล่น<br>จาก 5 สไลด์',
   m_solo_b:'เล่นคนเดียว', m_solo_s:'จับคู่<br>ตามจังหวะของตัวเอง',
@@ -1306,7 +1308,7 @@ I18N.th={
   empty_err:'โปรแกรมยังว่างอยู่ ลองเพิ่มบล็อกจากด้านซ้าย',
   code_you:'🧱 โปรแกรมของคุณ', code_json:'📄 คำตอบของโปรแกรมนี้ (JSON)',
   th_cud:'ช่วยการมองเห็นสี', th_cud_s:'8 สีที่แยกง่าย พร้อมสัญลักษณ์รูปทรง — ไม่ได้พึ่งสีอย่างเดียว',
-  game_en:'ครั้งที่ 36: เอ็นมุสุบิ', game_kata:'ครั้งที่ 35: ฟื้นคืนมรดกโลก',
+  game_en:'ครั้งที่ 36: エ。ー縁結びの誘導についてー', game_kata:'ครั้งที่ 35: ฟื้นคืนมรดกโลก',
   k_badge:'มาลองเล่นประเภทการแข่งขันของโปรคอนโคเซ็น ครั้งที่ 35',
   k_logo:'ฟื้นคืน<br><span class="e">มรดกโลก</span>',
   k_tag:'ใช้แม่พิมพ์ตัดชิ้นออก แล้วเลื่อนชิ้นส่วน<br>เพื่อบูรณะโบราณวัตถุที่เสียหาย!',
@@ -1373,7 +1375,7 @@ I18N.th={
   ab_lead:'สื่อการเรียนรู้รุ่นทดลองที่ให้นักเรียนประถมและมัธยมต้นได้ลองเล่นกติกาประเภทการแข่งขันของการแข่งขันเขียนโปรแกรมโคเซ็นแห่งชาติญี่ปุ่น (โปรคอน) โดยใช้เพียงเว็บเบราว์เซอร์บน iPad หรืออุปกรณ์ที่คล้ายกัน',
   ab_name_h:'ชื่อ', ab_name:'ลองเล่นประเภทการแข่งขันโปรคอนโคเซ็น',
   ab_ver_h:'เวอร์ชัน', ab_games_h:'การแข่งขันที่มีในแอป',
-  ab_games:'ครั้งที่ 36 (มัตสึเอะ): “E. — การนำทางสายสัมพันธ์ —” (เอ็นมุสุบิ)<br>ครั้งที่ 35 (นารา): “ฟื้นคืนมรดกโลก”',
+  ab_games:'ครั้งที่ 36 (มัตสึเอะ): “エ。ー縁結びの誘導についてー” (“E. — การนำทางสายสัมพันธ์ —”)<br>ครั้งที่ 35 (นารา): “ฟื้นคืนมรดกโลก”',
   ab_for_h:'กลุ่มเป้าหมาย', ab_for:'นักเรียนประถมและมัธยมต้น (ร่วมกับครูหรือผู้ปกครอง)',
   ab_env_h:'ใช้งานบน', ab_env:'เว็บเบราว์เซอร์บนแท็บเล็ตอย่าง iPad และคอมพิวเตอร์ เป็นไฟล์ HTML ไฟล์เดียว ไม่ต้องใช้เซิร์ฟเวอร์ (โหลดเฉพาะฟอนต์จากอินเทอร์เน็ต)',
   ab_lang_h:'ภาษา',
@@ -1385,10 +1387,10 @@ I18N.th={
 
 // ---- Монгол хэл
 I18N.mn={
-  doc_title:'Эн-Мусуби — Косэн Прокон тэмцээнийг туршиж үзье',
+  doc_title:'Косэн Проконы тэмцээний туршлага — 36 дахь “エ。ー縁結びの誘導についてー”, 35 дахь “Дэлхийн өвийг сэргээ”',
   gear:'⚙ Тохиргоо',
   badge:'Косэн Проконы тэмцээний төрлийг туршиж үзье',
-  logo:'<span class="e">E</span>n-Musubi',
+  logo:'<span class="e">エ</span>。<span class="sub">— Хувь заяаны зангилааг чиглүүлэх —<br><span class="orig">「エ。ー縁結びの誘導についてー」</span></span>',
   tag:'Ижил тоонуудыг хажуу хажууд нь авчир.<br><b>Эн</b>-ийг (цэцэрлэг) эргүүлж, тэдний хувь заяаны зангилааг холбоорой!',
   m_rules_b:'Дүрэм судлах', m_rules_s:'5 слайдаар<br>тоглох аргыг сурна',
   m_solo_b:'Ганцаараа тоглох', m_solo_s:'Өөрийн хурдаар<br>хос үүсгэ',
@@ -1495,7 +1497,7 @@ I18N.mn={
   empty_err:'Програм хоосон байна. Зүүн талаас блок нэмээрэй.',
   code_you:'🧱 Таны програм', code_json:'📄 Энэ програмын хариулт (JSON)',
   th_cud:'Өнгө ялгалтын дэмжлэг', th_cud_s:'Ялгахад амар 8 өнгө ба хэлбэрийн тэмдэг — зөвхөн өнгөнд найдахгүй',
-  game_en:'36 дахь: Эн-Мусуби', game_kata:'35 дахь: Дэлхийн өвийг сэргээ',
+  game_en:'36 дахь: エ。ー縁結びの誘導についてー', game_kata:'35 дахь: Дэлхийн өвийг сэргээ',
   k_badge:'Косэн Проконы 35 дахь тэмцээний төрлийг туршиж үзье',
   k_logo:'Сэргээ<br><span class="e">Дэлхийн өв</span>',
   k_tag:'Хэвээр хэсгүүдийг огтлон авч, шилжүүлээд<br>гэмтсэн өвийг сэргээгээрэй!',
@@ -1562,7 +1564,7 @@ I18N.mn={
   ab_lead:'Бага болон дунд ангийн сурагчид Японы Үндэсний Косэн Програмчлалын тэмцээний (Прокон) тэмцээний төрлийн дүрмийг iPad зэрэг төхөөрөмжийн вэб хөтчөөр л туршиж үзэх боломжтой сургалтын хэрэгслийн туршилтын хувилбар.',
   ab_name_h:'Нэр', ab_name:'Косэн Проконы тэмцээний туршлага',
   ab_ver_h:'Хувилбар', ab_games_h:'Багтсан тэмцээнүүд',
-  ab_games:'36 дахь (Мацүэ): “E. — Хувь заяаны зангилааг чиглүүлэх —” (Эн-Мусуби)<br>35 дахь (Нара): “Дэлхийн өвийг сэргээ”',
+  ab_games:'36 дахь (Мацүэ): “エ。ー縁結びの誘導についてー” (“E. — Хувь заяаны зангилааг чиглүүлэх —”)<br>35 дахь (Нара): “Дэлхийн өвийг сэргээ”',
   ab_for_h:'Хэнд зориулсан', ab_for:'Бага болон дунд ангийн сурагчид (багш эсвэл эцэг эхийн хамт)',
   ab_env_h:'Ажиллах орчин', ab_env:'iPad зэрэг таблет болон компьютерийн вэб хөтөч. Нэг HTML файл бөгөөд сервер шаардлагагүй (зөвхөн фонтыг интернэтээс ачаална).',
   ab_lang_h:'Хэлнүүд',
@@ -1906,7 +1908,7 @@ function setupTitles(){
   const s=t(mode==='robot'?'robot_title':'solo_title');
   $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s;
 }
-/* ---- 2つの 競技（第36回 エンムスビ／第35回 シン・よみがえれ世界遺産） ---- */
+/* ---- 2つの 競技（第36回「エ。ー縁結びの誘導についてー」／第35回「シン・よみがえれ世界遺産」） ---- */
 const GAMEPAL=()=>[0,1,2,3,1,2,3,0,2,3,0,1,3,0,1,2].map(v=>kColor(v,SETTINGS.theme));
 function renderHome(){
   const k=SETTINGS.game==='kata';
@@ -1986,8 +1988,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.1', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.1',items:{ja:['第36回のタイトルを大会テーマ「エ。ー縁結びの誘導についてー」に変更'],en:['Renamed the 36th contest to its official theme “エ。ー縁結びの誘導についてー”'],vi:['Đổi tên phần thi lần 36 theo chủ đề chính thức “エ。ー縁結びの誘導についてー”'],
+    th:['เปลี่ยนชื่อการแข่งขันครั้งที่ 36 เป็นธีมทางการ “エ。ー縁結びの誘導についてー”'],mn:['36 дахь тэмцээний нэрийг албан ёсны сэдэв “エ。ー縁結びの誘導についてー” болгон өөрчилсөн']}},
   {v:'0.9',items:{ja:['タイ語・モンゴル語に対応（5言語に）','タイ語用のフォント（Noto Sans Thai）を追加'],en:['Added Thai and Mongolian (now 5 languages)','Added a Thai font (Noto Sans Thai)'],vi:['Hỗ trợ tiếng Thái và tiếng Mông Cổ (nay có 5 ngôn ngữ)','Thêm phông chữ tiếng Thái (Noto Sans Thai)'],
     th:['รองรับภาษาไทยและภาษามองโกเลีย (รวม 5 ภาษา)','เพิ่มฟอนต์ภาษาไทย (Noto Sans Thai)'],mn:['Тай болон монгол хэл нэмсэн (одоо 5 хэл)','Тай хэлний фонт (Noto Sans Thai) нэмсэн']}},
   {v:'0.8',items:{th:["เพิ่ม “บันทึกการเปลี่ยนแปลง” และ “เกี่ยวกับแอปนี้” ในการตั้งค่า"],mn:["Тохиргоонд “Шинэчлэлийн тэмдэглэл” ба “Энэ апп-ын тухай”-г нэмсэн"],ja:['設定に「リリースノート」と「このアプリについて」を追加'],en:['Added “Release notes” and “About this app” to Settings'],vi:['Thêm “Ghi chú phát hành” và “Giới thiệu ứng dụng” vào Cài đặt']}},
@@ -2001,7 +2005,7 @@ const RELEASES=[
   {v:'0.4',items:{th:["เพิ่มการตั้งค่า (มาตรฐาน โหมดกลางคืน ถนอมสายตา)", "รองรับภาษาอังกฤษและภาษาเวียดนาม"],mn:["Тохиргоо нэмсэн (энгийн, шөнийн горим, нүдэнд ээлтэй)", "Англи, вьетнам хэл нэмсэн"],ja:['設定メニューを追加（ふつう・ナイトモード・目にやさしい）','英語・ベトナム語に対応'],en:['Added Settings (Standard, Night mode, Eye-friendly)','Added English and Vietnamese'],vi:['Thêm Cài đặt (Tiêu chuẩn, Ban đêm, Dịu mắt)','Hỗ trợ tiếng Anh và tiếng Việt']}},
   {v:'0.3',items:{th:["คำตอบตัวอย่างใช้จำนวนครั้งน้อยลงประมาณ 30%", "ดูคำตอบของหุ่นยนต์ย้อนหลังได้หลังการประลอง"],mn:["Жишээ хариулт ойролцоогоор 30% цөөн алхам хэрэглэдэг болсон", "Өрсөлдөөний дараа роботын хариултыг дахин үзэх боломжтой"],ja:['模範回答の手数を約3割へらした','ロボット対戦のあと、ロボットの回答を再生できるように'],en:['Model answers now use about 30% fewer moves','Replay the robot’s answer after a battle'],vi:['Đáp án mẫu dùng ít lượt hơn khoảng 30%','Xem lại đáp án của rô-bốt sau trận đấu']}},
   {v:'0.2',items:{th:["คำตอบตัวอย่างเล่นอัตโนมัติเมื่อหมดเวลา"],mn:["Хугацаа дуусахад жишээ хариулт автоматаар тоглоно"],ja:['時間切れのとき、模範回答を自動で再生'],en:['Model answer plays automatically when time runs out'],vi:['Đáp án mẫu tự động phát khi hết giờ']}},
-  {v:'0.1',items:{th:["เวอร์ชันแรก: การแข่งขันครั้งที่ 36 “เอ็นมุสุบิ” — กติกา เล่นคนเดียว ประลองกับหุ่นยนต์"],mn:["Анхны хувилбар: 36 дахь тэмцээн “Эн-Мусуби” — дүрэм, ганцаараа тоглох, роботтой өрсөлдөх"],ja:['初版：第36回「エンムスビ」のルール説明・ひとりであそぶ・ロボットとしょうぶ'],en:['First version: 36th contest “En-Musubi” rules, solo play, robot battle'],vi:['Phiên bản đầu: phần thi lần 36 “En-Musubi” — luật chơi, chơi một mình, đấu rô-bốt']}}
+  {v:'0.1',items:{th:["เวอร์ชันแรก: การแข่งขันครั้งที่ 36 “エ。ー縁結びの誘導についてー” — กติกา เล่นคนเดียว ประลองกับหุ่นยนต์"],mn:["Анхны хувилбар: 36 дахь тэмцээн “エ。ー縁結びの誘導についてー” — дүрэм, ганцаараа тоглох, роботтой өрсөлдөх"],ja:['初版：第36回「エ。ー縁結びの誘導についてー」のルール説明・ひとりであそぶ・ロボットとしょうぶ'],en:['First version: 36th contest “エ。ー縁結びの誘導についてー” rules, solo play, robot battle'],vi:['Phiên bản đầu: phần thi lần 36 “エ。ー縁結びの誘導についてー” — luật chơi, chơi một mình, đấu rô-bốt']}}
 ];
 function showRelease(){
   $('infoBody').innerHTML=`<h3>${t('rel_title')}</h3>`+RELEASES.map((r,i)=>`<div class="rel${i===0?' new':''}"><span class="rv">${t('rel_ver',{v:r.v})}</span><span class="rd">${APP_DATE}</span>

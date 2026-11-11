@@ -13,7 +13,7 @@ function setupTitles(){
   const s=t(mode==='robot'?'robot_title':'solo_title');
   $('setupTitle').textContent=s; $('gameTitle').textContent=s; $('kgameTitle').textContent=s;
 }
-/* ---- 2つの 競技（第36回 エンムスビ／第35回 シン・よみがえれ世界遺産） ---- */
+/* ---- 2つの 競技（第36回「エ。ー縁結びの誘導についてー」／第35回「シン・よみがえれ世界遺産」） ---- */
 const GAMEPAL=()=>[0,1,2,3,1,2,3,0,2,3,0,1,3,0,1,2].map(v=>kColor(v,SETTINGS.theme));
 function renderHome(){
   const k=SETTINGS.game==='kata';
@@ -93,8 +93,10 @@ ${t('json_a')}
   relabelCode();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.1', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.1',items:{ja:['第36回のタイトルを大会テーマ「エ。ー縁結びの誘導についてー」に変更'],en:['Renamed the 36th contest to its official theme “エ。ー縁結びの誘導についてー”'],vi:['Đổi tên phần thi lần 36 theo chủ đề chính thức “エ。ー縁結びの誘導についてー”'],
+    th:['เปลี่ยนชื่อการแข่งขันครั้งที่ 36 เป็นธีมทางการ “エ。ー縁結びの誘導についてー”'],mn:['36 дахь тэмцээний нэрийг албан ёсны сэдэв “エ。ー縁結びの誘導についてー” болгон өөрчилсөн']}},
   {v:'0.9',items:{ja:['タイ語・モンゴル語に対応（5言語に）','タイ語用のフォント（Noto Sans Thai）を追加'],en:['Added Thai and Mongolian (now 5 languages)','Added a Thai font (Noto Sans Thai)'],vi:['Hỗ trợ tiếng Thái và tiếng Mông Cổ (nay có 5 ngôn ngữ)','Thêm phông chữ tiếng Thái (Noto Sans Thai)'],
     th:['รองรับภาษาไทยและภาษามองโกเลีย (รวม 5 ภาษา)','เพิ่มฟอนต์ภาษาไทย (Noto Sans Thai)'],mn:['Тай болон монгол хэл нэмсэн (одоо 5 хэл)','Тай хэлний фонт (Noto Sans Thai) нэмсэн']}},
   {v:'0.8',items:{th:["เพิ่ม “บันทึกการเปลี่ยนแปลง” และ “เกี่ยวกับแอปนี้” ในการตั้งค่า"],mn:["Тохиргоонд “Шинэчлэлийн тэмдэглэл” ба “Энэ апп-ын тухай”-г нэмсэн"],ja:['設定に「リリースノート」と「このアプリについて」を追加'],en:['Added “Release notes” and “About this app” to Settings'],vi:['Thêm “Ghi chú phát hành” và “Giới thiệu ứng dụng” vào Cài đặt']}},
@@ -108,7 +110,7 @@ const RELEASES=[
   {v:'0.4',items:{th:["เพิ่มการตั้งค่า (มาตรฐาน โหมดกลางคืน ถนอมสายตา)", "รองรับภาษาอังกฤษและภาษาเวียดนาม"],mn:["Тохиргоо нэмсэн (энгийн, шөнийн горим, нүдэнд ээлтэй)", "Англи, вьетнам хэл нэмсэн"],ja:['設定メニューを追加（ふつう・ナイトモード・目にやさしい）','英語・ベトナム語に対応'],en:['Added Settings (Standard, Night mode, Eye-friendly)','Added English and Vietnamese'],vi:['Thêm Cài đặt (Tiêu chuẩn, Ban đêm, Dịu mắt)','Hỗ trợ tiếng Anh và tiếng Việt']}},
   {v:'0.3',items:{th:["คำตอบตัวอย่างใช้จำนวนครั้งน้อยลงประมาณ 30%", "ดูคำตอบของหุ่นยนต์ย้อนหลังได้หลังการประลอง"],mn:["Жишээ хариулт ойролцоогоор 30% цөөн алхам хэрэглэдэг болсон", "Өрсөлдөөний дараа роботын хариултыг дахин үзэх боломжтой"],ja:['模範回答の手数を約3割へらした','ロボット対戦のあと、ロボットの回答を再生できるように'],en:['Model answers now use about 30% fewer moves','Replay the robot’s answer after a battle'],vi:['Đáp án mẫu dùng ít lượt hơn khoảng 30%','Xem lại đáp án của rô-bốt sau trận đấu']}},
   {v:'0.2',items:{th:["คำตอบตัวอย่างเล่นอัตโนมัติเมื่อหมดเวลา"],mn:["Хугацаа дуусахад жишээ хариулт автоматаар тоглоно"],ja:['時間切れのとき、模範回答を自動で再生'],en:['Model answer plays automatically when time runs out'],vi:['Đáp án mẫu tự động phát khi hết giờ']}},
-  {v:'0.1',items:{th:["เวอร์ชันแรก: การแข่งขันครั้งที่ 36 “เอ็นมุสุบิ” — กติกา เล่นคนเดียว ประลองกับหุ่นยนต์"],mn:["Анхны хувилбар: 36 дахь тэмцээн “Эн-Мусуби” — дүрэм, ганцаараа тоглох, роботтой өрсөлдөх"],ja:['初版：第36回「エンムスビ」のルール説明・ひとりであそぶ・ロボットとしょうぶ'],en:['First version: 36th contest “En-Musubi” rules, solo play, robot battle'],vi:['Phiên bản đầu: phần thi lần 36 “En-Musubi” — luật chơi, chơi một mình, đấu rô-bốt']}}
+  {v:'0.1',items:{th:["เวอร์ชันแรก: การแข่งขันครั้งที่ 36 “エ。ー縁結びの誘導についてー” — กติกา เล่นคนเดียว ประลองกับหุ่นยนต์"],mn:["Анхны хувилбар: 36 дахь тэмцээн “エ。ー縁結びの誘導についてー” — дүрэм, ганцаараа тоглох, роботтой өрсөлдөх"],ja:['初版：第36回「エ。ー縁結びの誘導についてー」のルール説明・ひとりであそぶ・ロボットとしょうぶ'],en:['First version: 36th contest “エ。ー縁結びの誘導についてー” rules, solo play, robot battle'],vi:['Phiên bản đầu: phần thi lần 36 “エ。ー縁結びの誘導についてー” — luật chơi, chơi một mình, đấu rô-bốt']}}
 ];
 function showRelease(){
   $('infoBody').innerHTML=`<h3>${t('rel_title')}</h3>`+RELEASES.map((r,i)=>`<div class="rel${i===0?' new':''}"><span class="rv">${t('rel_ver',{v:r.v})}</span><span class="rd">${APP_DATE}</span>
