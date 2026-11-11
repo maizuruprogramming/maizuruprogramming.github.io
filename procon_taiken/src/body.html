@@ -1,0 +1,284 @@
+<body>
+<button class="gear" id="gearBtn" data-i18n="gear"></button>
+
+<!-- ================= HOME ================= -->
+<section class="screen on" id="s-home">
+  <div class="home">
+    <div class="gsw" id="gameSw"><button data-g="en" data-i18n="game_en"></button><button data-g="kata" data-i18n="game_kata"></button></div>
+    <div class="badge" id="hBadge"></div>
+    <svg class="knot" id="logoEn" viewBox="0 0 120 72" aria-hidden="true">
+      <rect x="6" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="26" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
+      <rect x="74" y="14" width="40" height="40" rx="9" fill="var(--shu)"/><text x="94" y="43" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="inherit">3</text>
+      <path d="M46 34 C 58 10, 62 58, 74 34" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="klogo" id="logoKata" aria-hidden="true"></div>
+    <h1 class="logo" id="hLogo"></h1>
+    <p class="tag" id="hTag"></p>
+    <div class="menu">
+      <button class="card" data-go="rules"><div class="ic">📜</div><b data-i18n="m_rules_b"></b><span data-i18n="m_rules_s"></span></button>
+      <button class="card" data-go="setup-solo"><div class="ic">🧩</div><b data-i18n="m_solo_b"></b><span id="hSoloS"></span></button>
+      <button class="card" data-go="setup-robot"><div class="ic">🤖</div><b data-i18n="m_robot_b"></b><span data-i18n="m_robot_s"></span></button>
+      <button class="card" data-go="code"><div class="ic">🧱</div><b data-i18n="m_code_b"></b><span data-i18n="m_code_s"></span></button>
+    </div>
+    <div class="foot" id="hFoot"></div>
+  </div>
+</section>
+
+<!-- ================= RULES ================= -->
+<section class="screen" id="s-rules">
+  <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 data-i18n="rules_title"></h2></div>
+  <div class="rules">
+    <div class="slide" data-i="0">
+      <div>
+        <h3 data-i18n="r0_h"></h3>
+        <p data-i18n="r0_p1"></p>
+        <p data-i18n="r0_p2"></p>
+        <div class="note" data-i18n="r0_note"></div>
+      </div>
+      <div class="demo"><div id="demo0"></div></div>
+    </div>
+    <div class="slide" data-i="1">
+      <div>
+        <h3 data-i18n="r1_h"></h3>
+        <p data-i18n="r1_p1"></p>
+        <p data-i18n="r1_p2"></p>
+        <div class="note" data-i18n="r1_note"></div>
+      </div>
+      <div class="demo"><div id="demo1"></div></div>
+    </div>
+    <div class="slide" data-i="2">
+      <div>
+        <h3 data-i18n="r2_h"></h3>
+        <p data-i18n="r2_p1"></p>
+        <p data-i18n="r2_p2"></p>
+        <div class="note" data-i18n="r2_note"></div>
+      </div>
+      <div class="demo">
+        <div id="demo2"></div>
+        <div class="seg" id="demo2seg"><button data-n="2" class="on">2×2</button><button data-n="3">3×3</button><button data-n="4">4×4</button></div>
+        <div class="row" style="display:flex;gap:8px"><button class="btn main" id="demo2rot" data-i18n="rot_demo"></button><button class="btn sub" id="demo2reset" data-i18n="reset_demo"></button></div>
+      </div>
+    </div>
+    <div class="slide" data-i="3">
+      <div>
+        <h3 data-i18n="r3_h"></h3>
+        <p data-i18n="r3_p"></p>
+        <ol class="rank">
+          <li data-i18n="rank1"></li>
+          <li data-i18n="rank2"></li>
+          <li data-i18n="rank3"></li>
+        </ol>
+      </div>
+      <div class="demo">
+        <div class="facts" style="width:100%">
+          <div class="fact"><b data-i18n="f1b"></b><span data-i18n="f1s"></span></div>
+          <div class="fact"><b data-i18n="f2b"></b><span data-i18n="f2s"></span></div>
+          <div class="fact"><b data-i18n="f3b"></b><span data-i18n="f3s"></span></div>
+          <div class="fact"><b data-i18n="f4b"></b><span data-i18n="f4s"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide" data-i="4">
+      <div>
+        <h3 data-i18n="r4_h"></h3>
+        <p data-i18n="r4_p1"></p>
+        <p data-i18n="r4_p2"></p>
+        <div class="note" data-i18n="r4_note"></div>
+      </div>
+      <div class="demo" style="width:100%">
+        <pre class="json" id="rulesJson"></pre>
+        <button class="btn main" data-go="setup-solo" data-i18n="try_btn"></button>
+      </div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="nav"><button class="btn sub" id="prev" data-i18n="prev"></button><button class="btn main" id="next" data-i18n="next"></button></div>
+  </div>
+</section>
+
+<!-- ================= SETUP ================= -->
+<section class="screen" id="s-setup">
+  <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 id="setupTitle"></h2></div>
+  <div class="setup">
+    <div class="panel">
+      <h3 data-i18n="size_h"></h3>
+      <div class="seg" id="segSize"></div>
+      <p id="sizeP"></p>
+    </div>
+    <div class="panel">
+      <h3 data-i18n="time_h"></h3>
+      <div class="seg" id="segTime"><button data-v="0" class="on" data-i18n="time_none"></button><button data-v="180" data-i18n="time_3"></button><button data-v="300" data-i18n="time_5"></button></div>
+    </div>
+    <div class="panel" id="robotPanel" style="display:none">
+      <h3 data-i18n="bot_h"></h3>
+      <div class="seg" id="segBot"><button data-v="1" data-i18n="bot_1"></button><button data-v="2" class="on" data-i18n="bot_2"></button><button data-v="3" data-i18n="bot_3"></button></div>
+      <p id="botP"></p>
+    </div>
+    <div class="panel" id="problemPanel">
+      <h3 data-i18n="prob_h"></h3>
+      <div class="seg" id="segProb"></div>
+    </div>
+    <button class="btn main" style="width:100%;font-size:22px;padding:18px" id="startBtn" data-i18n="start"></button>
+  </div>
+</section>
+
+<!-- ================= GAME ================= -->
+<section class="screen" id="s-game">
+  <div class="bar"><button class="back" id="quitBtn" data-i18n="quit"></button><h2 id="gameTitle"></h2><div class="spacer"></div></div>
+  <div class="game">
+    <div><div id="gameBoard"></div></div>
+    <div class="panel ctl">
+      <div class="stats">
+        <div class="stat hi"><small data-i18n="st_pair"></small><b id="stPair">0</b></div>
+        <div class="stat"><small data-i18n="st_move"></small><b id="stMove">0</b></div>
+        <div class="stat"><small id="stTimeL"></small><b id="stTime">0:00</b></div>
+      </div>
+      <div style="font-size:13px;color:var(--sub)" id="pairOf"></div>
+      <div class="meter"><i id="meter"></i></div>
+      <h4 data-i18n="en_size"></h4>
+      <div class="seg" id="segN"></div>
+      <button class="btn main rotbtn" id="rotBtn" data-i18n="rotate"></button>
+      <div class="row" style="margin-top:10px">
+        <button class="btn sub" id="undoBtn" style="flex:1" data-i18n="undo"></button>
+        <button class="btn gold" id="submitBtn" style="flex:1" data-i18n="submit"></button>
+      </div>
+      <div class="robot-line" id="subInfo"></div>
+      <label class="toggle"><input type="checkbox" id="coordChk"> <span data-i18n="coord"></span></label>
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 第35回 RULES ================= -->
+<section class="screen" id="s-krules">
+  <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 data-i18n="rules_title"></h2></div>
+  <div class="rules">
+    <div class="slide" data-i="0">
+      <div><h3 data-i18n="k_r0_h"></h3><p data-i18n="k_r0_p1"></p><p data-i18n="k_r0_p2"></p><div class="note" data-i18n="k_r0_note"></div></div>
+      <div class="demo kpair"><div><small data-i18n="k_start"></small><div id="kdemo0a"></div></div><div class="karrow">→</div><div><small data-i18n="k_goal"></small><div id="kdemo0b"></div></div></div>
+    </div>
+    <div class="slide" data-i="1">
+      <div><h3 data-i18n="k_r1_h"></h3><p data-i18n="k_r1_p1"></p><p data-i18n="k_r1_p2"></p><div class="note" data-i18n="k_r1_note"></div></div>
+      <div class="demo"><div class="dcards" id="kdemo1"></div></div>
+    </div>
+    <div class="slide" data-i="2">
+      <div><h3 data-i18n="k_r2_h"></h3><p data-i18n="k_r2_p1"></p><p data-i18n="k_r2_p2"></p><div class="note" data-i18n="k_r2_note"></div></div>
+      <div class="demo"><div id="kdemo2" style="padding-top:26px"></div>
+        <div class="kdir" id="kdemo2dir"><button class="btn main" data-s="0" data-i18n="k_d0"></button><button class="btn main" data-s="2" data-i18n="k_d2"></button><button class="btn main" data-s="3" data-i18n="k_d3"></button><button class="btn main" data-s="1" data-i18n="k_d1"></button></div>
+        <button class="btn sub" id="kdemo2reset" data-i18n="reset_demo"></button></div>
+    </div>
+    <div class="slide" data-i="3">
+      <div><h3 data-i18n="r3_h"></h3><p data-i18n="r3_p"></p>
+        <ol class="rank"><li data-i18n="k_rank1"></li><li data-i18n="k_rank2"></li><li data-i18n="rank3"></li></ol></div>
+      <div class="demo"><div class="facts" style="width:100%">
+        <div class="fact"><b data-i18n="k_f1b"></b><span data-i18n="k_f1s"></span></div>
+        <div class="fact"><b data-i18n="k_f2b"></b><span data-i18n="k_f2s"></span></div>
+        <div class="fact"><b data-i18n="k_f3b"></b><span data-i18n="k_f3s"></span></div>
+        <div class="fact"><b data-i18n="f2b"></b><span data-i18n="f2s"></span></div></div></div>
+    </div>
+    <div class="slide" data-i="4">
+      <div><h3 data-i18n="r4_h"></h3><p data-i18n="r4_p1"></p><p data-i18n="k_r4_p2"></p><div class="note" data-i18n="k_r4_note"></div></div>
+      <div class="demo" style="width:100%"><pre class="json" id="krulesJson"></pre><button class="btn main" data-go="setup-solo" data-i18n="try_btn"></button></div>
+    </div>
+    <div class="dots" id="kdots"></div>
+    <div class="nav"><button class="btn sub" id="kprev" data-i18n="prev"></button><button class="btn main" id="knext" data-i18n="next"></button></div>
+  </div>
+</section>
+
+<!-- ================= 第35回 GAME ================= -->
+<section class="screen" id="s-kgame">
+  <div class="bar"><button class="back" id="kQuit" data-i18n="quit"></button><h2 id="kgameTitle"></h2><div class="spacer"></div></div>
+  <div class="game kgame">
+    <div><div id="kBoard" style="padding-top:26px;display:flex;justify-content:center"></div></div>
+    <div class="panel ctl kctl"><div class="kc1">
+      <div class="stats">
+        <div class="stat hi"><small data-i18n="k_st_miss"></small><b id="kMiss">0</b></div>
+        <div class="stat"><small data-i18n="st_move"></small><b id="kMove">0</b></div>
+        <div class="stat"><small id="kTimeL"></small><b id="kTime">0:00</b></div>
+      </div>
+      <div style="font-size:13px;color:var(--sub)" id="kMatchOf"></div>
+      <div class="meter"><i id="kMeter"></i></div>
+      <div class="kgoalrow"><div><small data-i18n="k_goal"></small><div id="kGoal"></div></div></div>
+      <div class="hint" id="kHint"></div>
+      </div><div class="kc2">
+      <h4 data-i18n="k_die_h"></h4>
+      <div class="kdies" id="kDies"></div>
+      <div class="kdiename"><b id="kDieName"></b>　<span id="kPosTxt"></span></div>
+      <h4 data-i18n="k_dir_h"></h4>
+      <div class="kdir" id="kDir"><button class="btn main" data-s="0" data-i18n="k_d0"></button><button class="btn main" data-s="2" data-i18n="k_d2"></button><button class="btn main" data-s="3" data-i18n="k_d3"></button><button class="btn main" data-s="1" data-i18n="k_d1"></button></div>
+      <div class="row" style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn sub" id="kUndo" style="flex:1" data-i18n="undo"></button>
+        <button class="btn gold" id="kSubmit" style="flex:1" data-i18n="submit"></button>
+      </div>
+      <div class="robot-line" id="kSubInfo"></div>
+      <label class="toggle"><input type="checkbox" id="kMissChk" checked> <span data-i18n="k_miss_toggle"></span></label>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= CODE（ブロック） ================= -->
+<section class="screen wide" id="s-code">
+  <div class="bar"><button class="back" data-go="home" data-i18n="back"></button><h2 data-i18n="code_title"></h2></div>
+  <div class="code">
+    <div class="panel pal"><h4 data-i18n="pal_h"></h4><div id="palette"></div></div>
+    <div class="panel progp">
+      <div class="ptop"><h4 data-i18n="prog_h"></h4><div class="spacer"></div>
+        <select id="codeSample" class="smp"></select>
+        <button class="btn sub mini" id="codeClear" data-i18n="clear"></button></div>
+      <p class="ptip" data-i18n="prog_hint"></p>
+      <div id="prog"></div>
+    </div>
+    <div class="panel runp">
+      <h4 data-i18n="run_h"></h4>
+      <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="seg" id="codeSize"><button data-v="4">4×4</button><button data-v="6" class="on">6×6</button><button data-v="8">8×8</button></div>
+        <button class="btn sub mini" id="codeNew" data-i18n="newprob"></button>
+      </div>
+      <div id="codeBoardWrap" style="padding-top:28px"><div id="codeBoard" style="display:flex;justify-content:center"></div></div>
+      <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn main" id="codeRun" style="flex:1" data-i18n="run"></button>
+        <button class="btn sub" id="codeFast" style="flex:1" data-i18n="run_fast"></button>
+      </div>
+      <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center">
+        <button class="btn sub mini" id="codeStopBtn" data-i18n="stop_run"></button>
+        <button class="btn sub mini" id="codeReset" data-i18n="reset_board"></button>
+        <div class="seg" id="codeSpeed"><button data-v="slow" data-i18n="p_slow"></button><button data-v="mid" class="on" data-i18n="p_mid"></button><button data-v="fast" data-i18n="p_fast"></button></div>
+      </div>
+      <div class="hint" id="codeStatus"></div>
+      <div id="codeResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SETTINGS ================= -->
+<div class="modal" id="settings"><div class="box set">
+  <h3 data-i18n="set_title"></h3>
+  <h4 data-i18n="set_theme"></h4>
+  <div class="themes">
+    <button class="th" data-theme="normal"><div class="sw" style="background:#fbf6ee"><i style="background:hsl(20 55% 42%)"></i><i style="background:hsl(157 55% 49%)"></i><i style="background:hsl(275 55% 56%)"></i></div><b data-i18n="th_normal"></b><span data-i18n="th_normal_s"></span></button>
+    <button class="th" data-theme="night"><div class="sw" style="background:#15171c"><i style="background:hsl(20 42% 34%)"></i><i style="background:hsl(157 42% 40%)"></i><i style="background:hsl(275 42% 46%)"></i></div><b data-i18n="th_night"></b><span data-i18n="th_night_s"></span></button>
+    <button class="th" data-theme="eye"><div class="sw" style="background:#efe6d2"><i style="background:hsl(20 26% 44%)"></i><i style="background:hsl(157 26% 49%)"></i><i style="background:hsl(275 26% 54%)"></i></div><b data-i18n="th_eye"></b><span data-i18n="th_eye_s"></span></button>
+    <button class="th" data-theme="cud"><div class="sw" style="background:#ffffff"><i style="background:#E69F00"></i><i style="background:#56B4E9"></i><i style="background:#009E73"></i><i style="background:#0072B2"></i></div><b data-i18n="th_cud"></b><span data-i18n="th_cud_s"></span></button>
+  </div>
+  <h4 data-i18n="set_lang"></h4>
+  <div class="langs">
+    <button data-lang="ja">日本語</button>
+    <button data-lang="en">English</button>
+    <button data-lang="vi">Tiếng Việt</button>
+    <button data-lang="th">ไทย</button>
+    <button data-lang="mn">Монгол</button>
+  </div>
+  <p class="why" style="margin-top:16px" data-i18n="set_note"></p>
+  <h4 data-i18n="info_h"></h4>
+  <div class="infobtns"><button class="btn sub" id="relBtn" data-i18n="rel_btn"></button><button class="btn sub" id="aboutBtn" data-i18n="about_btn"></button></div>
+  <div class="mbtns"><button class="btn main" id="setClose" data-i18n="close"></button></div>
+</div></div>
+
+<!-- ================= リリースノート／このアプリについて ================= -->
+<div class="modal" id="infoModal"><div class="box infobox">
+  <div id="infoBody"></div>
+  <div class="mbtns"><button class="btn main" id="infoClose" data-i18n="close"></button></div>
+</div></div>
+
+<!-- ================= RESULT ================= -->
+<div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
