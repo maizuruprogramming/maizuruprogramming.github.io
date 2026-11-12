@@ -108,8 +108,9 @@ ${t('json_a')}
   if(typeof hRelabel==='function') hRelabel();
 }
 /* ---- リリースノート／このアプリについて ---- */
-const APP_VERSION='0.9.19', APP_DATE='2026-11-11';
+const APP_VERSION='0.9.20', APP_DATE='2026-11-11';
 const RELEASES=[
+  {v:'0.9.20',items:{ja:['「このアプリについて」の「元にした資料」に第37回（募集要項・Q&A・補足資料・フォーマット資料）を追加'],en:['“About this app” now lists the 37th contest’s documents as sources'],vi:['«Về ứng dụng này» nay có tài liệu của lần 37 trong phần tài liệu gốc'],th:['«เกี่ยวกับแอปนี้» เพิ่มเอกสารของครั้งที่ 37 ในแหล่งอ้างอิง'],mn:['«Энэ аппын тухай» хэсгийн үндэслэсэн материалд 37 дахь тэмцээний баримтуудыг нэмэв']}},
   {v:'0.9.19',items:{ja:['「授業で使う資料」に「学習指導要領とプログラミング」（PDF、次期改訂の審議まとめを含む）を追加'],en:['Added “The Course of Study and programming” (PDF, including the draft for the next revision) to the class materials'],vi:['Thêm «Chương trình giáo dục và lập trình» (PDF, gồm bản tổng hợp cho lần sửa đổi tới) vào tài liệu cho tiết học'],th:['เพิ่ม «หลักสูตรกับการเขียนโปรแกรม» (PDF รวมสรุปการปรับปรุงครั้งถัดไป) ในเอกสารสำหรับการสอน'],mn:['Хичээлийн материалд «Сургалтын хөтөлбөр ба програмчлал» (PDF, дараагийн шинэчлэлийн төсөл орсон) нэмэв']}},
   {v:'0.9.18',items:{ja:['チュートリアル集（PDF）に、チュートリアルごとの画面の図を追加'],en:['The tutorial collection (PDF) now has a screenshot for each tutorial'],vi:['Bộ hướng dẫn (PDF) nay có ảnh màn hình cho từng bài'],th:['ชุดบทแนะนำ (PDF) มีภาพหน้าจอสำหรับแต่ละบทแล้ว'],mn:['Зааврын эмхтгэлд (PDF) заавар бүрийн дэлгэцийн зураг нэмэв']}},
   {v:'0.9.17',items:{ja:['遊び方の動画を、漢字にした画面で撮り直した（約3分30秒）'],en:['Re-recorded the how-to video with the new kanji labels (about 3½ minutes)'],vi:['Quay lại video hướng dẫn với nhãn chữ Hán mới (khoảng 3 phút rưỡi)'],th:['ถ่ายวิดีโอวิธีเล่นใหม่ด้วยป้ายคันจิใหม่ (ประมาณ 3 นาทีครึ่ง)'],mn:['Шинэ ханзтай дэлгэцээр тоглох аргын видеог дахин бичив (3.5 орчим минут)']}},

@@ -592,7 +592,7 @@ Object.assign(I18N.ja,{
   ab_for_h:'対象', ab_for:'小学生・中学生（先生・保護者と いっしょに）',
   ab_env_h:'動作環境', ab_env:'iPad などの タブレット、パソコンの Web ブラウザ。HTML 1ファイルで動き、サーバーは 不要です（文字の フォントだけ インターネットから 読みこみます）。',
   ab_lang_h:'言葉',
-  ab_src_h:'元にした 資料', ab_src:'第36回・第35回 全国高等専門学校プログラミングコンテスト 募集要項「競技部門のご案内」',
+  ab_src_h:'元にした 資料', ab_src:'第37回・第36回・第35回 全国高等専門学校プログラミングコンテスト 募集要項「競技部門のご案内」、第37回 競技部門のQ&A（その1〜3）・補足資料・フォーマット資料',
   ab_data_h:'保存する データ', ab_data:'画面の 色・言葉・選んだ 競技・作った プログラムだけを、この 端末の ブラウザの 中に 保存します。名前などの 個人情報は あつかいません。',
   ab_credit_h:'使っている もの', ab_credit:'フォント「M PLUS Rounded 1c」「Noto Sans Thai」（SIL Open Font License）／色覚サポートの 配色：Okabe & Ito の カラーパレット',
   ab_note:'※ これは 体験用の 試作版（モック）です。公式の 競技システムでは ありません。小中学生が 遊びやすいように、盤面の 大きさや 抜き型の 種類などを 本番より 小さく しています。正式な ルールは 各大会の 募集要項を ご覧ください。'
@@ -637,7 +637,7 @@ Object.assign(I18N.en,{
   ab_for_h:'For', ab_for:'Elementary and junior high school students (with teachers or parents)',
   ab_env_h:'Runs on', ab_env:'Web browsers on tablets such as the iPad, and on computers. It is a single HTML file and needs no server (only the font is loaded from the internet).',
   ab_lang_h:'Languages',
-  ab_src_h:'Based on', ab_src:'The 36th and 35th National KOSEN Programming Contest guidelines, “Competition Section” chapters',
+  ab_src_h:'Based on', ab_src:'The 37th, 36th and 35th National KOSEN Programming Contest guidelines, “Competition Section” chapters; the 37th contest’s Q&A (parts 1–3), supplement and format documents',
   ab_data_h:'Data saved', ab_data:'Only the screen colors, language, chosen contest, and your programs are saved, inside this device’s browser. No names or other personal information are handled.',
   ab_credit_h:'Credits', ab_credit:'Fonts “M PLUS Rounded 1c” and “Noto Sans Thai” (SIL Open Font License) / color-vision support palette: Okabe & Ito',
   ab_note:'※ This is a hands-on prototype (mock), not the official contest system. Board sizes and the set of dies are smaller than in the real contest so children can play easily. See each contest’s official guidelines for the full rules.'
@@ -682,7 +682,7 @@ Object.assign(I18N.vi,{
   ab_for_h:'Đối tượng', ab_for:'Học sinh tiểu học và trung học cơ sở (cùng giáo viên hoặc phụ huynh)',
   ab_env_h:'Môi trường', ab_env:'Trình duyệt web trên máy tính bảng như iPad và trên máy tính. Ứng dụng là một tệp HTML duy nhất, không cần máy chủ (chỉ phông chữ được tải từ internet).',
   ab_lang_h:'Ngôn ngữ',
-  ab_src_h:'Tài liệu gốc', ab_src:'Hướng dẫn phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc lần thứ 36 và 35',
+  ab_src_h:'Tài liệu gốc', ab_src:'Hướng dẫn phần thi Thi đấu của Cuộc thi Lập trình KOSEN Toàn quốc lần thứ 37, 36 và 35; Hỏi đáp (phần 1–3), tài liệu bổ sung và tài liệu định dạng của lần 37',
   ab_data_h:'Dữ liệu được lưu', ab_data:'Chỉ lưu màu màn hình, ngôn ngữ, phần thi đã chọn và chương trình của bạn, ngay trong trình duyệt của thiết bị này. Không xử lý tên hay thông tin cá nhân.',
   ab_credit_h:'Ghi công', ab_credit:'Phông chữ “M PLUS Rounded 1c” và “Noto Sans Thai” (SIL Open Font License) / bảng màu hỗ trợ sắc giác: Okabe & Ito',
   ab_note:'※ Đây là bản thử nghiệm (mô phỏng) để trải nghiệm, không phải hệ thống thi chính thức. Kích thước bảng và số loại khuôn được thu nhỏ so với cuộc thi thật để trẻ em dễ chơi. Vui lòng xem hướng dẫn chính thức của từng cuộc thi để biết đầy đủ luật.'
