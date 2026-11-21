@@ -18,7 +18,7 @@ DEFAULT_MENU_PDF_URL = (
     "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
 )
 ALLERGY_NOTICE = "PDFファイルを確認してください．"
-USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.7)"
+USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.8)"
 JST = timezone(timedelta(hours=9))
 
 MEAL_HOURS_MASTER = {
@@ -453,6 +453,21 @@ def parse_meal_cell(
                     if abs(dishes[best_i]["center_y"] - by) <= 24.0:
                         set_b_name = dishes[best_i]["text"]
                         used_indices.add(best_i)
+
+                        # B定食の1行下に「ごはん」が書かれている場合はB定食に含める
+                        next_i = best_i + 1
+                        if next_i < len(dishes) and next_i not in used_indices:
+                            next_dish = dishes[next_i]
+                            dy_rice = dishes[best_i]["last_y"] - next_dish["first_y"]
+                            if (
+                                next_dish["text"] == "ごはん"
+                                and "ごはん" not in set_b_name
+                                and 0 < dy_rice <= 20.0
+                                and not has_border_between(dishes[best_i]["last_y"], next_dish["first_y"])
+                            ):
+                                set_b_name = f"{set_b_name}・ごはん"
+                                used_indices.add(next_i)
+
             for i, d in enumerate(dishes):
                 if i not in used_indices:
                     raw_common_items.append(d["text"])
