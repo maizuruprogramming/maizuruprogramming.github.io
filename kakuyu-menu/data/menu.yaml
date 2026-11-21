@@ -4,11 +4,24 @@ menu_pdf_url: https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/202
 month_label: 学寮食堂献立表(令和8年11月)
 note: ※11.14の昼食が変更になっています。
 allergy_notice: PDFファイルを確認してください．
+meal_hours:
+  weekday:
+    label: 月〜金（平日）
+    breakfast: 7:30～8:30
+    lunch: 12:00～12:55
+    dinner: 18:00～19:30
+  weekend_holiday:
+    label: 土〜日・休日
+    breakfast: 7:40～8:40
+    lunch: 12:00～13:30
+    dinner: 18:00～19:30
 days:
 - date: '2026-11-01'
   day_of_week: 日
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 919
@@ -23,6 +36,7 @@ days:
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: 鶏ごぼう丼
         calories: 958
@@ -34,6 +48,7 @@ days:
         - 大学芋
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: アジフライと串カツ
         calories: 1031
@@ -47,8 +62,10 @@ days:
         - ごはん
 - date: '2026-11-02'
   day_of_week: 月
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 1001
@@ -63,8 +80,9 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
-        name: 豚ひき肉と 高菜丼
+        name: 豚ひき肉と高菜丼
         calories: 917
       set_b:
         name: 共通メニュー（選択なし）
@@ -74,6 +92,7 @@ days:
         - プチカスタード
         - 卵スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: ヤンニョムチキン
         calories: 967
@@ -87,8 +106,10 @@ days:
         - ごはん
 - date: '2026-11-03'
   day_of_week: 火
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 938
@@ -103,6 +124,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: 麻婆丼
         calories: 929
@@ -114,6 +136,7 @@ days:
         - パインゼリー
         - わかめスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: ハンバーグ和風おろしソース
         calories: 917
@@ -127,8 +150,10 @@ days:
         - ごはん
 - date: '2026-11-04'
   day_of_week: 水
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 842
@@ -138,11 +163,13 @@ days:
       common:
         items:
         - ミートオムレツ
-        - 明太子スパゲティー
+        - 明太子
+        - スパゲティー
         - 温野菜サラダ
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 豚すき丼
         calories: 862
@@ -156,6 +183,7 @@ days:
         - チョコクレープ
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 塩鶏唐揚げ
         calories: 965
@@ -170,8 +198,10 @@ days:
         - ごはん
 - date: '2026-11-05'
   day_of_week: 木
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 811
@@ -186,6 +216,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 豚骨ラーメン
         calories: 934
@@ -198,8 +229,8 @@ days:
         - 揚げシュウマイ
         - シュークリーム
         - 味噌汁
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: えびカツとチキンカツ
         calories: 994
@@ -209,13 +240,15 @@ days:
       common:
         items:
         - こんにゃくのピリ辛炒め
-        - 小松菜の ツナ和え
+        - 小松菜のツナ和え
         - 野菜スープ
         - ごはん
 - date: '2026-11-06'
   day_of_week: 金
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 873
@@ -230,6 +263,7 @@ days:
         - 味噌汁
         - コーヒー牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: チキンカレー
         calories: 932
@@ -239,10 +273,11 @@ days:
       common:
         items:
         - ごはん
-        - カリフラワー サラダ
+        - カリフラワーサラダ
         - ヨーグルト
         - コンソメスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 豚キムチ
         calories: 896
@@ -251,14 +286,16 @@ days:
         calories: 907
       common:
         items:
-        - がんもの 含め煮
+        - がんもの含め煮
         - ごまドレッシング和え
         - 味噌汁
         - ごはん
 - date: '2026-11-07'
   day_of_week: 土
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 811
@@ -273,6 +310,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: ロコモコ丼
         calories: 836
@@ -284,6 +322,7 @@ days:
         - ピーチゼリー
         - 野菜スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 鶏の照り焼き
         calories: 1075
@@ -297,8 +336,10 @@ days:
         - ごはん
 - date: '2026-11-08'
   day_of_week: 日
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 821
@@ -313,6 +354,7 @@ days:
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: 親子丼
         calories: 890
@@ -324,6 +366,7 @@ days:
         - ココアワッフル
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: とんかつ
         calories: 972
@@ -337,8 +380,10 @@ days:
         - ごはん
 - date: '2026-11-09'
   day_of_week: 月
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 861
@@ -353,8 +398,9 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
-        name: 豚の ネギ塩丼
+        name: 豚のネギ塩丼
         calories: 925
       set_b:
         name: 鯖の味噌煮
@@ -366,8 +412,9 @@ days:
         - プリン
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: サーモンﾌﾗｲとカレーコロッケ
+        name: サーモンフライとカレーコロッケ
         calories: 965
       set_b:
         name: 豚肉と蓮根の甘辛炒め
@@ -380,8 +427,10 @@ days:
         - ごはん
 - date: '2026-11-10'
   day_of_week: 火
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 910
@@ -396,6 +445,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: カレーうどん
         calories: 1069
@@ -408,8 +458,8 @@ days:
         - 茄子とオクラのさっぱり和え
         - いちごクレープ
         - 中華スープ
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: ハンバーグデミソース
         calories: 912
@@ -424,8 +474,10 @@ days:
         - ごはん
 - date: '2026-11-11'
   day_of_week: 水
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 802
@@ -440,6 +492,7 @@ days:
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: ビビンバ
         calories: 843
@@ -453,8 +506,9 @@ days:
         - ヨーグルト
         - わかめスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: ｶﾘｶﾘささみ揚げといわしフライ
+        name: カリカリささみ揚げといわしフライ
         calories: 1144
       set_b:
         name: 八宝菜
@@ -467,8 +521,10 @@ days:
         - ごはん
 - date: '2026-11-12'
   day_of_week: 木
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 803
@@ -483,6 +539,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 醤油ラーメン
         calories: 921
@@ -495,10 +552,10 @@ days:
         - 春巻き
         - シュークリーム
         - 味噌汁
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: ポーク シチュー
+        name: ポークシチュー
         calories: 939
       set_b:
         name: 鰆の唐揚げ甘酢あん
@@ -511,8 +568,10 @@ days:
         - ごはん
 - date: '2026-11-13'
   day_of_week: 金
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 796
@@ -527,6 +586,7 @@ days:
         - 味噌汁
         - コーヒー牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: ポークカレー
         calories: 1011
@@ -540,6 +600,7 @@ days:
         - ストロベリーゼリー
         - コンソメスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 鶏の唐揚げ
         calories: 993
@@ -554,8 +615,10 @@ days:
         - ごはん
 - date: '2026-11-14'
   day_of_week: 土
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 864
@@ -570,8 +633,9 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
-        name: 照り焼き チキン丼
+        name: 照り焼きチキン丼
         calories: 904
       set_b:
         name: 共通メニュー（選択なし）
@@ -581,6 +645,7 @@ days:
         - わらび餅
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: メンチカツと肉じゃがコロッケ
         calories: 954
@@ -594,8 +659,10 @@ days:
         - ごはん
 - date: '2026-11-15'
   day_of_week: 日
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 828
@@ -610,6 +677,7 @@ days:
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: カツとじ丼
         calories: 967
@@ -621,6 +689,7 @@ days:
         - エクレア
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 鶏肉の塩だれ焼き
         calories: 1027
@@ -634,8 +703,10 @@ days:
         - ごはん
 - date: '2026-11-16'
   day_of_week: 月
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 916
@@ -645,26 +716,28 @@ days:
       common:
         items:
         - 温泉卵
-        - 切干大根と ひじきの炒め煮
+        - 切干大根とひじきの炒め煮
         - ポテトサラダ
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: ハヤシライス
         calories: 883
       set_b:
-        name: 白身魚の コーンマヨ焼
+        name: 白身魚のコーンマヨ焼
         calories: 781
       common:
         items:
         - ごはん
-        - カリフラワー サラダ
+        - カリフラワーサラダ
         - 青りんごゼリー
         - 野菜スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: 和風 ハンバーグ
+        name: 和風ハンバーグ
         calories: 954
       set_b:
         name: 豚じゃが
@@ -672,13 +745,15 @@ days:
       common:
         items:
         - 湯豆腐
-        - 春雨マヨネーズ サラダ
+        - 春雨マヨネーズサラダ
         - 味噌汁
         - ごはん
 - date: '2026-11-17'
   day_of_week: 火
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 930
@@ -693,36 +768,39 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
-        name: 豚キムチ うどん
+        name: 豚キムチうどん
         calories: 851
       set_b:
-        name: さわらの 竜田揚げ
+        name: さわらの竜田揚げ
         calories: 876
       common:
         items:
         - ごはん
-        - 小松菜の おかか和え
+        - 小松菜のおかか和え
         - チョコクレープ
         - 味噌汁
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: チキン南蛮
         calories: 960
       set_b:
-        name: ポーク チャップ風
+        name: ポークチャップ風
         calories: 835
       common:
         items:
-        - オクラの なめ茸和え
+        - オクラのなめ茸和え
         - ツナサラダ
         - 味噌汁
         - ごはん
 - date: '2026-11-18'
   day_of_week: 水
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 806
@@ -732,16 +810,17 @@ days:
       common:
         items:
         - 納豆
-        - 茄子の そぼろあん
+        - 茄子のそぼろあん
         - コーンサラダ
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～12:55
       set_a:
-        name: 豚の 生姜炒め丼
+        name: 豚の生姜炒め丼
         calories: 889
       set_b:
-        name: 白身魚の チーズ焼き
+        name: 白身魚のチーズ焼き
         calories: 794
       common:
         items:
@@ -750,8 +829,9 @@ days:
         - プリン
         - わかめスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: ジャンボ チキンカツ
+        name: ジャンボチキンカツ
         calories: 1065
       set_b:
         name: ポトフ
@@ -759,13 +839,15 @@ days:
       common:
         items:
         - 高野豆腐煮
-        - ほうれん草 菜種和え
+        - ほうれん草菜種和え
         - 味噌汁
         - ごはん
 - date: '2026-11-19'
   day_of_week: 木
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 849
@@ -780,11 +862,12 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 五目ラーメン
         calories: 988
       set_b:
-        name: さわらの 山椒焼き
+        name: さわらの山椒焼き
         calories: 828
       common:
         items:
@@ -792,24 +875,26 @@ days:
         - 揚げシュウマイ
         - ワッフル
         - 中華スープ
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 麻婆豆腐
         calories: 860
       set_b:
-        name: 鶏肉の ごまだれ焼き
+        name: 鶏肉のごまだれ焼き
         calories: 960
       common:
         items:
-        - 蒟蒻とごぼうの 炒め煮
+        - 蒟蒻とごぼうの炒め煮
         - 白菜のごま和え
         - 味噌汁
         - ごはん
 - date: '2026-11-20'
   day_of_week: 金
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 848
@@ -824,11 +909,12 @@ days:
         - 味噌汁
         - コーヒー牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: ビーフカレー
         calories: 962
       set_b:
-        name: いわしの 蒲焼き風
+        name: いわしの蒲焼き風
         calories: 857
       common:
         items:
@@ -837,22 +923,25 @@ days:
         - オレンジゼリー
         - 野菜スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: 照りマヨ豆腐 ハンバーグ
+        name: 照りマヨ豆腐ハンバーグ
         calories: 997
       set_b:
         name: ダッカルビ
         calories: 948
       common:
         items:
-        - スパゲティー サラダ
-        - チンゲン菜 ナムル
+        - スパゲティーサラダ
+        - チンゲン菜ナムル
         - 味噌汁
         - ごはん
 - date: '2026-11-21'
   day_of_week: 土
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 860
@@ -862,11 +951,12 @@ days:
       common:
         items:
         - 鰆の付焼き
-        - 鶏肉と根菜の 煮物
+        - 鶏肉と根菜の煮物
         - 温野菜サラダ
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: ドライカレー
         calories: 871
@@ -874,12 +964,13 @@ days:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ﾌﾗｲﾄﾞﾎﾟﾃﾄ
+        - フライドポテト
         - いちごヨーグルト
         - 卵スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: とんかつ おろしポン酢
+        name: とんかつおろしポン酢
         calories: 952
       set_b:
         name: 共通メニュー（選択なし）
@@ -891,8 +982,10 @@ days:
         - ごはん
 - date: '2026-11-22'
   day_of_week: 日
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 751
@@ -902,24 +995,26 @@ days:
       common:
         items:
         - 白身魚フライ
-        - ほうれん草の ソテー
+        - ほうれん草のソテー
         - 大根サラダ
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～13:30
       set_a:
-        name: メンチカツ とじ丼
+        name: メンチカツとじ丼
         calories: 945
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ハムコーン サラダ
+        - ハムコーンサラダ
         - ラ・フランスゼリー
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: バーベキュー チキン
+        name: バーベキューチキン
         calories: 1081
       set_b:
         name: 共通メニュー（選択なし）
@@ -931,8 +1026,10 @@ days:
         - ごはん
 - date: '2026-11-23'
   day_of_week: 月
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 852
@@ -947,6 +1044,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: スタミナ丼
         calories: 827
@@ -958,6 +1056,7 @@ days:
         - シュークリーム
         - わかめスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 鶏肉の唐揚ねぎソース
         calories: 1038
@@ -971,8 +1070,10 @@ days:
         - ごはん
 - date: '2026-11-24'
   day_of_week: 火
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 844
@@ -982,13 +1083,15 @@ days:
       common:
         items:
         - 納豆
-        - 鶏肉とごぼうの炒め煮
-        - チンゲン菜のごま和え
+        - 鶏肉とごぼう
+        - の炒め煮チンゲン菜の
+        - ごま和え
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
-        name: かき揚げ うどん
+        name: かき揚げうどん
         calories: 878
       set_b:
         name: ロールキャベツ
@@ -999,8 +1102,8 @@ days:
         - 小松菜のツナ和え
         - ピーチゼリー
         - 味噌汁
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: クリームシチュー
         calories: 926
@@ -1015,8 +1118,10 @@ days:
         - ごはん
 - date: '2026-11-25'
   day_of_week: 水
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 855
@@ -1031,6 +1136,7 @@ days:
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 厚揚げそぼろ丼
         calories: 837
@@ -1044,6 +1150,7 @@ days:
         - カスタードクレープ
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: ザンギ（北海道）
         calories: 1148
@@ -1058,8 +1165,10 @@ days:
         - ごはん
 - date: '2026-11-26'
   day_of_week: 木
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 839
@@ -1069,11 +1178,13 @@ days:
       common:
         items:
         - 温泉卵
-        - ミートボール甘酢あん
+        - ミートボール
+        - 甘酢あん
         - 温野菜サラダ
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: ちゃんぽん風うどん
         calories: 920
@@ -1086,8 +1197,8 @@ days:
         - 春巻き
         - プリン
         - 味噌汁
-        - ごはん
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: メンチカツとのり塩コロッケ
         calories: 1071
@@ -1102,8 +1213,10 @@ days:
         - ごはん
 - date: '2026-11-27'
   day_of_week: 金
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 792
@@ -1118,6 +1231,7 @@ days:
         - 味噌汁
         - コーヒー牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: キーマカレー
         calories: 892
@@ -1131,6 +1245,7 @@ days:
         - ストロベリーゼリー
         - コンソメスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: チーズinハンバーグ
         calories: 941
@@ -1145,8 +1260,10 @@ days:
         - ごはん
 - date: '2026-11-28'
   day_of_week: 土
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 800
@@ -1156,11 +1273,12 @@ days:
       common:
         items:
         - 鯖の塩焼き
-        - 白菜と平天の 煮浸し
+        - 白菜と平天の煮浸し
         - コールスローサラダ
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: 焼肉丼
         calories: 933
@@ -1172,21 +1290,24 @@ days:
         - たい焼き（クリーム）
         - わかめスープ
     dinner:
+      hours: 18:00～19:30
       set_a:
-        name: 鶏肉の 七味焼き
+        name: 鶏肉の七味焼き
         calories: 1108
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ﾌﾗｲﾄﾞﾎﾟﾃﾄ
+        - フライドポテト
         - 切干大根サラダ
         - 味噌汁
         - ごはん
 - date: '2026-11-29'
   day_of_week: 日
+  day_type: 土〜日・休日
   meals:
     breakfast:
+      hours: 7:40～8:40
       set_a:
         name: ごはん
         calories: 887
@@ -1196,11 +1317,12 @@ days:
       common:
         items:
         - 卵焼き
-        - そぼろ 肉じゃが
-        - ほうれん草の サラダ
+        - そぼろ肉じゃが
+        - ほうれん草のサラダ
         - 味噌汁
         - ジョア
     lunch:
+      hours: 12:00～13:30
       set_a:
         name: 照り焼きチキン丼
         calories: 1034
@@ -1212,6 +1334,7 @@ days:
         - わらび餅(きな粉)
         - 味噌汁
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: 白身魚フライと厚切ハムカツ
         calories: 980
@@ -1225,8 +1348,10 @@ days:
         - ごはん
 - date: '2026-11-30'
   day_of_week: 月
+  day_type: 月〜金（平日）
   meals:
     breakfast:
+      hours: 7:30～8:30
       set_a:
         name: ごはん
         calories: 1001
@@ -1241,6 +1366,7 @@ days:
         - 味噌汁
         - 牛乳
     lunch:
+      hours: 12:00～12:55
       set_a:
         name: 豚すき丼
         calories: 894
@@ -1254,6 +1380,7 @@ days:
         - もみじまんじゅう
         - 卵スープ
     dinner:
+      hours: 18:00～19:30
       set_a:
         name: ヤンニョムチキン
         calories: 1039
