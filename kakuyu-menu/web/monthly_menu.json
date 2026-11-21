@@ -1,6 +1,6 @@
 {
   "source_url": "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/",
-  "fetched_at": "2026-11-21 14:00:55 JST",
+  "fetched_at": "2026-11-21 14:18:44 JST",
   "status": "live_pdf_extracted",
   "error": "",
   "allergy_notice": "PDFファイルを確認してください．",
@@ -23,7 +23,7 @@
     "schedule_label": "毎週月曜日 06:30 ごろ（JST）",
     "cron_utc": "30 21 * * 0",
     "trigger": "manual_run_workflow",
-    "last_checked_at": "2026-11-21 14:00:55 JST",
+    "last_checked_at": "2026-11-21 14:18:44 JST",
     "next_check_at": "2026-11-23 06:30:00 JST",
     "target_month": "2026年11月（令和8年11月）",
     "result_status": "success",
