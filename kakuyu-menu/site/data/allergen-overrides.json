@@ -1,0 +1,3 @@
+{
+  "_README": "アレルゲンは公式PDFの赤丸を人が確認した後に登録してください。例: 日付 -> meal -> a/b の配列。値は egg,milk,wheat,shrimp,crab,buckwheat,peanut。未確認のまま空配列を設定しないでください。"
+}

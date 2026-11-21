@@ -1,0 +1,8 @@
+{
+  "days": [],
+  "status": "pending",
+  "message": "日別献立データはGitHub Actionsで公式PDFから生成されます。",
+  "allergen_status": "unverified",
+  "allergen_items": ["egg", "milk", "wheat", "shrimp", "crab", "buckwheat", "peanut"],
+  "updated_at": null
+}

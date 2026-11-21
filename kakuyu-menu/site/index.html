@@ -4,22 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#173f35">
-  <meta name="description" content="舞鶴高専・鶴友寮の学寮食堂献立表を月別に確認できる非公式ビューアです。">
+  <meta name="description" content="舞鶴高専・鶴友寮の今日の献立、週間献立、料理名検索、アレルゲン表示を確認できます。">
   <title>鶴友寮 食堂メニュー</title>
   <link rel="stylesheet" href="./static/styles.css">
+  <script src="./static/app.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="./" aria-label="鶴友寮 食堂メニュー トップ">
       <span class="brand-mark" aria-hidden="true">鶴</span>
-      <span class="brand-copy">
-        <strong>鶴友寮 食堂メニュー</strong>
-        <small>TSURU-TOMO DORMITORY DINING</small>
-      </span>
+      <span class="brand-copy"><strong>鶴友寮 食堂メニュー</strong><small>TSURU-TOMO DORMITORY DINING</small></span>
     </a>
-    <a class="official-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
-      学校公式ページ <span aria-hidden="true">↗</span>
-    </a>
+    <a class="official-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">学校公式ページ ↗</a>
   </header>
 
   <main class="container">
@@ -27,76 +23,77 @@
       <div class="intro-copy">
         <p class="eyebrow">MAIZURU KOSEN / DORMITORY</p>
         <h1>今日のごはん、<br><span>何かな？</span></h1>
-        <p class="intro-lead">鶴友寮の学寮食堂献立表を、月ごとに確認できます。</p>
+        <p class="intro-lead">今日の献立も、来週の献立も、スマートフォンからすぐに確認。</p>
       </div>
-      <div class="intro-art" aria-hidden="true">
-        <div class="plate"><span>🍚</span><span>🥢</span></div>
-        <span class="leaf leaf-one">✦</span>
-        <span class="leaf leaf-two">✦</span>
-      </div>
+      <div class="intro-art" aria-hidden="true"><div class="plate"><span>🍚</span><span>🥢</span></div><span class="leaf leaf-one">✦</span><span class="leaf leaf-two">✦</span></div>
     </section>
 
-    <section class="content-section" aria-labelledby="archive-title">
+    <section class="today-section" aria-labelledby="today-title">
+      <div class="section-heading today-heading">
+        <div><p class="eyebrow">TODAY'S MENU</p><h2 id="today-title">今日の献立</h2><p id="today-date-label" class="section-subtitle">日付を確認しています…</p></div>
+        <button id="today-button" class="secondary-button" type="button">今日に戻る</button>
+      </div>
+      <div class="menu-controls">
+        <div class="switch-group" role="group" aria-label="定食の切り替え">
+          <button class="option-button is-active" type="button" data-option="a" aria-pressed="true">A定食</button>
+          <button class="option-button" type="button" data-option="b" aria-pressed="false">B定食</button>
+        </div>
+        <p class="control-hint">A・Bを切り替えると、各食事のメイン料理が切り替わります。</p>
+      </div>
+      <div id="today-meals" class="today-meals" aria-live="polite">
+        <div class="loading-card"><span class="loader"></span> 今日の献立を読み込んでいます…</div>
+      </div>
+      <p id="day-source-note" class="source-note"></p>
+    </section>
+
+    <section class="calendar-section" aria-labelledby="calendar-title">
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">MENU ARCHIVE</p>
-          <h2 id="archive-title">月別の献立表</h2>
-        </div>
-        <button id="refresh-button" class="refresh-button" type="button">
-          <span aria-hidden="true">↻</span> データを再読み込み
-        </button>
+        <div><p class="eyebrow">WEEKLY CALENDAR</p><h2 id="calendar-title">週間献立カレンダー</h2></div>
+        <div class="week-nav"><button id="prev-week" class="icon-button" type="button" aria-label="前の週">‹</button><strong id="week-label">週を読み込み中</strong><button id="next-week" class="icon-button" type="button" aria-label="次の週">›</button></div>
       </div>
+      <div id="week-grid" class="week-grid" aria-label="週間カレンダー"></div>
+      <p class="calendar-hint">日付を選ぶと、その日の朝食・昼食・夕食が表示されます。献立データがない日は公式PDFで確認してください。</p>
+    </section>
 
-      <div class="toolbar">
-        <label class="select-wrap" for="month-select">
-          <span>表示する月</span>
-          <select id="month-select" disabled>
-            <option>献立表を読み込み中…</option>
-          </select>
-        </label>
-        <p id="status-message" class="status-message" role="status" aria-live="polite">公開データを読み込んでいます。</p>
+    <section class="search-section" aria-labelledby="search-title">
+      <div class="section-heading"><div><p class="eyebrow">MENU SEARCH</p><h2 id="search-title">料理名で検索</h2></div></div>
+      <label class="search-box" for="dish-search"><span aria-hidden="true">⌕</span><input id="dish-search" type="search" placeholder="例：カレー、唐揚げ、うどん" autocomplete="off"><button id="clear-search" type="button" aria-label="検索語をクリア" hidden>×</button></label>
+      <p class="search-hint">読み込まれた献立データの料理名を検索します。</p>
+      <div id="search-results" class="search-results" aria-live="polite"><p class="muted">料理名を入力すると検索結果が表示されます。</p></div>
+    </section>
+
+    <section class="allergen-section" aria-labelledby="allergen-title">
+      <div class="section-heading"><div><p class="eyebrow">ALLERGEN CHECK</p><h2 id="allergen-title">アレルゲン情報の確認</h2></div></div>
+      <p class="section-lead">確認したい食品を選ぶと、登録済みのアレルゲン表示を確認できます。</p>
+      <div class="allergen-list" id="allergen-list">
+        <label><input type="checkbox" value="egg"> 卵</label>
+        <label><input type="checkbox" value="milk"> 乳</label>
+        <label><input type="checkbox" value="wheat"> 小麦</label>
+        <label><input type="checkbox" value="shrimp"> エビ</label>
+        <label><input type="checkbox" value="crab"> カニ</label>
+        <label><input type="checkbox" value="buckwheat"> そば</label>
+        <label><input type="checkbox" value="peanut"> 落花生</label>
       </div>
-
-      <div id="menu-grid" class="menu-grid" aria-live="polite">
-        <div class="loading-card"><span class="loader"></span> 献立表を読み込んでいます…</div>
+      <div class="allergen-actions"><button id="check-allergens" class="primary-button" type="button">選択したアレルゲンを確認</button><button id="reset-allergens" class="secondary-button" type="button">選択解除</button></div>
+      <div id="allergen-results" class="allergen-results" aria-live="polite"><p class="muted">食品を選択して「確認」を押してください。</p></div>
+      <div class="allergy-warning">
+        <strong>アレルギーに関する重要な注意</strong>
+        <p>この画面は公式献立表の補助表示です。アレルゲン欄の赤丸表示を自動的に読み取れない場合は「未確認」と表示します。表示なしを安全の保証として扱わないでください。公式資料では、調理時の意図しない混入（コンタミネーション）への注意、原材料を完全除去している場合は食べないこと、醤油など調味料由来の小麦は表示しないことが案内されています。必ず最新の公式PDFと学校からの案内を確認してください。</p>
+        <a id="allergen-pdf-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">学校公式の献立表を確認する ↗</a>
       </div>
     </section>
 
-    <section id="viewer-section" class="viewer-section" aria-labelledby="viewer-title">
-      <div class="viewer-heading">
-        <div>
-          <p class="eyebrow">MONTHLY MENU</p>
-          <h2 id="viewer-title">献立表</h2>
-          <p id="viewer-subtitle" class="viewer-subtitle">月を選択してください。</p>
-        </div>
-        <a id="open-pdf" class="open-pdf" href="#" target="_blank" rel="noopener noreferrer" hidden>
-          PDFを別タブで開く <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      <div id="pdf-wrap" class="pdf-wrap">
-        <div class="pdf-placeholder">
-          <span class="pdf-icon" aria-hidden="true">PDF</span>
-          <p>上の一覧から月を選ぶと、献立表がここに表示されます。</p>
-        </div>
-      </div>
-      <p class="pdf-note">PDFは舞鶴高専の公式サイトに掲載された原本を表示しています。献立の変更やアレルギーに関する確認は、必ず公式の最新資料・学校からの案内を優先してください。</p>
+    <section class="archive-section" aria-labelledby="archive-title">
+      <div class="section-heading"><div><p class="eyebrow">MENU ARCHIVE</p><h2 id="archive-title">月別の献立表（PDF）</h2></div><button id="refresh-button" class="secondary-button" type="button">↻ データを再読み込み</button></div>
+      <div class="archive-toolbar"><label class="select-wrap" for="month-select"><span>表示する月</span><select id="month-select" disabled><option>献立表を読み込み中…</option></select></label><p id="status-message" class="status-message" role="status" aria-live="polite">公開データを読み込んでいます。</p></div>
+      <div id="menu-grid" class="menu-grid" aria-live="polite"><div class="loading-card"><span class="loader"></span> 献立表を読み込んでいます…</div></div>
+      <div class="viewer-heading"><div><h3 id="viewer-title">献立表</h3><p id="viewer-subtitle" class="viewer-subtitle">月を選択してください。</p></div><a id="open-pdf" class="open-pdf" href="#" target="_blank" rel="noopener noreferrer" hidden>PDFを別タブで開く ↗</a></div>
+      <div id="pdf-wrap" class="pdf-wrap"><div class="pdf-placeholder"><span class="pdf-icon">PDF</span><p>月別の献立表を選択すると、公式PDFをここに表示します。</p></div></div>
+      <p class="pdf-note">PDFは舞鶴高専の公式サイトに掲載された原本です。献立の変更やアレルギー情報は、必ず公式の最新資料・学校からの案内を優先してください。</p>
     </section>
 
-    <section class="notice" aria-label="ご利用上の注意">
-      <div class="notice-icon" aria-hidden="true">i</div>
-      <div>
-        <h2>ご利用にあたって</h2>
-        <p>このアプリは献立表を見やすく表示するための非公式ビューアです。献立の内容・栄養価・アレルゲン情報を独自に編集していません。掲載内容は変更される場合があります。アレルギーに関する判断には、このアプリだけを使用せず、必ず学校の最新資料を確認してください。</p>
-      </div>
-    </section>
+    <section class="notice" aria-label="ご利用上の注意"><div class="notice-icon">i</div><div><h2>ご利用にあたって</h2><p>このアプリは、舞鶴高専が公開する献立表を見やすく表示する非公式ビューアです。PDFからの自動抽出結果には誤りや欠落が生じる場合があります。重要な確認には必ず原本PDFを使用してください。</p></div></section>
   </main>
-
-  <footer class="site-footer">
-    <p>Data source: <a href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">舞鶴工業高等専門学校 鶴友寮・食堂関係</a></p>
-    <p>献立一覧データはGitHub Actionsで定期更新されます。</p>
-    <p>© 鶴友寮 食堂メニュー Viewer</p>
-  </footer>
-
-  <script src="./static/app.js" defer></script>
+  <footer class="site-footer"><p>Data source: <a href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">舞鶴工業高等専門学校 鶴友寮・食堂関係</a></p><p>献立一覧はGitHub Actionsで定期更新されます。</p><p>© kakuyu-menu</p></footer>
 </body>
 </html>
