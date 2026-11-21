@@ -17,13 +17,27 @@ DEFAULT_MENU_PDF_URL = (
     "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
 )
 ALLERGY_NOTICE = "PDFファイルを確認してください．"
-USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.3)"
+USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.6)"
 JST = timezone(timedelta(hours=9))
 
 ALLERGEN_GLYPH_CHARS = set("卵乳小麦エビカニそば落花生くるみ●○◎・")
 STATIC_NOISE_TOKENS = {
     "[Ａ]", "[Ｂ]", "[A]", "[B]", "[ 共通料理 ]", "[共通料理]",
     "栄養価", "アレルゲン", "朝", "昼", "夕", "食", "日付", "週", "間", "献", "立", "表",
+}
+
+# 単独セルで完結する主食・汁物・飲料（前後の料理行と誤結合させないためのガード）
+STANDALONE_STAPLES = {
+    "ごはん", "食パン", "ロールパン", "味噌汁", "赤だし",
+    "卵スープ", "わかめスープ", "野菜スープ", "中華スープ", "コンソメスープ",
+    "牛乳", "ジョア", "コーヒー牛乳",
+}
+
+# PDFの枠幅都合で末尾が省略されている表記の補完
+DISH_TEXT_NORMALIZATIONS = {
+    "メンチカツとのり塩コロッ": "メンチカツとのり塩コロッケ",
+    "白身魚の野菜あんか": "白身魚の野菜あんかけ",
+    "ちゃんぽん風": "ちゃんぽん風うどん",
 }
 
 
@@ -116,10 +130,9 @@ def find_latest_official_links() -> dict:
     }
 
 
-def transform_point(tm: list[float], cm: list[float], rotation: int, page_w: float, page_h: float) -> tuple[float, float]:
-    """テキスト行列(tm)・CTM(cm)・ページ回転を適用し、左→右(x), 下→上(y)の座標に正規化する."""
-    ux = tm[4] * cm[0] + tm[5] * cm[2] + cm[4]
-    uy = tm[4] * cm[1] + tm[5] * cm[3] + cm[5]
+def apply_ctm(x: float, y: float, cm: list[float], rotation: int, page_w: float, page_h: float) -> tuple[float, float]:
+    ux = x * cm[0] + y * cm[2] + cm[4]
+    uy = x * cm[1] + y * cm[3] + cm[5]
 
     rot = rotation % 360
     if rot == 90:
@@ -129,6 +142,10 @@ def transform_point(tm: list[float], cm: list[float], rotation: int, page_w: flo
     if rot == 270:
         return page_h - uy, ux
     return ux, uy
+
+
+def transform_point(tm: list[float], cm: list[float], rotation: int, page_w: float, page_h: float) -> tuple[float, float]:
+    return apply_ctm(tm[4], tm[5], cm, rotation, page_w, page_h)
 
 
 def merge_same_line_fragments(
@@ -163,7 +180,6 @@ def merge_same_line_fragments(
 
 
 def cluster_y_positions(ys: list[float], tol: float = 15.0) -> list[float]:
-    """近いY座標をグループ化し、上から順（Y降順）に代表値を返す."""
     if not ys:
         return []
     sorted_ys = sorted(ys, reverse=True)
@@ -177,7 +193,6 @@ def cluster_y_positions(ys: list[float], tol: float = 15.0) -> list[float]:
 
 
 def is_allergen_or_noise_text(txt: str) -> bool:
-    """アレルゲン見出し文字（卵乳小麦エビカニそば落花生くるみ / 落くそ花るば生み）や●印、注記を除外する."""
     t = txt.strip()
     if not t or t in STATIC_NOISE_TOKENS:
         return True
@@ -191,12 +206,19 @@ def is_allergen_or_noise_text(txt: str) -> bool:
     return False
 
 
+def normalize_dish_name(name: str) -> str:
+    cleaned = " ".join(name.split()).strip()
+    return DISH_TEXT_NORMALIZATIONS.get(cleaned, cleaned)
+
+
 def parse_meal_cell(
     frags: list[tuple[float, float, str]],
     col_left: float,
-    col_width: float,
+    col_right: float,
+    horizontal_borders: list[tuple[float, float, float]],
 ) -> dict:
-    """1食分（朝食/昼食/夕食）の断片群から、アレルゲンを除外し A定食・B定食・共通料理 を構築する."""
+    """1食分（朝食/昼食/夕食）の断片群から、テーブル罫線とA/Bマーカーを使って料理単位へ結合する."""
+    col_width = max(col_right - col_left, 1.0)
     calorie_re = re.compile(r"(?:ｴﾈﾙｷﾞｰ|エネルギー)\s*(\d+)\s*kcal", re.IGNORECASE)
     calories_found: list[int] = []
     ab_markers: list[tuple[float, str]] = []
@@ -215,9 +237,8 @@ def parse_meal_cell(
         if is_allergen_or_noise_text(txt):
             continue
 
-        rel_x = (x - col_left) / max(col_width, 1.0)
+        rel_x = (x - col_left) / col_width
 
-        # 日付列の左側にある単独 "A" / "B" マーカーを分離
         if txt in {"A", "Ａ", "[A]", "[Ａ]"} and rel_x <= 0.42:
             ab_markers.append((y, "A"))
             continue
@@ -225,7 +246,6 @@ def parse_meal_cell(
             ab_markers.append((y, "B"))
             continue
 
-        # 同一テキスト内に "A ごはん" や "B 食パン" のように結合されている場合も分離
         m_prefix = re.match(r"^([ABＡＢ])\s+(.+)$", txt)
         if m_prefix and rel_x <= 0.42:
             kind = "A" if m_prefix.group(1) in {"A", "Ａ"} else "B"
@@ -237,33 +257,65 @@ def parse_meal_cell(
 
         dish_frags.append((x, y, txt))
 
-    # 同一行（Y差 2.8pt以内）の断片を結合
     merged_lines = merge_same_line_fragments(dish_frags, y_tol=2.8, max_x_gap=26.0)
 
-    # 同一セル内で2行に折り返された料理名を1つの料理名に結合
-    # Y差が 14.2pt 未満の連続行は同一料理の折り返しとして結合する
+    col_mid_x = col_left + col_width * 0.45
+    col_border_ys = sorted(
+        {
+            round(hy, 1)
+            for x0, x1, hy in horizontal_borders
+            if x0 <= col_mid_x <= x1
+        },
+        reverse=True,
+    )
+
+    def has_border_between(y_upper: float, y_lower: float) -> bool:
+        for hy in col_border_ys:
+            if (y_lower + 1.5) < hy < (y_upper - 1.5):
+                return True
+        return False
+
+    def has_marker_starting_at(y_upper: float, y_lower: float) -> bool:
+        for my, _ in ab_markers:
+            if abs(my - y_lower) <= 4.0 and abs(my - y_upper) > 8.0:
+                return True
+        return False
+
     dishes: list[dict] = []
     for x, y, txt in merged_lines:
         clean_t = txt.replace("●", "").strip()
         if not clean_t or clean_t in {"A", "B", "Ａ", "Ｂ"} or is_allergen_or_noise_text(clean_t):
             continue
-        if dishes and (dishes[-1]["last_y"] - y) < 14.2:
+
+        if not dishes:
+            dishes.append({"first_y": y, "last_y": y, "center_y": y, "text": clean_t})
+            continue
+
+        prev_y = dishes[-1]["last_y"]
+        prev_txt = dishes[-1]["text"]
+        dy = prev_y - y
+
+        if clean_t in STANDALONE_STAPLES or prev_txt in STANDALONE_STAPLES:
+            same_cell = False
+        elif col_border_ys:
+            same_cell = (
+                dy < 24.0
+                and not has_border_between(prev_y, y)
+                and not has_marker_starting_at(prev_y, y)
+            )
+        else:
+            same_cell = dy < 17.8 and not has_marker_starting_at(prev_y, y)
+
+        if same_cell:
             dishes[-1]["text"] += clean_t
             dishes[-1]["last_y"] = y
         else:
-            dishes.append(
-                {
-                    "first_y": y,
-                    "last_y": y,
-                    "center_y": y,
-                    "text": clean_t,
-                }
-            )
+            dishes.append({"first_y": y, "last_y": y, "center_y": y, "text": clean_t})
 
     for d in dishes:
         d["center_y"] = (d["first_y"] + d["last_y"]) / 2.0
+        d["text"] = normalize_dish_name(d["text"])
 
-    # Aマーカー・BマーカーのY座標に最も近い料理をそれぞれ A定食・B定食 に割り当て
     a_ys = sorted([y for y, k in ab_markers if k == "A"], reverse=True)
     b_ys = sorted([y for y, k in ab_markers if k == "B"], reverse=True)
 
@@ -277,7 +329,7 @@ def parse_meal_cell(
             if a_ys:
                 ay = a_ys[0]
                 best_i = min(range(len(dishes)), key=lambda i: abs(dishes[i]["center_y"] - ay))
-                if abs(dishes[best_i]["center_y"] - ay) <= 22.0:
+                if abs(dishes[best_i]["center_y"] - ay) <= 24.0:
                     set_a_name = dishes[best_i]["text"]
                     used_indices.add(best_i)
             if b_ys:
@@ -285,14 +337,13 @@ def parse_meal_cell(
                 candidates = [i for i in range(len(dishes)) if i not in used_indices]
                 if candidates:
                     best_i = min(candidates, key=lambda i: abs(dishes[i]["center_y"] - by))
-                    if abs(dishes[best_i]["center_y"] - by) <= 22.0:
+                    if abs(dishes[best_i]["center_y"] - by) <= 24.0:
                         set_b_name = dishes[best_i]["text"]
                         used_indices.add(best_i)
             for i, d in enumerate(dishes):
                 if i not in used_indices:
                     common_items.append(d["text"])
         else:
-            # A/B選択のない単一メイン食（土日の昼食など）
             set_a_name = dishes[0]["text"]
             set_b_name = "共通メニュー（選択なし）"
             common_items = [d["text"] for d in dishes[1:]]
@@ -328,6 +379,8 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
         page_w = float(page.mediabox.width)
         page_h = float(page.mediabox.height)
         raw_fragments: list[tuple[float, float, str]] = []
+        horizontal_borders: list[tuple[float, float, float]] = []
+        path_state: dict[str, tuple[float, float] | None] = {"cur": None}
 
         def visitor_body(text, cm, tm, font_dict, font_size):
             cleaned = " ".join((text or "").split())
@@ -335,10 +388,31 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
                 px, py = transform_point(tm, cm, rotation, page_w, page_h)
                 raw_fragments.append((px, py, cleaned))
 
-        page.extract_text(visitor_text=visitor_body)
+        def visitor_op(op, args, cm, tm):
+            try:
+                if op == b"re" and len(args) == 4:
+                    rx, ry, rw, rh = [float(v) for v in args]
+                    x0, y0 = apply_ctm(rx, ry, cm, rotation, page_w, page_h)
+                    x1, y1 = apply_ctm(rx + rw, ry + rh, cm, rotation, page_w, page_h)
+                    xmin, xmax = min(x0, x1), max(x0, x1)
+                    if (xmax - xmin) >= 20.0:
+                        horizontal_borders.append((xmin, xmax, y0))
+                        if abs(y1 - y0) >= 2.0:
+                            horizontal_borders.append((xmin, xmax, y1))
+                elif op == b"m" and len(args) == 2:
+                    path_state["cur"] = apply_ctm(float(args[0]), float(args[1]), cm, rotation, page_w, page_h)
+                elif op == b"l" and len(args) == 2 and path_state["cur"] is not None:
+                    nx, ny = apply_ctm(float(args[0]), float(args[1]), cm, rotation, page_w, page_h)
+                    px, py = path_state["cur"]
+                    if abs(ny - py) <= 1.5 and abs(nx - px) >= 20.0:
+                        horizontal_borders.append((min(px, nx), max(px, nx), (py + ny) / 2.0))
+                    path_state["cur"] = (nx, ny)
+            except Exception:
+                pass
+
+        page.extract_text(visitor_text=visitor_body, visitor_operand_before=visitor_op)
         lines = merge_same_line_fragments(raw_fragments, y_tol=3.2, max_x_gap=38.0)
 
-        # 日付列ヘッダーの検出
         date_headers: list[tuple[float, float, str, str, bool]] = []
         for x, y, txt in lines:
             m = date_re.search(txt)
@@ -349,13 +423,13 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
                 date_headers.append((x, y, iso, dow, is_target))
 
         date_headers.sort(key=lambda t: t[0])
-        print(f"  - Page {page_idx}: 検出列 {len(date_headers)} 日分 ({[d[2] for d in date_headers]})")
+        print(
+            f"  - Page {page_idx}: 検出列 {len(date_headers)} 日分 / 水平罫線 {len(horizontal_borders)} 本"
+        )
         if not date_headers:
             continue
 
         header_y = max(d[1] for d in date_headers)
-
-        # 左見出し列の [Ａ] のY座標から 朝食・昼食・夕食 の3段の境界を特定
         a_ys = cluster_y_positions([y for _, y, txt in lines if txt in {"[Ａ]", "[A]"}])
 
         if len(a_ys) >= 3:
@@ -368,7 +442,6 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
             l_top = header_y - span * 0.34
             d_top = header_y - span * 0.67
 
-        # 列幅の推定（隣り合う日付ヘッダーX座標の差分）
         col_widths = [
             date_headers[i + 1][0] - date_headers[i][0]
             for i in range(len(date_headers) - 1)
@@ -379,7 +452,6 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
             if not is_target:
                 continue
 
-            # 左端列（月曜）の A/B マーカーを取りこぼさないよう左マージンを十分確保
             left_bound = (
                 (date_headers[col_idx - 1][0] + col_x) / 2
                 if col_idx > 0
@@ -390,7 +462,6 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
                 if col_idx + 1 < len(date_headers)
                 else (left_bound + avg_col_width)
             )
-            col_width = right_bound - left_bound
 
             col_frags = [
                 (x, y, txt)
@@ -412,7 +483,7 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
                     buckets["dinner"].append((x, y, txt))
 
             meals_obj = {
-                meal_key: parse_meal_cell(buckets[meal_key], left_bound, col_width)
+                meal_key: parse_meal_cell(buckets[meal_key], left_bound, right_bound, horizontal_borders)
                 for meal_key in ("breakfast", "lunch", "dinner")
             }
 
