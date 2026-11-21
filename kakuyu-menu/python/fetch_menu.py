@@ -5,7 +5,8 @@ import hashlib
 import io
 import json
 import re
-from datetime import datetime, timedelta, timezone
+import unicodedata
+from datetime import date, datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin
@@ -17,8 +18,23 @@ DEFAULT_MENU_PDF_URL = (
     "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
 )
 ALLERGY_NOTICE = "PDFファイルを確認してください．"
-USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.6)"
+USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.7)"
 JST = timezone(timedelta(hours=9))
+
+MEAL_HOURS_MASTER = {
+    "weekday": {
+        "label": "月〜金（平日）",
+        "breakfast": "7:30～8:30",
+        "lunch": "12:00～12:55",
+        "dinner": "18:00～19:30",
+    },
+    "weekend_holiday": {
+        "label": "土〜日・休日",
+        "breakfast": "7:40～8:40",
+        "lunch": "12:00～13:30",
+        "dinner": "18:00～19:30",
+    },
+}
 
 ALLERGEN_GLYPH_CHARS = set("卵乳小麦エビカニそば落花生くるみ●○◎・")
 STATIC_NOISE_TOKENS = {
@@ -26,19 +42,87 @@ STATIC_NOISE_TOKENS = {
     "栄養価", "アレルゲン", "朝", "昼", "夕", "食", "日付", "週", "間", "献", "立", "表",
 }
 
-# 単独セルで完結する主食・汁物・飲料（前後の料理行と誤結合させないためのガード）
 STANDALONE_STAPLES = {
     "ごはん", "食パン", "ロールパン", "味噌汁", "赤だし",
     "卵スープ", "わかめスープ", "野菜スープ", "中華スープ", "コンソメスープ",
     "牛乳", "ジョア", "コーヒー牛乳",
 }
 
-# PDFの枠幅都合で末尾が省略されている表記の補完
 DISH_TEXT_NORMALIZATIONS = {
     "メンチカツとのり塩コロッ": "メンチカツとのり塩コロッケ",
     "白身魚の野菜あんか": "白身魚の野菜あんかけ",
     "ちゃんぽん風": "ちゃんぽん風うどん",
 }
+
+MERGED_COMMON_SPLITS = {
+    "スクランブルエッグナポリタンスパゲティ": ["スクランブルエッグ", "ナポリタンスパゲティ"],
+    "ごぼうの焙煎ごまサラダ大根のゆかり和え": ["ごぼうの焙煎ごまサラダ", "大根のゆかり和え"],
+    "豆腐のみぞれあんほうれん草のしらす和え": ["豆腐のみぞれあん", "ほうれん草のしらす和え"],
+    "ブロッコリーのおかか和えカスタードクレープ": ["ブロッコリーのおかか和え", "カスタードクレープ"],
+    "ほうれん草のごま和えたい焼き（クリーム）": ["ほうれん草のごま和え", "たい焼き（クリーム）"],
+}
+
+HALFWIDTH_KANA_RE = re.compile(r"[\uFF61-\uFF9F]+")
+JP_SPACE_RE = re.compile(r"(?<=[^\x00-\x7F])\s+(?=[^\x00-\x7F])")
+
+
+def get_jp_holidays(year: int) -> set[date]:
+    """日本の国民の祝日・国民の休日・振替休日を算出する."""
+    holidays: set[date] = set()
+
+    def nth_weekday(y: int, m: int, weekday: int, n: int) -> date:
+        first = date(y, m, 1)
+        offset = (weekday - first.weekday()) % 7
+        return first + timedelta(days=offset + (n - 1) * 7)
+
+    holidays.update(
+        {
+            date(year, 1, 1),    # 元日
+            date(year, 2, 11),   # 建国記念の日
+            date(year, 2, 23),   # 天皇誕生日
+            date(year, 4, 29),   # 昭和の日
+            date(year, 5, 3),    # 憲法記念日
+            date(year, 5, 4),    # みどりの日
+            date(year, 5, 5),    # こどもの日
+            date(year, 8, 11),   # 山の日
+            date(year, 11, 3),   # 文化の日
+            date(year, 11, 23),  # 勤労感謝の日
+            nth_weekday(year, 1, 0, 2),   # 成人の日
+            nth_weekday(year, 7, 0, 3),   # 海の日
+            nth_weekday(year, 9, 0, 3),   # 敬老の日
+            nth_weekday(year, 10, 0, 2),  # スポーツの日
+        }
+    )
+
+    vernal = int(20.8431 + 0.242194 * (year - 1980) - int((year - 1980) / 4))
+    autumnal = int(23.2488 + 0.242194 * (year - 1980) - int((year - 1980) / 4))
+    holidays.add(date(year, 3, vernal))
+    holidays.add(date(year, 9, autumnal))
+
+    sorted_h = sorted(holidays)
+    for i in range(len(sorted_h) - 1):
+        if (sorted_h[i + 1] - sorted_h[i]).days == 2:
+            mid = sorted_h[i] + timedelta(days=1)
+            if mid.weekday() < 6:
+                holidays.add(mid)
+
+    substitutes: set[date] = set()
+    for h in sorted(holidays):
+        if h.weekday() == 6:
+            sub = h + timedelta(days=1)
+            while sub in holidays or sub in substitutes:
+                sub += timedelta(days=1)
+            substitutes.add(sub)
+    holidays |= substitutes
+    return holidays
+
+
+def get_meal_hours_for_date(target_date: date) -> dict[str, str]:
+    """日付（平日 / 土〜日・休日）に応じた食事提供時間を返す."""
+    holidays = get_jp_holidays(target_date.year)
+    if target_date.weekday() >= 5 or target_date in holidays:
+        return dict(MEAL_HOURS_MASTER["weekend_holiday"])
+    return dict(MEAL_HOURS_MASTER["weekday"])
 
 
 class AnchorParser(HTMLParser):
@@ -207,8 +291,26 @@ def is_allergen_or_noise_text(txt: str) -> bool:
 
 
 def normalize_dish_name(name: str) -> str:
-    cleaned = " ".join(name.split()).strip()
+    s = HALFWIDTH_KANA_RE.sub(lambda m: unicodedata.normalize("NFKC", m.group(0)), name)
+    s = JP_SPACE_RE.sub("", s)
+    cleaned = " ".join(s.split()).strip()
     return DISH_TEXT_NORMALIZATIONS.get(cleaned, cleaned)
+
+
+def clean_common_items(items: list[str]) -> list[str]:
+    cleaned_list: list[str] = []
+    seen: set[str] = set()
+    for raw in items:
+        norm = normalize_dish_name(raw)
+        if not norm:
+            continue
+        expanded = MERGED_COMMON_SPLITS.get(norm, [norm])
+        for entry in expanded:
+            entry_norm = normalize_dish_name(entry)
+            if entry_norm and entry_norm not in seen:
+                seen.add(entry_norm)
+                cleaned_list.append(entry_norm)
+    return cleaned_list
 
 
 def parse_meal_cell(
@@ -216,6 +318,7 @@ def parse_meal_cell(
     col_left: float,
     col_right: float,
     horizontal_borders: list[tuple[float, float, float]],
+    meal_hours: str,
 ) -> dict:
     """1食分（朝食/昼食/夕食）の断片群から、テーブル罫線とA/Bマーカーを使って料理単位へ結合する."""
     col_width = max(col_right - col_left, 1.0)
@@ -281,6 +384,8 @@ def parse_meal_cell(
                 return True
         return False
 
+    lowest_marker_y = min((my for my, _ in ab_markers), default=None)
+
     dishes: list[dict] = []
     for x, y, txt in merged_lines:
         clean_t = txt.replace("●", "").strip()
@@ -295,8 +400,16 @@ def parse_meal_cell(
         prev_txt = dishes[-1]["text"]
         dy = prev_y - y
 
+        # 共通料理枠内（A/Bマーカーより下の領域）では1品ごとの間隔が広めのためしきい値を抑える
+        in_common_zone = (
+            lowest_marker_y is not None
+            and prev_y < (lowest_marker_y - 11.0)
+        )
+
         if clean_t in STANDALONE_STAPLES or prev_txt in STANDALONE_STAPLES:
             same_cell = False
+        elif in_common_zone:
+            same_cell = dy < 13.8
         elif col_border_ys:
             same_cell = (
                 dy < 24.0
@@ -321,7 +434,7 @@ def parse_meal_cell(
 
     set_a_name = ""
     set_b_name = ""
-    common_items: list[str] = []
+    raw_common_items: list[str] = []
 
     if dishes:
         if a_ys or b_ys:
@@ -342,11 +455,11 @@ def parse_meal_cell(
                         used_indices.add(best_i)
             for i, d in enumerate(dishes):
                 if i not in used_indices:
-                    common_items.append(d["text"])
+                    raw_common_items.append(d["text"])
         else:
             set_a_name = dishes[0]["text"]
             set_b_name = "共通メニュー（選択なし）"
-            common_items = [d["text"] for d in dishes[1:]]
+            raw_common_items = [d["text"] for d in dishes[1:]]
 
     set_a_obj: dict = {"name": set_a_name}
     set_b_obj: dict = {"name": set_b_name}
@@ -356,9 +469,10 @@ def parse_meal_cell(
         set_b_obj["calories"] = calories_found[1]
 
     return {
+        "hours": meal_hours,
         "set_a": set_a_obj,
         "set_b": set_b_obj,
-        "common": {"items": common_items},
+        "common": {"items": clean_common_items(raw_common_items)},
     }
 
 
@@ -482,14 +596,24 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
                 elif y >= 35.0:
                     buckets["dinner"].append((x, y, txt))
 
+            target_dt = date.fromisoformat(iso)
+            day_hours = get_meal_hours_for_date(target_dt)
+
             meals_obj = {
-                meal_key: parse_meal_cell(buckets[meal_key], left_bound, right_bound, horizontal_borders)
+                meal_key: parse_meal_cell(
+                    buckets[meal_key],
+                    left_bound,
+                    right_bound,
+                    horizontal_borders,
+                    meal_hours=day_hours[meal_key],
+                )
                 for meal_key in ("breakfast", "lunch", "dinner")
             }
 
             extracted_days[iso] = {
                 "date": iso,
                 "day_of_week": dow,
+                "day_type": day_hours["label"],
                 "meals": meals_obj,
             }
 
@@ -526,6 +650,7 @@ def run_monthly_menu_check(trigger: str = "manual") -> dict:
         "status": "live_pdf_extracted",
         "error": "",
         "allergy_notice": ALLERGY_NOTICE,
+        "meal_hours": MEAL_HOURS_MASTER,
         "auto_check": {
             "enabled": True,
             "schedule_label": "毎週月曜日 06:30 ごろ（JST）",
@@ -561,6 +686,7 @@ def run_monthly_menu_check(trigger: str = "manual") -> dict:
             "month_label": latest_article["title"],
             "note": latest_article.get("note", ""),
             "allergy_notice": ALLERGY_NOTICE,
+            "meal_hours": MEAL_HOURS_MASTER,
             "days": days,
         }
         output_yaml_path.parent.mkdir(parents=True, exist_ok=True)
