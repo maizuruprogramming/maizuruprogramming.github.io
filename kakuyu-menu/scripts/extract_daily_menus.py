@@ -46,10 +46,17 @@ def parse_date(value: str) -> str | None:
 
 
 def normalize_lines(value: str) -> list[str]:
+    """Normalize spacing without trimming meaningful menu-name characters.
+
+    Dish names can legitimately begin or end with parenthetical notes or
+    partial-looking words (for example ``(北海道)``, ``豚の`` or
+    ``カスタード``). Only surrounding whitespace is removed here; punctuation
+    and text at either edge are kept intact for classification and display.
+    """
     value = unicodedata.normalize("NFKC", value or "").replace("\u3000", " ").replace("\xa0", " ")
     lines = []
     for raw in value.replace("\r", "\n").split("\n"):
-        line = re.sub(r"\s+", " ", raw).strip(" ・\t\u2022")
+        line = re.sub(r"\s+", " ", raw).strip()
         if not line or line in {"—", "－", "-", "ー", "―"}:
             continue
         lines.append(line)
@@ -75,98 +82,115 @@ def extract_nutrition(line: str) -> dict[str, float | int] | None:
 
 
 def marker_for_line(line: str) -> str | None:
-    compact = line.replace(" ", "")
-    if re.search(r"[【\[（(]共通料理[】\]）)]", compact) or compact.startswith("共通料理"):
+    """Return an explicit bracketed menu marker, if the entire line is one."""
+    compact = unicodedata.normalize("NFKC", line or "").replace(" ", "")
+    if re.fullmatch(r"[【\[（(]共通料理[】\]）)]", compact) or compact == "共通料理":
         return "common"
-    if re.search(r"[【\[（(]A[】\]）)]", compact) or compact in {"A", "献立A"}:
+    if re.fullmatch(r"[【\[（(]A[】\]）)]", compact):
         return "a"
-    if re.search(r"[【\[（(]B[】\]）)]", compact) or compact in {"B", "献立B"}:
+    if re.fullmatch(r"[【\[（(]B[】\]）)]", compact):
         return "b"
     return None
 
 
 def option_prefix(line: str) -> tuple[str, str] | None:
-    """Return (a|b, remaining text) when a line starts with A or B.
+    """Classify an item by its first character: A -> A set, B -> B set.
 
-    The official menu can prefix option entries with plain `A` / `B` rather
-    than bracketed labels. Accept forms such as `A ごはん`, `A:ごはん`, and
-    `Aごはん` while avoiding ordinary English words such as `Apple`/`Bread`.
+    The prefix is deliberately literal: any normalized item beginning with A
+    or B is classified accordingly. All other items are common dishes. This
+    follows the dining-menu convention requested for kakuyu-menu.
+
+    Text after the A/B marker is retained verbatim apart from whitespace and
+    the marker separator. Parentheses and words at the beginning/end of the
+    dish name are not treated as delimiters or continuation hints.
     """
-    # Also allow an explicit label such as `A定食：カレー`.
-    meal_label = re.match(r"^([AB])定食(?:\s*[:：]\s*|\s+)?(.*)$", line, flags=re.IGNORECASE)
-    if meal_label:
-        return ("a" if meal_label.group(1).upper() == "A" else "b", meal_label.group(2).strip())
-
-    match = re.match(
-        r"^([AB])(?:(?:\s*[:：.．、)）\-－]\s*)|(?:\s+)|(?=[^A-Za-z]))(.*)$",
-        line,
-        flags=re.IGNORECASE,
-    )
-    if not match:
+    value = unicodedata.normalize("NFKC", line or "").lstrip()
+    if not value:
         return None
-    return ("a" if match.group(1).upper() == "A" else "b", match.group(2).strip())
+    first = value[0].upper()
+    if first not in {"A", "B"}:
+        return None
+
+    remainder = value[1:].lstrip()
+    # Also accept labels written as "A定食：料理名" / "B定食：料理名".
+    if remainder.startswith("定食"):
+        remainder = remainder[2:].lstrip()
+    remainder = re.sub(r"^[:：.．、)）\-－]+\s*", "", remainder).strip()
+    return ("a" if first == "A" else "b", remainder)
+
+
+def split_option_prefixed_segments(line: str) -> list[str]:
+    """Split one extracted PDF line where whitespace introduces another A/B item."""
+    # Example: "Aカレー B焼き魚" -> ["Aカレー", "B焼き魚"].
+    # A/B is treated as a label at the beginning of each segment.
+    return [part.strip() for part in re.split(r"(?<=\s)(?=[AB])", line, flags=re.IGNORECASE) if part.strip()]
 
 
 def parse_meal_text(value: str) -> dict[str, Any]:
-    """Parse a date/meal table cell into A, B, common dishes and nutrition."""
+    """Parse a meal cell using per-item A/B prefixes; all other items are common.
+
+    Unlike a section-state parser, an A/B label is not carried into following
+    unlabelled lines. This is important because unprefixed dishes must appear
+    for both set-meal choices.
+    """
     result: dict[str, Any] = {
         "a": [], "b": [], "common": [],
-        "nutrition": {"a": {}, "b": {}},
+        "nutrition": {"a": {}, "b": {}, "common": {}},
         "allergens": {"a": None, "b": None},
         "allergen_status": "unverified",
     }
-    section: str | None = None
-    marker_pattern = re.compile(r"(?=[【\[（(]\s*(?:共通料理|A|B)\s*[】\]）)])")
-    # A/B may also be plain prefixes at the beginning of a text segment.
-    # A following whitespace/punctuation/Japanese character makes it a label;
-    # an ordinary English word beginning with A or B is left untouched.
-    option_split_pattern = re.compile(
-        r"(?<=\s)(?=[AB](?:\s*[:：.．、)）\-－]\s*|\s+|(?=[^A-Za-z])))",
-        flags=re.IGNORECASE,
-    )
-    for raw_line in normalize_lines(value):
-        # Some PDF text layers concatenate several labelled sections onto one
-        # line. Split at bracketed markers and whitespace-separated A/B prefixes.
-        marked_parts: list[str] = []
-        for part in marker_pattern.split(raw_line):
-            marked_parts.extend(option_split_pattern.split(part))
-        for line in marked_parts:
-            line = line.strip()
-            if not line:
-                continue
-            marker_match = re.match(r"^[【\[（(]\s*(共通料理|A|B)\s*[】\]）)]\s*(.*)$", line)
-            if marker_match:
-                marker_label, remainder = marker_match.groups()
-                section = {"A": "a", "B": "b", "共通料理": "common"}[marker_label]
-                line = remainder.strip()
-                if not line:
-                    continue
+    marker_pattern = re.compile(r"([【\[（(]\s*(?:共通料理|A|B)\s*[】\]）)])", re.IGNORECASE)
+
+    def add_item(item_text: str, forced_section: str | None = None) -> None:
+        item_text = item_text.strip()
+        if not item_text:
+            return
+
+        prefixed = option_prefix(item_text)
+        if prefixed:
+            section, item_text = prefixed
+        else:
+            section = forced_section or "common"
+
+        item_text = item_text.strip()
+        if not item_text:
+            return
+
+        nutrition = extract_nutrition(item_text)
+        if nutrition:
+            if section in {"a", "b"}:
+                result["nutrition"][section].update(nutrition)
             else:
-                marker = marker_for_line(line)
-                if marker:
-                    section = marker
-                    continue
-                prefix = option_prefix(line)
-                if prefix:
-                    section, line = prefix
-                    if not line:
-                        continue
-            if "エネルギー" in line or "蛋白質" in line or "たんぱく質" in line or "食塩" in line:
-                nutrition = extract_nutrition(line)
-                if nutrition and section in {"a", "b"}:
-                    result["nutrition"][section].update(nutrition)
+                # Do not guess whether unlabelled nutrition belongs to A or B.
+                result["nutrition"]["common"].update(nutrition)
+            return
+
+        if item_text.startswith("共通料理"):
+            item_text = re.sub(r"^共通料理\s*[:：]?\s*", "", item_text).strip()
+            section = "common"
+        if item_text:
+            result[section].append(item_text)
+
+    for raw_line in normalize_lines(value):
+        # Split bracketed labels, but only apply each marker to text immediately
+        # following it on the same extracted line. A marker never changes the
+        # classification of subsequent unlabelled dish lines.
+        pieces = marker_pattern.split(raw_line)
+        forced_section: str | None = None
+        for piece in pieces:
+            marker = marker_for_line(piece)
+            if marker:
+                forced_section = marker
                 continue
-            if line:
-                if section in {"a", "b", "common"}:
-                    result[section].append(line)
-                else:
-                    # The PDF sometimes uses a single shared weekend menu without A/B labels.
-                    result["common"].append(line)
+
+            for segment in split_option_prefixed_segments(piece):
+                add_item(segment, forced_section)
+                # A detached marker is a prefix for the first following item only.
+                forced_section = None
 
     for key in ("a", "b", "common"):
         result[key] = list(dict.fromkeys(result[key]))
     return result
-
 
 def extract_tables(page: fitz.Page) -> list[list[list[str]]]:
     tables: list[list[list[str]]] = []
@@ -410,7 +434,7 @@ def build_daily_payload(menus_path: Path, override_path: Path, limit: int = 18) 
             if not extracted:
                 print(f"WARN: no date/meal table was recognized in {pdf_url}", file=sys.stderr)
             for date, day in extracted.items():
-                day["month"] = menu.get("month", date[:7])
+                day["month"] = date[:7]  # Use the actual date in the PDF, not the post/archive month.
                 day["source_title"] = menu.get("title", "")
                 all_days[date] = day
             print(f"INFO: extracted {len(extracted)} day(s) from {pdf_url}")
@@ -443,7 +467,17 @@ def main() -> int:
         payload = build_daily_payload(Path(args.menus_json), Path(args.allergen_overrides), args.limit)
     except Exception as exc:
         print(f"WARN: daily menu extraction failed: {exc}", file=sys.stderr)
-        return 0 if output_path.is_file() else 1
+        # Keep a previously populated dataset during a transient source outage,
+        # but do not silently succeed with an empty/pending placeholder file.
+        if output_path.is_file():
+            try:
+                existing = json.loads(output_path.read_text(encoding="utf-8"))
+                if isinstance(existing.get("days"), list) and existing["days"]:
+                    print("INFO: preserving previously generated daily menu data.", file=sys.stderr)
+                    return 0
+            except (OSError, json.JSONDecodeError, AttributeError):
+                pass
+        return 1
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Updated {output_path}: {len(payload['days'])} days")

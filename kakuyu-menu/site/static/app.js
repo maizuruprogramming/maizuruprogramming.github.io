@@ -119,7 +119,7 @@
     const items = selectedDishItems(meal);
     const optionItems = meal ? textItems(meal[selectedOption]) : [];
     const hasSeparateOptions = meal && (textItems(meal.a).length > 0 || textItems(meal.b).length > 0);
-    const nutrition = meal && meal.nutrition ? meal.nutrition[selectedOption] : null;
+    const nutrition = meal && meal.nutrition ? (meal.nutrition[selectedOption] || meal.nutrition.common) : null;
     const list = items.length
       ? `<ul class="dish-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`
       : `<p class="unknown-menu">${meal ? (hasSeparateOptions ? `${optionName()}の献立は掲載されていません。` : '献立内容を取得できませんでした。') : 'この日の献立データはまだ読み込まれていません。'} ${pdfUrl ? '公式PDFで確認できます。' : ''}</p>`;

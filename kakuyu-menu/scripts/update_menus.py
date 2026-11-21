@@ -31,8 +31,18 @@ def get_soup(session: requests.Session, url: str) -> BeautifulSoup:
     return BeautifulSoup(response.text, "html.parser")
 
 
-def extract_month(title: str, post_url: str) -> tuple[str, str]:
+def extract_month(title: str, post_url: str, pdf_url: str = "") -> tuple[str, str]:
     text = title.replace("　", " ")
+
+    # The PDF filename identifies the actual menu period, whereas the post URL
+    # identifies the publication month. Prefer the PDF when both differ.
+    filename = urlparse(pdf_url).path.rsplit("/", 1)[-1]
+    match = re.search(r"(20\d{2})[_-](\d{1,2})(?:\D|$)", filename)
+    if match:
+        year, month = map(int, match.groups())
+        if 1 <= month <= 12:
+            return f"{year:04d}-{month:02d}", f"{year}年{month}月"
+
     match = re.search(r"令和\s*(\d+)\s*年\s*(\d+)\s*月", text)
     if match:
         era_year, month = map(int, match.groups())
@@ -48,7 +58,6 @@ def extract_month(title: str, post_url: str) -> tuple[str, str]:
         year, month = map(int, match.groups())
         return f"{year:04d}-{month:02d}", f"{year}年{month}月"
     return "", "掲載月不明"
-
 
 def extract_published(soup: BeautifulSoup) -> str:
     time_tag = soup.select_one("time[datetime]")
@@ -114,7 +123,7 @@ def menu_from_post(session: requests.Session, post_url: str) -> dict | None:
     if not pdf_candidates:
         return None
     pdf_candidates.sort(key=lambda item: item[0], reverse=True)
-    month, month_label = extract_month(title, post_url)
+    month, month_label = extract_month(title, post_url, pdf_candidates[0][1])
     if not month:
         return None
     return {
