@@ -103,3 +103,29 @@ def test_normalizes_compatibility_kanji_in_pdf_text():
     assert parse_date("2026年11月21日（土）") == "2026-11-21"
     parsed = parse_meal_text("【共通料理】味噌汁")
     assert parsed["common"] == ["味噌汁"]
+
+
+def test_parse_plain_a_b_prefixes_as_set_meal_labels():
+    parsed = parse_meal_text("A ごはん\n味噌汁\nB: 食パン\n牛乳")
+    assert parsed["a"] == ["ごはん", "味噌汁"]
+    assert parsed["b"] == ["食パン", "牛乳"]
+    assert parsed["common"] == []
+
+
+def test_parse_a_b_prefix_without_separator_and_same_line_b_label():
+    parsed = parse_meal_text("Aカレーライス B焼き魚")
+    assert parsed["a"] == ["カレーライス"]
+    assert parsed["b"] == ["焼き魚"]
+
+
+def test_plain_a_b_prefix_does_not_capture_english_words():
+    parsed = parse_meal_text("Apple pie\nBread")
+    assert parsed["a"] == []
+    assert parsed["b"] == []
+    assert parsed["common"] == ["Apple pie", "Bread"]
+
+
+def test_parse_explicit_set_meal_label_prefixes():
+    parsed = parse_meal_text("A定食：カレーライス\nB定食：焼き魚")
+    assert parsed["a"] == ["カレーライス"]
+    assert parsed["b"] == ["焼き魚"]

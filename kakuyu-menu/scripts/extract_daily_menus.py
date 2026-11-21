@@ -85,6 +85,28 @@ def marker_for_line(line: str) -> str | None:
     return None
 
 
+def option_prefix(line: str) -> tuple[str, str] | None:
+    """Return (a|b, remaining text) when a line starts with A or B.
+
+    The official menu can prefix option entries with plain `A` / `B` rather
+    than bracketed labels. Accept forms such as `A ごはん`, `A:ごはん`, and
+    `Aごはん` while avoiding ordinary English words such as `Apple`/`Bread`.
+    """
+    # Also allow an explicit label such as `A定食：カレー`.
+    meal_label = re.match(r"^([AB])定食(?:\s*[:：]\s*|\s+)?(.*)$", line, flags=re.IGNORECASE)
+    if meal_label:
+        return ("a" if meal_label.group(1).upper() == "A" else "b", meal_label.group(2).strip())
+
+    match = re.match(
+        r"^([AB])(?:(?:\s*[:：.．、)）\-－]\s*)|(?:\s+)|(?=[^A-Za-z]))(.*)$",
+        line,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return None
+    return ("a" if match.group(1).upper() == "A" else "b", match.group(2).strip())
+
+
 def parse_meal_text(value: str) -> dict[str, Any]:
     """Parse a date/meal table cell into A, B, common dishes and nutrition."""
     result: dict[str, Any] = {
@@ -95,10 +117,20 @@ def parse_meal_text(value: str) -> dict[str, Any]:
     }
     section: str | None = None
     marker_pattern = re.compile(r"(?=[【\[（(]\s*(?:共通料理|A|B)\s*[】\]）)])")
+    # A/B may also be plain prefixes at the beginning of a text segment.
+    # A following whitespace/punctuation/Japanese character makes it a label;
+    # an ordinary English word beginning with A or B is left untouched.
+    option_split_pattern = re.compile(
+        r"(?<=\s)(?=[AB](?:\s*[:：.．、)）\-－]\s*|\s+|(?=[^A-Za-z])))",
+        flags=re.IGNORECASE,
+    )
     for raw_line in normalize_lines(value):
         # Some PDF text layers concatenate several labelled sections onto one
-        # line. Split at every section marker, then retain the active section.
-        for line in marker_pattern.split(raw_line):
+        # line. Split at bracketed markers and whitespace-separated A/B prefixes.
+        marked_parts: list[str] = []
+        for part in marker_pattern.split(raw_line):
+            marked_parts.extend(option_split_pattern.split(part))
+        for line in marked_parts:
             line = line.strip()
             if not line:
                 continue
@@ -114,6 +146,11 @@ def parse_meal_text(value: str) -> dict[str, Any]:
                 if marker:
                     section = marker
                     continue
+                prefix = option_prefix(line)
+                if prefix:
+                    section, line = prefix
+                    if not line:
+                        continue
             if "エネルギー" in line or "蛋白質" in line or "たんぱく質" in line or "食塩" in line:
                 nutrition = extract_nutrition(line)
                 if nutrition and section in {"a", "b"}:
