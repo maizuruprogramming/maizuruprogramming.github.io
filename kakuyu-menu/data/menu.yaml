@@ -35,13 +35,12 @@ days:
         - 味噌汁
     dinner:
       set_a:
-        name: アジフライと
+        name: アジフライと串カツ
         calories: 1031
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 串カツ
         - マカロニサラダ
         - キムチ
         - 味噌汁
@@ -139,8 +138,7 @@ days:
       common:
         items:
         - ミートオムレツ
-        - 明太子
-        - スパゲティー
+        - 明太子スパゲティー
         - 温野菜サラダ
         - 味噌汁
         - ジョア
@@ -149,11 +147,10 @@ days:
         name: 豚すき丼
         calories: 862
       set_b:
-        name: 梅肉ソース
+        name: 白身魚の梅肉ソース
         calories: 836
       common:
         items:
-        - 白身魚の
         - ごはん
         - おくらのゴマ和え
         - チョコクレープ
@@ -204,14 +201,13 @@ days:
         - ごはん
     dinner:
       set_a:
-        name: チキンカツ
+        name: えびカツとチキンカツ
         calories: 994
       set_b:
         name: 豚のチンジャオロース風
         calories: 805
       common:
         items:
-        - えびカツと
         - こんにゃくのピリ辛炒め
         - 小松菜の ツナ和え
         - 野菜スープ
@@ -251,11 +247,10 @@ days:
         name: 豚キムチ
         calories: 896
       set_b:
-        name: 竜田揚げ
+        name: さわらの竜田揚げ
         calories: 907
       common:
         items:
-        - さわらの
         - がんもの 含め煮
         - ごまドレッシング和え
         - 味噌汁
@@ -375,12 +370,12 @@ days:
         name: サーモンﾌﾗｲとカレーコロッケ
         calories: 965
       set_b:
-        name: の甘辛炒め
+        name: 豚肉と蓮根の甘辛炒め
         calories: 841
       common:
         items:
-        - 豚肉と蓮根
-        - ごぼうの焙煎ごまサラダ大根のゆかり和え
+        - ごぼうの焙煎ごまサラダ
+        - 大根のゆかり和え
         - 味噌汁
         - ごはん
 - date: '2026-11-10'
@@ -416,15 +411,13 @@ days:
         - ごはん
     dinner:
       set_a:
-        name: デミソース
+        name: ハンバーグデミソース
         calories: 912
       set_b:
-        name: ジンジャー
+        name: チキンジンジャー
         calories: 962
       common:
         items:
-        - ハンバーグ
-        - チキン
         - 五目豆
         - ほうれん草ごま和え
         - 味噌汁
@@ -441,7 +434,8 @@ days:
         calories: 759
       common:
         items:
-        - スクランブルエッグナポリタンスパゲティ
+        - スクランブルエッグ
+        - ナポリタンスパゲティ
         - 海藻サラダ
         - 味噌汁
         - ジョア
@@ -450,11 +444,10 @@ days:
         name: ビビンバ
         calories: 843
       set_b:
-        name: 野菜あんか
+        name: 白身魚の野菜あんかけ
         calories: 757
       common:
         items:
-        - 白身魚の
         - ごはん
         - チンゲン菜のツナ和え
         - ヨーグルト
@@ -508,11 +501,10 @@ days:
         name: ポーク シチュー
         calories: 939
       set_b:
-        name: 甘酢あん
+        name: 鰆の唐揚げ甘酢あん
         calories: 901
       common:
         items:
-        - 鰆の唐揚げ
         - 炒りどうふ
         - コールスローサラダ
         - 卵スープ
@@ -539,11 +531,10 @@ days:
         name: ポークカレー
         calories: 1011
       set_b:
-        name: 香味ソース
+        name: たらの香味ソース
         calories: 872
       common:
         items:
-        - たらの
         - ごはん
         - 大豆サラダ
         - ストロベリーゼリー
@@ -597,7 +588,8 @@ days:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 豆腐のみぞれあんほうれん草のしらす和え
+        - 豆腐のみぞれあん
+        - ほうれん草のしらす和え
         - 野菜スープ
         - ごはん
 - date: '2026-11-15'
@@ -630,13 +622,12 @@ days:
         - 味噌汁
     dinner:
       set_a:
-        name: 鶏肉の
+        name: 鶏肉の塩だれ焼き
         calories: 1027
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 塩だれ焼き
         - じゃがいもの粒マスタード和え
         - グリーンサラダ
         - 味噌汁
@@ -968,13 +959,12 @@ days:
         - わかめスープ
     dinner:
       set_a:
-        name: 鶏肉の唐揚
+        name: 鶏肉の唐揚ねぎソース
         calories: 1038
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ねぎソース
         - 大根そぼろあん
         - なすの揚げ浸し
         - 味噌汁
@@ -992,9 +982,8 @@ days:
       common:
         items:
         - 納豆
-        - 鶏肉とごぼう
-        - の炒め煮チンゲン菜の
-        - ごま和え
+        - 鶏肉とごぼうの炒め煮
+        - チンゲン菜のごま和え
         - 味噌汁
         - 牛乳
     lunch:
@@ -1013,14 +1002,13 @@ days:
         - ごはん
     dinner:
       set_a:
-        name: シチュー
+        name: クリームシチュー
         calories: 926
       set_b:
         name: 鯖の味噌煮
         calories: 846
       common:
         items:
-        - クリーム
         - 豆腐のあんかけ
         - コールスローサラダ
         - 味噌汁
@@ -1044,28 +1032,26 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: そぼろ丼
+        name: 厚揚げそぼろ丼
         calories: 837
       set_b:
         name: 鰆の西京焼
         calories: 780
       common:
         items:
-        - 厚揚げ
         - ごはん
-        - ブロッコリーのおかか和えカスタードクレープ
+        - ブロッコリーのおかか和え
+        - カスタードクレープ
         - 味噌汁
     dinner:
       set_a:
-        name: （北海道）
+        name: ザンギ（北海道）
         calories: 1148
       set_b:
-        name: ねぎ塩炒め
+        name: 豚のねぎ塩炒め
         calories: 835
       common:
         items:
-        - ザンギ
-        - 豚の
         - 小松菜の煮浸し
         - 春雨サラダ
         - 中華スープ
@@ -1083,14 +1069,13 @@ days:
       common:
         items:
         - 温泉卵
-        - ミートボール
-        - 甘酢あん
+        - ミートボール甘酢あん
         - 温野菜サラダ
         - 味噌汁
         - 牛乳
     lunch:
       set_a:
-        name: ちゃんぽん風
+        name: ちゃんぽん風うどん
         calories: 920
       set_b:
         name: さわらのレモン醤油焼き
@@ -1104,14 +1089,13 @@ days:
         - ごはん
     dinner:
       set_a:
-        name: のり塩コロッ
+        name: メンチカツとのり塩コロッケ
         calories: 1071
       set_b:
         name: 肉豆腐
         calories: 880
       common:
         items:
-        - メンチカツと
         - マカロニサラダ
         - ほうれん草のポン酢和え
         - 味噌汁
@@ -1138,25 +1122,23 @@ days:
         name: キーマカレー
         calories: 892
       set_b:
-        name: 南蛮漬け
+        name: 白身魚の南蛮漬け
         calories: 778
       common:
         items:
-        - 白身魚の
         - ごはん
         - 卵とカリフラワーサラダ
         - ストロベリーゼリー
         - コンソメスープ
     dinner:
       set_a:
-        name: ハンバーグ
+        name: チーズinハンバーグ
         calories: 941
       set_b:
         name: 豚肉と野菜のみそ炒め
         calories: 919
       common:
         items:
-        - チーズin
         - 里芋と野菜の土佐煮
         - じゃこサラダ
         - 味噌汁
@@ -1186,7 +1168,8 @@ days:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ほうれん草のごま和えたい焼き（クリーム）
+        - ほうれん草のごま和え
+        - たい焼き（クリーム）
         - わかめスープ
     dinner:
       set_a:
@@ -1219,25 +1202,23 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 照り焼き
+        name: 照り焼きチキン丼
         calories: 1034
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - チキン丼
         - ブロッコリー粒マスタード和え
         - わらび餅(きな粉)
         - 味噌汁
     dinner:
       set_a:
-        name: 白身魚フライと
+        name: 白身魚フライと厚切ハムカツ
         calories: 980
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 厚切ハムカツ
         - けんちん煮
         - 小松菜のかに風味和え
         - 味噌汁
@@ -1264,26 +1245,23 @@ days:
         name: 豚すき丼
         calories: 894
       set_b:
-        name: 梅肉ソース
+        name: 白身魚の梅肉ソース
         calories: 875
       common:
         items:
-        - 白身魚の
         - ごはん
         - 塩こぶ和え
         - もみじまんじゅう
         - 卵スープ
     dinner:
       set_a:
-        name: チキン
+        name: ヤンニョムチキン
         calories: 1039
       set_b:
-        name: の煮物
+        name: 鶏肉と根菜の煮物
         calories: 905
       common:
         items:
-        - ヤンニョム
-        - 鶏肉と根菜
         - スナップえんどうサラダ
         - 卵豆腐
         - 赤だし
