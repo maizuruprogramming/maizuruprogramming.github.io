@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>鶴友寮 食事サイト｜本日の献立・1ヶ月献立表</title>
+  <style>
+    :root {
+      --primary: #1a4f7a;
+      --primary-light: #eaf2f8;
+      --set-a: #c0392b;
+      --set-a-bg: #fdf2f1;
+      --set-b: #1e6f5c;
+      --set-b-bg: #eef7f5;
+      --common: #4a5568;
+      --common-bg: #f4f6f8;
+      --success: #1b6ca8;
+      --success-bg: #eef6fc;
+      --warn: #9a3412;
+      --warn-bg: #fff7ed;
+      --border: #d6dfe6;
+      --bg: #f6f8fa;
+      --text: #1f2933;
+      --muted: #52606d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 1.25rem 1.5rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
+    header p {
+      margin: 0.2rem 0 0;
+      font-size: 0.86rem;
+      opacity: 0.92;
+    }
+    main {
+      max-width: 1020px;
+      margin: 1.4rem auto;
+      padding: 0 1rem 3rem;
+    }
+    .source-bar {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+    }
+    .source-bar a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .source-bar a:hover { text-decoration: underline; }
+
+    /* 自動チェック結果パネル */
+    .auto-check-card {
+      background: var(--success-bg);
+      border: 1px solid #bfd9ee;
+      border-left: 5px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.95rem 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .auto-check-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+    .auto-check-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-pill {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.14rem 0.6rem;
+      border-radius: 999px;
+      background: #1e6f5c;
+      color: #fff;
+    }
+    .auto-check-message {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin: 0.25rem 0 0.55rem;
+      color: var(--text);
+    }
+    .auto-check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.45rem 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .auto-check-grid strong {
+      color: var(--text);
+    }
+
+    /* アレルギー対応案内ボックス */
+    .allergy-box {
+      background: var(--warn-bg);
+      border: 1px solid #fed7aa;
+      border-left: 5px solid #ea580c;
+      border-radius: 8px;
+      padding: 0.85rem 1.15rem;
+      margin-bottom: 1.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .allergy-box-text {
+      font-size: 0.93rem;
+      color: var(--warn);
+    }
+    .allergy-box-text strong {
+      font-weight: 700;
+    }
+    .allergy-box a {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--warn);
+      text-decoration: underline;
+    }
+
+    .view-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.1rem;
+    }
+    .view-tab {
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .view-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .date-nav {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .date-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .date-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .nav-btns {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .nav-btn {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .nav-btn:hover { background: var(--primary-light); }
+    .nav-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    input[type="date"], input[type="search"] {
+      padding: 0.45rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .quick-days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+      gap: 0.35rem;
+      margin-top: 0.85rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    .day-chip {
+      padding: 0.32rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+    }
+    .day-chip.sun { color: #c0392b; }
+    .day-chip.sat { color: #1a4f7a; }
+    .day-chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .meal-section {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 1.15rem;
+    }
+    .meal-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.95rem;
+    }
+    .meal-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--primary);
+    }
+    .note-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #b45309;
+      background: #fef3c7;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+    }
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem;
+    }
+    .course-card {
+      border-radius: 8px;
+      padding: 0.95rem 1rem;
+      border: 1px solid var(--border);
+    }
+    .course-card.set-a {
+      background: var(--set-a-bg);
+      border-color: #f3c6c2;
+    }
+    .course-card.set-b {
+      background: var(--set-b-bg);
+      border-color: #bfe0d8;
+    }
+    .course-card.common {
+      background: var(--common-bg);
+      border-color: var(--border);
+    }
+    .course-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+      color: #fff;
+      margin-bottom: 0.45rem;
+    }
+    .set-a .course-badge { background: var(--set-a); }
+    .set-b .course-badge { background: var(--set-b); }
+    .common .course-badge { background: var(--common); }
+
+    .dish-name {
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .common-list {
+      margin: 0.2rem 0 0;
+      padding-left: 1.2rem;
+      font-size: 0.92rem;
+    }
+    .meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .empty-state {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .monthly-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .monthly-table-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    table.monthly-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+    table.monthly-table th, table.monthly-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.monthly-table th {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    table.monthly-table tr:hover {
+      background: #fafcfd;
+    }
+    .mini-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.05rem 0.35rem;
+      border-radius: 3px;
+      color: #fff;
+      margin-right: 0.25rem;
+    }
+    .mini-tag.a { background: var(--set-a); }
+    .mini-tag.b { background: var(--set-b); }
+    .mini-tag.c { background: var(--common); }
+    .hidden { display: none; }
+    footer {
+      max-width: 1020px;
+      margin: 0 auto 2rem;
+      padding: 0 1rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>鶴友寮 食事サイト｜献立表</h1>
+    <p>鶴友寮 1ヶ月間メニュー・本日の献立（A定食・B定食・共通料理）</p>
+  </header>
+
+  <main>
+    <div class="source-bar">
+      <div>
+        <strong>取得元:</strong>
+        <a id="source-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
+          鶴友寮「食堂関係」公式ページ ↗
+        </a>
+        <span id="pdf-link-area"></span>
+      </div>
+      <div class="meta" id="sync-info">読み込み中...</div>
+    </div>
+
+    <!-- 毎週月曜日 06:30 自動チェック・反映結果パネル -->
+    <section class="auto-check-card" aria-label="自動メニューチェック結果">
+      <div class="auto-check-header">
+        <div class="auto-check-title">
+          <span>自動メニューチェック結果</span>
+          <span class="status-pill" id="auto-check-badge">確認済み・反映完了</span>
+        </div>
+        <button type="button" class="nav-btn" id="reload-feed-btn" style="padding:0.28rem 0.65rem;font-size:0.8rem;">
+          最新結果を再読込
+        </button>
+      </div>
+      <p class="auto-check-message" id="auto-check-message">
+        今月の食事メニューを自動チェックし、最新献立を反映しました。
+      </p>
+      <div class="auto-check-grid">
+        <div><strong>自動実行日時:</strong> <span id="auto-check-schedule">毎週月曜日 06:30 ごろ（JST）</span></div>
+        <div><strong>最終チェック実行:</strong> <span id="auto-check-last">-</span></div>
+        <div><strong>次回チェック予定:</strong> <span id="auto-check-next">-</span></div>
+        <div><strong>対象月・反映件数:</strong> <span id="auto-check-target">-</span></div>
+      </div>
+    </section>
+
+    <!-- アレルギー対応案内 -->
+    <section class="allergy-box" aria-label="アレルギー対応について">
+      <div class="allergy-box-text">
+        <strong>アレルギー対応について：</strong><span id="allergy-notice-text">PDFファイルを確認してください．</span>
+      </div>
+      <div id="allergy-pdf-link">
+        <a href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
+          公式ページの献立表PDFを確認する ↗
+        </a>
+      </div>
+    </section>
+
+    <div class="view-tabs">
+      <button type="button" class="view-tab active" id="tab-daily">その日の献立</button>
+      <button type="button" class="view-tab" id="tab-monthly">1ヶ月一覧（全30日分）</button>
+    </div>
+
+    <div id="daily-view">
+      <section class="date-nav">
+        <div class="date-controls">
+          <div class="date-title" id="selected-date-label">----年--月--日（-）</div>
+          <div class="nav-btns">
+            <button type="button" class="nav-btn" id="prev-day-btn">◀ 前日</button>
+            <button type="button" class="nav-btn primary" id="today-btn">今日</button>
+            <button type="button" class="nav-btn" id="next-day-btn">翌日 ▶</button>
+            <input type="date" id="date-picker" aria-label="日付を選択" />
+          </div>
+        </div>
+        <div class="quick-days" id="quick-days"></div>
+      </section>
+
+      <section id="daily-menu-container"></section>
+    </div>
+
+    <div id="monthly-view" class="hidden">
+      <div class="monthly-toolbar">
+        <div class="meta" id="monthly-summary">1ヶ月間の献立一覧</div>
+        <input type="search" id="menu-search" placeholder="料理名で検索（例: 唐揚げ、カレー、ハンバーグ）" />
+      </div>
+      <div class="monthly-table-wrap">
+        <table class="monthly-table">
+          <thead>
+            <tr>
+              <th>日付</th>
+              <th>朝食（A定食 / B定食 / 共通料理）</th>
+              <th>昼食（A定食 / B定食 / 共通料理）</th>
+              <th>夕食（A定食 / B定食 / 共通料理）</th>
+            </tr>
+          </thead>
+          <tbody id="monthly-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    ※ アレルギー対応については、PDFファイルを確認してください．
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

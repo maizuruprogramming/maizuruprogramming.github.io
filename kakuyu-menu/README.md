@@ -1,135 +1,80 @@
-# kakuyu-menu - 鶴友寮 食堂メニュー
+# 鶴友寮食事サイト — 毎週月曜 06:30 自動メニューチェック＆日別献立表示システム
 
-舞鶴工業高等専門学校・鶴友寮が公開する月別献立表を、スマートフォンでも確認しやすくする非公式ビューアです。GitHub Pagesで公開する静的サイト版を中心に構成しています。
+鶴友寮の公式ページ（`https://www.maizuru-ct.ac.jp/kakuyu/category/dining/`）から**毎週月曜日の朝 6:30 ごろ**に自動でその月の食事メニューをチェック・反映し、**その日の献立（A定食・B定食・共通料理）**・**1ヶ月一覧**・**自動チェック結果**をWebページに表示するシステムです。
 
-## GitHub Pages版の機能
+> **アレルギー対応について**  
+> PDFファイルを確認してください．
 
-- 今日の日付（日本時間）をもとに、朝食・昼食・夕食を自動表示
-- 料理項目ごとに先頭文字を判定し、「A」で始まる項目をA定食、「B」で始まる項目をB定食、それ以外は共通料理として常に表示
-- 週間献立カレンダー（日付を選んで当日の献立に移動）
-- 料理名検索（読み込まれている日別献立データを対象）
-- アレルゲン情報の確認画面（卵・乳・小麦・エビ・カニ・そば・落花生）
-- 月別公式PDFの一覧・画面内表示
-- PC／スマートフォン対応
-
-## データの取得と正確性
-
-`.github/workflows/pages.yml` が毎日10:35ごろ（日本時間／UTC 01:35）と `main` へのpush時に実行されます。
-
-1. `scripts/update_menus.py` が鶴友寮の公式掲載ページから月別献立PDFのURLを取得します。
-2. `scripts/extract_daily_menus.py` が公式PDFを取得し、日付・朝食／昼食／夕食・A／B・共通料理・栄養価を抽出します。各項目を個別に判定し、先頭が「A」ならA定食、先頭が「B」ならB定食、それ以外は共通料理に分類します。直前のA/B判定を一般の料理に引き継ぎません。ただし、**B定食の料理の直後に「ごはん」があり、その前に「共通料理」の見出しがない場合に限り、その「ごはん」はB定食に追加**します。「共通料理」の見出し以降にある「ごはん」は共通料理です。PDFの表抽出でおかず・ごはん・見出しが別の物理行に分割されても、この順序を保ってから分類します。PDFファイル名から対象月を判定できる場合は、記事の投稿日よりPDF側の年月を優先します。
-3. `site/data/daily-menu-overrides.json` に保存した手動確認済みの献立を自動抽出結果へ重ねます。指定された日付・食事区分は手動データを優先し、同じ日の未指定の食事（例：夕食）はPDF抽出結果を残します。
-4. `site/data/daily-menus.json` を生成してGitHub Pagesに公開します。
-
-献立PDFの表構造が変更されると抽出できない場合があります。その場合は、GitHub Actionsのログを確認し、公式PDFを直接参照してください。抽出に失敗した場合、既存の日別JSONに有効な日付データがあればそれを保持します。初期状態の空データしかない場合はActionsを失敗させ、空の献立データを正常公開したように見せない仕様です。
-
-### A/B定食と共通料理の分類
-
-- 料理名の先頭が `A` / `Ａ` の場合はA定食です。
-- 料理名の先頭が `B` / `Ｂ` の場合はB定食です。
-- それ以外は共通料理としてA/B両方に表示します。
-- `共通料理` は見出しなので、料理として登録しません。
-- B定食の料理の直下にある独立した「ごはん」はB定食に含めます。
-- 「共通料理」見出しの後にある「ごはん」は共通料理に含めます。
-- PDF抽出結果でB料理と「ごはん」が同一行に連結されても分割します。
-
-2026年11月18日の朝食・昼食は、提供された献立内容に基づく確定データを `site/data/daily-menu-overrides.json` に保存しています。GitHub ActionsがPDFを毎回再解析しても、この日付の朝食・昼食は手動確認済みデータで上書きされます。夕食は手動確定していないため、PDF抽出結果があればそのまま残します。確認済みデータを追加・修正する場合は、このファイルを編集してください。
-
-## アレルゲン情報について
-
-公式PDFのアレルゲン表示は、各献立のA／Bに対する赤丸などの視覚情報です。通常のテキスト抽出では正確な判定ができないため、このプロジェクトでは自動推定しません。未確認の項目は画面上で **「未確認」** と表示し、該当する公式PDFを開けるようにしています。
-
-PDF原本を人が確認した後、必要に応じて `site/data/allergen-overrides.json` に転記すると、次回のActions実行で「確認済み」として表示されます。現在の同ファイルには説明コメントのみで、確認済みのアレルゲン情報はまだ登録されていません。空配列は「原本を確認し、その食品の赤丸表示がなかった」と確認できた場合にのみ使用してください。
-
-記入例：
-
-```json
-{
-  "2026-11-02": {
-    "breakfast": {
-      "a": ["egg", "milk", "wheat"],
-      "b": ["egg", "milk", "wheat"]
-    },
-    "lunch": {
-      "a": ["wheat"],
-      "b": []
-    }
-  }
-}
-```
-
-利用できるキーは `egg`（卵）、`milk`（乳）、`wheat`（小麦）、`shrimp`（エビ）、`crab`（カニ）、`buckwheat`（そば）、`peanut`（落花生）です。日付・食事区分・A/Bのすべてを原本と照合してください。
-
-**重要：** アレルゲン表示は安全を保証するものではありません。学校公式資料には、調理時の意図しない混入（コンタミネーション）への注意、原材料を完全除去している人は食べないこと、醤油など調味料由来の小麦は表示対象外であることが記載されています。アレルギーに関する判断には、このアプリだけを使用せず、必ず学校の最新資料・学校からの案内を優先してください。
-
-## GitHub Pagesで公開
-
-1. `kakuyu-menu` フォルダー内のファイルをGitHubリポジトリへpushします。既定ブランチは `main` にしてください。
-2. GitHubリポジトリの `Settings` → `Pages` を開きます。
-3. `Build and deployment` の `Source` を **GitHub Actions** に設定します。
-4. `Actions` タブで **Update menu data and deploy GitHub Pages** が完了したことを確認します。
-5. `Settings` → `Pages` に表示されるURLを開きます。
-
-リポジトリ名が `kakuyu-menu` の場合、通常の公開URLは `https://<GitHubユーザー名>.github.io/kakuyu-menu/` です。
-
-### 手動でデータを更新する
-
-GitHubの `Actions` → `Update menu data and deploy GitHub Pages` → `Run workflow` から手動実行できます。サイト上の「データを再読み込み」は、既に公開されているJSONを読み直す操作です。公式サイトへの再取得はGitHub Actionsで行います。
-
-## ローカルで静的版を確認
-
-```bash
-python3 -m http.server 8000 --directory site
-```
-
-`http://localhost:8000/` を開きます。`file://` で直接開くとJSON取得が制限されることがあるため、HTTPサーバーを使用してください。
-
-日別献立データをローカルで再生成する場合：
-
-```bash
-python -m pip install requests beautifulsoup4 pymupdf
-python scripts/update_menus.py --output site/data/menus.json
-python scripts/extract_daily_menus.py --menus-json site/data/menus.json --output site/data/daily-menus.json --allergen-overrides site/data/allergen-overrides.json --daily-overrides site/data/daily-menu-overrides.json
-```
-
-## フォルダー構成
+## ディレクトリ構成
 
 ```text
-kakuyu-menu/
-├── .github/workflows/pages.yml
-├── scripts/
-│   ├── update_menus.py
-│   └── extract_daily_menus.py
-└── site/
-    ├── index.html
-    ├── data/
-    │   ├── menus.json
-    │   ├── daily-menus.json
-    │   └── allergen-overrides.json
-    └── static/
-        ├── app.js
-        └── styles.css
+.
+├── .github/
+│   └── workflows/
+│       └── update-menu.yml             # GitHub Actions 毎週月曜 06:30 JST 自動実行ワークフロー (YAML)
+├── config/
+│   └── settings.yaml                   # 自動チェック時刻・取得元URL・食事区分・アレルギー案内設定 (YAML)
+├── data/
+│   └── menu.yaml                       # 1ヶ月分（30日分）の献立マスターデータ (YAML)
+├── python/
+│   ├── fetch_menu.py                   # その月の食事メニュー自動チェック・取得・JSON反映スクリプト (Python)
+│   ├── auto_scheduler.py               # 毎週月曜日 06:30 (JST) 常駐自動スケジューラ (Python)
+│   └── requirements.txt                # Python 依存パッケージ定義
+├── web/
+│   ├── index.html                      # 本日の献立・1ヶ月一覧・自動チェック結果・アレルギー案内画面 (HTML)
+│   ├── app.js                          # 自動チェック結果描画・日付切替・A/B定食/共通料理描画 (JavaScript)
+│   └── monthly_menu.json               # Web画面が読み込む1ヶ月分献立＆自動チェック結果データ (JSON)
+├── csharp/
+│   ├── Program.cs                      # 毎週月曜 06:30 自動監視＆指定日/1ヶ月献立表示ツール (C#)
+│   └── KakuyuryoMonthlyMenu.csproj     # .NET 8 プロジェクトファイル
+├── .gitignore                          # Git 除外設定
+├── LICENSE                             # MIT ライセンス
+└── README.md                           # プロジェクト説明書
 ```
 
-## 公式参照先
+## 主な機能
 
-https://www.maizuru-ct.ac.jp/kakuyu/category/dining/
+1. **毎週月曜日 06:30（JST）自動メニューチェック＆反映**
+   * **GitHub Actions (`.github/workflows/update-menu.yml`)**: 毎週月曜日 06:30 JST（日曜 21:30 UTC）に自動起動し、その月の食事メニューをチェックして `web/monthly_menu.json` へ自動コミット・反映します。
+   * **常駐スケジューラ (`python/auto_scheduler.py`)**: サーバーやPC上で常駐起動しておくと、毎週月曜 06:30 JST に自動でその月の献立チェックを実行し、`web/monthly_menu.json` を更新します。
+   * **C# スケジューラ (`csharp/Program.cs`)**: `dotnet run -- --schedule` で毎週月曜 06:30 JST の自動監視・チェック実行にも対応しています。
+2. **自動チェック結果のWebページ表示 (`web/index.html`, `web/app.js`)**
+   * 最終自動チェック日時・次回予定日時（毎週月曜 06:30 JST）・対象月・反映結果メッセージをページ上部の結果カードに表示します。
+3. **その日の献立（A定食・B定食・共通料理）＆1ヶ月一覧表示**
+   * 本日の朝食・昼食・夕食それぞれの **A定食**・**B定食**・**共通料理** を表示し、1ヶ月分の日付切替や料理名検索が可能です。
+4. **アレルギー対応案内**
+   * ページ上に「アレルギー対応については、PDFファイルを確認してください．」を明記し、公式ページ・PDFへの導線を表示しています。
 
-### 「ごはん」の分類について
+## 実行方法
 
-- `B 白身魚のチーズ焼き` の直後に `ごはん` があり、その前に `共通料理` の見出しがなければ、`ごはん` をB定食に追加します。
-- `共通料理` の見出しより後にある `ごはん` は共通料理として扱います。
-- B定食の料理の後に味噌汁など別の料理が挟まっている場合、その後の `ごはん` はB定食に引き継がず、共通料理とします。
-- 表の左端列に「B」や「共通料理」の見出しが分離して抽出された場合にも対応します。
+### 1. Python（即時チェック / 毎週月曜 06:30 自動スケジューラ）
+```bash
+cd python
+pip install -r requirements.txt   # 未インストールでも標準ライブラリ＋YAMLデータで動作します
 
-### 料理名の先頭・末尾の文字について
+# 今すぐその月のメニューをチェックして web/monthly_menu.json に反映
+python fetch_menu.py
 
-料理名に含まれる括弧書きや語句（例: `（クリーム）`、`チーズin`、`のり塩コロッ`、`（北海道）`、`豚の`、`カスタード`）は、A/Bの分類記号ではありません。A/B記号を取り除いた後の料理名として保持し、それ以外は共通料理として表示します。途中で切れて見える文字列も、PDF原本で続きが確認できない限り自動補完・他行との自動連結はしません。
+# 毎週月曜日 06:30 (JST) に自動チェックする常駐スケジューラを起動
+python auto_scheduler.py
+```
 
-### 手動確認済み献立の保存（重要）
+### 2. Web（献立サイトの表示）
+```bash
+cd web
+python -m http.server 8000
+# ブラウザで http://localhost:8000 にアクセス
+```
 
-- `site/data/daily-menu-overrides.json` は、PDF解析結果よりも優先する確定データです。
-- `days` 配列に日付を追加し、その中の `meals` に `breakfast` / `lunch` / `dinner` のうち確定した食事だけを記載します。
-- 同じ日付の未指定の食事は、自動PDF抽出結果があれば保持します。
-- アレルゲンの確認結果は別管理の `allergen-overrides.json` に記録します。
-- GitHub Actionsの実行後は、公開された `daily-menus.json` の対象日・食事に `source_method: "manual_override"` が付いていることを確認してください。
+### 3. C#（献立表示・自動チェック監視）
+```bash
+cd csharp
+dotnet run                  # 本日の献立と自動チェック結果を表示
+dotnet run -- 2026-11-21    # 指定日の献立を表示
+dotnet run -- --all         # 1ヶ月分すべての献立を表示
+dotnet run -- --check-now   # 今すぐその月のメニューをチェック・反映
+dotnet run -- --schedule    # 毎週月曜 06:30 (JST) 自動チェック待機モード
+```
+
+## ライセンス
+[MIT License](LICENSE)

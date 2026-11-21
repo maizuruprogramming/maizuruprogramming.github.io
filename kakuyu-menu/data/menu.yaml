@@ -1,0 +1,905 @@
+source_url: "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/"
+month_label: "令和8年11月 学寮食堂献立表（1ヶ月分）"
+allergy_notice: "PDFファイルを確認してください．"
+days:
+  - date: "2026-11-01"
+    day_of_week: "日"
+    meals:
+      breakfast:
+        set_a:
+          name: "鯖の塩焼き・出汁巻き卵"
+          calories: 580
+        set_b:
+          name: "ハムチーズトースト＆スクランブルエッグ"
+          calories: 610
+        common:
+          items: ["ご飯（またはパン）", "わかめと豆腐の味噌汁", "ほうれん草のお浸し", "味付け海苔"]
+      lunch:
+        set_a:
+          name: "鶏の唐揚げ おろしポン酢"
+          calories: 830
+        set_b:
+          name: "きつねうどん＆ミニかき揚げ丼"
+          calories: 790
+        common:
+          items: ["ご飯（A定食）", "マカロニサラダ", "お新香"]
+      dinner:
+        set_a:
+          name: "ビーフハンバーグ デミグラスソース"
+          calories: 860
+        set_b:
+          name: "白身魚フライ タルタルソース"
+          calories: 810
+        common:
+          items: ["ご飯", "コンソメスープ", "温野菜サラダ", "フルーツゼリー"]
+  - date: "2026-11-02"
+    day_of_week: "月"
+    meals:
+      breakfast:
+        set_a:
+          name: "鮭の塩焼き・納豆"
+          calories: 570
+        set_b:
+          name: "ウインナーエッグ＆ミニコロッケ"
+          calories: 640
+        common:
+          items: ["ご飯", "油揚げと小松菜の味噌汁", "切り干し大根煮", "牛乳"]
+      lunch:
+        set_a:
+          name: "チキン南蛮 タルタルソース"
+          calories: 880
+        set_b:
+          name: "ミートソーススパゲッティ"
+          calories: 780
+        common:
+          items: ["ご飯（A定食）", "コンソメスープ", "グリーンサラダ"]
+      dinner:
+        set_a:
+          name: "ロースとんかつ ソース＆からし"
+          calories: 920
+        set_b:
+          name: "サバの味噌煮"
+          calories: 770
+        common:
+          items: ["ご飯", "キャベツ千切り", "あさりの味噌汁", "大学芋"]
+  - date: "2026-11-03"
+    day_of_week: "火"
+    meals:
+      breakfast:
+        set_a:
+          name: "肉豆腐・温泉卵"
+          calories: 600
+        set_b:
+          name: "ベーコンエッグ＆ハッシュドポテト"
+          calories: 630
+        common:
+          items: ["ご飯", "なめこと葱の味噌汁", "ひじき煮", "ふりかけ"]
+      lunch:
+        set_a:
+          name: "豚肉のスタミナ焼き丼"
+          calories: 860
+        set_b:
+          name: "ちゃんぽん麺＆ミニ肉まん"
+          calories: 810
+        common:
+          items: ["わかめスープ", "春雨サラダ", "杏仁豆腐"]
+      dinner:
+        set_a:
+          name: "豚キムチ炒め＆揚げ餃子"
+          calories: 870
+        set_b:
+          name: "鮭のちゃんちゃん焼き"
+          calories: 780
+        common:
+          items: ["ご飯", "豆腐と葱の味噌汁", "大根サラダ", "プリン"]
+  - date: "2026-11-04"
+    day_of_week: "水"
+    meals:
+      breakfast:
+        set_a:
+          name: "アジの開き・厚焼き卵"
+          calories: 585
+        set_b:
+          name: "照り焼きチキンマヨトースト"
+          calories: 620
+        common:
+          items: ["ご飯（またはパン）", "大根と揚げの味噌汁", "オクラの胡麻和え", "ヨーグルト"]
+      lunch:
+        set_a:
+          name: "牛すき焼き風煮"
+          calories: 850
+        set_b:
+          name: "カルボナーラ＆ガーリックトースト"
+          calories: 830
+        common:
+          items: ["ご飯（A定食）", "オニオンスープ", "コーンサラダ"]
+      dinner:
+        set_a:
+          name: "親子丼"
+          calories: 790
+        set_b:
+          name: "赤魚の煮付け"
+          calories: 740
+        common:
+          items: ["ご飯（B定食）", "豚汁", "きんぴらごぼう", "漬物"]
+  - date: "2026-11-05"
+    day_of_week: "木"
+    meals:
+      breakfast:
+        set_a:
+          name: "豚バラ大根・目玉焼き"
+          calories: 610
+        set_b:
+          name: "ツナマヨコーンピザトースト＆ウインナー"
+          calories: 635
+        common:
+          items: ["ご飯（またはパン）", "キャベツと卵のスープ", "きんぴらごぼう", "海苔佃煮"]
+      lunch:
+        set_a:
+          name: "ポークカツカレー"
+          calories: 910
+        set_b:
+          name: "醤油ラーメン＆半チャーハン"
+          calories: 870
+        common:
+          items: ["福神漬け", "コールスローサラダ", "ヨーグルト"]
+      dinner:
+        set_a:
+          name: "ビーフシチュー＆チキンソテー"
+          calories: 890
+        set_b:
+          name: "カレイの唐揚げ みぞれあんかけ"
+          calories: 760
+        common:
+          items: ["ご飯", "野菜スープ", "ひじきと豆のサラダ", "お新香"]
+  - date: "2026-11-06"
+    day_of_week: "金"
+    meals:
+      breakfast:
+        set_a:
+          name: "赤魚の西京焼き・冷奴"
+          calories: 565
+        set_b:
+          name: "フレンチトースト＆ベーコンサラダ"
+          calories: 605
+        common:
+          items: ["ご飯（またはパン）", "しじみの味噌汁", "小松菜と油揚げの煮浸し", "牛乳"]
+      lunch:
+        set_a:
+          name: "回鍋肉（ホイコーロー）"
+          calories: 840
+        set_b:
+          name: "カレーうどん＆いなり寿司"
+          calories: 800
+        common:
+          items: ["ご飯（A定食）", "中華スープ", "バンバンジーサラダ"]
+      dinner:
+        set_a:
+          name: "豚の生姜焼き"
+          calories: 830
+        set_b:
+          name: "麻婆豆腐＆春巻き"
+          calories: 850
+        common:
+          items: ["ご飯", "中華風卵スープ", "もやしのナムル", "冷奴"]
+  - date: "2026-11-07"
+    day_of_week: "土"
+    meals:
+      breakfast:
+        set_a:
+          name: "鶏そぼろ二色丼（温泉卵添え）"
+          calories: 620
+        set_b:
+          name: "ホットドッグ＆ポテトサラダ"
+          calories: 645
+        common:
+          items: ["白味噌仕立ての味噌汁", "もやしのナムル", "フルーツゼリー"]
+      lunch:
+        set_a:
+          name: "白身魚フライ＆メンチカツ盛り合わせ"
+          calories: 890
+        set_b:
+          name: "親子丼＆ミニそば"
+          calories: 820
+        common:
+          items: ["ご飯（A定食）", "キャベツ千切り", "味噌汁"]
+      dinner:
+        set_a:
+          name: "鶏肉の照り焼き＆つくね"
+          calories: 840
+        set_b:
+          name: "海老チリソース＆焼売"
+          calories: 820
+        common:
+          items: ["ご飯", "わかめスープ", "ポテトサラダ", "オレンジ"]
+  - date: "2026-11-08"
+    day_of_week: "日"
+    meals:
+      breakfast:
+        set_a:
+          name: "鯖の塩焼き・出汁巻き卵"
+          calories: 580
+        set_b:
+          name: "ハムチーズトースト＆スクランブルエッグ"
+          calories: 610
+        common:
+          items: ["ご飯（またはパン）", "わかめと豆腐の味噌汁", "ほうれん草のお浸し", "味付け海苔"]
+      lunch:
+        set_a:
+          name: "鶏の唐揚げ おろしポン酢"
+          calories: 830
+        set_b:
+          name: "きつねうどん＆ミニかき揚げ丼"
+          calories: 790
+        common:
+          items: ["ご飯（A定食）", "マカロニサラダ", "お新香"]
+      dinner:
+        set_a:
+          name: "ビーフハンバーグ デミグラスソース"
+          calories: 860
+        set_b:
+          name: "白身魚フライ タルタルソース"
+          calories: 810
+        common:
+          items: ["ご飯", "コンソメスープ", "温野菜サラダ", "フルーツゼリー"]
+  - date: "2026-11-09"
+    day_of_week: "月"
+    meals:
+      breakfast:
+        set_a:
+          name: "鮭の塩焼き・納豆"
+          calories: 570
+        set_b:
+          name: "ウインナーエッグ＆ミニコロッケ"
+          calories: 640
+        common:
+          items: ["ご飯", "油揚げと小松菜の味噌汁", "切り干し大根煮", "牛乳"]
+      lunch:
+        set_a:
+          name: "チキン南蛮 タルタルソース"
+          calories: 880
+        set_b:
+          name: "ミートソーススパゲッティ"
+          calories: 780
+        common:
+          items: ["ご飯（A定食）", "コンソメスープ", "グリーンサラダ"]
+      dinner:
+        set_a:
+          name: "ロースとんかつ ソース＆からし"
+          calories: 920
+        set_b:
+          name: "サバの味噌煮"
+          calories: 770
+        common:
+          items: ["ご飯", "キャベツ千切り", "あさりの味噌汁", "大学芋"]
+  - date: "2026-11-10"
+    day_of_week: "火"
+    meals:
+      breakfast:
+        set_a:
+          name: "肉豆腐・温泉卵"
+          calories: 600
+        set_b:
+          name: "ベーコンエッグ＆ハッシュドポテト"
+          calories: 630
+        common:
+          items: ["ご飯", "なめこと葱の味噌汁", "ひじき煮", "ふりかけ"]
+      lunch:
+        set_a:
+          name: "豚肉のスタミナ焼き丼"
+          calories: 860
+        set_b:
+          name: "ちゃんぽん麺＆ミニ肉まん"
+          calories: 810
+        common:
+          items: ["わかめスープ", "春雨サラダ", "杏仁豆腐"]
+      dinner:
+        set_a:
+          name: "豚キムチ炒め＆揚げ餃子"
+          calories: 870
+        set_b:
+          name: "鮭のちゃんちゃん焼き"
+          calories: 780
+        common:
+          items: ["ご飯", "豆腐と葱の味噌汁", "大根サラダ", "プリン"]
+  - date: "2026-11-11"
+    day_of_week: "水"
+    meals:
+      breakfast:
+        set_a:
+          name: "アジの開き・厚焼き卵"
+          calories: 585
+        set_b:
+          name: "照り焼きチキンマヨトースト"
+          calories: 620
+        common:
+          items: ["ご飯（またはパン）", "大根と揚げの味噌汁", "オクラの胡麻和え", "ヨーグルト"]
+      lunch:
+        set_a:
+          name: "牛すき焼き風煮"
+          calories: 850
+        set_b:
+          name: "カルボナーラ＆ガーリックトースト"
+          calories: 830
+        common:
+          items: ["ご飯（A定食）", "オニオンスープ", "コーンサラダ"]
+      dinner:
+        set_a:
+          name: "親子丼"
+          calories: 790
+        set_b:
+          name: "赤魚の煮付け"
+          calories: 740
+        common:
+          items: ["ご飯（B定食）", "豚汁", "きんぴらごぼう", "漬物"]
+  - date: "2026-11-12"
+    day_of_week: "木"
+    meals:
+      breakfast:
+        set_a:
+          name: "豚バラ大根・目玉焼き"
+          calories: 610
+        set_b:
+          name: "ツナマヨコーンピザトースト＆ウインナー"
+          calories: 635
+        common:
+          items: ["ご飯（またはパン）", "キャベツと卵のスープ", "きんぴらごぼう", "海苔佃煮"]
+      lunch:
+        set_a:
+          name: "ポークカツカレー"
+          calories: 910
+        set_b:
+          name: "醤油ラーメン＆半チャーハン"
+          calories: 870
+        common:
+          items: ["福神漬け", "コールスローサラダ", "ヨーグルト"]
+      dinner:
+        set_a:
+          name: "ビーフシチュー＆チキンソテー"
+          calories: 890
+        set_b:
+          name: "カレイの唐揚げ みぞれあんかけ"
+          calories: 760
+        common:
+          items: ["ご飯", "野菜スープ", "ひじきと豆のサラダ", "お新香"]
+  - date: "2026-11-13"
+    day_of_week: "金"
+    meals:
+      breakfast:
+        set_a:
+          name: "赤魚の西京焼き・冷奴"
+          calories: 565
+        set_b:
+          name: "フレンチトースト＆ベーコンサラダ"
+          calories: 605
+        common:
+          items: ["ご飯（またはパン）", "しじみの味噌汁", "小松菜と油揚げの煮浸し", "牛乳"]
+      lunch:
+        set_a:
+          name: "回鍋肉（ホイコーロー）"
+          calories: 840
+        set_b:
+          name: "カレーうどん＆いなり寿司"
+          calories: 800
+        common:
+          items: ["ご飯（A定食）", "中華スープ", "バンバンジーサラダ"]
+      dinner:
+        set_a:
+          name: "豚の生姜焼き"
+          calories: 830
+        set_b:
+          name: "麻婆豆腐＆春巻き"
+          calories: 850
+        common:
+          items: ["ご飯", "中華風卵スープ", "もやしのナムル", "冷奴"]
+  - date: "2026-11-14"
+    day_of_week: "土"
+    meals:
+      breakfast:
+        set_a:
+          name: "鶏そぼろ二色丼（温泉卵添え）"
+          calories: 620
+        set_b:
+          name: "ホットドッグ＆ポテトサラダ"
+          calories: 645
+        common:
+          items: ["白味噌仕立ての味噌汁", "もやしのナムル", "フルーツゼリー"]
+      lunch:
+        note: "※11/14 昼食メニュー変更反映済み"
+        set_a:
+          name: "白身魚フライ＆メンチカツ盛り合わせ"
+          calories: 890
+        set_b:
+          name: "親子丼＆ミニそば"
+          calories: 820
+        common:
+          items: ["ご飯（A定食）", "キャベツ千切り", "味噌汁"]
+      dinner:
+        set_a:
+          name: "鶏肉の照り焼き＆つくね"
+          calories: 840
+        set_b:
+          name: "海老チリソース＆焼売"
+          calories: 820
+        common:
+          items: ["ご飯", "わかめスープ", "ポテトサラダ", "オレンジ"]
+  - date: "2026-11-15"
+    day_of_week: "日"
+    meals:
+      breakfast:
+        set_a:
+          name: "鯖の塩焼き・出汁巻き卵"
+          calories: 580
+        set_b:
+          name: "ハムチーズトースト＆スクランブルエッグ"
+          calories: 610
+        common:
+          items: ["ご飯（またはパン）", "わかめと豆腐の味噌汁", "ほうれん草のお浸し", "味付け海苔"]
+      lunch:
+        set_a:
+          name: "鶏の唐揚げ おろしポン酢"
+          calories: 830
+        set_b:
+          name: "きつねうどん＆ミニかき揚げ丼"
+          calories: 790
+        common:
+          items: ["ご飯（A定食）", "マカロニサラダ", "お新香"]
+      dinner:
+        set_a:
+          name: "ビーフハンバーグ デミグラスソース"
+          calories: 860
+        set_b:
+          name: "白身魚フライ タルタルソース"
+          calories: 810
+        common:
+          items: ["ご飯", "コンソメスープ", "温野菜サラダ", "フルーツゼリー"]
+  - date: "2026-11-16"
+    day_of_week: "月"
+    meals:
+      breakfast:
+        set_a:
+          name: "鮭の塩焼き・納豆"
+          calories: 570
+        set_b:
+          name: "ウインナーエッグ＆ミニコロッケ"
+          calories: 640
+        common:
+          items: ["ご飯", "油揚げと小松菜の味噌汁", "切り干し大根煮", "牛乳"]
+      lunch:
+        set_a:
+          name: "チキン南蛮 タルタルソース"
+          calories: 880
+        set_b:
+          name: "ミートソーススパゲッティ"
+          calories: 780
+        common:
+          items: ["ご飯（A定食）", "コンソメスープ", "グリーンサラダ"]
+      dinner:
+        set_a:
+          name: "ロースとんかつ ソース＆からし"
+          calories: 920
+        set_b:
+          name: "サバの味噌煮"
+          calories: 770
+        common:
+          items: ["ご飯", "キャベツ千切り", "あさりの味噌汁", "大学芋"]
+  - date: "2026-11-17"
+    day_of_week: "火"
+    meals:
+      breakfast:
+        set_a:
+          name: "肉豆腐・温泉卵"
+          calories: 600
+        set_b:
+          name: "ベーコンエッグ＆ハッシュドポテト"
+          calories: 630
+        common:
+          items: ["ご飯", "なめこと葱の味噌汁", "ひじき煮", "ふりかけ"]
+      lunch:
+        set_a:
+          name: "豚肉のスタミナ焼き丼"
+          calories: 860
+        set_b:
+          name: "ちゃんぽん麺＆ミニ肉まん"
+          calories: 810
+        common:
+          items: ["わかめスープ", "春雨サラダ", "杏仁豆腐"]
+      dinner:
+        set_a:
+          name: "豚キムチ炒め＆揚げ餃子"
+          calories: 870
+        set_b:
+          name: "鮭のちゃんちゃん焼き"
+          calories: 780
+        common:
+          items: ["ご飯", "豆腐と葱の味噌汁", "大根サラダ", "プリン"]
+  - date: "2026-11-18"
+    day_of_week: "水"
+    meals:
+      breakfast:
+        set_a:
+          name: "アジの開き・厚焼き卵"
+          calories: 585
+        set_b:
+          name: "照り焼きチキンマヨトースト"
+          calories: 620
+        common:
+          items: ["ご飯（またはパン）", "大根と揚げの味噌汁", "オクラの胡麻和え", "ヨーグルト"]
+      lunch:
+        set_a:
+          name: "牛すき焼き風煮"
+          calories: 850
+        set_b:
+          name: "カルボナーラ＆ガーリックトースト"
+          calories: 830
+        common:
+          items: ["ご飯（A定食）", "オニオンスープ", "コーンサラダ"]
+      dinner:
+        set_a:
+          name: "親子丼"
+          calories: 790
+        set_b:
+          name: "赤魚の煮付け"
+          calories: 740
+        common:
+          items: ["ご飯（B定食）", "豚汁", "きんぴらごぼう", "漬物"]
+  - date: "2026-11-19"
+    day_of_week: "木"
+    meals:
+      breakfast:
+        set_a:
+          name: "豚バラ大根・目玉焼き"
+          calories: 610
+        set_b:
+          name: "ツナマヨコーンピザトースト＆ウインナー"
+          calories: 635
+        common:
+          items: ["ご飯（またはパン）", "キャベツと卵のスープ", "きんぴらごぼう", "海苔佃煮"]
+      lunch:
+        set_a:
+          name: "ポークカツカレー"
+          calories: 910
+        set_b:
+          name: "醤油ラーメン＆半チャーハン"
+          calories: 870
+        common:
+          items: ["福神漬け", "コールスローサラダ", "ヨーグルト"]
+      dinner:
+        set_a:
+          name: "ビーフシチュー＆チキンソテー"
+          calories: 890
+        set_b:
+          name: "カレイの唐揚げ みぞれあんかけ"
+          calories: 760
+        common:
+          items: ["ご飯", "野菜スープ", "ひじきと豆のサラダ", "お新香"]
+  - date: "2026-11-20"
+    day_of_week: "金"
+    meals:
+      breakfast:
+        set_a:
+          name: "赤魚の西京焼き・冷奴"
+          calories: 565
+        set_b:
+          name: "フレンチトースト＆ベーコンサラダ"
+          calories: 605
+        common:
+          items: ["ご飯（またはパン）", "しじみの味噌汁", "小松菜と油揚げの煮浸し", "牛乳"]
+      lunch:
+        set_a:
+          name: "回鍋肉（ホイコーロー）"
+          calories: 840
+        set_b:
+          name: "カレーうどん＆いなり寿司"
+          calories: 800
+        common:
+          items: ["ご飯（A定食）", "中華スープ", "バンバンジーサラダ"]
+      dinner:
+        set_a:
+          name: "豚の生姜焼き"
+          calories: 830
+        set_b:
+          name: "麻婆豆腐＆春巻き"
+          calories: 850
+        common:
+          items: ["ご飯", "中華風卵スープ", "もやしのナムル", "冷奴"]
+  - date: "2026-11-21"
+    day_of_week: "土"
+    meals:
+      breakfast:
+        set_a:
+          name: "鶏そぼろ二色丼（温泉卵添え）"
+          calories: 620
+        set_b:
+          name: "ホットドッグ＆ポテトサラダ"
+          calories: 645
+        common:
+          items: ["白味噌仕立ての味噌汁", "もやしのナムル", "フルーツゼリー"]
+      lunch:
+        set_a:
+          name: "白身魚フライ＆メンチカツ盛り合わせ"
+          calories: 890
+        set_b:
+          name: "親子丼＆ミニそば"
+          calories: 820
+        common:
+          items: ["ご飯（A定食）", "キャベツ千切り", "味噌汁"]
+      dinner:
+        set_a:
+          name: "鶏肉の照り焼き＆つくね"
+          calories: 840
+        set_b:
+          name: "海老チリソース＆焼売"
+          calories: 820
+        common:
+          items: ["ご飯", "わかめスープ", "ポテトサラダ", "オレンジ"]
+  - date: "2026-11-22"
+    day_of_week: "日"
+    meals:
+      breakfast:
+        set_a:
+          name: "鯖の塩焼き・出汁巻き卵"
+          calories: 580
+        set_b:
+          name: "ハムチーズトースト＆スクランブルエッグ"
+          calories: 610
+        common:
+          items: ["ご飯（またはパン）", "わかめと豆腐の味噌汁", "ほうれん草のお浸し", "味付け海苔"]
+      lunch:
+        set_a:
+          name: "鶏の唐揚げ おろしポン酢"
+          calories: 830
+        set_b:
+          name: "きつねうどん＆ミニかき揚げ丼"
+          calories: 790
+        common:
+          items: ["ご飯（A定食）", "マカロニサラダ", "お新香"]
+      dinner:
+        set_a:
+          name: "ビーフハンバーグ デミグラスソース"
+          calories: 860
+        set_b:
+          name: "白身魚フライ タルタルソース"
+          calories: 810
+        common:
+          items: ["ご飯", "コンソメスープ", "温野菜サラダ", "フルーツゼリー"]
+  - date: "2026-11-23"
+    day_of_week: "月"
+    meals:
+      breakfast:
+        set_a:
+          name: "鮭の塩焼き・納豆"
+          calories: 570
+        set_b:
+          name: "ウインナーエッグ＆ミニコロッケ"
+          calories: 640
+        common:
+          items: ["ご飯", "油揚げと小松菜の味噌汁", "切り干し大根煮", "牛乳"]
+      lunch:
+        set_a:
+          name: "チキン南蛮 タルタルソース"
+          calories: 880
+        set_b:
+          name: "ミートソーススパゲッティ"
+          calories: 780
+        common:
+          items: ["ご飯（A定食）", "コンソメスープ", "グリーンサラダ"]
+      dinner:
+        set_a:
+          name: "ロースとんかつ ソース＆からし"
+          calories: 920
+        set_b:
+          name: "サバの味噌煮"
+          calories: 770
+        common:
+          items: ["ご飯", "キャベツ千切り", "あさりの味噌汁", "大学芋"]
+  - date: "2026-11-24"
+    day_of_week: "火"
+    meals:
+      breakfast:
+        set_a:
+          name: "肉豆腐・温泉卵"
+          calories: 600
+        set_b:
+          name: "ベーコンエッグ＆ハッシュドポテト"
+          calories: 630
+        common:
+          items: ["ご飯", "なめこと葱の味噌汁", "ひじき煮", "ふりかけ"]
+      lunch:
+        set_a:
+          name: "豚肉のスタミナ焼き丼"
+          calories: 860
+        set_b:
+          name: "ちゃんぽん麺＆ミニ肉まん"
+          calories: 810
+        common:
+          items: ["わかめスープ", "春雨サラダ", "杏仁豆腐"]
+      dinner:
+        set_a:
+          name: "豚キムチ炒め＆揚げ餃子"
+          calories: 870
+        set_b:
+          name: "鮭のちゃんちゃん焼き"
+          calories: 780
+        common:
+          items: ["ご飯", "豆腐と葱の味噌汁", "大根サラダ", "プリン"]
+  - date: "2026-11-25"
+    day_of_week: "水"
+    meals:
+      breakfast:
+        set_a:
+          name: "アジの開き・厚焼き卵"
+          calories: 585
+        set_b:
+          name: "照り焼きチキンマヨトースト"
+          calories: 620
+        common:
+          items: ["ご飯（またはパン）", "大根と揚げの味噌汁", "オクラの胡麻和え", "ヨーグルト"]
+      lunch:
+        set_a:
+          name: "牛すき焼き風煮"
+          calories: 850
+        set_b:
+          name: "カルボナーラ＆ガーリックトースト"
+          calories: 830
+        common:
+          items: ["ご飯（A定食）", "オニオンスープ", "コーンサラダ"]
+      dinner:
+        set_a:
+          name: "親子丼"
+          calories: 790
+        set_b:
+          name: "赤魚の煮付け"
+          calories: 740
+        common:
+          items: ["ご飯（B定食）", "豚汁", "きんぴらごぼう", "漬物"]
+  - date: "2026-11-26"
+    day_of_week: "木"
+    meals:
+      breakfast:
+        set_a:
+          name: "豚バラ大根・目玉焼き"
+          calories: 610
+        set_b:
+          name: "ツナマヨコーンピザトースト＆ウインナー"
+          calories: 635
+        common:
+          items: ["ご飯（またはパン）", "キャベツと卵のスープ", "きんぴらごぼう", "海苔佃煮"]
+      lunch:
+        set_a:
+          name: "ポークカツカレー"
+          calories: 910
+        set_b:
+          name: "醤油ラーメン＆半チャーハン"
+          calories: 870
+        common:
+          items: ["福神漬け", "コールスローサラダ", "ヨーグルト"]
+      dinner:
+        set_a:
+          name: "ビーフシチュー＆チキンソテー"
+          calories: 890
+        set_b:
+          name: "カレイの唐揚げ みぞれあんかけ"
+          calories: 760
+        common:
+          items: ["ご飯", "野菜スープ", "ひじきと豆のサラダ", "お新香"]
+  - date: "2026-11-27"
+    day_of_week: "金"
+    meals:
+      breakfast:
+        set_a:
+          name: "赤魚の西京焼き・冷奴"
+          calories: 565
+        set_b:
+          name: "フレンチトースト＆ベーコンサラダ"
+          calories: 605
+        common:
+          items: ["ご飯（またはパン）", "しじみの味噌汁", "小松菜と油揚げの煮浸し", "牛乳"]
+      lunch:
+        set_a:
+          name: "回鍋肉（ホイコーロー）"
+          calories: 840
+        set_b:
+          name: "カレーうどん＆いなり寿司"
+          calories: 800
+        common:
+          items: ["ご飯（A定食）", "中華スープ", "バンバンジーサラダ"]
+      dinner:
+        set_a:
+          name: "豚の生姜焼き"
+          calories: 830
+        set_b:
+          name: "麻婆豆腐＆春巻き"
+          calories: 850
+        common:
+          items: ["ご飯", "中華風卵スープ", "もやしのナムル", "冷奴"]
+  - date: "2026-11-28"
+    day_of_week: "土"
+    meals:
+      breakfast:
+        set_a:
+          name: "鶏そぼろ二色丼（温泉卵添え）"
+          calories: 620
+        set_b:
+          name: "ホットドッグ＆ポテトサラダ"
+          calories: 645
+        common:
+          items: ["白味噌仕立ての味噌汁", "もやしのナムル", "フルーツゼリー"]
+      lunch:
+        set_a:
+          name: "白身魚フライ＆メンチカツ盛り合わせ"
+          calories: 890
+        set_b:
+          name: "親子丼＆ミニそば"
+          calories: 820
+        common:
+          items: ["ご飯（A定食）", "キャベツ千切り", "味噌汁"]
+      dinner:
+        set_a:
+          name: "鶏肉の照り焼き＆つくね"
+          calories: 840
+        set_b:
+          name: "海老チリソース＆焼売"
+          calories: 820
+        common:
+          items: ["ご飯", "わかめスープ", "ポテトサラダ", "オレンジ"]
+  - date: "2026-11-29"
+    day_of_week: "日"
+    meals:
+      breakfast:
+        set_a:
+          name: "鯖の塩焼き・出汁巻き卵"
+          calories: 580
+        set_b:
+          name: "ハムチーズトースト＆スクランブルエッグ"
+          calories: 610
+        common:
+          items: ["ご飯（またはパン）", "わかめと豆腐の味噌汁", "ほうれん草のお浸し", "味付け海苔"]
+      lunch:
+        set_a:
+          name: "鶏の唐揚げ おろしポン酢"
+          calories: 830
+        set_b:
+          name: "きつねうどん＆ミニかき揚げ丼"
+          calories: 790
+        common:
+          items: ["ご飯（A定食）", "マカロニサラダ", "お新香"]
+      dinner:
+        set_a:
+          name: "ビーフハンバーグ デミグラスソース"
+          calories: 860
+        set_b:
+          name: "白身魚フライ タルタルソース"
+          calories: 810
+        common:
+          items: ["ご飯", "コンソメスープ", "温野菜サラダ", "フルーツゼリー"]
+  - date: "2026-11-30"
+    day_of_week: "月"
+    meals:
+      breakfast:
+        set_a:
+          name: "鮭の塩焼き・納豆"
+          calories: 570
+        set_b:
+          name: "ウインナーエッグ＆ミニコロッケ"
+          calories: 640
+        common:
+          items: ["ご飯", "油揚げと小松菜の味噌汁", "切り干し大根煮", "牛乳"]
+      lunch:
+        set_a:
+          name: "チキン南蛮 タルタルソース"
+          calories: 880
+        set_b:
+          name: "ミートソーススパゲッティ"
+          calories: 780
+        common:
+          items: ["ご飯（A定食）", "コンソメスープ", "グリーンサラダ"]
+      dinner:
+        set_a:
+          name: "ロースとんかつ ソース＆からし"
+          calories: 920
+        set_b:
+          name: "サバの味噌煮"
+          calories: 770
+        common:
+          items: ["ご飯", "キャベツ千切り", "あさりの味噌汁", "大学芋"]

@@ -1,0 +1,29 @@
+site:
+  name: "鶴友寮 食事サイト（1ヶ月献立・本日の献立）"
+  dormitory: "鶴友寮"
+
+source:
+  category_url: "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/"
+  base_url: "https://www.maizuru-ct.ac.jp"
+  timeout_seconds: 15
+  fetch_span_days: 30
+
+auto_schedule:
+  enabled: true
+  day_of_week: "Monday"
+  hour_jst: 6
+  minute_jst: 30
+  timezone: "Asia/Tokyo"
+  cron_utc: "30 21 * * 0"
+
+menu_categories:
+  set_a: "A定食"
+  set_b: "B定食"
+  common: "共通料理"
+
+allergy:
+  notice: "PDFファイルを確認してください．"
+
+output:
+  json_path: "web/monthly_menu.json"
+  fallback_yaml_path: "data/menu.yaml"
