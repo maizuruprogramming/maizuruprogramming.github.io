@@ -1,17 +1,7 @@
-source_url: "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/"
-article_url: "https://www.maizuru-ct.ac.jp/kakuyu/"
-menu_pdf_url: "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
-month_label: "学寮食堂献立表（令和8年11月）※11/12変更"
-note: "※11.14の昼食が変更になっています。"
-allergy_notice: "PDFファイルを確認してください．"
-days:
-  - date: "2026-11-21"
-    day_of_week: "土"
-    meals:
-      breakfast:
-        set_a:
-          name: "ごはん"
-        set_b:
-          name: "食パン"
-        common:
-          items: ["鰆の付焼き", "鶏肉と根菜の煮物", "温野菜サラダ", "味噌汁", "牛乳"]
+source_url: https://www.maizuru-ct.ac.jp/kakuyu/category/dining/
+article_url: https://www.maizuru-ct.ac.jp/kakuyu/
+menu_pdf_url: https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/07/menu-domitory-2026_8.pdf
+month_label: 学寮食堂献立表(令和8年8月)
+note: ※11.14の昼食が変更になっています。
+allergy_notice: PDFファイルを確認してください．
+days: []

@@ -1,53 +1,29 @@
 {
   "source_url": "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/",
-  "fetched_at": "2026-11-21 12:29:00 JST",
-  "status": "production_ready",
+  "fetched_at": "2026-11-21 12:56:08 JST",
+  "status": "live_pdf_extracted",
   "error": "",
   "allergy_notice": "PDFファイルを確認してください．",
   "auto_check": {
     "enabled": true,
     "schedule_label": "毎週月曜日 06:30 ごろ（JST）",
     "cron_utc": "30 21 * * 0",
-    "trigger": "production_release_clean",
-    "last_checked_at": "2026-11-21 12:29:00 JST",
+    "trigger": "manual_run_workflow",
+    "last_checked_at": "2026-11-21 12:56:08 JST",
     "next_check_at": "2026-11-23 06:30:00 JST",
     "target_month": "2026年11月（令和8年11月）",
     "result_status": "success",
     "updated": true,
-    "menu_hash": "afe497e5285d",
-    "result_message": "仮データをすべて削除し、公式献立表PDF（令和8年11月 ※11/12変更）および確定済み献立で本番データを公開しました。"
+    "menu_hash": "4f53cda18c2b",
+    "result_message": "公式PDF「学寮食堂献立表(令和8年8月)」から直接 0日分の献立を取得・反映しました。"
   },
   "latest_article": {
     "published_date": "2026年10月27日",
-    "title": "学寮食堂献立表（令和8年11月）※11/12変更",
+    "title": "学寮食堂献立表(令和8年8月)",
     "note": "※11.14の昼食が変更になっています。",
     "article_url": "https://www.maizuru-ct.ac.jp/kakuyu/",
-    "menu_pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf",
+    "menu_pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/07/menu-domitory-2026_8.pdf",
     "nutrition_pdf_url": ""
   },
-  "days": [
-    {
-      "date": "2026-11-21",
-      "day_of_week": "土",
-      "meals": {
-        "breakfast": {
-          "set_a": {
-            "name": "ごはん"
-          },
-          "set_b": {
-            "name": "食パン"
-          },
-          "common": {
-            "items": [
-              "鰆の付焼き",
-              "鶏肉と根菜の煮物",
-              "温野菜サラダ",
-              "味噌汁",
-              "牛乳"
-            ]
-          }
-        }
-      }
-    }
-  ]
+  "days": []
 }
