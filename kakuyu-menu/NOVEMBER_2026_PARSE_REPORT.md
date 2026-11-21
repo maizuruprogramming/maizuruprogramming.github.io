@@ -52,3 +52,5 @@
 - 献立PDF： https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf
 
 GitHub ActionsでこのPDFを取得できれば、同じルールを使って全日分を自動生成します。
+
+> **2026-11-21 追記:** 実際に公開された `daily-menus(1).json` を監査したところ、11月18日の朝食・昼食が正解データと異なっていました。原因はGitHub ActionsのPDF再解析が既存の日別JSONを置き換え、手動修正を保持していなかったことです。今回 `site/data/daily-menu-overrides.json` と `apply_daily_overrides()` を追加し、Actions実行後も11月18日の朝食・昼食を優先して保持するよう変更しました。詳細は `DEPLOYED_JSON_AUDIT.md` を参照してください。

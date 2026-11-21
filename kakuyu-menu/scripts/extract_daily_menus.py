@@ -8,6 +8,7 @@ an editor supplies a verified entry in site/data/allergen-overrides.json.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import re
 import sys
@@ -34,8 +35,10 @@ def safe_pdf_url(url: str) -> bool:
 
 
 def parse_date(value: str) -> str | None:
-    value = unicodedata.normalize("NFKC", value or "")
-    match = DATE_RE.search(value)
+    value = unicodedata.normalize("NFKC", value or "").strip()
+    # Accept ISO dates for curated overrides as well as Japanese dates in PDFs.
+    iso_match = re.fullmatch(r"(20\d{2})-(\d{1,2})-(\d{1,2})", value)
+    match = iso_match or DATE_RE.search(value)
     if not match:
         return None
     year, month, day = map(int, match.groups())
@@ -463,6 +466,68 @@ def parse_pdf(pdf_bytes: bytes, pdf_url: str) -> dict[str, dict[str, Any]]:
     return days
 
 
+
+def apply_daily_overrides(
+    days: dict[str, dict[str, Any]],
+    override_path: Path | None,
+) -> None:
+    """Overlay manually confirmed date/meal data on automatically parsed PDFs.
+
+    The override file is version-controlled in the repository. Only meal keys
+    explicitly present in the override replace extracted meals; other meals on
+    the same date remain sourced from the PDF. This prevents scheduled GitHub
+    Actions runs from overwriting corrections confirmed by the user.
+    """
+    if override_path is None or not override_path.is_file():
+        return
+
+    try:
+        payload = json.loads(override_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"daily menu override file could not be read: {exc}") from exc
+
+    records = payload if isinstance(payload, list) else payload.get("days", [])
+    if not isinstance(records, list):
+        raise ValueError("daily menu overrides must contain a 'days' list")
+
+    valid_meals = {"breakfast", "lunch", "dinner"}
+    applied = 0
+    for override_day in records:
+        if not isinstance(override_day, dict):
+            continue
+        date = parse_date(str(override_day.get("date", "")))
+        meals = override_day.get("meals")
+        if not date or not isinstance(meals, dict):
+            continue
+
+        day = days.setdefault(date, {
+            "date": date,
+            "month": date[:7],
+            "meals": {},
+            "pdf_url": override_day.get("pdf_url", ""),
+        })
+        day["date"] = date
+        day["month"] = date[:7]
+        day.setdefault("meals", {})
+
+        for meal_key, meal_data in meals.items():
+            if meal_key not in valid_meals or not isinstance(meal_data, dict):
+                continue
+            copied = copy.deepcopy(meal_data)
+            copied["source_method"] = "manual_override"
+            day["meals"][meal_key] = copied
+            applied += 1
+
+        day["source_method"] = "manual_override"
+        if override_day.get("source_note"):
+            day["source_note"] = str(override_day["source_note"])
+        if override_day.get("pdf_url") and not day.get("pdf_url"):
+            day["pdf_url"] = str(override_day["pdf_url"])
+        if override_day.get("source_title") and not day.get("source_title"):
+            day["source_title"] = str(override_day["source_title"])
+
+    print(f"INFO: applied {applied} manually confirmed meal override(s)")
+
 def apply_allergen_overrides(days: dict[str, dict[str, Any]], override_path: Path) -> None:
     if not override_path.is_file():
         return
@@ -491,7 +556,12 @@ def apply_allergen_overrides(days: dict[str, dict[str, Any]], override_path: Pat
                 meal["allergen_status"] = "verified"
 
 
-def build_daily_payload(menus_path: Path, override_path: Path, limit: int = 18) -> dict[str, Any]:
+def build_daily_payload(
+    menus_path: Path,
+    override_path: Path,
+    limit: int = 18,
+    daily_override_path: Path | None = Path("site/data/daily-menu-overrides.json"),
+) -> dict[str, Any]:
     monthly_payload = json.loads(menus_path.read_text(encoding="utf-8"))
     menus = monthly_payload.get("menus", [])
     session = requests.Session()
@@ -518,9 +588,16 @@ def build_daily_payload(menus_path: Path, override_path: Path, limit: int = 18) 
         except Exception as exc:
             print(f"WARN: could not parse {pdf_url}: {exc}", file=sys.stderr)
 
+    # Apply curated corrections after PDF extraction so each confirmed meal
+    # always wins over a later automated parse. This also allows the app to
+    # publish manually confirmed days when the official PDF is temporarily
+    # unreachable.
+    apply_daily_overrides(all_days, daily_override_path)
+
     if not all_days:
         raise RuntimeError("献立PDFから日別データを抽出できませんでした。既存データは保持してください。")
 
+    # Allergen verification is a separate, explicit human-reviewed layer.
     apply_allergen_overrides(all_days, override_path)
     return {
         "days": [all_days[key] for key in sorted(all_days)],
@@ -537,11 +614,17 @@ def main() -> int:
     parser.add_argument("--menus-json", default="site/data/menus.json")
     parser.add_argument("--output", default="site/data/daily-menus.json")
     parser.add_argument("--allergen-overrides", default="site/data/allergen-overrides.json")
+    parser.add_argument("--daily-overrides", default="site/data/daily-menu-overrides.json")
     parser.add_argument("--limit", type=int, default=18)
     args = parser.parse_args()
     output_path = Path(args.output)
     try:
-        payload = build_daily_payload(Path(args.menus_json), Path(args.allergen_overrides), args.limit)
+        payload = build_daily_payload(
+            Path(args.menus_json),
+            Path(args.allergen_overrides),
+            args.limit,
+            Path(args.daily_overrides),
+        )
     except Exception as exc:
         print(f"WARN: daily menu extraction failed: {exc}", file=sys.stderr)
         # Keep a previously populated dataset during a transient source outage,

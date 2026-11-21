@@ -2,287 +2,31 @@
   "menus": [
     {
       "month": "2026-11",
-      "month_label": "2026年11月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
+      "month_label": "令和8年11月",
+      "title": "学寮食堂献立表（令和8年11月）※11/12変更",
+      "published": "2026年10月27日",
       "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/10/27/2228/",
       "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
     },
     {
       "month": "2026-10",
-      "month_label": "2026年10月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
+      "month_label": "令和8年10月",
+      "title": "学寮食堂献立表（令和8年10月）※10/27更新",
+      "published": "2026年9月24日",
       "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/09/24/2207/",
       "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/09/menu-domitory-2026_10-3.pdf"
     },
     {
       "month": "2026-09",
-      "month_label": "2026年9月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
+      "month_label": "令和8年9月",
+      "title": "学寮食堂献立表（令和8年9月）※9/25更新",
+      "published": "2026年9月10日",
       "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/09/10/2191/",
       "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/09/menu-domitory-2026_9-2.pdf"
-    },
-    {
-      "month": "2026-08",
-      "month_label": "2026年8月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/07/29/2168/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/07/menu-domitory-2026_8.pdf"
-    },
-    {
-      "month": "2026-07",
-      "month_label": "2026年7月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/06/29/2120/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/06/menu-domitory-2026_7-2-1.pdf"
-    },
-    {
-      "month": "2026-06",
-      "month_label": "2026年6月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/06/01/2077/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/05/menu-domitory-2026_6.pdf"
-    },
-    {
-      "month": "2026-05",
-      "month_label": "2026年5月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/04/28/2022/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/04/menu-domitory-2026_5.pdf"
-    },
-    {
-      "month": "2026-04",
-      "month_label": "2026年4月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/04/02/1995/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/03/menu-domitory-2026_4-1.pdf"
-    },
-    {
-      "month": "2026-02",
-      "month_label": "2026年2月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2026/01/29/1963/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/01/menu-domitory-2026_2_henkou.pdf"
-    },
-    {
-      "month": "2026-01",
-      "month_label": "2026年1月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/12/23/1913/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/12/menu-domitory-2026_1.pdf"
-    },
-    {
-      "month": "2025-12",
-      "month_label": "2025年12月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/11/27/1847/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/11/menu-domitory-2025_12.pdf"
-    },
-    {
-      "month": "2025-11",
-      "month_label": "2025年11月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/10/27/1832/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/10/menu-domitory-2025_11.pdf"
-    },
-    {
-      "month": "2025-10",
-      "month_label": "2025年10月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/09/29/1800/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/10/syusei10-17.10-24-menu-domitory-2025_10.pdf"
-    },
-    {
-      "month": "2025-09",
-      "month_label": "2025年9月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/09/11/1786/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/09/menu-domitory-2025_9.pdf"
-    },
-    {
-      "month": "2025-08",
-      "month_label": "2025年8月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/07/24/1777/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/07/menu-domitory-2025_8.pdf"
-    },
-    {
-      "month": "2025-07",
-      "month_label": "2025年7月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/06/30/1722/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/06/menu-domitory-2025_7.pdf"
-    },
-    {
-      "month": "2025-06",
-      "month_label": "2025年6月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/05/26/1696/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/05/menu-domitory-2025_6.pdf"
-    },
-    {
-      "month": "2025-05",
-      "month_label": "2025年5月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/04/24/1673/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/04/menu-domitory-2025_5.pdf"
-    },
-    {
-      "month": "2025-04",
-      "month_label": "2025年4月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/04/01/1652/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/03/menu-domitory-2025_4.pdf"
-    },
-    {
-      "month": "2025-02",
-      "month_label": "2025年2月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/01/31/1635/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2025/01/menu-domitory-2025_2.pdf"
-    },
-    {
-      "month": "2025-01",
-      "month_label": "2025年1月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2025/01/06/1611/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/12/menu-domitory-2025_1.pdf"
-    },
-    {
-      "month": "2024-12",
-      "month_label": "2024年12月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/11/28/1550/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/11/menu-domitory-2024_12-2.pdf"
-    },
-    {
-      "month": "2024-11",
-      "month_label": "2024年11月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/10/28/1520/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/10/menu-domitory-2024_11.pdf"
-    },
-    {
-      "month": "2024-10",
-      "month_label": "2024年10月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/09/27/1513/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/09/menu-domitory-2024_10.pdf"
-    },
-    {
-      "month": "2024-09",
-      "month_label": "2024年9月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/09/03/1497/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/08/menu-domitory-2024_9.pdf"
-    },
-    {
-      "month": "2024-08",
-      "month_label": "2024年8月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/07/24/1475/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/07/menu-domitory-2024_8.pdf"
-    },
-    {
-      "month": "2024-07",
-      "month_label": "2024年7月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/07/01/1441/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/07/menu-domitory-2024_7.pdf"
-    },
-    {
-      "month": "2024-06",
-      "month_label": "2024年6月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/05/27/1361/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/05/menu-domitory-2024_6.pdf"
-    },
-    {
-      "month": "2024-05",
-      "month_label": "2024年5月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/04/26/1344/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/04/menu-domitory-2024_5.pdf"
-    },
-    {
-      "month": "2024-02",
-      "month_label": "2024年2月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2024/03/26/1302/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2024/03/menu-domitory-2024_2.pdf"
-    },
-    {
-      "month": "2024-01",
-      "month_label": "2024年1月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2023/12/22/1150/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2023/12/menu-domitory-2024_1.pdf"
-    },
-    {
-      "month": "2023-12",
-      "month_label": "2023年12月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2023/11/24/1104/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2023/11/menu-domitory-2023_12.pdf"
-    },
-    {
-      "month": "2023-11",
-      "month_label": "2023年11月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2023/10/25/1061/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2023/10/menu-domitory-2023_11-2.pdf"
-    },
-    {
-      "month": "2023-10",
-      "month_label": "2023年10月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2023/09/27/1054/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2023/09/menu-domitory-2023_10.pdf"
-    },
-    {
-      "month": "2023-09",
-      "month_label": "2023年9月",
-      "title": "舞鶴工業高等専門学校",
-      "published": "",
-      "post_url": "https://www.maizuru-ct.ac.jp/kakuyu/2023/09/12/1048/",
-      "pdf_url": "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2023/09/menu-domitory-2023_09.pdf"
     }
   ],
   "status": "ok",
-  "message": "舞鶴高専の鶴友寮公式ページから献立表を取得しました。",
+  "message": "舞鶴高専の鶴友寮公式ページから確認した献立表です。",
   "source_url": "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/",
-  "updated_at": "2026-11-21T02:17:22+00:00"
+  "updated_at": "2026-11-21T00:00:00+00:00"
 }

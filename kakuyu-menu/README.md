@@ -18,7 +18,8 @@
 
 1. `scripts/update_menus.py` が鶴友寮の公式掲載ページから月別献立PDFのURLを取得します。
 2. `scripts/extract_daily_menus.py` が公式PDFを取得し、日付・朝食／昼食／夕食・A／B・共通料理・栄養価を抽出します。各項目を個別に判定し、先頭が「A」ならA定食、先頭が「B」ならB定食、それ以外は共通料理に分類します。直前のA/B判定を一般の料理に引き継ぎません。ただし、**B定食の料理の直後に「ごはん」があり、その前に「共通料理」の見出しがない場合に限り、その「ごはん」はB定食に追加**します。「共通料理」の見出し以降にある「ごはん」は共通料理です。PDFの表抽出でおかず・ごはん・見出しが別の物理行に分割されても、この順序を保ってから分類します。PDFファイル名から対象月を判定できる場合は、記事の投稿日よりPDF側の年月を優先します。
-3. `site/data/daily-menus.json` を生成してGitHub Pagesに公開します。
+3. `site/data/daily-menu-overrides.json` に保存した手動確認済みの献立を自動抽出結果へ重ねます。指定された日付・食事区分は手動データを優先し、同じ日の未指定の食事（例：夕食）はPDF抽出結果を残します。
+4. `site/data/daily-menus.json` を生成してGitHub Pagesに公開します。
 
 献立PDFの表構造が変更されると抽出できない場合があります。その場合は、GitHub Actionsのログを確認し、公式PDFを直接参照してください。抽出に失敗した場合、既存の日別JSONに有効な日付データがあればそれを保持します。初期状態の空データしかない場合はActionsを失敗させ、空の献立データを正常公開したように見せない仕様です。
 
@@ -32,7 +33,7 @@
 - 「共通料理」見出しの後にある「ごはん」は共通料理に含めます。
 - PDF抽出結果でB料理と「ごはん」が同一行に連結されても分割します。
 
-2026年11月18日の朝食・昼食は、提供された献立内容に基づく確認データを `site/data/daily-menus.json` に登録しています。月全体の実PDF解析はGitHub Actionsで公式PDFを取得した後に実行されます。アレルゲンの赤丸表示は、原本を確認したデータだけを確定扱いにします。
+2026年11月18日の朝食・昼食は、提供された献立内容に基づく確定データを `site/data/daily-menu-overrides.json` に保存しています。GitHub ActionsがPDFを毎回再解析しても、この日付の朝食・昼食は手動確認済みデータで上書きされます。夕食は手動確定していないため、PDF抽出結果があればそのまま残します。確認済みデータを追加・修正する場合は、このファイルを編集してください。
 
 ## アレルゲン情報について
 
@@ -88,7 +89,7 @@ python3 -m http.server 8000 --directory site
 ```bash
 python -m pip install requests beautifulsoup4 pymupdf
 python scripts/update_menus.py --output site/data/menus.json
-python scripts/extract_daily_menus.py --menus-json site/data/menus.json --output site/data/daily-menus.json
+python scripts/extract_daily_menus.py --menus-json site/data/menus.json --output site/data/daily-menus.json --allergen-overrides site/data/allergen-overrides.json --daily-overrides site/data/daily-menu-overrides.json
 ```
 
 ## フォルダー構成
@@ -124,3 +125,11 @@ https://www.maizuru-ct.ac.jp/kakuyu/category/dining/
 ### 料理名の先頭・末尾の文字について
 
 料理名に含まれる括弧書きや語句（例: `（クリーム）`、`チーズin`、`のり塩コロッ`、`（北海道）`、`豚の`、`カスタード`）は、A/Bの分類記号ではありません。A/B記号を取り除いた後の料理名として保持し、それ以外は共通料理として表示します。途中で切れて見える文字列も、PDF原本で続きが確認できない限り自動補完・他行との自動連結はしません。
+
+### 手動確認済み献立の保存（重要）
+
+- `site/data/daily-menu-overrides.json` は、PDF解析結果よりも優先する確定データです。
+- `days` 配列に日付を追加し、その中の `meals` に `breakfast` / `lunch` / `dinner` のうち確定した食事だけを記載します。
+- 同じ日付の未指定の食事は、自動PDF抽出結果があれば保持します。
+- アレルゲンの確認結果は別管理の `allergen-overrides.json` に記録します。
+- GitHub Actionsの実行後は、公開された `daily-menus.json` の対象日・食事に `source_method: "manual_override"` が付いていることを確認してください。
