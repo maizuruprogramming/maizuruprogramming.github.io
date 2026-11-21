@@ -1,6 +1,6 @@
-# 鶴友寮食事サイト — 毎週月曜 06:30 自動メニューチェック＆日別献立表示システム
+# 鶴友寮 食事サイト（本番公開版）— 毎週月曜 06:30 自動メニューチェック＆日別献立表示
 
-鶴友寮の公式ページ（`https://www.maizuru-ct.ac.jp/kakuyu/category/dining/`）から**毎週月曜日の朝 6:30 ごろ**に自動でその月の食事メニューをチェック・反映し、**その日の献立（A定食・B定食・共通料理）**・**1ヶ月一覧**・**自動チェック結果**をWebページに表示するシステムです。
+鶴友寮の公式ページ（`https://www.maizuru-ct.ac.jp/kakuyu/` / `https://www.maizuru-ct.ac.jp/kakuyu/category/dining/`）から**毎週月曜日の朝 6:30 ごろ（JST）**に自動でその月の食事メニューPDFを取得・解析し、**本日の献立（A定食・B定食・共通料理）**・**1ヶ月一覧**・**自動チェック結果**をWebページに表示するシステムです。
 
 > **アレルギー対応について**  
 > PDFファイルを確認してください．
@@ -11,68 +11,60 @@
 .
 ├── .github/
 │   └── workflows/
-│       └── update-menu.yml             # GitHub Actions 毎週月曜 06:30 JST 自動実行ワークフロー (YAML)
+│       └── update-menu.yml             # GitHub Actions 毎週月曜 06:30 JST 自動取得・公開ワークフロー
 ├── config/
-│   └── settings.yaml                   # 自動チェック時刻・取得元URL・食事区分・アレルギー案内設定 (YAML)
+│   └── settings.yaml                   # 自動チェック時刻・取得元URL・食事区分・アレルギー案内設定
 ├── data/
-│   └── menu.yaml                       # 1ヶ月分（30日分）の献立マスターデータ (YAML)
+│   └── menu.yaml                       # 献立データ（仮データ削除済み・実データ格納用）
 ├── python/
-│   ├── fetch_menu.py                   # その月の食事メニュー自動チェック・取得・JSON反映スクリプト (Python)
-│   ├── auto_scheduler.py               # 毎週月曜日 06:30 (JST) 常駐自動スケジューラ (Python)
-│   └── requirements.txt                # Python 依存パッケージ定義
+│   ├── fetch_menu.py                   # 公式ページ・献立表PDFから直接取得・解析しJSON/YAMLへ反映
+│   ├── auto_scheduler.py               # 毎週月曜日 06:30 (JST) 常駐自動スケジューラ
+│   └── requirements.txt                # Python 依存パッケージ定義 (pypdf, pyyaml)
 ├── web/
-│   ├── index.html                      # 本日の献立・1ヶ月一覧・自動チェック結果・アレルギー案内画面 (HTML)
-│   ├── app.js                          # 自動チェック結果描画・日付切替・A/B定食/共通料理描画 (JavaScript)
-│   └── monthly_menu.json               # Web画面が読み込む1ヶ月分献立＆自動チェック結果データ (JSON)
+│   ├── index.html                      # 本番公開用Web画面（本日の献立・1ヶ月一覧・自動チェック結果・PDFリンク）
+│   ├── app.js                          # 自動チェック結果描画・日付切替・A/B定食/共通料理描画
+│   └── monthly_menu.json               # Web画面が読み込む実データJSON（仮データ削除済み）
 ├── csharp/
-│   ├── Program.cs                      # 毎週月曜 06:30 自動監視＆指定日/1ヶ月献立表示ツール (C#)
+│   ├── Program.cs                      # 毎週月曜 06:30 自動監視＆日別/1ヶ月献立表示ツール (C#)
 │   └── KakuyuryoMonthlyMenu.csproj     # .NET 8 プロジェクトファイル
-├── .gitignore                          # Git 除外設定
-├── LICENSE                             # MIT ライセンス
-└── README.md                           # プロジェクト説明書
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-## 主な機能
+## 本番公開手順（GitHub Pages + GitHub Actions）
 
-1. **毎週月曜日 06:30（JST）自動メニューチェック＆反映**
-   * **GitHub Actions (`.github/workflows/update-menu.yml`)**: 毎週月曜日 06:30 JST（日曜 21:30 UTC）に自動起動し、その月の食事メニューをチェックして `web/monthly_menu.json` へ自動コミット・反映します。
-   * **常駐スケジューラ (`python/auto_scheduler.py`)**: サーバーやPC上で常駐起動しておくと、毎週月曜 06:30 JST に自動でその月の献立チェックを実行し、`web/monthly_menu.json` を更新します。
-   * **C# スケジューラ (`csharp/Program.cs`)**: `dotnet run -- --schedule` で毎週月曜 06:30 JST の自動監視・チェック実行にも対応しています。
-2. **自動チェック結果のWebページ表示 (`web/index.html`, `web/app.js`)**
-   * 最終自動チェック日時・次回予定日時（毎週月曜 06:30 JST）・対象月・反映結果メッセージをページ上部の結果カードに表示します。
-3. **その日の献立（A定食・B定食・共通料理）＆1ヶ月一覧表示**
-   * 本日の朝食・昼食・夕食それぞれの **A定食**・**B定食**・**共通料理** を表示し、1ヶ月分の日付切替や料理名検索が可能です。
-4. **アレルギー対応案内**
-   * ページ上に「アレルギー対応については、PDFファイルを確認してください．」を明記し、公式ページ・PDFへの導線を表示しています。
+1. このリポジトリ一式を GitHub リポジトリ（`main` ブランチ）にプッシュします。
+2. GitHub リポジトリの **Settings > Pages** を開き、Source を **Deploy from a branch**（`main` ブランチ / `/web` フォルダ）に設定して公開します。
+3. **Actions** タブから **Weekly Monday 06:30 JST Auto Menu Check** を有効化（または **Run workflow** で初回手動実行）すると、公式サイトの最新献立表PDFから全日程の献立が自動抽出され、`web/monthly_menu.json` と `data/menu.yaml` に反映されて公開サイトへ自動デプロイされます。
+4. 以降は**毎週月曜日の朝 6:30 ごろ（JST）**に自動実行され、その月の最新献立が自動的にチェック・更新されます。
 
-## 実行方法
+## ローカル環境での実行方法
 
-### 1. Python（即時チェック / 毎週月曜 06:30 自動スケジューラ）
+### 1. 公式PDFから最新メニューを直接取得・反映（Python）
 ```bash
 cd python
-pip install -r requirements.txt   # 未インストールでも標準ライブラリ＋YAMLデータで動作します
-
-# 今すぐその月のメニューをチェックして web/monthly_menu.json に反映
+pip install -r requirements.txt
 python fetch_menu.py
 
-# 毎週月曜日 06:30 (JST) に自動チェックする常駐スケジューラを起動
+# 毎週月曜日 06:30 (JST) に自動チェックする常駐スケジューラを起動する場合
 python auto_scheduler.py
 ```
 
-### 2. Web（献立サイトの表示）
+### 2. Webサイトのローカル確認
 ```bash
 cd web
 python -m http.server 8000
 # ブラウザで http://localhost:8000 にアクセス
 ```
 
-### 3. C#（献立表示・自動チェック監視）
+### 3. C# CLI ツールでの確認・自動監視
 ```bash
 cd csharp
 dotnet run                  # 本日の献立と自動チェック結果を表示
 dotnet run -- 2026-11-21    # 指定日の献立を表示
-dotnet run -- --all         # 1ヶ月分すべての献立を表示
-dotnet run -- --check-now   # 今すぐその月のメニューをチェック・反映
+dotnet run -- --all         # 取得済み全日程の献立を表示
+dotnet run -- --check-now   # 公式サイト接続確認・ステータス更新
 dotnet run -- --schedule    # 毎週月曜 06:30 (JST) 自動チェック待機モード
 ```
 

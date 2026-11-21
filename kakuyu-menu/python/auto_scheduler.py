@@ -27,7 +27,6 @@ def run_scheduler_loop(run_immediately: bool = False) -> None:
             f"(残り約 {wait_seconds / 3600:.2f} 時間)"
         )
 
-        # 長時間スリープ時の時刻ズレを防ぐため最大60秒刻みで待機
         while True:
             current = datetime.now(JST)
             remaining = (next_run - current).total_seconds()
@@ -37,7 +36,6 @@ def run_scheduler_loop(run_immediately: bool = False) -> None:
 
         print(f"[RUN] 毎週月曜 06:30 自動チェックを開始します: {datetime.now(JST).strftime('%Y-%m-%d %H:%M:%S JST')}")
         run_monthly_menu_check(trigger="scheduled_monday_0630")
-        # 同一分内での二重実行防止
         time.sleep(2.0)
 
 

@@ -3,10 +3,10 @@ site:
   dormitory: "鶴友寮"
 
 source:
+  top_url: "https://www.maizuru-ct.ac.jp/kakuyu/"
   category_url: "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/"
-  base_url: "https://www.maizuru-ct.ac.jp"
-  timeout_seconds: 15
-  fetch_span_days: 30
+  default_menu_pdf_url: "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
+  timeout_seconds: 20
 
 auto_schedule:
   enabled: true
@@ -26,4 +26,4 @@ allergy:
 
 output:
   json_path: "web/monthly_menu.json"
-  fallback_yaml_path: "data/menu.yaml"
+  yaml_path: "data/menu.yaml"

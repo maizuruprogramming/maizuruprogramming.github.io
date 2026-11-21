@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>鶴友寮 食事サイト｜本日の献立・1ヶ月献立表</title>
+  <title>鶴友寮 食事サイト｜本日の献立・月間献立表</title>
   <style>
     :root {
       --primary: #1a4f7a;
@@ -14,7 +14,6 @@
       --set-b-bg: #eef7f5;
       --common: #4a5568;
       --common-bg: #f4f6f8;
-      --success: #1b6ca8;
       --success-bg: #eef6fc;
       --warn: #9a3412;
       --warn-bg: #fff7ed;
@@ -70,7 +69,6 @@
     }
     .source-bar a:hover { text-decoration: underline; }
 
-    /* 自動チェック結果パネル */
     .auto-check-card {
       background: var(--success-bg);
       border: 1px solid #bfd9ee;
@@ -121,7 +119,6 @@
       color: var(--text);
     }
 
-    /* アレルギー対応案内ボックス */
     .allergy-box {
       background: var(--warn-bg);
       border: 1px solid #fed7aa;
@@ -143,7 +140,7 @@
       font-weight: 700;
     }
     .allergy-box a {
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 700;
       color: var(--warn);
       text-decoration: underline;
@@ -204,6 +201,8 @@
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--text);
+      text-decoration: none;
+      display: inline-block;
     }
     .nav-btn:hover { background: var(--primary-light); }
     .nav-btn.primary {
@@ -219,7 +218,7 @@
     }
     .quick-days {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
       gap: 0.35rem;
       margin-top: 0.85rem;
       padding-top: 0.8rem;
@@ -326,7 +325,7 @@
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 2rem;
+      padding: 1.8rem;
       text-align: center;
       color: var(--muted);
     }
@@ -390,7 +389,7 @@
 <body>
   <header>
     <h1>鶴友寮 食事サイト｜献立表</h1>
-    <p>鶴友寮 1ヶ月間メニュー・本日の献立（A定食・B定食・共通料理）</p>
+    <p>鶴友寮 献立情報・本日の献立（A定食・B定食・共通料理）</p>
   </header>
 
   <main>
@@ -410,20 +409,20 @@
       <div class="auto-check-header">
         <div class="auto-check-title">
           <span>自動メニューチェック結果</span>
-          <span class="status-pill" id="auto-check-badge">確認済み・反映完了</span>
+          <span class="status-pill" id="auto-check-badge">本番公開中</span>
         </div>
         <button type="button" class="nav-btn" id="reload-feed-btn" style="padding:0.28rem 0.65rem;font-size:0.8rem;">
           最新結果を再読込
         </button>
       </div>
       <p class="auto-check-message" id="auto-check-message">
-        今月の食事メニューを自動チェックし、最新献立を反映しました。
+        公式献立表データを確認し、最新献立を反映しました。
       </p>
       <div class="auto-check-grid">
         <div><strong>自動実行日時:</strong> <span id="auto-check-schedule">毎週月曜日 06:30 ごろ（JST）</span></div>
         <div><strong>最終チェック実行:</strong> <span id="auto-check-last">-</span></div>
         <div><strong>次回チェック予定:</strong> <span id="auto-check-next">-</span></div>
-        <div><strong>対象月・反映件数:</strong> <span id="auto-check-target">-</span></div>
+        <div><strong>対象月・登録日数:</strong> <span id="auto-check-target">-</span></div>
       </div>
     </section>
 
@@ -433,15 +432,15 @@
         <strong>アレルギー対応について：</strong><span id="allergy-notice-text">PDFファイルを確認してください．</span>
       </div>
       <div id="allergy-pdf-link">
-        <a href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
-          公式ページの献立表PDFを確認する ↗
+        <a href="https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf" target="_blank" rel="noopener noreferrer">
+          公式献立表PDFを開く ↗
         </a>
       </div>
     </section>
 
     <div class="view-tabs">
       <button type="button" class="view-tab active" id="tab-daily">その日の献立</button>
-      <button type="button" class="view-tab" id="tab-monthly">1ヶ月一覧（全30日分）</button>
+      <button type="button" class="view-tab" id="tab-monthly">登録済み献立一覧</button>
     </div>
 
     <div id="daily-view">
@@ -463,8 +462,8 @@
 
     <div id="monthly-view" class="hidden">
       <div class="monthly-toolbar">
-        <div class="meta" id="monthly-summary">1ヶ月間の献立一覧</div>
-        <input type="search" id="menu-search" placeholder="料理名で検索（例: 唐揚げ、カレー、ハンバーグ）" />
+        <div class="meta" id="monthly-summary">登録済みの献立一覧</div>
+        <input type="search" id="menu-search" placeholder="料理名で検索（例: 鰆、食パン、味噌汁）" />
       </div>
       <div class="monthly-table-wrap">
         <table class="monthly-table">

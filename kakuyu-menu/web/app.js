@@ -1,4 +1,6 @@
 const OFFICIAL_DINING_URL = "https://www.maizuru-ct.ac.jp/kakuyu/category/dining/";
+const DEFAULT_MENU_PDF_URL =
+  "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf";
 const DEFAULT_ALLERGY_NOTICE = "PDFファイルを確認してください．";
 
 const MEAL_LABELS = [
@@ -9,6 +11,7 @@ const MEAL_LABELS = [
 
 let menuDays = [];
 let selectedDate = "";
+let currentMenuPdfUrl = DEFAULT_MENU_PDF_URL;
 
 function escapeHtml(str) {
   return String(str ?? "")
@@ -35,7 +38,7 @@ function getTodayIsoJst() {
 
 function computeNextMonday0630Jst() {
   const now = getNowJstDate();
-  const dow = now.getDay(); // 0:日, 1:月, ...
+  const dow = now.getDay();
   const daysAhead = (1 - dow + 7) % 7;
   const candidate = new Date(
     now.getFullYear(),
@@ -84,14 +87,14 @@ function renderAutoCheckResult(feed) {
 
   const isSuccess = (auto.result_status || "success") === "success";
   if (badgeEl) {
-    badgeEl.textContent = isSuccess ? "自動チェック完了・反映済み" : "キャッシュ献立を表示中";
+    badgeEl.textContent = isSuccess ? "本番公開中・反映済み" : "確認待ち";
     badgeEl.style.backgroundColor = isSuccess ? "#1e6f5c" : "#b45309";
   }
 
   if (msgEl) {
     msgEl.textContent =
       auto.result_message ||
-      `今月の食事メニュー（${menuDays.length}日分）をチェックし、ページへ反映しました。`;
+      `公式献立表データを確認し、${menuDays.length}日分の献立を反映しました。`;
   }
   if (schedEl) {
     schedEl.textContent = auto.schedule_label || "毎週月曜日 06:30 ごろ（JST）";
@@ -104,25 +107,29 @@ function renderAutoCheckResult(feed) {
   }
   if (targetEl) {
     const targetMonth = auto.target_month || "今月分";
-    targetEl.textContent = `${targetMonth}（全${menuDays.length}日分）`;
+    targetEl.textContent = `${targetMonth}（登録済み ${menuDays.length}日分）`;
   }
 
-  // アレルギー対応文言の反映
   const allergyTextEl = document.getElementById("allergy-notice-text");
   if (allergyTextEl) {
     allergyTextEl.textContent = feed.allergy_notice || DEFAULT_ALLERGY_NOTICE;
   }
 
+  currentMenuPdfUrl = feed.latest_article?.menu_pdf_url || DEFAULT_MENU_PDF_URL;
   const allergyPdfEl = document.getElementById("allergy-pdf-link");
-  const menuPdf = feed.latest_article?.menu_pdf_url;
-  if (allergyPdfEl && menuPdf) {
-    allergyPdfEl.innerHTML = `<a href="${escapeHtml(menuPdf)}" target="_blank" rel="noopener noreferrer">献立表PDFを開く ↗</a>`;
+  if (allergyPdfEl && currentMenuPdfUrl) {
+    allergyPdfEl.innerHTML = `<a href="${escapeHtml(currentMenuPdfUrl)}" target="_blank" rel="noopener noreferrer">公式献立表PDFを開く ↗</a>`;
   }
 }
 
 function renderQuickDayChips() {
   const container = document.getElementById("quick-days");
   if (!container) return;
+
+  if (menuDays.length === 0) {
+    container.innerHTML = "";
+    return;
+  }
 
   container.innerHTML = menuDays.map((entry) => {
     const [, m, d] = entry.date.split("-").map(Number);
@@ -160,8 +167,13 @@ function renderDailyMenu(isoDate) {
   if (!dayEntry || !dayEntry.meals) {
     container.innerHTML = `
       <div class="empty-state">
-        <p><strong>${escapeHtml(formatJapaneseDate(isoDate))}</strong> の献立データは登録されていません。</p>
-        <p class="meta">上の1ヶ月日付一覧から別の日付を選択するか、公式の「学寮食堂献立表」をご確認ください。</p>
+        <p><strong>${escapeHtml(formatJapaneseDate(isoDate))}</strong> の献立データは未反映です。</p>
+        <p class="meta">公式の献立表PDFファイルから直接ご確認いただけます。</p>
+        <p style="margin-top:0.8rem;">
+          <a class="nav-btn primary" href="${escapeHtml(currentMenuPdfUrl)}" target="_blank" rel="noopener noreferrer">
+            公式献立表PDFを開く ↗
+          </a>
+        </p>
       </div>
     `;
     return;
@@ -169,11 +181,31 @@ function renderDailyMenu(isoDate) {
 
   container.innerHTML = MEAL_LABELS.map(({ key, label, time }) => {
     const meal = dayEntry.meals[key];
-    if (!meal) return "";
+    const hasContent =
+      meal &&
+      ((meal.set_a?.name && meal.set_a.name.trim() !== "") ||
+        (meal.set_b?.name && meal.set_b.name.trim() !== "") ||
+        (Array.isArray(meal.common?.items) && meal.common.items.length > 0));
 
-    const setAName = meal.set_a?.name || "提供なし";
+    if (!hasContent) {
+      return `
+        <article class="meal-section">
+          <div class="meal-header">
+            <div><h2>${escapeHtml(label)}</h2></div>
+            <span class="meta">営業時間目安: ${escapeHtml(time)}</span>
+          </div>
+          <p class="meta" style="margin:0;">
+            この時間帯の献立は未反映です。詳細は
+            <a href="${escapeHtml(currentMenuPdfUrl)}" target="_blank" rel="noopener noreferrer">公式献立表PDF ↗</a>
+            をご確認ください。
+          </p>
+        </article>
+      `;
+    }
+
+    const setAName = meal.set_a?.name || "記載なし";
     const setACal = meal.set_a?.calories ? `${meal.set_a.calories} kcal` : "";
-    const setBName = meal.set_b?.name || "提供なし";
+    const setBName = meal.set_b?.name || "記載なし";
     const setBCal = meal.set_b?.calories ? `${meal.set_b.calories} kcal` : "";
     const commonItems = Array.isArray(meal.common?.items) ? meal.common.items : [];
     const noteHtml = meal.note ? `<span class="note-badge">${escapeHtml(meal.note)}</span>` : "";
@@ -214,14 +246,19 @@ function renderDailyMenu(isoDate) {
 }
 
 function formatCompactMealCell(meal) {
-  if (!meal) return "-";
-  const a = meal.set_a?.name || "-";
-  const b = meal.set_b?.name || "-";
-  const c = Array.isArray(meal.common?.items) ? meal.common.items.join("・") : "-";
+  if (!meal) {
+    return `<span class="meta">PDF参照</span>`;
+  }
+  const a = meal.set_a?.name || "";
+  const b = meal.set_b?.name || "";
+  const c = Array.isArray(meal.common?.items) ? meal.common.items.join("・") : "";
+  if (!a && !b && !c) {
+    return `<span class="meta">PDF参照</span>`;
+  }
   return `
-    <div><span class="mini-tag a">A定食</span>${escapeHtml(a)}</div>
-    <div><span class="mini-tag b">B定食</span>${escapeHtml(b)}</div>
-    <div class="meta"><span class="mini-tag c">共通</span>${escapeHtml(c)}</div>
+    <div><span class="mini-tag a">A定食</span>${escapeHtml(a || "-")}</div>
+    <div><span class="mini-tag b">B定食</span>${escapeHtml(b || "-")}</div>
+    <div class="meta"><span class="mini-tag c">共通</span>${escapeHtml(c || "-")}</div>
   `;
 }
 
@@ -238,7 +275,18 @@ function renderMonthlyTable(keyword = "") {
   });
 
   if (summaryEl) {
-    summaryEl.textContent = `表示件数: ${filtered.length}日分 / 全${menuDays.length}日分`;
+    summaryEl.textContent = `表示件数: ${filtered.length}日分 / 登録済み ${menuDays.length}日分`;
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" class="meta" style="text-align:center;padding:1.5rem;">
+          該当する献立データがありません。<a href="${escapeHtml(currentMenuPdfUrl)}" target="_blank" rel="noopener noreferrer">公式献立表PDF ↗</a> をご確認ください。
+        </td>
+      </tr>
+    `;
+    return;
   }
 
   tbody.innerHTML = filtered.map((entry) => {
@@ -297,7 +345,9 @@ async function loadAndRenderFeed(preserveSelectedDate = false) {
     fetched_at: "",
     allergy_notice: DEFAULT_ALLERGY_NOTICE,
     auto_check: {},
-    latest_article: {},
+    latest_article: {
+      menu_pdf_url: DEFAULT_MENU_PDF_URL
+    },
     days: []
   };
 
@@ -307,7 +357,7 @@ async function loadAndRenderFeed(preserveSelectedDate = false) {
       feed = await res.json();
     }
   } catch (_) {
-    // ローカル直接閲覧時のエラー回避
+    // ローカル直接閲覧時
   }
 
   menuDays = Array.isArray(feed.days) ? feed.days : [];
@@ -316,11 +366,11 @@ async function loadAndRenderFeed(preserveSelectedDate = false) {
   const syncEl = document.getElementById("sync-info");
   if (syncEl) {
     const title = feed.latest_article?.title || "学寮食堂献立表";
-    syncEl.textContent = `${title}（${menuDays.length}日分） / 更新: ${feed.fetched_at || ""}`;
+    syncEl.textContent = `${title} / 更新: ${feed.fetched_at || ""}`;
   }
 
   const pdfArea = document.getElementById("pdf-link-area");
-  const menuPdf = feed.latest_article?.menu_pdf_url;
+  const menuPdf = feed.latest_article?.menu_pdf_url || DEFAULT_MENU_PDF_URL;
   const nutritionPdf = feed.latest_article?.nutrition_pdf_url;
   if (pdfArea) {
     const links = [];
