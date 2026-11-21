@@ -38,11 +38,11 @@
 
   function escapeHtml(str) {
     return String(str == null ? "" : str)
-      .replace(/\u0026/g, "\u0026amp;")
-      .replace(/\u003c/g, "\u0026lt;")
-      .replace(/\u003e/g, "\u0026gt;")
-      .replace(/\u0022/g, "\u0026quot;")
-      .replace(/\u0027/g, "\u0026#39;");
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function parseIsoDate(isoStr) {
@@ -110,7 +110,6 @@
     holidays.add(`${year}-03-${String(vernal).padStart(2, "0")}`);
     holidays.add(`${year}-09-${String(autumnal).padStart(2, "0")}`);
 
-    // 国民の休日
     const sorted = Array.from(holidays).sort();
     for (let i = 0; i < sorted.length - 1; i++) {
       const cur = parseIsoDate(sorted[i]);
@@ -123,7 +122,6 @@
       }
     }
 
-    // 振替休日
     for (const iso of Array.from(holidays).sort()) {
       const dt = parseIsoDate(iso);
       if (dt.getUTCDay() === 0) {
@@ -208,7 +206,6 @@
       };
     }
 
-    // 夕食終了後（19:30以降）は翌日の朝食を次の食事として表示
     return {
       targetDate: addDaysIso(todayIso, 1),
       mealKey: "breakfast",
@@ -245,12 +242,19 @@
     const nutritionUrl = latestArticle.nutrition_pdf_url || "";
     const pdfLinkArea = $("pdf-link-area");
     if (pdfLinkArea) {
-      let html = ` / <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener noreferrer">献立表PDF ↗</a>`;
+      const links = [
+        `<a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener noreferrer">献立表PDF ↗</a>`,
+      ];
       if (nutritionUrl) {
-        html += ` / <a href="${escapeHtml(nutritionUrl)}" target="_blank" rel="noopener noreferrer">栄養価計算書PDF ↗</a>`;
+        links.push(
+          `<a href="${escapeHtml(nutritionUrl)}" target="_blank" rel="noopener noreferrer">栄養価計算書PDF ↗</a>`
+        );
       }
-      html += ` / <a href="${escapeHtml(MENU_JSON_URL)}" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>`;
-      pdfLinkArea.innerHTML = html;
+      links.push(
+        `<a href="${escapeHtml(MENU_JSON_URL)}" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>`
+      );
+      pdfLinkArea.style.display = "contents";
+      pdfLinkArea.innerHTML = links.join("");
     }
 
     const syncInfo = $("sync-info");
@@ -310,9 +314,17 @@
           classes.push("active");
         }
 
-        return `<button type="button" class="${classes.join(" ")}" data-date="${escapeHtml(dayObj.date)}">${m}/${d}(${escapeHtml(dow)})</button>`;
+        return `<button type="button" class="${classes.join(" ")}" data-date="${escapeHtml(dayObj.date)}"><span>${m}/${d}</span><span class="chip-dow">(${escapeHtml(dow)})</span></button>`;
       })
       .join("");
+
+    // スマホ・タブレット横スクロール時に選択中の日付チップを中央へスクロール
+    const activeChip = container.querySelector(".day-chip.active");
+    if (activeChip && typeof activeChip.scrollIntoView === "function") {
+      requestAnimationFrame(() => {
+        activeChip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      });
+    }
   }
 
   function getMealStatusForSelectedDate(isoStr, schedule) {
@@ -414,7 +426,6 @@
     const mealState = getMealStatusForSelectedDate(selectedDate, schedule);
     const articleNote = (menuData && menuData.latest_article && menuData.latest_article.note) || "";
 
-    // 終了していない次の食事を先頭に表示し、終了した食事は後ろに回す
     let orderedMeals = [...MEAL_DEFINITIONS];
     if (mealState.isToday) {
       const notEnded = orderedMeals.filter((m) => mealState.statuses[m.key] !== "ended");
@@ -592,21 +603,21 @@
 
         return `
           <tr>
-            <td style="white-space:nowrap;">
+            <td class="date-cell" style="white-space:nowrap;">
               <div>
-                <button type="button" class="nav-btn jump-date-btn" data-date="${escapeHtml(dayObj.date)}" style="padding:0.25rem 0.55rem;font-size:0.82rem;">
+                <button type="button" class="nav-btn jump-date-btn" data-date="${escapeHtml(dayObj.date)}" style="min-height:38px;padding:0.3rem 0.65rem;font-size:0.86rem;">
                   ${m}月${d}日（${escapeHtml(dow)}）
                 </button>
               </div>
-              <div style="margin-top:0.35rem;">
-                <span class="day-type-badge ${schedule.isHoliday ? "holiday" : ""}" style="font-size:0.72rem;padding:0.1rem 0.45rem;">
+              <div style="margin-top:0.3rem;">
+                <span class="day-type-badge ${schedule.isHoliday ? "holiday" : ""}" style="font-size:0.72rem;padding:0.12rem 0.48rem;">
                   ${escapeHtml(schedule.dayType)}
                 </span>
               </div>
             </td>
-            <td>${renderMealSummaryCell(meals.breakfast, schedule.hours.breakfast)}</td>
-            <td>${renderMealSummaryCell(meals.lunch, schedule.hours.lunch)}</td>
-            <td>${renderMealSummaryCell(meals.dinner, schedule.hours.dinner)}</td>
+            <td class="meal-cell" data-meal-label="朝食">${renderMealSummaryCell(meals.breakfast, schedule.hours.breakfast)}</td>
+            <td class="meal-cell" data-meal-label="昼食">${renderMealSummaryCell(meals.lunch, schedule.hours.lunch)}</td>
+            <td class="meal-cell" data-meal-label="夕食">${renderMealSummaryCell(meals.dinner, schedule.hours.dinner)}</td>
           </tr>
         `;
       })
@@ -619,6 +630,7 @@
     if ($("tab-monthly")) $("tab-monthly").classList.toggle("active", !isDaily);
     if ($("daily-view")) $("daily-view").classList.toggle("hidden", !isDaily);
     if ($("monthly-view")) $("monthly-view").classList.toggle("hidden", isDaily);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function selectDate(isoStr, isManual = true) {

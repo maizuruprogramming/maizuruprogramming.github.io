@@ -2,202 +2,295 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a4f7a" />
   <link rel="icon" href="data:," />
   <title>鶴友寮 食事サイト｜本日の献立・月間献立表</title>
   <style>
     :root {
       --primary: #1a4f7a;
+      --primary-dark: #133b5c;
       --primary-light: #eaf2f8;
       --set-a: #c0392b;
       --set-a-bg: #fdf2f1;
+      --set-a-border: #f3c6c2;
       --set-b: #1e6f5c;
       --set-b-bg: #eef7f5;
+      --set-b-border: #bfe0d8;
       --common: #4a5568;
       --common-bg: #f4f6f8;
       --success-bg: #eef6fc;
       --warn: #9a3412;
       --warn-bg: #fff7ed;
       --border: #d6dfe6;
-      --bg: #f6f8fa;
+      --bg: #f3f6f9;
+      --card-bg: #ffffff;
       --text: #1f2933;
       --muted: #52606d;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(26, 79, 122, 0.10);
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
       margin: 0;
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      padding-bottom: env(safe-area-inset-bottom);
     }
+
+    /* ヘッダー */
     header {
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
-      padding: 1.25rem 1.5rem;
+      padding: calc(0.95rem + env(safe-area-inset-top)) 1rem 0.95rem;
+    }
+    .header-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.25rem 1rem;
     }
     header h1 {
       margin: 0;
-      font-size: 1.35rem;
+      font-size: clamp(1.15rem, 3.8vw, 1.45rem);
+      letter-spacing: 0.02em;
     }
     header p {
-      margin: 0.2rem 0 0;
-      font-size: 0.86rem;
-      opacity: 0.92;
+      margin: 0;
+      font-size: clamp(0.78rem, 2.5vw, 0.88rem);
+      opacity: 0.9;
     }
-    main {
-      max-width: 1020px;
-      margin: 1.4rem auto;
-      padding: 0 1rem 3rem;
+
+    /* スティッキー切替タブ（スマホ・タブレットで親指操作しやすい高さ44px以上） */
+    .sticky-tabs-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(243, 246, 249, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 1rem;
     }
-    .source-bar {
-      background: #fff;
-      border: 1px solid var(--border);
+    .view-tabs {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+      background: #e2e8f0;
+      padding: 0.25rem;
+      border-radius: 10px;
+    }
+    .view-tab {
+      min-height: 42px;
+      padding: 0.5rem 0.75rem;
+      border: none;
       border-radius: 8px;
-      padding: 0.85rem 1.1rem;
-      margin-bottom: 1rem;
+      background: transparent;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .view-tab.active {
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 0.9rem auto;
+      padding: 0 0.85rem 2.5rem;
+    }
+
+    /* 取得元・JSONリンクバー */
+    .source-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.7rem 0.95rem;
+      margin-bottom: 0.75rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.88rem;
+      gap: 0.45rem 0.75rem;
+      font-size: 0.84rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .source-links-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.55rem;
     }
     .source-bar a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0.15rem 0.55rem;
+      border-radius: 6px;
+      background: var(--primary-light);
       color: var(--primary);
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
+      font-size: 0.82rem;
     }
-    .source-bar a:hover { text-decoration: underline; }
+    .source-bar a:hover {
+      background: #d8e8f5;
+    }
 
-    .auto-check-card {
+    /* 折りたたみ可能な自動チェック結果（スマホで献立をすぐ表示できるようコンパクト化） */
+    .auto-check-details {
       background: var(--success-bg);
       border: 1px solid #bfd9ee;
       border-left: 5px solid var(--primary);
-      border-radius: 8px;
-      padding: 0.95rem 1.15rem;
-      margin-bottom: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
     }
-    .auto-check-header {
+    .auto-check-summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 0.7rem 0.95rem;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.45rem;
-    }
-    .auto-check-title {
+      justify-content: space-between;
+      gap: 0.45rem;
       font-weight: 700;
-      font-size: 0.98rem;
+      font-size: 0.88rem;
       color: var(--primary);
+      min-height: 44px;
+    }
+    .auto-check-summary::-webkit-details-marker {
+      display: none;
+    }
+    .auto-check-summary-left {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+    .auto-check-toggle-hint {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .auto-check-details[open] .auto-check-toggle-hint::after {
+      content: " ▲";
+    }
+    .auto-check-details:not([open]) .auto-check-toggle-hint::after {
+      content: " ▼";
+    }
+    .auto-check-body {
+      padding: 0 0.95rem 0.85rem;
+      border-top: 1px solid rgba(191, 217, 238, 0.7);
     }
     .status-pill {
       display: inline-block;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      padding: 0.14rem 0.6rem;
+      padding: 0.14rem 0.55rem;
       border-radius: 999px;
       background: #1e6f5c;
       color: #fff;
     }
     .auto-check-message {
-      font-size: 0.92rem;
+      font-size: 0.86rem;
       font-weight: 600;
-      margin: 0.25rem 0 0.55rem;
+      margin: 0.55rem 0;
       color: var(--text);
     }
     .auto-check-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 0.45rem 1rem;
-      font-size: 0.82rem;
+      gap: 0.4rem 1rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
     .auto-check-grid strong {
       color: var(--text);
     }
 
+    /* アレルギー案内 */
     .allergy-box {
       background: var(--warn-bg);
       border: 1px solid #fed7aa;
       border-left: 5px solid #ea580c;
-      border-radius: 8px;
-      padding: 0.85rem 1.15rem;
-      margin-bottom: 1.1rem;
+      border-radius: var(--radius-md);
+      padding: 0.65rem 0.95rem;
+      margin-bottom: 0.95rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.4rem 0.75rem;
     }
     .allergy-box-text {
-      font-size: 0.93rem;
+      font-size: 0.86rem;
       color: var(--warn);
     }
-    .allergy-box-text strong {
-      font-weight: 700;
-    }
     .allergy-box a {
-      font-size: 0.86rem;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      font-size: 0.83rem;
       font-weight: 700;
       color: var(--warn);
       text-decoration: underline;
     }
 
-    .view-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.1rem;
-    }
-    .view-tab {
-      padding: 0.55rem 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      color: var(--text);
-    }
-    .view-tab.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
+    /* 日付ナビゲーション */
     .date-nav {
-      background: #fff;
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.25rem;
+      border-radius: var(--radius-lg);
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
     }
     .date-controls {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
+      flex-direction: column;
+      gap: 0.7rem;
     }
     .date-title-group {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.55rem;
+      justify-content: space-between;
+      gap: 0.45rem;
     }
     .date-title {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: clamp(1.15rem, 4.2vw, 1.35rem);
+      font-weight: 800;
       color: var(--primary);
     }
     .day-type-badge {
       display: inline-block;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      padding: 0.16rem 0.6rem;
+      padding: 0.2rem 0.65rem;
       border-radius: 999px;
       background: var(--primary-light);
       color: var(--primary);
@@ -208,84 +301,148 @@
       color: #c0392b;
       border-color: #f3c6c2;
     }
+
+    /* スマホ・タブレットで押しやすい操作ボタン群 */
     .nav-btns {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 1fr;
       gap: 0.45rem;
+      align-items: center;
     }
     .nav-btn {
-      padding: 0.45rem 0.85rem;
+      min-height: 44px;
+      padding: 0.5rem 0.65rem;
       border: 1px solid var(--border);
       background: #fff;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       cursor: pointer;
       font-size: 0.88rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text);
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease, transform 0.08s ease;
     }
-    .nav-btn:hover { background: var(--primary-light); }
+    .nav-btn:active {
+      transform: scale(0.98);
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary-light);
+    }
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
     .nav-btn.primary {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
     }
-    input[type="date"], input[type="search"] {
-      padding: 0.45rem 0.7rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.9rem;
+    .nav-btn.primary:hover {
+      background: var(--primary-dark);
     }
+
+    .date-picker-wrap {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .date-picker-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    /* iOS Safariの自動ズーム防止のためfont-sizeを16pxに設定 */
+    input[type="date"],
+    input[type="search"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    /* 日付クイック選択：スマホでは横スクロールピル、タブレット以上では整列グリッド */
     .quick-days {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
-      gap: 0.35rem;
-      margin-top: 0.85rem;
-      padding-top: 0.8rem;
+      display: flex;
+      overflow-x: auto;
+      gap: 0.45rem;
+      margin-top: 0.8rem;
+      padding: 0.75rem 0.1rem 0.3rem;
       border-top: 1px solid var(--border);
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
     }
     .day-chip {
-      padding: 0.32rem 0.4rem;
+      flex: 0 0 auto;
+      min-width: 68px;
+      min-height: 44px;
+      padding: 0.35rem 0.55rem;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 10px;
       background: var(--bg);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
       text-align: center;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.25;
     }
-    .day-chip.sun { color: #c0392b; }
-    .day-chip.sat { color: #1a4f7a; }
+    .day-chip .chip-dow {
+      font-size: 0.72rem;
+      opacity: 0.85;
+    }
+    .day-chip.sun {
+      color: #c0392b;
+    }
+    .day-chip.sat {
+      color: #1a4f7a;
+    }
     .day-chip.active {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(26, 79, 122, 0.25);
     }
 
+    /* 次の食事バナー */
     .next-meal-banner {
       background: var(--primary-light);
       border: 1px solid #bfd9ee;
       border-left: 5px solid var(--primary);
-      border-radius: 8px;
-      padding: 0.75rem 1.05rem;
-      margin-bottom: 1rem;
-      font-size: 0.92rem;
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.95rem;
+      margin-bottom: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--primary);
+      line-height: 1.45;
     }
 
+    /* 食事セクションカード */
     .meal-section {
-      background: #fff;
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.15rem 1.25rem;
-      margin-bottom: 1.15rem;
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
     }
     .meal-section.next-meal {
       border: 2px solid var(--primary);
-      box-shadow: 0 3px 12px rgba(26, 79, 122, 0.09);
+      box-shadow: var(--shadow-md);
     }
     .meal-section.ended-meal {
       opacity: 0.72;
@@ -295,16 +452,16 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
+      gap: 0.45rem;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.95rem;
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.85rem;
     }
     .meal-header-left {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.45rem 0.6rem;
     }
     .meal-header h2 {
       margin: 0;
@@ -318,14 +475,14 @@
       color: #1e6f5c;
       background: #eef7f5;
       border: 1px solid #bfe0d8;
-      padding: 0.14rem 0.6rem;
+      padding: 0.16rem 0.6rem;
       border-radius: 6px;
     }
     .meal-status-badge {
       display: inline-block;
       font-size: 0.76rem;
       font-weight: 700;
-      padding: 0.14rem 0.6rem;
+      padding: 0.16rem 0.65rem;
       border-radius: 999px;
     }
     .meal-status-badge.next {
@@ -345,26 +502,28 @@
       font-weight: 700;
       color: #b45309;
       background: #fef3c7;
-      padding: 0.15rem 0.55rem;
-      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
     }
+
+    /* コースグリッド：スマホ1列 / タブレットA・B横並び+共通全幅 / PC3列 */
     .course-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 0.9rem;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
     }
     .course-card {
-      border-radius: 8px;
-      padding: 0.95rem 1rem;
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
       border: 1px solid var(--border);
     }
     .course-card.set-a {
       background: var(--set-a-bg);
-      border-color: #f3c6c2;
+      border-color: var(--set-a-border);
     }
     .course-card.set-b {
       background: var(--set-b-bg);
-      border-color: #bfe0d8;
+      border-color: var(--set-b-border);
     }
     .course-card.common {
       background: var(--common-bg);
@@ -374,140 +533,310 @@
       display: inline-block;
       font-size: 0.78rem;
       font-weight: 700;
-      padding: 0.15rem 0.6rem;
-      border-radius: 4px;
+      padding: 0.16rem 0.6rem;
+      border-radius: 5px;
       color: #fff;
       margin-bottom: 0.45rem;
     }
-    .set-a .course-badge { background: var(--set-a); }
-    .set-b .course-badge { background: var(--set-b); }
-    .common .course-badge { background: var(--common); }
+    .set-a .course-badge {
+      background: var(--set-a);
+    }
+    .set-b .course-badge {
+      background: var(--set-b);
+    }
+    .common .course-badge {
+      background: var(--common);
+    }
 
     .dish-name {
-      font-size: 1.02rem;
+      font-size: 1.05rem;
       font-weight: 700;
+      line-height: 1.45;
       margin-bottom: 0.25rem;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
     }
     .common-list {
       margin: 0.2rem 0 0;
       padding-left: 1.2rem;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+    .common-list li + li {
+      margin-top: 0.18rem;
     }
     .meta {
       font-size: 0.82rem;
       color: var(--muted);
     }
     .empty-state {
-      background: #fff;
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.8rem;
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1rem;
       text-align: center;
       color: var(--muted);
     }
 
+    /* 月間一覧ビュー */
     .monthly-toolbar {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 0.9rem;
     }
     .monthly-table-wrap {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow-x: auto;
+      background: transparent;
     }
     table.monthly-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.86rem;
-    }
-    table.monthly-table th, table.monthly-table td {
-      border-bottom: 1px solid var(--border);
-      padding: 0.65rem 0.75rem;
-      text-align: left;
-      vertical-align: top;
-    }
-    table.monthly-table th {
-      background: var(--primary-light);
-      color: var(--primary);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    table.monthly-table tr:hover {
-      background: #fafcfd;
+      font-size: 0.88rem;
     }
     .mini-tag {
       display: inline-block;
       font-size: 0.72rem;
       font-weight: 700;
-      padding: 0.05rem 0.35rem;
-      border-radius: 3px;
+      padding: 0.06rem 0.38rem;
+      border-radius: 4px;
       color: #fff;
-      margin-right: 0.25rem;
+      margin-right: 0.3rem;
     }
-    .mini-tag.a { background: var(--set-a); }
-    .mini-tag.b { background: var(--set-b); }
-    .mini-tag.c { background: var(--common); }
-    .hidden { display: none; }
+    .mini-tag.a {
+      background: var(--set-a);
+    }
+    .mini-tag.b {
+      background: var(--set-b);
+    }
+    .mini-tag.c {
+      background: var(--common);
+    }
+
+    /* スマホ（767px以下）：月間テーブルを横スクロール不要のカード表示に変換 */
+    @media (max-width: 767px) {
+      table.monthly-table thead {
+        display: none;
+      }
+      table.monthly-table,
+      table.monthly-table tbody,
+      table.monthly-table tr,
+      table.monthly-table td {
+        display: block;
+        width: 100%;
+      }
+      table.monthly-table tr {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 0.85rem;
+        padding: 0.75rem 0.9rem;
+        box-shadow: var(--shadow-sm);
+      }
+      table.monthly-table td {
+        border: none;
+        padding: 0.5rem 0;
+      }
+      table.monthly-table td + td {
+        border-top: 1px dashed var(--border);
+      }
+      table.monthly-table td.date-cell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.1rem;
+        padding-bottom: 0.55rem;
+      }
+      table.monthly-table td.meal-cell::before {
+        content: attr(data-meal-label);
+        display: inline-block;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--primary);
+        background: var(--primary-light);
+        padding: 0.1rem 0.5rem;
+        border-radius: 5px;
+        margin-bottom: 0.3rem;
+      }
+    }
+
+    /* タブレット（640px〜1023px）：A定食・B定食を2列横並び、共通料理を全幅表示 */
+    @media (min-width: 640px) {
+      main {
+        padding: 0 1.25rem 3rem;
+      }
+      .date-nav {
+        padding: 1.1rem 1.2rem;
+      }
+      .date-controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-btns {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .date-picker-wrap {
+        width: auto;
+      }
+      input[type="date"] {
+        width: auto;
+      }
+      .course-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .course-card.common {
+        grid-column: 1 / -1;
+      }
+      .common-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1.5rem;
+      }
+      .common-list li + li {
+        margin-top: 0;
+      }
+      .monthly-toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      input[type="search"] {
+        max-width: 340px;
+      }
+    }
+
+    /* タブレット（768px以上）：クイック日付を均等グリッド表示＆月間一覧をテーブル表示 */
+    @media (min-width: 768px) {
+      .quick-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        overflow-x: visible;
+        padding-bottom: 0;
+      }
+      .day-chip {
+        min-width: 0;
+        flex-direction: row;
+        gap: 0.2rem;
+      }
+      .monthly-table-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow-x: auto;
+        box-shadow: var(--shadow-sm);
+      }
+      table.monthly-table th,
+      table.monthly-table td {
+        border-bottom: 1px solid var(--border);
+        padding: 0.7rem 0.8rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      table.monthly-table th {
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 700;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+      }
+      table.monthly-table tr:hover {
+        background: #fafcfd;
+      }
+    }
+
+    /* デスクトップ（1024px以上）：A・B・共通の3カラム横並び */
+    @media (min-width: 1024px) {
+      .course-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .course-card.common {
+        grid-column: auto;
+      }
+      .common-list {
+        display: block;
+      }
+      .common-list li + li {
+        margin-top: 0.2rem;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
     footer {
-      max-width: 1020px;
+      max-width: 1040px;
       margin: 0 auto 2rem;
       padding: 0 1rem;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       color: var(--muted);
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>鶴友寮 食事サイト｜献立表</h1>
-    <p>鶴友寮 献立情報・本日の献立（A定食・B定食・共通料理）</p>
+    <div class="header-inner">
+      <h1>鶴友寮 食事サイト｜献立表</h1>
+      <p>本日の献立（A定食・B定食・共通料理）</p>
+    </div>
   </header>
+
+  <nav class="sticky-tabs-bar" aria-label="表示切替">
+    <div class="view-tabs">
+      <button type="button" class="view-tab active" id="tab-daily">その日の献立</button>
+      <button type="button" class="view-tab" id="tab-monthly">登録済み献立一覧</button>
+    </div>
+  </nav>
 
   <main>
     <div class="source-bar">
-      <div>
+      <div class="source-links-wrap">
         <strong>取得元:</strong>
         <a id="source-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
-          鶴友寮「食堂関係」公式ページ ↗
+          食堂関係公式ページ ↗
         </a>
         <span id="pdf-link-area">
-          / <a href="monthly_menu.json" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>
+          <a href="monthly_menu.json" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>
         </span>
       </div>
       <div class="meta" id="sync-info">読み込み中...</div>
     </div>
 
-    <!-- 毎週月曜日 06:30 自動チェック・反映結果パネル -->
-    <section class="auto-check-card" aria-label="自動メニューチェック結果">
-      <div class="auto-check-header">
-        <div class="auto-check-title">
-          <span>自動メニューチェック結果</span>
+    <!-- スマホ・タブレットで場所を取りすぎない折りたたみ式チェック結果 -->
+    <details class="auto-check-details">
+      <summary class="auto-check-summary">
+        <span class="auto-check-summary-left">
+          <span>自動メニューチェック</span>
           <span class="status-pill" id="auto-check-badge">本番公開中</span>
+        </span>
+        <span class="auto-check-toggle-hint">詳細</span>
+      </summary>
+      <div class="auto-check-body">
+        <p class="auto-check-message" id="auto-check-message">
+          公式献立表データを確認し、最新献立を反映しました。
+        </p>
+        <div class="auto-check-grid">
+          <div><strong>自動実行日時:</strong> <span id="auto-check-schedule">毎週月曜日 06:30 ごろ（JST）</span></div>
+          <div><strong>最終チェック実行:</strong> <span id="auto-check-last">-</span></div>
+          <div><strong>次回チェック予定:</strong> <span id="auto-check-next">-</span></div>
+          <div><strong>対象月・登録日数:</strong> <span id="auto-check-target">-</span></div>
         </div>
-        <button type="button" class="nav-btn" id="reload-feed-btn" style="padding:0.28rem 0.65rem;font-size:0.8rem;">
-          最新結果を再読込
-        </button>
+        <div style="margin-top:0.65rem;">
+          <button type="button" class="nav-btn" id="reload-feed-btn" style="min-height:38px;padding:0.3rem 0.8rem;font-size:0.82rem;">
+            最新結果を再読込
+          </button>
+        </div>
       </div>
-      <p class="auto-check-message" id="auto-check-message">
-        公式献立表データを確認し、最新献立を反映しました。
-      </p>
-      <div class="auto-check-grid">
-        <div><strong>自動実行日時:</strong> <span id="auto-check-schedule">毎週月曜日 06:30 ごろ（JST）</span></div>
-        <div><strong>最終チェック実行:</strong> <span id="auto-check-last">-</span></div>
-        <div><strong>次回チェック予定:</strong> <span id="auto-check-next">-</span></div>
-        <div><strong>対象月・登録日数:</strong> <span id="auto-check-target">-</span></div>
-      </div>
-    </section>
+    </details>
 
     <!-- アレルギー対応案内 -->
     <section class="allergy-box" aria-label="アレルギー対応について">
       <div class="allergy-box-text">
-        <strong>アレルギー対応について：</strong><span id="allergy-notice-text">PDFファイルを確認してください．</span>
+        <strong>アレルギー対応：</strong><span id="allergy-notice-text">PDFファイルを確認してください．</span>
       </div>
       <div id="allergy-pdf-link">
         <a href="https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf" target="_blank" rel="noopener noreferrer">
@@ -515,11 +844,6 @@
         </a>
       </div>
     </section>
-
-    <div class="view-tabs">
-      <button type="button" class="view-tab active" id="tab-daily">その日の献立</button>
-      <button type="button" class="view-tab" id="tab-monthly">登録済み献立一覧</button>
-    </div>
 
     <div id="daily-view">
       <section class="date-nav">
@@ -532,7 +856,10 @@
             <button type="button" class="nav-btn" id="prev-day-btn">◀ 前日</button>
             <button type="button" class="nav-btn primary" id="today-btn">次の食事</button>
             <button type="button" class="nav-btn" id="next-day-btn">翌日 ▶</button>
-            <input type="date" id="date-picker" aria-label="日付を選択" />
+            <div class="date-picker-wrap">
+              <label for="date-picker" class="date-picker-label">日付指定:</label>
+              <input type="date" id="date-picker" aria-label="日付を選択" />
+            </div>
           </div>
         </div>
         <div class="quick-days" id="quick-days"></div>
