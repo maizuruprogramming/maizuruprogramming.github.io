@@ -1,0 +1,16 @@
+[Unit]
+Description=Tsuruyu Dormitory Menu Viewer
+After=network.target
+
+[Service]
+Type=simple
+User=tsuruyu
+Group=tsuruyu
+WorkingDirectory=/opt/kakuyu-menu
+Environment="PATH=/opt/kakuyu-menu/.venv/bin"
+ExecStart=/opt/kakuyu-menu/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8017 --timeout 60 app:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173f35">
+  <meta name="description" content="舞鶴高専・鶴友寮の学寮食堂献立表を月別に確認できる非公式ビューアです。">
+  <title>鶴友寮 食堂メニュー</title>
+  <link rel="stylesheet" href="./static/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="鶴友寮 食堂メニュー トップ">
+      <span class="brand-mark" aria-hidden="true">鶴</span>
+      <span class="brand-copy">
+        <strong>鶴友寮 食堂メニュー</strong>
+        <small>TSURU-TOMO DORMITORY DINING</small>
+      </span>
+    </a>
+    <a class="official-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
+      学校公式ページ <span aria-hidden="true">↗</span>
+    </a>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div class="intro-copy">
+        <p class="eyebrow">MAIZURU KOSEN / DORMITORY</p>
+        <h1>今日のごはん、<br><span>何かな？</span></h1>
+        <p class="intro-lead">鶴友寮の学寮食堂献立表を、月ごとに確認できます。</p>
+      </div>
+      <div class="intro-art" aria-hidden="true">
+        <div class="plate"><span>🍚</span><span>🥢</span></div>
+        <span class="leaf leaf-one">✦</span>
+        <span class="leaf leaf-two">✦</span>
+      </div>
+    </section>
+
+    <section class="content-section" aria-labelledby="archive-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MENU ARCHIVE</p>
+          <h2 id="archive-title">月別の献立表</h2>
+        </div>
+        <button id="refresh-button" class="refresh-button" type="button">
+          <span aria-hidden="true">↻</span> データを再読み込み
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <label class="select-wrap" for="month-select">
+          <span>表示する月</span>
+          <select id="month-select" disabled>
+            <option>献立表を読み込み中…</option>
+          </select>
+        </label>
+        <p id="status-message" class="status-message" role="status" aria-live="polite">公開データを読み込んでいます。</p>
+      </div>
+
+      <div id="menu-grid" class="menu-grid" aria-live="polite">
+        <div class="loading-card"><span class="loader"></span> 献立表を読み込んでいます…</div>
+      </div>
+    </section>
+
+    <section id="viewer-section" class="viewer-section" aria-labelledby="viewer-title">
+      <div class="viewer-heading">
+        <div>
+          <p class="eyebrow">MONTHLY MENU</p>
+          <h2 id="viewer-title">献立表</h2>
+          <p id="viewer-subtitle" class="viewer-subtitle">月を選択してください。</p>
+        </div>
+        <a id="open-pdf" class="open-pdf" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          PDFを別タブで開く <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div id="pdf-wrap" class="pdf-wrap">
+        <div class="pdf-placeholder">
+          <span class="pdf-icon" aria-hidden="true">PDF</span>
+          <p>上の一覧から月を選ぶと、献立表がここに表示されます。</p>
+        </div>
+      </div>
+      <p class="pdf-note">PDFは舞鶴高専の公式サイトに掲載された原本を表示しています。献立の変更やアレルギーに関する確認は、必ず公式の最新資料・学校からの案内を優先してください。</p>
+    </section>
+
+    <section class="notice" aria-label="ご利用上の注意">
+      <div class="notice-icon" aria-hidden="true">i</div>
+      <div>
+        <h2>ご利用にあたって</h2>
+        <p>このアプリは献立表を見やすく表示するための非公式ビューアです。献立の内容・栄養価・アレルゲン情報を独自に編集していません。掲載内容は変更される場合があります。アレルギーに関する判断には、このアプリだけを使用せず、必ず学校の最新資料を確認してください。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Data source: <a href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">舞鶴工業高等専門学校 鶴友寮・食堂関係</a></p>
+    <p>献立一覧データはGitHub Actionsで定期更新されます。</p>
+    <p>© 鶴友寮 食堂メニュー Viewer</p>
+  </footer>
+
+  <script src="./static/app.js" defer></script>
+</body>
+</html>
