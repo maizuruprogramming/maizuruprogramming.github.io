@@ -151,7 +151,9 @@
     const day = dayMap.get(selectedDate);
     currentDayPdf = getSourceForDate(selectedDate);
     els.todayMeals.innerHTML = MEALS.map((meta) => renderMealCard(selectedDate, meta)).join('');
-    if (day && day.pdf_url) {
+    if (day && day.source_method === 'user_transcription') {
+      els.daySourceNote.textContent = day.source_note || 'この日の一部献立は提供された転記内容を登録しています。';
+    } else if (day && day.pdf_url) {
       els.daySourceNote.textContent = day.source_updated ? `献立データの取得日：${day.source_updated}` : '日別献立データは公式PDFから抽出したものです。';
     } else if (currentDayPdf) {
       els.daySourceNote.innerHTML = `日別データがまだありません。<a href="${escapeHtml(currentDayPdf)}" target="_blank" rel="noopener noreferrer">この月の公式献立表PDFを確認 ↗</a>`;
@@ -344,6 +346,7 @@
       const updated = formatUpdatedAt(daily.updated_at || monthly.updated_at);
       const extracted = daily.days?.length || 0;
       els.status.textContent = `${monthly.message || '献立表を読み込みました。'} 日別データ：${extracted}日分${updated ? ` ／ 更新：${updated}` : ''}`;
+      if (daily.status === 'partial' && daily.message) els.status.textContent += ` ／ ${daily.message}`;
       if (!extracted) els.status.textContent += '（日別データは次回のGitHub Actions実行後に表示されます）';
     } catch (error) {
       console.error(error);

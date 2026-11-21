@@ -227,3 +227,143 @@ def test_parenthetical_notes_at_both_ends_of_full_dish_names_are_preserved():
     assert parsed["a"] == ["チーズinハンバーグ(クリーム)"]
     assert parsed["b"] == ["(北海道)豚の生姜焼き"]
     assert parsed["common"] == ["カスタードプリン"]
+
+
+
+def test_rice_directly_below_b_menu_is_added_to_b_set_meal():
+    parsed = parse_meal_text(
+        "A 豚の生姜炒め丼\n"
+        "B 白身魚のチーズ焼き\n"
+        "ごはん\n"
+        "共通料理\n"
+        "さっぱり水餃子\n"
+        "プリン\n"
+        "わかめスープ"
+    )
+    assert parsed["a"] == ["豚の生姜炒め丼"]
+    assert parsed["b"] == ["白身魚のチーズ焼き", "ごはん"]
+    assert parsed["common"] == ["さっぱり水餃子", "プリン", "わかめスープ"]
+
+
+def test_rice_below_common_heading_remains_common_even_after_b_menu():
+    parsed = parse_meal_text(
+        "A 豚の生姜炒め丼\n"
+        "B 白身魚のチーズ焼き\n"
+        "共通料理\n"
+        "ごはん\n"
+        "さっぱり水餃子"
+    )
+    assert parsed["a"] == ["豚の生姜炒め丼"]
+    assert parsed["b"] == ["白身魚のチーズ焼き"]
+    assert parsed["common"] == ["ごはん", "さっぱり水餃子"]
+
+
+def test_unlabelled_non_rice_item_after_b_does_not_inherit_b_classification():
+    parsed = parse_meal_text(
+        "B 白身魚のチーズ焼き\n"
+        "味噌汁\n"
+        "ごはん"
+    )
+    assert parsed["b"] == ["白身魚のチーズ焼き"]
+    assert parsed["common"] == ["味噌汁", "ごはん"]
+
+
+def test_november_18_breakfast_and_lunch_expected_classification():
+    breakfast = parse_meal_text(
+        "A ごはん\n"
+        "B ロールパン\n"
+        "共通料理\n"
+        "納豆\n"
+        "茄子のそぼろあん\n"
+        "コーンサラダ\n"
+        "味噌汁\n"
+        "ジョア"
+    )
+    lunch = parse_meal_text(
+        "A 豚の生姜炒め丼\n"
+        "B 白身魚のチーズ焼き\n"
+        "ごはん\n"
+        "共通料理\n"
+        "さっぱり水餃子\n"
+        "プリン\n"
+        "わかめスープ"
+    )
+    assert breakfast["a"] == ["ごはん"]
+    assert breakfast["b"] == ["ロールパン"]
+    assert breakfast["common"] == ["納豆", "茄子のそぼろあん", "コーンサラダ", "味噌汁", "ジョア"]
+    assert lunch["a"] == ["豚の生姜炒め丼"]
+    assert lunch["b"] == ["白身魚のチーズ焼き", "ごはん"]
+    assert lunch["common"] == ["さっぱり水餃子", "プリン", "わかめスープ"]
+
+
+
+def test_table_rows_keep_b_to_rice_context_across_physical_pdf_rows():
+    rows = [
+        ["日付", "2026年11月18日(水)", "2026年11月19日(木)"],
+        ["朝食", "A ごはん\nB ロールパン", "A ごはん\nB パン"],
+        ["", "共通料理\n納豆\n味噌汁", "共通料理\n味噌汁"],
+        ["昼食", "A 豚の生姜炒め丼", "A カレー"],
+        ["", "B 白身魚のチーズ焼き", "B 焼き魚"],
+        ["", "ごはん", "ごはん"],
+        ["", "共通料理", "共通料理"],
+        ["", "さっぱり水餃子\nプリン\nわかめスープ", "サラダ"],
+    ]
+    parsed = parse_table_rows(rows, PDF)
+    lunch = parsed["2026-11-18"]["meals"]["lunch"]
+    assert lunch["a"] == ["豚の生姜炒め丼"]
+    assert lunch["b"] == ["白身魚のチーズ焼き", "ごはん"]
+    assert lunch["common"] == ["さっぱり水餃子", "プリン", "わかめスープ"]
+
+
+def test_rice_below_common_heading_is_common_after_b_across_table_rows():
+    rows = [
+        ["日付", "2026年11月18日(水)", "2026年11月19日(木)"],
+        ["昼食", "A 丼", "A カレー"],
+        ["", "B 魚", "B 肉"],
+        ["", "共通料理", "共通料理"],
+        ["", "ごはん", "ごはん"],
+    ]
+    parsed = parse_table_rows(rows, PDF)
+    lunch = parsed["2026-11-18"]["meals"]["lunch"]
+    assert lunch["b"] == ["魚"]
+    assert lunch["common"] == ["ごはん"]
+
+
+
+def test_table_row_heading_common料理_applies_to_rice_in_next_row():
+    rows = [
+        ["日付", "2026年11月18日(水)", "2026年11月19日(木)"],
+        ["昼食", "A 丼", "A カレー"],
+        ["B", "白身魚のチーズ焼き", "焼き魚"],
+        ["共通料理", "", ""],
+        ["", "ごはん", "ごはん"],
+    ]
+    parsed = parse_table_rows(rows, PDF)
+    lunch = parsed["2026-11-18"]["meals"]["lunch"]
+    assert lunch["a"] == ["丼"]
+    assert lunch["b"] == ["白身魚のチーズ焼き"]
+    assert lunch["common"] == ["ごはん"]
+
+
+def test_flattened_b_menu_and_trailing_rice_are_split_into_two_items():
+    # PDF extraction can flatten two visual lines into one text line.
+    parsed = parse_meal_text(
+        "A 豚の生姜炒め丼\n"
+        "B 白身魚のチーズ焼き ごはん\n"
+        "共通料理\n"
+        "さっぱり水餃子\n"
+        "プリン\n"
+        "わかめスープ"
+    )
+    assert parsed["a"] == ["豚の生姜炒め丼"]
+    assert parsed["b"] == ["白身魚のチーズ焼き", "ごはん"]
+    assert parsed["common"] == ["さっぱり水餃子", "プリン", "わかめスープ"]
+
+
+def test_flattened_common_heading_keeps_rice_common_after_b_dish():
+    parsed = parse_meal_text(
+        "B 白身魚のチーズ焼き [共通料理] ごはん\n"
+        "さっぱり水餃子"
+    )
+    assert parsed["b"] == ["白身魚のチーズ焼き"]
+    assert parsed["common"] == ["ごはん", "さっぱり水餃子"]

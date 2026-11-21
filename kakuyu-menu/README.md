@@ -17,12 +17,24 @@
 `.github/workflows/pages.yml` が毎日10:35ごろ（日本時間／UTC 01:35）と `main` へのpush時に実行されます。
 
 1. `scripts/update_menus.py` が鶴友寮の公式掲載ページから月別献立PDFのURLを取得します。
-2. `scripts/extract_daily_menus.py` が公式PDFを取得し、日付・朝食／昼食／夕食・A／B・共通料理・栄養価を抽出します。各項目を個別に判定し、先頭が「A」ならA定食、先頭が「B」ならB定食、それ以外は共通料理に分類します。直前のA/B判定を次の行へ引き継ぎません。PDFファイル名から対象月を判定できる場合は、記事の投稿日よりPDF側の年月を優先します。
+2. `scripts/extract_daily_menus.py` が公式PDFを取得し、日付・朝食／昼食／夕食・A／B・共通料理・栄養価を抽出します。各項目を個別に判定し、先頭が「A」ならA定食、先頭が「B」ならB定食、それ以外は共通料理に分類します。直前のA/B判定を一般の料理に引き継ぎません。ただし、**B定食の料理の直後に「ごはん」があり、その前に「共通料理」の見出しがない場合に限り、その「ごはん」はB定食に追加**します。「共通料理」の見出し以降にある「ごはん」は共通料理です。PDFの表抽出でおかず・ごはん・見出しが別の物理行に分割されても、この順序を保ってから分類します。PDFファイル名から対象月を判定できる場合は、記事の投稿日よりPDF側の年月を優先します。
 3. `site/data/daily-menus.json` を生成してGitHub Pagesに公開します。
 
 献立PDFの表構造が変更されると抽出できない場合があります。その場合は、GitHub Actionsのログを確認し、公式PDFを直接参照してください。抽出に失敗した場合、既存の日別JSONに有効な日付データがあればそれを保持します。初期状態の空データしかない場合はActionsを失敗させ、空の献立データを正常公開したように見せない仕様です。
 
-### アレルゲン情報について
+### A/B定食と共通料理の分類
+
+- 料理名の先頭が `A` / `Ａ` の場合はA定食です。
+- 料理名の先頭が `B` / `Ｂ` の場合はB定食です。
+- それ以外は共通料理としてA/B両方に表示します。
+- `共通料理` は見出しなので、料理として登録しません。
+- B定食の料理の直下にある独立した「ごはん」はB定食に含めます。
+- 「共通料理」見出しの後にある「ごはん」は共通料理に含めます。
+- PDF抽出結果でB料理と「ごはん」が同一行に連結されても分割します。
+
+2026年11月18日の朝食・昼食は、提供された献立内容に基づく確認データを `site/data/daily-menus.json` に登録しています。月全体の実PDF解析はGitHub Actionsで公式PDFを取得した後に実行されます。アレルゲンの赤丸表示は、原本を確認したデータだけを確定扱いにします。
+
+## アレルゲン情報について
 
 公式PDFのアレルゲン表示は、各献立のA／Bに対する赤丸などの視覚情報です。通常のテキスト抽出では正確な判定ができないため、このプロジェクトでは自動推定しません。未確認の項目は画面上で **「未確認」** と表示し、該当する公式PDFを開けるようにしています。
 
@@ -74,9 +86,9 @@ python3 -m http.server 8000 --directory site
 日別献立データをローカルで再生成する場合：
 
 ```bash
-python3 -m pip install requests beautifulsoup4 pymupdf
-python3 scripts/update_menus.py --output site/data/menus.json
-python3 scripts/extract_daily_menus.py --menus-json site/data/menus.json --output site/data/daily-menus.json
+python -m pip install requests beautifulsoup4 pymupdf
+python scripts/update_menus.py --output site/data/menus.json
+python scripts/extract_daily_menus.py --menus-json site/data/menus.json --output site/data/daily-menus.json
 ```
 
 ## フォルダー構成
@@ -101,6 +113,13 @@ kakuyu-menu/
 ## 公式参照先
 
 https://www.maizuru-ct.ac.jp/kakuyu/category/dining/
+
+### 「ごはん」の分類について
+
+- `B 白身魚のチーズ焼き` の直後に `ごはん` があり、その前に `共通料理` の見出しがなければ、`ごはん` をB定食に追加します。
+- `共通料理` の見出しより後にある `ごはん` は共通料理として扱います。
+- B定食の料理の後に味噌汁など別の料理が挟まっている場合、その後の `ごはん` はB定食に引き継がず、共通料理とします。
+- 表の左端列に「B」や「共通料理」の見出しが分離して抽出された場合にも対応します。
 
 ### 料理名の先頭・末尾の文字について
 

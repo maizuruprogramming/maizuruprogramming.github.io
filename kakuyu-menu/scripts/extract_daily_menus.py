@@ -141,20 +141,58 @@ def parse_meal_text(value: str) -> dict[str, Any]:
     }
     marker_pattern = re.compile(r"([【\[（(]\s*(?:共通料理|A|B)\s*[】\]）)])", re.IGNORECASE)
 
+    # A rice-only continuation is the one intentional positional exception to
+    # the per-item A/B prefix rule: when 「ごはん」 appears immediately below a
+    # B-prefixed dish and before the 「共通料理」 heading, it belongs to B.
+    # Once the common heading has appeared, the same word is common.
+    previous_item_section: str | None = None
+    common_heading_seen = False
+
     def add_item(item_text: str, forced_section: str | None = None) -> None:
+        nonlocal previous_item_section, common_heading_seen
         item_text = item_text.strip()
         if not item_text:
             return
+
+        # "共通料理" is a section heading, not a dish. It also closes the
+        # positional B -> ごはん rule for the rest of this meal cell.
+        common_heading = re.match(r"^共通料理\s*[:：]?\s*(.*)$", item_text)
+        if common_heading:
+            common_heading_seen = True
+            previous_item_section = None
+            item_text = common_heading.group(1).strip()
+            if not item_text:
+                return
+            forced_section = "common"
 
         prefixed = option_prefix(item_text)
+        inherited_b_rice = False
         if prefixed:
             section, item_text = prefixed
+        elif forced_section:
+            section = forced_section
+        elif (re.fullmatch(r"(?:ごはん|ご飯)", item_text)
+              and previous_item_section == "b" and not common_heading_seen):
+            section = "b"
+            inherited_b_rice = True
         else:
-            section = forced_section or "common"
+            section = "common"
 
         item_text = item_text.strip()
         if not item_text:
             return
+
+        # Some PDF text extractors flatten a visually separate B-menu rice
+        # line into the same string as the B main dish, e.g.
+        # "B 白身魚のチーズ焼き ごはん". Split only a standalone trailing
+        # rice word while the B section is active and before 共通料理. The
+        # recursive calls preserve the same behavior as two physical lines.
+        if section == "b" and not common_heading_seen:
+            rice_suffix = re.fullmatch(r"(.+?)\s+(ごはん|ご飯)", item_text)
+            if rice_suffix:
+                add_item(f"B {rice_suffix.group(1).strip()}", "b")
+                add_item(rice_suffix.group(2), None)
+                return
 
         nutrition = extract_nutrition(item_text)
         if nutrition:
@@ -163,23 +201,28 @@ def parse_meal_text(value: str) -> dict[str, Any]:
             else:
                 # Do not guess whether unlabelled nutrition belongs to A or B.
                 result["nutrition"]["common"].update(nutrition)
+            previous_item_section = None
             return
 
-        if item_text.startswith("共通料理"):
-            item_text = re.sub(r"^共通料理\s*[:：]?\s*", "", item_text).strip()
-            section = "common"
         if item_text:
             result[section].append(item_text)
+            # Only an immediately following rice line can inherit B. Any other
+            # unprefixed item clears the context; explicit prefixes reset it.
+            previous_item_section = (
+                section if section in {"a", "b"} and not inherited_b_rice else None
+            )
 
     for raw_line in normalize_lines(value):
-        # Split bracketed labels, but only apply each marker to text immediately
-        # following it on the same extracted line. A marker never changes the
-        # classification of subsequent unlabelled dish lines.
+        # Split bracketed labels. A/B labels apply to the next item; the common
+        # heading applies as a boundary for the special B -> rice continuation.
         pieces = marker_pattern.split(raw_line)
         forced_section: str | None = None
         for piece in pieces:
             marker = marker_for_line(piece)
             if marker:
+                if marker == "common":
+                    common_heading_seen = True
+                    previous_item_section = None
                 forced_section = marker
                 continue
 
@@ -212,9 +255,13 @@ def extract_tables(page: fitz.Page) -> list[list[list[str]]]:
 
 
 def parse_table_rows(rows: list[list[str]], pdf_url: str) -> dict[str, dict[str, Any]]:
-    parsed: dict[str, dict[str, Any]] = {}
+    """Parse table rows while preserving vertical order within each meal cell.
+
+    PDF table extraction may split the B dish, its immediately-following rice,
+    and the common-food heading into separate physical rows. Accumulating raw
+    cell text before calling parse_meal_text() preserves that context.
+    """
     date_header: dict[int, str] = {}
-    meal_rows: list[tuple[str, list[str]]] = []
 
     # Find the header row containing the weekly date columns.
     header_index = -1
@@ -226,13 +273,15 @@ def parse_table_rows(rows: list[list[str]], pdf_url: str) -> dict[str, dict[str,
             header_index = index
             break
     if header_index < 0:
-        return parsed
+        return {}
 
     current_meal: str | None = None
+    cell_texts: dict[str, dict[str, list[str]]] = {}
     for row in rows[header_index + 1:]:
         if not row:
             continue
-        label = re.sub(r"\s+", "", row[0] or "")
+        raw_label = row[0] or ""
+        label = re.sub(r"\s+", "", raw_label)
         found_meal = next((key for label_text, key in MEAL_MAP.items() if label_text in label), None)
         if found_meal:
             current_meal = found_meal
@@ -240,25 +289,53 @@ def parse_table_rows(rows: list[list[str]], pdf_url: str) -> dict[str, dict[str,
                 if column >= len(row):
                     continue
                 cell = row[column] or ""
-                if not cell.strip():
-                    continue
-                day = parsed.setdefault(date, {"date": date, "meals": {}, "pdf_url": pdf_url})
-                day["meals"][current_meal] = parse_meal_text(cell)
+                if cell.strip():
+                    cell_texts.setdefault(date, {}).setdefault(current_meal, []).append(cell)
             continue
 
-        # A merged or continuation row may have a blank first cell. Do not
-        # attach arbitrary rows unless they line up with a known meal table.
-        if current_meal and len(row) > 1 and any((row[col] or "").strip() for col in date_header if col < len(row)):
+        # Some PDF table extractors expose A/B or 共通料理 as the first
+        # (leftmost) cell rather than repeating the marker in every date cell.
+        row_marker: str | None = None
+        normalized_label = unicodedata.normalize("NFKC", label).upper()
+        if normalized_label in {"A", "A定食"}:
+            row_marker = "A"
+        elif normalized_label in {"B", "B定食"}:
+            row_marker = "B"
+        elif normalized_label == "共通料理":
+            row_marker = "共通料理"
+
+        has_date_content = any(
+            (row[col] or "").strip() for col in date_header if col < len(row)
+        )
+        # Merged/continuation rows often have an empty first cell. Keep their
+        # text in sequence so a B dish and the rice below it can be recognized.
+        # Also preserve section-only rows so 「共通料理」 can affect the next
+        # date-cell row even when the heading itself is in column zero.
+        if current_meal and len(row) > 1 and (has_date_content or row_marker):
             for column, date in date_header.items():
-                if column >= len(row) or not (row[column] or "").strip():
+                if column >= len(row):
                     continue
-                day = parsed.setdefault(date, {"date": date, "meals": {}, "pdf_url": pdf_url})
-                meal = day["meals"].setdefault(current_meal, parse_meal_text(""))
-                extra = parse_meal_text(row[column] or "")
-                for key in ("a", "b", "common"):
-                    meal[key].extend(item for item in extra[key] if item not in meal[key])
-                for option in ("a", "b"):
-                    meal["nutrition"][option].update(extra["nutrition"][option])
+                cell = row[column] or ""
+                if row_marker == "共通料理":
+                    combined = "共通料理" + ("\n" + cell if cell.strip() else "")
+                elif row_marker in {"A", "B"} and cell.strip():
+                    # Do not duplicate a marker already present in the cell.
+                    combined = cell if option_prefix(cell) else f"{row_marker} {cell}"
+                else:
+                    combined = cell
+                if combined.strip():
+                    cell_texts.setdefault(date, {}).setdefault(current_meal, []).append(combined)
+
+    parsed: dict[str, dict[str, Any]] = {}
+    for date, meals in cell_texts.items():
+        parsed[date] = {
+            "date": date,
+            "meals": {
+                meal_key: parse_meal_text("\n".join(parts))
+                for meal_key, parts in meals.items()
+            },
+            "pdf_url": pdf_url,
+        }
     return parsed
 
 
