@@ -18,7 +18,7 @@ DEFAULT_MENU_PDF_URL = (
     "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
 )
 ALLERGY_NOTICE = "PDFファイルを確認してください．"
-USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.8)"
+USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.9)"
 JST = timezone(timedelta(hours=9))
 
 MEAL_HOURS_MASTER = {
@@ -280,7 +280,7 @@ def is_allergen_or_noise_text(txt: str) -> bool:
     t = txt.strip()
     if not t or t in STATIC_NOISE_TOKENS:
         return True
-    compact = t.replace(" ", "").replace(" ", "")
+    compact = t.replace(" ", "").replace("　", "")
     if not compact:
         return True
     if all(ch in ALLERGEN_GLYPH_CHARS for ch in compact):
@@ -467,7 +467,6 @@ def parse_meal_cell(
                             ):
                                 set_b_name = f"{set_b_name}・ごはん"
                                 used_indices.add(next_i)
-
             for i, d in enumerate(dishes):
                 if i not in used_indices:
                     raw_common_items.append(d["text"])
@@ -475,6 +474,17 @@ def parse_meal_cell(
             set_a_name = dishes[0]["text"]
             set_b_name = "共通メニュー（選択なし）"
             raw_common_items = [d["text"] for d in dishes[1:]]
+
+    cleaned_common = clean_common_items(raw_common_items)
+
+    # 共通料理の1番上の項目に「ごはん」があるときは、B定食の枠に追加する
+    if cleaned_common and cleaned_common[0] == "ごはん":
+        if set_b_name and set_b_name != "共通メニュー（選択なし）":
+            cleaned_common.pop(0)
+            if "ごはん" not in set_b_name:
+                set_b_name = f"{set_b_name}・ごはん"
+        elif b_ys and not set_b_name:
+            set_b_name = cleaned_common.pop(0)
 
     set_a_obj: dict = {"name": set_a_name}
     set_b_obj: dict = {"name": set_b_name}
@@ -487,7 +497,7 @@ def parse_meal_cell(
         "hours": meal_hours,
         "set_a": set_a_obj,
         "set_b": set_b_obj,
-        "common": {"items": clean_common_items(raw_common_items)},
+        "common": {"items": cleaned_common},
     }
 
 
