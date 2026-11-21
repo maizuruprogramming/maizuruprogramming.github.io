@@ -35,12 +35,12 @@
   const $ = (id) => document.getElementById(id);
 
   function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, """)
-      .replace(/'/g, "'");
+    return String(str == null ? "" : str)
+      .replace(/\u0026/g, "\u0026amp;")
+      .replace(/\u003c/g, "\u0026lt;")
+      .replace(/\u003e/g, "\u0026gt;")
+      .replace(/\u0022/g, "\u0026quot;")
+      .replace(/\u0027/g, "\u0026#39;");
   }
 
   function parseIsoDate(isoStr) {
@@ -124,7 +124,7 @@
     const dow = dt.getUTCDay();
     const holidays = getJapaneseHolidays(dt.getUTCFullYear());
     const isWeekendOrHoliday = dow === 0 || dow === 6 || holidays.has(isoStr);
-    const hoursMaster = menuData?.meal_hours || DEFAULT_MEAL_HOURS;
+    const hoursMaster = (menuData && menuData.meal_hours) || DEFAULT_MEAL_HOURS;
     const schedule = isWeekendOrHoliday ? hoursMaster.weekend_holiday : hoursMaster.weekday;
 
     return {
@@ -140,16 +140,17 @@
 
   function resolveDaySchedule(isoStr, dayObj) {
     const fallback = getFallbackScheduleForDate(isoStr);
-    const dayType = dayObj?.day_type || fallback.dayType;
+    const dayType = (dayObj && dayObj.day_type) || fallback.dayType;
     const isHoliday = dayType.includes("休日") || fallback.isHoliday;
+    const meals = (dayObj && dayObj.meals) || {};
 
     return {
       dayType,
       isHoliday,
       hours: {
-        breakfast: dayObj?.meals?.breakfast?.hours || fallback.hours.breakfast,
-        lunch: dayObj?.meals?.lunch?.hours || fallback.hours.lunch,
-        dinner: dayObj?.meals?.dinner?.hours || fallback.hours.dinner,
+        breakfast: (meals.breakfast && meals.breakfast.hours) || fallback.hours.breakfast,
+        lunch: (meals.lunch && meals.lunch.hours) || fallback.hours.lunch,
+        dinner: (meals.dinner && meals.dinner.hours) || fallback.hours.dinner,
       },
     };
   }
@@ -159,7 +160,7 @@
     const y = dt.getUTCFullYear();
     const m = dt.getUTCMonth() + 1;
     const d = dt.getUTCDate();
-    const dow = dayObj?.day_of_week || DOW_NAMES[dt.getUTCDay()];
+    const dow = (dayObj && dayObj.day_of_week) || DOW_NAMES[dt.getUTCDay()];
     return `${y}年${m}月${d}日（${dow}）`;
   }
 
@@ -169,8 +170,9 @@
       sourceLink.href = data.source_url;
     }
 
-    const pdfUrl = data.latest_article?.menu_pdf_url || DEFAULT_PDF_URL;
-    const nutritionUrl = data.latest_article?.nutrition_pdf_url || "";
+    const latestArticle = data.latest_article || {};
+    const pdfUrl = latestArticle.menu_pdf_url || DEFAULT_PDF_URL;
+    const nutritionUrl = latestArticle.nutrition_pdf_url || "";
     const pdfLinkArea = $("pdf-link-area");
     if (pdfLinkArea) {
       let html = ` / <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener noreferrer">献立表PDF ↗</a>`;
@@ -203,7 +205,7 @@
       $("auto-check-next").textContent = autoCheck.next_check_at || "-";
     }
     if ($("auto-check-target")) {
-      const targetMonth = autoCheck.target_month || data.latest_article?.title || "-";
+      const targetMonth = autoCheck.target_month || latestArticle.title || "-";
       $("auto-check-target").textContent = `${targetMonth}（${daysList.length}日分）`;
     }
 
@@ -284,14 +286,14 @@
       return;
     }
 
-    const articleNote = menuData?.latest_article?.note || "";
+    const articleNote = (menuData && menuData.latest_article && menuData.latest_article.note) || "";
 
     container.innerHTML = MEAL_DEFINITIONS.map(({ key, label }) => {
       const meal = dayObj.meals[key] || {};
       const hoursText = meal.hours || schedule.hours[key] || "";
       const setA = meal.set_a || {};
       const setB = meal.set_b || {};
-      const commonItems = Array.isArray(meal.common?.items) ? meal.common.items : [];
+      const commonItems = Array.isArray(meal.common && meal.common.items) ? meal.common.items : [];
 
       const showChangeNote =
         dayObj.date === "2026-11-14" && key === "lunch" && articleNote;
@@ -336,9 +338,9 @@
   function renderMealSummaryCell(meal, fallbackHours) {
     if (!meal) return "-";
     const hoursText = meal.hours || fallbackHours || "";
-    const setAName = meal.set_a?.name || "-";
-    const setBName = meal.set_b?.name || "";
-    const commonItems = Array.isArray(meal.common?.items) ? meal.common.items : [];
+    const setAName = (meal.set_a && meal.set_a.name) || "-";
+    const setBName = (meal.set_b && meal.set_b.name) || "";
+    const commonItems = Array.isArray(meal.common && meal.common.items) ? meal.common.items : [];
 
     const lines = [];
     if (hoursText) {
@@ -400,6 +402,7 @@
         const m = dt.getUTCMonth() + 1;
         const d = dt.getUTCDate();
         const dow = dayObj.day_of_week || DOW_NAMES[dt.getUTCDay()];
+        const meals = dayObj.meals || {};
 
         return `
           <tr>
@@ -415,9 +418,9 @@
                 </span>
               </div>
             </td>
-            <td>${renderMealSummaryCell(dayObj.meals?.breakfast, schedule.hours.breakfast)}</td>
-            <td>${renderMealSummaryCell(dayObj.meals?.lunch, schedule.hours.lunch)}</td>
-            <td>${renderMealSummaryCell(dayObj.meals?.dinner, schedule.hours.dinner)}</td>
+            <td>${renderMealSummaryCell(meals.breakfast, schedule.hours.breakfast)}</td>
+            <td>${renderMealSummaryCell(meals.lunch, schedule.hours.lunch)}</td>
+            <td>${renderMealSummaryCell(meals.dinner, schedule.hours.dinner)}</td>
           </tr>
         `;
       })
@@ -426,10 +429,10 @@
 
   function switchTab(tabName) {
     const isDaily = tabName === "daily";
-    $("tab-daily")?.classList.toggle("active", isDaily);
-    $("tab-monthly")?.classList.toggle("active", !isDaily);
-    $("daily-view")?.classList.toggle("hidden", !isDaily);
-    $("monthly-view")?.classList.toggle("hidden", isDaily);
+    if ($("tab-daily")) $("tab-daily").classList.toggle("active", isDaily);
+    if ($("tab-monthly")) $("tab-monthly").classList.toggle("active", !isDaily);
+    if ($("daily-view")) $("daily-view").classList.toggle("hidden", !isDaily);
+    if ($("monthly-view")) $("monthly-view").classList.toggle("hidden", isDaily);
   }
 
   function selectDate(isoStr) {
@@ -473,7 +476,8 @@
         selectInitialDate();
       }
       renderDailyView();
-      renderMonthlyTable($("menu-search")?.value || "");
+      const searchEl = $("menu-search");
+      renderMonthlyTable(searchEl ? searchEl.value : "");
     } catch (err) {
       if ($("sync-info")) {
         $("sync-info").textContent = "献立データの読み込みに失敗しました";
@@ -490,60 +494,73 @@
   }
 
   function bindEvents() {
-    $("tab-daily")?.addEventListener("click", () => switchTab("daily"));
-    $("tab-monthly")?.addEventListener("click", () => switchTab("monthly"));
+    if ($("tab-daily")) $("tab-daily").addEventListener("click", () => switchTab("daily"));
+    if ($("tab-monthly")) $("tab-monthly").addEventListener("click", () => switchTab("monthly"));
+    if ($("reload-feed-btn")) $("reload-feed-btn").addEventListener("click", () => loadMenuJson(true));
 
-    $("reload-feed-btn")?.addEventListener("click", () => loadMenuJson(true));
+    if ($("prev-day-btn")) {
+      $("prev-day-btn").addEventListener("click", () => {
+        const idx = daysList.findIndex((d) => d.date === selectedDate);
+        if (idx > 0) {
+          selectDate(daysList[idx - 1].date);
+        } else if (selectedDate) {
+          const prev = new Date(parseIsoDate(selectedDate).getTime() - 86400000);
+          selectDate(formatIsoDate(prev));
+        }
+      });
+    }
 
-    $("prev-day-btn")?.addEventListener("click", () => {
-      const idx = daysList.findIndex((d) => d.date === selectedDate);
-      if (idx > 0) {
-        selectDate(daysList[idx - 1].date);
-      } else if (selectedDate) {
-        const prev = new Date(parseIsoDate(selectedDate).getTime() - 86400000);
-        selectDate(formatIsoDate(prev));
-      }
-    });
+    if ($("next-day-btn")) {
+      $("next-day-btn").addEventListener("click", () => {
+        const idx = daysList.findIndex((d) => d.date === selectedDate);
+        if (idx >= 0 && idx < daysList.length - 1) {
+          selectDate(daysList[idx + 1].date);
+        } else if (selectedDate) {
+          const next = new Date(parseIsoDate(selectedDate).getTime() + 86400000);
+          selectDate(formatIsoDate(next));
+        }
+      });
+    }
 
-    $("next-day-btn")?.addEventListener("click", () => {
-      const idx = daysList.findIndex((d) => d.date === selectedDate);
-      if (idx >= 0 && idx < daysList.length - 1) {
-        selectDate(daysList[idx + 1].date);
-      } else if (selectedDate) {
-        const next = new Date(parseIsoDate(selectedDate).getTime() + 86400000);
-        selectDate(formatIsoDate(next));
-      }
-    });
+    if ($("today-btn")) {
+      $("today-btn").addEventListener("click", () => {
+        selectInitialDate();
+        renderDailyView();
+      });
+    }
 
-    $("today-btn")?.addEventListener("click", () => {
-      selectInitialDate();
-      renderDailyView();
-    });
+    if ($("date-picker")) {
+      $("date-picker").addEventListener("change", (e) => {
+        if (e.target.value) {
+          selectDate(e.target.value);
+        }
+      });
+    }
 
-    $("date-picker")?.addEventListener("change", (e) => {
-      if (e.target.value) {
-        selectDate(e.target.value);
-      }
-    });
+    if ($("quick-days")) {
+      $("quick-days").addEventListener("click", (e) => {
+        const btn = e.target.closest(".day-chip");
+        if (btn && btn.dataset && btn.dataset.date) {
+          selectDate(btn.dataset.date);
+        }
+      });
+    }
 
-    $("quick-days")?.addEventListener("click", (e) => {
-      const btn = e.target.closest(".day-chip");
-      if (btn?.dataset.date) {
-        selectDate(btn.dataset.date);
-      }
-    });
+    if ($("menu-search")) {
+      $("menu-search").addEventListener("input", (e) => {
+        renderMonthlyTable(e.target.value);
+      });
+    }
 
-    $("menu-search")?.addEventListener("input", (e) => {
-      renderMonthlyTable(e.target.value);
-    });
-
-    $("monthly-table-body")?.addEventListener("click", (e) => {
-      const btn = e.target.closest(".jump-date-btn");
-      if (btn?.dataset.date) {
-        selectDate(btn.dataset.date);
-        switchTab("daily");
-      }
-    });
+    if ($("monthly-table-body")) {
+      $("monthly-table-body").addEventListener("click", (e) => {
+        const btn = e.target.closest(".jump-date-btn");
+        if (btn && btn.dataset && btn.dataset.date) {
+          selectDate(btn.dataset.date);
+          switchTab("daily");
+        }
+      });
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
