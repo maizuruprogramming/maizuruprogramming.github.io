@@ -17,7 +17,6 @@ days:
         calories: 803
       common:
         items:
-        - 落くそ花るば生み
         - ウィンナー
         - ポークビーンズ
         - ポテトサラダ
@@ -25,25 +24,23 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: 鶏ごぼう丼
         calories: 958
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 鶏ごぼう丼
         - 小松菜の錦糸和え
         - 大学芋
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: アジフライと
         calories: 1031
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - アジフライと
         - 串カツ
         - マカロニサラダ
         - キムチ
@@ -57,27 +54,38 @@ days:
         name: ごはん
         calories: 1001
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 食パン
         calories: 885
       common:
         items:
-        - 食パン
+        - 豆腐ハンバーグ
+        - チャプチェ
+        - ポテトサラダ
+        - 味噌汁
+        - 牛乳
     lunch:
       set_a:
-        name: ''
+        name: 豚ひき肉と 高菜丼
         calories: 917
       set_b:
-        name: ''
+        name: 共通メニュー（選択なし）
       common:
-        items: []
+        items:
+        - 塩こぶ和え
+        - プチカスタード
+        - 卵スープ
     dinner:
       set_a:
-        name: ''
+        name: ヤンニョムチキン
         calories: 967
       set_b:
-        name: ''
+        name: 共通メニュー（選択なし）
       common:
-        items: []
+        items:
+        - 大根の煮物
+        - 卵豆腐
+        - 赤だし
+        - ごはん
 - date: '2026-11-03'
   day_of_week: 火
   meals:
@@ -90,7 +98,6 @@ days:
         calories: 822
       common:
         items:
-        - 落くそ花る生み
         - チキンナゲット
         - ジャーマンポテト
         - コールスローサラダ
@@ -98,29 +105,24 @@ days:
         - 牛乳
     lunch:
       set_a:
-        name: 落くそ花る生み
+        name: 麻婆丼
         calories: 929
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 麻婆丼
-        - 根菜の
-        - 七味マヨ和え
+        - 根菜の七味マヨ和え
         - パインゼリー
         - わかめスープ
     dinner:
       set_a:
-        name: 落くそ花る生み
+        name: ハンバーグ和風おろしソース
         calories: 917
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ハンバーグ
-        - 和風おろしソース
-        - 高野豆腐の
-        - 卵とじ
+        - 高野豆腐の卵とじ
         - グリーンサラダ
         - 味噌汁
         - ごはん
@@ -136,7 +138,6 @@ days:
         calories: 799
       common:
         items:
-        - 落くそ花る生み
         - ミートオムレツ
         - 明太子
         - スパゲティー
@@ -152,7 +153,6 @@ days:
         calories: 836
       common:
         items:
-        - 落くそ花る生み
         - 白身魚の
         - ごはん
         - おくらのゴマ和え
@@ -163,15 +163,12 @@ days:
         name: 塩鶏唐揚げ
         calories: 965
       set_b:
-        name: のスープ煮
+        name: 肉団子と春雨のスープ煮
         calories: 806
       common:
         items:
-        - 落くそ花る生み
-        - 肉団子と春雨
         - 蓮根のきんぴら
-        - ほうれん草の
-        - おかか和え
+        - ほうれん草のおかか和え
         - 味噌汁
         - ごはん
 - date: '2026-11-05'
@@ -186,7 +183,6 @@ days:
         calories: 695
       common:
         items:
-        - 落くそ花る生み
         - 納豆
         - 五目炒め
         - 大根サラダ
@@ -197,12 +193,10 @@ days:
         name: 豚骨ラーメン
         calories: 934
       set_b:
-        name: おろしポン酢
+        name: 白身魚の唐揚おろしポン酢
         calories: 852
       common:
         items:
-        - 落くそ花る生み
-        - 白身魚の唐揚
         - ごはん
         - 揚げシュウマイ
         - シュークリーム
@@ -213,15 +207,12 @@ days:
         name: チキンカツ
         calories: 994
       set_b:
-        name: ロース風
+        name: 豚のチンジャオロース風
         calories: 805
       common:
         items:
-        - 落くそ花る生み
         - えびカツと
-        - 豚のチンジャオ
-        - こんにゃくの
-        - ピリ辛炒め
+        - こんにゃくのピリ辛炒め
         - 小松菜の ツナ和え
         - 野菜スープ
         - ごはん
@@ -237,7 +228,6 @@ days:
         calories: 757
       common:
         items:
-        - 落くそ花る生み
         - イカフライ
         - 焼きそば
         - 海藻サラダ
@@ -248,12 +238,10 @@ days:
         name: チキンカレー
         calories: 932
       set_b:
-        name: のピリ辛炒め
+        name: 厚揚げと挽肉のピリ辛炒め
         calories: 855
       common:
         items:
-        - 落くそ花る生み
-        - 厚揚げと挽肉
         - ごはん
         - カリフラワー サラダ
         - ヨーグルト
@@ -267,11 +255,9 @@ days:
         calories: 907
       common:
         items:
-        - 落くそ花る生み
         - さわらの
         - がんもの 含め煮
-        - ごまドレッシング
-        - 和え
+        - ごまドレッシング和え
         - 味噌汁
         - ごはん
 - date: '2026-11-07'
@@ -286,7 +272,6 @@ days:
         calories: 695
       common:
         items:
-        - 落くそ花る生み
         - 鯖の塩焼き
         - ひじき煮
         - コールスローサラダ
@@ -294,28 +279,24 @@ days:
         - 牛乳
     lunch:
       set_a:
-        name: 落くそ花る生み
+        name: ロコモコ丼
         calories: 836
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ロコモコ丼
-        - チンゲン菜
-        - 中華和え
+        - チンゲン菜中華和え
         - ピーチゼリー
         - 野菜スープ
     dinner:
       set_a:
-        name: 落くそ花る生み
+        name: 鶏の照り焼き
         calories: 1075
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 鶏の照り焼き
-        - ブロッコリー
-        - 粒マスタード和え
+        - ブロッコリー粒マスタード和え
         - 揚げギョウザ
         - 味噌汁
         - ごはん
@@ -331,7 +312,6 @@ days:
         calories: 705
       common:
         items:
-        - 落くそ花る生み
         - ウィンナー
         - 野菜炒め
         - 大根サラダ
@@ -339,28 +319,25 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 落くそ花る生み
+        name: 親子丼
         calories: 890
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 親子丼
         - 小松菜の磯和え
         - ココアワッフル
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花る生み
+        name: とんかつ
         calories: 972
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - とんかつ
         - 蒸し鶏サラダ
-        - 切干大根の
-        - 煮付け
+        - 切干大根の煮付け
         - 味噌汁
         - ごはん
 - date: '2026-11-09'
@@ -371,34 +348,41 @@ days:
         name: ごはん
         calories: 861
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 食パン
         calories: 745
       common:
         items:
-        - 食パン
+        - 温泉卵
+        - 照焼きミートボール
+        - 温野菜サラダ
+        - 味噌汁
+        - 牛乳
     lunch:
       set_a:
         name: 豚の ネギ塩丼
         calories: 925
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 鯖の味噌煮
         calories: 944
       common:
         items:
-        - 鯖の味噌煮
         - ごはん
+        - スナップえんどうサラダ
+        - プリン
+        - 味噌汁
     dinner:
       set_a:
-        name: サーモンﾌﾗｲと
+        name: サーモンﾌﾗｲとカレーコロッケ
         calories: 965
       set_b:
-        name: 共通メニュー（選択なし）
+        name: の甘辛炒め
         calories: 841
       common:
         items:
-        - カレーコロッケ
         - 豚肉と蓮根
-        - の甘辛炒め
+        - ごぼうの焙煎ごまサラダ大根のゆかり和え
+        - 味噌汁
+        - ごはん
 - date: '2026-11-10'
   day_of_week: 火
   meals:
@@ -411,10 +395,8 @@ days:
         calories: 794
       common:
         items:
-        - 落くそ花るば生み
         - チキンナゲット
-        - じゃが芋の
-        - ソテー
+        - じゃが芋のソテー
         - コールスローサラダ
         - 味噌汁
         - 牛乳
@@ -423,15 +405,12 @@ days:
         name: カレーうどん
         calories: 1069
       set_b:
-        name: 揚げおろし煮
+        name: さわらの揚げおろし煮
         calories: 949
       common:
         items:
-        - 落くそ花るば生み
-        - さわらの
         - ごはん
-        - 茄子とオクラの
-        - さっぱり和え
+        - 茄子とオクラのさっぱり和え
         - いちごクレープ
         - 中華スープ
         - ごはん
@@ -444,12 +423,10 @@ days:
         calories: 962
       common:
         items:
-        - 落くそ花るば生み
         - ハンバーグ
         - チキン
         - 五目豆
-        - ほうれん草
-        - ごま和え
+        - ほうれん草ごま和え
         - 味噌汁
         - ごはん
 - date: '2026-11-11'
@@ -464,11 +441,7 @@ days:
         calories: 759
       common:
         items:
-        - 落くそ花るば生み
-        - スクランブル
-        - エッグ
-        - ナポリタン
-        - スパゲティ
+        - スクランブルエッグナポリタンスパゲティ
         - 海藻サラダ
         - 味噌汁
         - ジョア
@@ -481,26 +454,21 @@ days:
         calories: 757
       common:
         items:
-        - 落くそ花るば生み
         - 白身魚の
         - ごはん
-        - チンゲン菜の
-        - ツナ和え
+        - チンゲン菜のツナ和え
         - ヨーグルト
         - わかめスープ
     dinner:
       set_a:
-        name: といわしフライ
+        name: ｶﾘｶﾘささみ揚げといわしフライ
         calories: 1144
       set_b:
         name: 八宝菜
         calories: 916
       common:
         items:
-        - 落くそ花るば生み
-        - ｶﾘｶﾘささみ揚げ
-        - 里芋の
-        - ごま風味煮
+        - 里芋のごま風味煮
         - ブロッコリーサラダ
         - 赤だし
         - ごはん
@@ -516,10 +484,8 @@ days:
         calories: 687
       common:
         items:
-        - 落くそ花るば生み
         - 白身魚フライ
-        - ほうれん草の
-        - ソテー
+        - ほうれん草のソテー
         - 大根サラダ
         - 味噌汁
         - 牛乳
@@ -528,12 +494,10 @@ days:
         name: 醤油ラーメン
         calories: 921
       set_b:
-        name: ソース炒め
+        name: 鶏のオイスターソース炒め
         calories: 967
       common:
         items:
-        - 落くそ花るば生み
-        - 鶏のオイスター
         - ごはん
         - 春巻き
         - シュークリーム
@@ -548,7 +512,6 @@ days:
         calories: 901
       common:
         items:
-        - 落くそ花るば生み
         - 鰆の唐揚げ
         - 炒りどうふ
         - コールスローサラダ
@@ -566,7 +529,6 @@ days:
         calories: 680
       common:
         items:
-        - 落くそ花るば生み
         - 納豆
         - 五目きんぴら
         - コールスローサラダ
@@ -581,12 +543,10 @@ days:
         calories: 872
       common:
         items:
-        - 落くそ花るば生み
         - たらの
         - ごはん
         - 大豆サラダ
-        - ストロベリー
-        - ゼリー
+        - ストロベリーゼリー
         - コンソメスープ
     dinner:
       set_a:
@@ -597,9 +557,7 @@ days:
         calories: 811
       common:
         items:
-        - 落くそ花るば生み
-        - 大根と油揚げ
-        - の煮物
+        - 大根と油揚げの煮物
         - 小松菜中華和え
         - 味噌汁
         - ごはん
@@ -615,7 +573,6 @@ days:
         calories: 748
       common:
         items:
-        - 落くそ花るば生み
         - 茹で卵
         - 焼ビーフン
         - コーンサラダ
@@ -623,30 +580,24 @@ days:
         - 牛乳
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: 照り焼き チキン丼
         calories: 904
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 照り焼き チキン丼
         - 白菜の煮浸し
         - わらび餅
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: メンチカツと肉じゃがコロッケ
         calories: 954
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - メンチカツと
-        - 肉じゃがコロッケ
-        - 豆腐の
-        - みぞれあん
-        - ほうれん草の
-        - しらす和え
+        - 豆腐のみぞれあんほうれん草のしらす和え
         - 野菜スープ
         - ごはん
 - date: '2026-11-15'
@@ -661,7 +612,6 @@ days:
         calories: 712
       common:
         items:
-        - 落くそ花るば生み
         - 卵焼き
         - 筑前煮
         - コールスローサラダ
@@ -669,29 +619,25 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: カツとじ丼
         calories: 967
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - カツとじ丼
-        - 青梗菜の
-        - ゴマ和え
+        - 青梗菜のゴマ和え
         - エクレア
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: 鶏肉の
         calories: 1027
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 鶏肉の
         - 塩だれ焼き
-        - じゃがいもの
-        - 粒マスタード和え
+        - じゃがいもの粒マスタード和え
         - グリーンサラダ
         - 味噌汁
         - ごはん
@@ -703,32 +649,41 @@ days:
         name: ごはん
         calories: 916
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 食パン
         calories: 800
       common:
         items:
-        - 食パン
+        - 温泉卵
+        - 切干大根と ひじきの炒め煮
+        - ポテトサラダ
+        - 味噌汁
+        - 牛乳
     lunch:
       set_a:
         name: ハヤシライス
         calories: 883
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 白身魚の コーンマヨ焼
         calories: 781
       common:
         items:
-        - 白身魚の コーンマヨ焼
         - ごはん
+        - カリフラワー サラダ
+        - 青りんごゼリー
+        - 野菜スープ
     dinner:
       set_a:
         name: 和風 ハンバーグ
         calories: 954
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 豚じゃが
         calories: 936
       common:
         items:
-        - 豚じゃが
+        - 湯豆腐
+        - 春雨マヨネーズ サラダ
+        - 味噌汁
+        - ごはん
 - date: '2026-11-17'
   day_of_week: 火
   meals:
@@ -741,7 +696,6 @@ days:
         calories: 814
       common:
         items:
-        - 落くそ花るば生み
         - 牛肉コロッケ
         - 野菜炒め
         - 大根サラダ
@@ -756,7 +710,6 @@ days:
         calories: 876
       common:
         items:
-        - 落くそ花るば生み
         - ごはん
         - 小松菜の おかか和え
         - チョコクレープ
@@ -771,7 +724,6 @@ days:
         calories: 835
       common:
         items:
-        - 落くそ花るば生み
         - オクラの なめ茸和え
         - ツナサラダ
         - 味噌汁
@@ -788,7 +740,6 @@ days:
         calories: 763
       common:
         items:
-        - 落くそ花るば生み
         - 納豆
         - 茄子の そぼろあん
         - コーンサラダ
@@ -803,7 +754,6 @@ days:
         calories: 794
       common:
         items:
-        - 落くそ花るば生み
         - ごはん
         - さっぱり水餃子
         - プリン
@@ -817,7 +767,6 @@ days:
         calories: 903
       common:
         items:
-        - 落くそ花るば生み
         - 高野豆腐煮
         - ほうれん草 菜種和え
         - 味噌汁
@@ -834,7 +783,6 @@ days:
         calories: 733
       common:
         items:
-        - 落くそ花るば生み
         - イカフライ
         - ニラ卵炒め
         - 大根サラダ
@@ -849,7 +797,6 @@ days:
         calories: 828
       common:
         items:
-        - 落くそ花るば生み
         - ごはん
         - 揚げシュウマイ
         - ワッフル
@@ -864,7 +811,6 @@ days:
         calories: 960
       common:
         items:
-        - 落くそ花るば生み
         - 蒟蒻とごぼうの 炒め煮
         - 白菜のごま和え
         - 味噌汁
@@ -881,7 +827,6 @@ days:
         calories: 732
       common:
         items:
-        - 落くそ花るば生み
         - プレーンオムレツ
         - 焼きそば
         - コールスローサラダ
@@ -896,7 +841,6 @@ days:
         calories: 857
       common:
         items:
-        - 落くそ花るば生み
         - ごはん
         - 棒々鶏サラダ
         - オレンジゼリー
@@ -910,7 +854,6 @@ days:
         calories: 948
       common:
         items:
-        - 落くそ花るば生み
         - スパゲティー サラダ
         - チンゲン菜 ナムル
         - 味噌汁
@@ -927,7 +870,6 @@ days:
         calories: 744
       common:
         items:
-        - 落くそ花るば生み
         - 鰆の付焼き
         - 鶏肉と根菜の 煮物
         - 温野菜サラダ
@@ -935,25 +877,23 @@ days:
         - 牛乳
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: ドライカレー
         calories: 871
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - ドライカレー
         - ﾌﾗｲﾄﾞﾎﾟﾃﾄ
         - いちごヨーグルト
         - 卵スープ
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: とんかつ おろしポン酢
         calories: 952
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - とんかつ おろしポン酢
         - キムチ和え
         - 卵豆腐
         - 赤だし
@@ -970,7 +910,6 @@ days:
         calories: 635
       common:
         items:
-        - 落くそ花るば生み
         - 白身魚フライ
         - ほうれん草の ソテー
         - 大根サラダ
@@ -978,25 +917,23 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: メンチカツ とじ丼
         calories: 945
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - メンチカツ とじ丼
         - ハムコーン サラダ
         - ラ・フランスゼリー
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: バーベキュー チキン
         calories: 1081
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - バーベキュー チキン
         - 揚げギョウザ
         - ひじきサラダ
         - 味噌汁
@@ -1009,27 +946,39 @@ days:
         name: ごはん
         calories: 852
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 食パン
         calories: 736
       common:
         items:
-        - 食パン
+        - 目玉焼き
+        - ナポリタンスパゲティ
+        - 温野菜サラダ
+        - 味噌汁
+        - 牛乳
     lunch:
       set_a:
-        name: ''
+        name: スタミナ丼
         calories: 827
       set_b:
-        name: ''
+        name: 共通メニュー（選択なし）
       common:
-        items: []
+        items:
+        - オクラの梅肉和え
+        - シュークリーム
+        - わかめスープ
     dinner:
       set_a:
-        name: ''
+        name: 鶏肉の唐揚
         calories: 1038
       set_b:
-        name: ''
+        name: 共通メニュー（選択なし）
       common:
-        items: []
+        items:
+        - ねぎソース
+        - 大根そぼろあん
+        - なすの揚げ浸し
+        - 味噌汁
+        - ごはん
 - date: '2026-11-24'
   day_of_week: 火
   meals:
@@ -1042,11 +991,9 @@ days:
         calories: 728
       common:
         items:
-        - 落くそ花るば生み
         - 納豆
         - 鶏肉とごぼう
-        - の炒め煮
-        - チンゲン菜の
+        - の炒め煮チンゲン菜の
         - ごま和え
         - 味噌汁
         - 牛乳
@@ -1059,10 +1006,8 @@ days:
         calories: 799
       common:
         items:
-        - 落くそ花るば生み
         - ごはん
-        - 小松菜の
-        - ツナ和え
+        - 小松菜のツナ和え
         - ピーチゼリー
         - 味噌汁
         - ごはん
@@ -1075,7 +1020,6 @@ days:
         calories: 846
       common:
         items:
-        - 落くそ花るば生み
         - クリーム
         - 豆腐のあんかけ
         - コールスローサラダ
@@ -1093,7 +1037,6 @@ days:
         calories: 812
       common:
         items:
-        - 落くそ花るば生み
         - ウィンナー
         - 焼ビーフン
         - 海藻サラダ
@@ -1108,13 +1051,9 @@ days:
         calories: 780
       common:
         items:
-        - 落くそ花るば生み
         - 厚揚げ
         - ごはん
-        - ブロッコリーの
-        - おかか和え
-        - カスタード
-        - クレープ
+        - ブロッコリーのおかか和えカスタードクレープ
         - 味噌汁
     dinner:
       set_a:
@@ -1125,7 +1064,6 @@ days:
         calories: 835
       common:
         items:
-        - 落くそ花るば生み
         - ザンギ
         - 豚の
         - 小松菜の煮浸し
@@ -1144,7 +1082,6 @@ days:
         calories: 723
       common:
         items:
-        - 落くそ花るば生み
         - 温泉卵
         - ミートボール
         - 甘酢あん
@@ -1156,12 +1093,10 @@ days:
         name: ちゃんぽん風
         calories: 920
       set_b:
-        name: 醤油焼き
+        name: さわらのレモン醤油焼き
         calories: 828
       common:
         items:
-        - 落くそ花るば生み
-        - さわらのレモン
         - ごはん
         - 春巻き
         - プリン
@@ -1176,11 +1111,9 @@ days:
         calories: 880
       common:
         items:
-        - 落くそ花るば生み
         - メンチカツと
         - マカロニサラダ
-        - ほうれん草の
-        - ポン酢和え
+        - ほうれん草のポン酢和え
         - 味噌汁
         - ごはん
 - date: '2026-11-27'
@@ -1195,7 +1128,6 @@ days:
         calories: 676
       common:
         items:
-        - 落くそ花るば生み
         - 焼売
         - 炒めナムル
         - コールスローサラダ
@@ -1210,11 +1142,9 @@ days:
         calories: 778
       common:
         items:
-        - 落くそ花るば生み
         - 白身魚の
         - ごはん
-        - 卵とカリフラワー
-        - サラダ
+        - 卵とカリフラワーサラダ
         - ストロベリーゼリー
         - コンソメスープ
     dinner:
@@ -1222,15 +1152,12 @@ days:
         name: ハンバーグ
         calories: 941
       set_b:
-        name: みそ炒め
+        name: 豚肉と野菜のみそ炒め
         calories: 919
       common:
         items:
-        - 落くそ花るば生み
         - チーズin
-        - 豚肉と野菜の
-        - 里芋と野菜の
-        - 土佐煮
+        - 里芋と野菜の土佐煮
         - じゃこサラダ
         - 味噌汁
         - ごはん
@@ -1246,7 +1173,6 @@ days:
         calories: 684
       common:
         items:
-        - 落くそ花るば生み
         - 鯖の塩焼き
         - 白菜と平天の 煮浸し
         - コールスローサラダ
@@ -1254,27 +1180,22 @@ days:
         - 牛乳
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: 焼肉丼
         calories: 933
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 焼肉丼
-        - ほうれん草の
-        - ごま和え
-        - たい焼き
-        - （クリーム）
+        - ほうれん草のごま和えたい焼き（クリーム）
         - わかめスープ
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: 鶏肉の 七味焼き
         calories: 1108
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 鶏肉の 七味焼き
         - ﾌﾗｲﾄﾞﾎﾟﾃﾄ
         - 切干大根サラダ
         - 味噌汁
@@ -1291,7 +1212,6 @@ days:
         calories: 771
       common:
         items:
-        - 落くそ花るば生み
         - 卵焼き
         - そぼろ 肉じゃが
         - ほうれん草の サラダ
@@ -1299,31 +1219,27 @@ days:
         - ジョア
     lunch:
       set_a:
-        name: 落くそ花るば生み
+        name: 照り焼き
         calories: 1034
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 照り焼き
         - チキン丼
-        - ブロッコリー
-        - 粒マスタード和え
+        - ブロッコリー粒マスタード和え
         - わらび餅(きな粉)
         - 味噌汁
     dinner:
       set_a:
-        name: 落くそ花るば生み
+        name: 白身魚フライと
         calories: 980
       set_b:
         name: 共通メニュー（選択なし）
       common:
         items:
-        - 白身魚フライと
         - 厚切ハムカツ
         - けんちん煮
-        - 小松菜の
-        - かに風味和え
+        - 小松菜のかに風味和え
         - 味噌汁
         - ごはん
 - date: '2026-11-30'
@@ -1334,32 +1250,41 @@ days:
         name: ごはん
         calories: 1001
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 食パン
         calories: 885
       common:
         items:
-        - 食パン
+        - 豆腐ハンバーグ
+        - チャプチェ
+        - ポテトサラダ
+        - 味噌汁
+        - 牛乳
     lunch:
       set_a:
         name: 豚すき丼
         calories: 894
       set_b:
-        name: 共通メニュー（選択なし）
+        name: 梅肉ソース
         calories: 875
       common:
         items:
         - 白身魚の
-        - 梅肉ソース
         - ごはん
+        - 塩こぶ和え
+        - もみじまんじゅう
+        - 卵スープ
     dinner:
       set_a:
-        name: ヤンニョム
+        name: チキン
         calories: 1039
       set_b:
-        name: 共通メニュー（選択なし）
+        name: の煮物
         calories: 905
       common:
         items:
-        - チキン
+        - ヤンニョム
         - 鶏肉と根菜
-        - の煮物
+        - スナップえんどうサラダ
+        - 卵豆腐
+        - 赤だし
+        - ごはん
