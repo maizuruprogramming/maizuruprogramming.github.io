@@ -119,6 +119,38 @@
       color: var(--text);
     }
 
+    /* 食事提供時間カード */
+    .hours-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 5px solid #1e6f5c;
+      border-radius: 8px;
+      padding: 0.85rem 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .hours-card-title {
+      font-weight: 700;
+      font-size: 0.94rem;
+      color: #1e6f5c;
+      margin-bottom: 0.45rem;
+    }
+    .hours-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+    .hours-table th, .hours-table td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.7rem;
+      text-align: left;
+    }
+    .hours-table th {
+      background: var(--common-bg);
+      color: var(--text);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
     .allergy-box {
       background: var(--warn-bg);
       border: 1px solid #fed7aa;
@@ -181,10 +213,31 @@
       justify-content: space-between;
       gap: 0.75rem;
     }
+    .date-title-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+    }
     .date-title {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--primary);
+    }
+    .day-type-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid #bfd9ee;
+    }
+    .day-type-badge.holiday {
+      background: #fdf2f1;
+      color: #c0392b;
+      border-color: #f3c6c2;
     }
     .nav-btns {
       display: flex;
@@ -259,10 +312,26 @@
       padding-bottom: 0.5rem;
       margin-bottom: 0.95rem;
     }
+    .meal-header-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
     .meal-header h2 {
       margin: 0;
       font-size: 1.15rem;
       color: var(--primary);
+    }
+    .meal-time-badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1e6f5c;
+      background: #eef7f5;
+      border: 1px solid #bfe0d8;
+      padding: 0.14rem 0.6rem;
+      border-radius: 6px;
     }
     .note-badge {
       font-size: 0.78rem;
@@ -320,6 +389,13 @@
     .meta {
       font-size: 0.82rem;
       color: var(--muted);
+    }
+    .th-hours {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 0.15rem;
     }
     .empty-state {
       background: #fff;
@@ -426,6 +502,35 @@
       </div>
     </section>
 
+    <!-- 食堂 食事提供時間一覧 -->
+    <section class="hours-card" aria-label="食事提供時間">
+      <div class="hours-card-title">食堂 食事提供時間</div>
+      <table class="hours-table">
+        <thead>
+          <tr>
+            <th>区分</th>
+            <th>朝食</th>
+            <th>昼食</th>
+            <th>夕食</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>月〜金（平日）</th>
+            <td id="hours-weekday-breakfast">7:30～8:30</td>
+            <td id="hours-weekday-lunch">12:00～12:55</td>
+            <td id="hours-weekday-dinner">18:00～19:30</td>
+          </tr>
+          <tr>
+            <th>土〜日・休日</th>
+            <td id="hours-weekend-breakfast">7:40～8:40</td>
+            <td id="hours-weekend-lunch">12:00～13:30</td>
+            <td id="hours-weekend-dinner">18:00～19:30</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <!-- アレルギー対応案内 -->
     <section class="allergy-box" aria-label="アレルギー対応について">
       <div class="allergy-box-text">
@@ -446,7 +551,10 @@
     <div id="daily-view">
       <section class="date-nav">
         <div class="date-controls">
-          <div class="date-title" id="selected-date-label">----年--月--日（-）</div>
+          <div class="date-title-group">
+            <div class="date-title" id="selected-date-label">----年--月--日（-）</div>
+            <span class="day-type-badge" id="selected-day-type-badge">月〜金（平日）</span>
+          </div>
           <div class="nav-btns">
             <button type="button" class="nav-btn" id="prev-day-btn">◀ 前日</button>
             <button type="button" class="nav-btn primary" id="today-btn">今日</button>
@@ -470,9 +578,9 @@
           <thead>
             <tr>
               <th>日付</th>
-              <th>朝食（A定食 / B定食 / 共通料理）</th>
-              <th>昼食（A定食 / B定食 / 共通料理）</th>
-              <th>夕食（A定食 / B定食 / 共通料理）</th>
+              <th>朝食<span class="th-hours">月〜金 7:30～8:30 / 土日祝 7:40～8:40</span></th>
+              <th>昼食<span class="th-hours">月〜金 12:00～12:55 / 土日祝 12:00～13:30</span></th>
+              <th>夕食<span class="th-hours">毎日 18:00～19:30</span></th>
             </tr>
           </thead>
           <tbody id="monthly-table-body"></tbody>
