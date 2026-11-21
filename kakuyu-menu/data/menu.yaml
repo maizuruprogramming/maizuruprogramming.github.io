@@ -174,11 +174,10 @@ days:
         name: 豚すき丼
         calories: 862
       set_b:
-        name: 白身魚の梅肉ソース
+        name: 白身魚の梅肉ソース・ごはん
         calories: 836
       common:
         items:
-        - ごはん
         - おくらのゴマ和え
         - チョコクレープ
         - 味噌汁
@@ -221,11 +220,10 @@ days:
         name: 豚骨ラーメン
         calories: 934
       set_b:
-        name: 白身魚の唐揚おろしポン酢
+        name: 白身魚の唐揚おろしポン酢・ごはん
         calories: 852
       common:
         items:
-        - ごはん
         - 揚げシュウマイ
         - シュークリーム
         - 味噌汁
@@ -268,11 +266,10 @@ days:
         name: チキンカレー
         calories: 932
       set_b:
-        name: 厚揚げと挽肉のピリ辛炒め
+        name: 厚揚げと挽肉のピリ辛炒め・ごはん
         calories: 855
       common:
         items:
-        - ごはん
         - カリフラワーサラダ
         - ヨーグルト
         - コンソメスープ
@@ -403,11 +400,10 @@ days:
         name: 豚のネギ塩丼
         calories: 925
       set_b:
-        name: 鯖の味噌煮
+        name: 鯖の味噌煮・ごはん
         calories: 944
       common:
         items:
-        - ごはん
         - スナップえんどうサラダ
         - プリン
         - 味噌汁
@@ -450,11 +446,10 @@ days:
         name: カレーうどん
         calories: 1069
       set_b:
-        name: さわらの揚げおろし煮
+        name: さわらの揚げおろし煮・ごはん
         calories: 949
       common:
         items:
-        - ごはん
         - 茄子とオクラのさっぱり和え
         - いちごクレープ
         - 中華スープ
@@ -497,11 +492,10 @@ days:
         name: ビビンバ
         calories: 843
       set_b:
-        name: 白身魚の野菜あんかけ
+        name: 白身魚の野菜あんかけ・ごはん
         calories: 757
       common:
         items:
-        - ごはん
         - チンゲン菜のツナ和え
         - ヨーグルト
         - わかめスープ
@@ -544,11 +538,10 @@ days:
         name: 醤油ラーメン
         calories: 921
       set_b:
-        name: 鶏のオイスターソース炒め
+        name: 鶏のオイスターソース炒め・ごはん
         calories: 967
       common:
         items:
-        - ごはん
         - 春巻き
         - シュークリーム
         - 味噌汁
@@ -591,11 +584,10 @@ days:
         name: ポークカレー
         calories: 1011
       set_b:
-        name: たらの香味ソース
+        name: たらの香味ソース・ごはん
         calories: 872
       common:
         items:
-        - ごはん
         - 大豆サラダ
         - ストロベリーゼリー
         - コンソメスープ
@@ -726,11 +718,10 @@ days:
         name: ハヤシライス
         calories: 883
       set_b:
-        name: 白身魚のコーンマヨ焼
+        name: 白身魚のコーンマヨ焼・ごはん
         calories: 781
       common:
         items:
-        - ごはん
         - カリフラワーサラダ
         - 青りんごゼリー
         - 野菜スープ
@@ -773,11 +764,10 @@ days:
         name: 豚キムチうどん
         calories: 851
       set_b:
-        name: さわらの竜田揚げ
+        name: さわらの竜田揚げ・ごはん
         calories: 876
       common:
         items:
-        - ごはん
         - 小松菜のおかか和え
         - チョコクレープ
         - 味噌汁
@@ -820,11 +810,10 @@ days:
         name: 豚の生姜炒め丼
         calories: 889
       set_b:
-        name: 白身魚のチーズ焼き
+        name: 白身魚のチーズ焼き・ごはん
         calories: 794
       common:
         items:
-        - ごはん
         - さっぱり水餃子
         - プリン
         - わかめスープ
@@ -867,11 +856,10 @@ days:
         name: 五目ラーメン
         calories: 988
       set_b:
-        name: さわらの山椒焼き
+        name: さわらの山椒焼き・ごはん
         calories: 828
       common:
         items:
-        - ごはん
         - 揚げシュウマイ
         - ワッフル
         - 中華スープ
@@ -914,11 +902,10 @@ days:
         name: ビーフカレー
         calories: 962
       set_b:
-        name: いわしの蒲焼き風
+        name: いわしの蒲焼き風・ごはん
         calories: 857
       common:
         items:
-        - ごはん
         - 棒々鶏サラダ
         - オレンジゼリー
         - 野菜スープ
@@ -1094,11 +1081,10 @@ days:
         name: かき揚げうどん
         calories: 878
       set_b:
-        name: ロールキャベツ
+        name: ロールキャベツ・ごはん
         calories: 799
       common:
         items:
-        - ごはん
         - 小松菜のツナ和え
         - ピーチゼリー
         - 味噌汁
@@ -1141,11 +1127,10 @@ days:
         name: 厚揚げそぼろ丼
         calories: 837
       set_b:
-        name: 鰆の西京焼
+        name: 鰆の西京焼・ごはん
         calories: 780
       common:
         items:
-        - ごはん
         - ブロッコリーのおかか和え
         - カスタードクレープ
         - 味噌汁
@@ -1189,11 +1174,10 @@ days:
         name: ちゃんぽん風うどん
         calories: 920
       set_b:
-        name: さわらのレモン醤油焼き
+        name: さわらのレモン醤油焼き・ごはん
         calories: 828
       common:
         items:
-        - ごはん
         - 春巻き
         - プリン
         - 味噌汁
@@ -1236,11 +1220,10 @@ days:
         name: キーマカレー
         calories: 892
       set_b:
-        name: 白身魚の南蛮漬け
+        name: 白身魚の南蛮漬け・ごはん
         calories: 778
       common:
         items:
-        - ごはん
         - 卵とカリフラワーサラダ
         - ストロベリーゼリー
         - コンソメスープ
@@ -1371,11 +1354,10 @@ days:
         name: 豚すき丼
         calories: 894
       set_b:
-        name: 白身魚の梅肉ソース
+        name: 白身魚の梅肉ソース・ごはん
         calories: 875
       common:
         items:
-        - ごはん
         - 塩こぶ和え
         - もみじまんじゅう
         - 卵スープ
