@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:," />
   <title>鶴友寮 食事サイト｜本日の献立・月間献立表</title>
   <style>
     :root {
@@ -263,12 +264,31 @@
       border-color: var(--primary);
     }
 
+    .next-meal-banner {
+      background: var(--primary-light);
+      border: 1px solid #bfd9ee;
+      border-left: 5px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.75rem 1.05rem;
+      margin-bottom: 1rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
     .meal-section {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1.15rem 1.25rem;
       margin-bottom: 1.15rem;
+    }
+    .meal-section.next-meal {
+      border: 2px solid var(--primary);
+      box-shadow: 0 3px 12px rgba(26, 79, 122, 0.09);
+    }
+    .meal-section.ended-meal {
+      opacity: 0.72;
     }
     .meal-header {
       display: flex;
@@ -300,6 +320,25 @@
       border: 1px solid #bfe0d8;
       padding: 0.14rem 0.6rem;
       border-radius: 6px;
+    }
+    .meal-status-badge {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.14rem 0.6rem;
+      border-radius: 999px;
+    }
+    .meal-status-badge.next {
+      background: var(--primary);
+      color: #fff;
+    }
+    .meal-status-badge.serving {
+      background: #1e6f5c;
+      color: #fff;
+    }
+    .meal-status-badge.ended {
+      background: #e2e8f0;
+      color: #4a5568;
     }
     .note-badge {
       font-size: 0.78rem;
@@ -436,7 +475,9 @@
         <a id="source-link" href="https://www.maizuru-ct.ac.jp/kakuyu/category/dining/" target="_blank" rel="noopener noreferrer">
           鶴友寮「食堂関係」公式ページ ↗
         </a>
-        <span id="pdf-link-area"></span>
+        <span id="pdf-link-area">
+          / <a href="monthly_menu.json" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>
+        </span>
       </div>
       <div class="meta" id="sync-info">読み込み中...</div>
     </div>
@@ -489,7 +530,7 @@
           </div>
           <div class="nav-btns">
             <button type="button" class="nav-btn" id="prev-day-btn">◀ 前日</button>
-            <button type="button" class="nav-btn primary" id="today-btn">今日</button>
+            <button type="button" class="nav-btn primary" id="today-btn">次の食事</button>
             <button type="button" class="nav-btn" id="next-day-btn">翌日 ▶</button>
             <input type="date" id="date-picker" aria-label="日付を選択" />
           </div>

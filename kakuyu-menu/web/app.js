@@ -31,6 +31,8 @@
   let menuData = null;
   let daysList = [];
   let selectedDate = "";
+  let userPinnedDate = false;
+  let lastAutoTargetKey = "";
 
   const $ = (id) => document.getElementById(id);
 
@@ -55,10 +57,27 @@
     return `${y}-${m}-${d}`;
   }
 
-  function getTodayJstIso() {
+  function addDaysIso(isoStr, offsetDays) {
+    const dt = parseIsoDate(isoStr);
+    return formatIsoDate(new Date(dt.getTime() + offsetDays * 86400000));
+  }
+
+  function getCurrentJstInfo() {
     const now = new Date();
-    const jstMs = now.getTime() + 9 * 60 * 60 * 1000;
-    return formatIsoDate(new Date(jstMs));
+    const jstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    const iso = formatIsoDate(jstDate);
+    const minutes = jstDate.getUTCHours() * 60 + jstDate.getUTCMinutes();
+    return { iso, minutes };
+  }
+
+  function parseHoursRange(hoursStr) {
+    if (!hoursStr) return null;
+    const m = String(hoursStr).match(/(\d{1,2}):(\d{2})\s*[～〜\-－–—]\s*(\d{1,2}):(\d{2})/);
+    if (!m) return null;
+    return {
+      startMinutes: Number(m[1]) * 60 + Number(m[2]),
+      endMinutes: Number(m[3]) * 60 + Number(m[4]),
+    };
   }
 
   function getNthWeekdayIso(year, month, weekday, n) {
@@ -155,6 +174,49 @@
     };
   }
 
+  function getActiveNextMealTarget() {
+    const { iso: todayIso, minutes } = getCurrentJstInfo();
+    const todayObj = daysList.find((d) => d.date === todayIso) || null;
+    const todaySchedule = resolveDaySchedule(todayIso, todayObj);
+
+    const bRange = parseHoursRange(todaySchedule.hours.breakfast) || { startMinutes: 450, endMinutes: 510 };
+    const lRange = parseHoursRange(todaySchedule.hours.lunch) || { startMinutes: 720, endMinutes: 775 };
+    const dRange = parseHoursRange(todaySchedule.hours.dinner) || { startMinutes: 1080, endMinutes: 1170 };
+
+    if (minutes <= bRange.endMinutes) {
+      return {
+        targetDate: todayIso,
+        mealKey: "breakfast",
+        status: minutes >= bRange.startMinutes ? "serving" : "next",
+        rolledToTomorrow: false,
+      };
+    }
+    if (minutes <= lRange.endMinutes) {
+      return {
+        targetDate: todayIso,
+        mealKey: "lunch",
+        status: minutes >= lRange.startMinutes ? "serving" : "next",
+        rolledToTomorrow: false,
+      };
+    }
+    if (minutes <= dRange.endMinutes) {
+      return {
+        targetDate: todayIso,
+        mealKey: "dinner",
+        status: minutes >= dRange.startMinutes ? "serving" : "next",
+        rolledToTomorrow: false,
+      };
+    }
+
+    // 夕食終了後（19:30以降）は翌日の朝食を次の食事として表示
+    return {
+      targetDate: addDaysIso(todayIso, 1),
+      mealKey: "breakfast",
+      status: "next",
+      rolledToTomorrow: true,
+    };
+  }
+
   function formatJapaneseDateLabel(isoStr, dayObj) {
     const dt = parseIsoDate(isoStr);
     const y = dt.getUTCFullYear();
@@ -162,6 +224,14 @@
     const d = dt.getUTCDate();
     const dow = (dayObj && dayObj.day_of_week) || DOW_NAMES[dt.getUTCDay()];
     return `${y}年${m}月${d}日（${dow}）`;
+  }
+
+  function formatShortDateLabel(isoStr, dayObj) {
+    const dt = parseIsoDate(isoStr);
+    const m = dt.getUTCMonth() + 1;
+    const d = dt.getUTCDate();
+    const dow = (dayObj && dayObj.day_of_week) || DOW_NAMES[dt.getUTCDay()];
+    return `${m}月${d}日（${dow}）`;
   }
 
   function renderHeaderAndMeta(data) {
@@ -179,6 +249,7 @@
       if (nutritionUrl) {
         html += ` / <a href="${escapeHtml(nutritionUrl)}" target="_blank" rel="noopener noreferrer">栄養価計算書PDF ↗</a>`;
       }
+      html += ` / <a href="${escapeHtml(MENU_JSON_URL)}" target="_blank" rel="noopener noreferrer">monthly_menu.json ↗</a>`;
       pdfLinkArea.innerHTML = html;
     }
 
@@ -244,6 +315,60 @@
       .join("");
   }
 
+  function getMealStatusForSelectedDate(isoStr, schedule) {
+    const { iso: todayIso, minutes } = getCurrentJstInfo();
+    const activeTarget = getActiveNextMealTarget();
+
+    if (isoStr < todayIso) {
+      return {
+        isToday: false,
+        isActiveTargetDate: false,
+        statuses: { breakfast: "ended", lunch: "ended", dinner: "ended" },
+        activeTarget,
+      };
+    }
+
+    if (isoStr > todayIso) {
+      const isTomorrowNext = activeTarget.rolledToTomorrow && isoStr === activeTarget.targetDate;
+      return {
+        isToday: false,
+        isActiveTargetDate: isTomorrowNext,
+        statuses: {
+          breakfast: isTomorrowNext ? "next" : "upcoming",
+          lunch: "upcoming",
+          dinner: "upcoming",
+        },
+        activeTarget,
+      };
+    }
+
+    const statuses = {};
+    let foundNext = false;
+    for (const { key } of MEAL_DEFINITIONS) {
+      const range = parseHoursRange(schedule.hours[key]);
+      if (!range) {
+        statuses[key] = !foundNext ? "next" : "upcoming";
+        foundNext = true;
+        continue;
+      }
+      if (minutes > range.endMinutes) {
+        statuses[key] = "ended";
+      } else if (!foundNext) {
+        statuses[key] = minutes >= range.startMinutes ? "serving" : "next";
+        foundNext = true;
+      } else {
+        statuses[key] = "upcoming";
+      }
+    }
+
+    return {
+      isToday: true,
+      isActiveTargetDate: !activeTarget.rolledToTomorrow,
+      statuses,
+      activeTarget,
+    };
+  }
+
   function renderDailyView() {
     const dayObj = daysList.find((d) => d.date === selectedDate) || null;
     const schedule = resolveDaySchedule(selectedDate, dayObj);
@@ -286,53 +411,114 @@
       return;
     }
 
+    const mealState = getMealStatusForSelectedDate(selectedDate, schedule);
     const articleNote = (menuData && menuData.latest_article && menuData.latest_article.note) || "";
 
-    container.innerHTML = MEAL_DEFINITIONS.map(({ key, label }) => {
-      const meal = dayObj.meals[key] || {};
-      const hoursText = meal.hours || schedule.hours[key] || "";
-      const setA = meal.set_a || {};
-      const setB = meal.set_b || {};
-      const commonItems = Array.isArray(meal.common && meal.common.items) ? meal.common.items : [];
+    // 終了していない次の食事を先頭に表示し、終了した食事は後ろに回す
+    let orderedMeals = [...MEAL_DEFINITIONS];
+    if (mealState.isToday) {
+      const notEnded = orderedMeals.filter((m) => mealState.statuses[m.key] !== "ended");
+      const ended = orderedMeals.filter((m) => mealState.statuses[m.key] === "ended");
+      if (notEnded.length > 0 && ended.length > 0) {
+        orderedMeals = [...notEnded, ...ended];
+      }
+    }
 
-      const showChangeNote =
-        dayObj.date === "2026-11-14" && key === "lunch" && articleNote;
+    let bannerHtml = "";
+    if (mealState.isActiveTargetDate) {
+      const targetMealDef = MEAL_DEFINITIONS.find((m) => m.key === mealState.activeTarget.mealKey);
+      const targetMealLabel = targetMealDef ? targetMealDef.label : "";
+      const targetMealHours =
+        (dayObj.meals[mealState.activeTarget.mealKey] &&
+          dayObj.meals[mealState.activeTarget.mealKey].hours) ||
+        schedule.hours[mealState.activeTarget.mealKey] ||
+        "";
 
-      const commonHtml =
-        commonItems.length > 0
-          ? `<ul class="common-list">${commonItems
-              .map((item) => `<li>${escapeHtml(item)}</li>`)
-              .join("")}</ul>`
-          : `<div class="meta">共通料理なし</div>`;
-
-      return `
-        <article class="meal-section">
-          <div class="meal-header">
-            <div class="meal-header-left">
-              <h2>${escapeHtml(label)}</h2>
-              ${hoursText ? `<span class="meal-time-badge">${escapeHtml(hoursText)}</span>` : ""}
-            </div>
-            ${showChangeNote ? `<span class="note-badge">${escapeHtml(articleNote)}</span>` : ""}
+      if (mealState.activeTarget.rolledToTomorrow) {
+        bannerHtml = `
+          <div class="next-meal-banner">
+            本日の夕食は終了しました。次の食事（翌日 ${escapeHtml(formatShortDateLabel(selectedDate, dayObj))} の${escapeHtml(targetMealLabel)} ${escapeHtml(targetMealHours)}）を表示しています。
           </div>
-          <div class="course-grid">
-            <div class="course-card set-a">
-              <span class="course-badge">A定食</span>
-              <div class="dish-name">${escapeHtml(setA.name || "未定")}</div>
-              ${setA.calories ? `<div class="meta">エネルギー: ${escapeHtml(setA.calories)} kcal</div>` : ""}
-            </div>
-            <div class="course-card set-b">
-              <span class="course-badge">B定食</span>
-              <div class="dish-name">${escapeHtml(setB.name || "共通メニュー（選択なし）")}</div>
-              ${setB.calories ? `<div class="meta">エネルギー: ${escapeHtml(setB.calories)} kcal</div>` : ""}
-            </div>
-            <div class="course-card common">
-              <span class="course-badge">共通料理</span>
-              ${commonHtml}
-            </div>
+        `;
+      } else if (mealState.activeTarget.status === "serving") {
+        bannerHtml = `
+          <div class="next-meal-banner">
+            現在提供中：${escapeHtml(targetMealLabel)}（${escapeHtml(targetMealHours)}）
           </div>
-        </article>
-      `;
-    }).join("");
+        `;
+      } else {
+        bannerHtml = `
+          <div class="next-meal-banner">
+            次の食事：${escapeHtml(targetMealLabel)}（${escapeHtml(targetMealHours)}）
+          </div>
+        `;
+      }
+    }
+
+    const cardsHtml = orderedMeals
+      .map(({ key, label }) => {
+        const meal = dayObj.meals[key] || {};
+        const hoursText = meal.hours || schedule.hours[key] || "";
+        const setA = meal.set_a || {};
+        const setB = meal.set_b || {};
+        const commonItems = Array.isArray(meal.common && meal.common.items) ? meal.common.items : [];
+        const status = mealState.statuses[key];
+
+        const sectionClasses = ["meal-section"];
+        let statusBadgeHtml = "";
+        if (status === "serving") {
+          sectionClasses.push("next-meal");
+          statusBadgeHtml = `<span class="meal-status-badge serving">現在提供中</span>`;
+        } else if (status === "next") {
+          sectionClasses.push("next-meal");
+          statusBadgeHtml = `<span class="meal-status-badge next">次の食事</span>`;
+        } else if (status === "ended") {
+          sectionClasses.push("ended-meal");
+          statusBadgeHtml = `<span class="meal-status-badge ended">提供終了</span>`;
+        }
+
+        const showChangeNote =
+          dayObj.date === "2026-11-14" && key === "lunch" && articleNote;
+
+        const commonHtml =
+          commonItems.length > 0
+            ? `<ul class="common-list">${commonItems
+                .map((item) => `<li>${escapeHtml(item)}</li>`)
+                .join("")}</ul>`
+            : `<div class="meta">共通料理なし</div>`;
+
+        return `
+          <article class="${sectionClasses.join(" ")}">
+            <div class="meal-header">
+              <div class="meal-header-left">
+                <h2>${escapeHtml(label)}</h2>
+                ${hoursText ? `<span class="meal-time-badge">${escapeHtml(hoursText)}</span>` : ""}
+                ${statusBadgeHtml}
+              </div>
+              ${showChangeNote ? `<span class="note-badge">${escapeHtml(articleNote)}</span>` : ""}
+            </div>
+            <div class="course-grid">
+              <div class="course-card set-a">
+                <span class="course-badge">A定食</span>
+                <div class="dish-name">${escapeHtml(setA.name || "未定")}</div>
+                ${setA.calories ? `<div class="meta">エネルギー: ${escapeHtml(setA.calories)} kcal</div>` : ""}
+              </div>
+              <div class="course-card set-b">
+                <span class="course-badge">B定食</span>
+                <div class="dish-name">${escapeHtml(setB.name || "共通メニュー（選択なし）")}</div>
+                ${setB.calories ? `<div class="meta">エネルギー: ${escapeHtml(setB.calories)} kcal</div>` : ""}
+              </div>
+              <div class="course-card common">
+                <span class="course-badge">共通料理</span>
+                ${commonHtml}
+              </div>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+
+    container.innerHTML = bannerHtml + cardsHtml;
   }
 
   function renderMealSummaryCell(meal, fallbackHours) {
@@ -435,25 +621,46 @@
     if ($("monthly-view")) $("monthly-view").classList.toggle("hidden", isDaily);
   }
 
-  function selectDate(isoStr) {
+  function selectDate(isoStr, isManual = true) {
     if (!isoStr) return;
     selectedDate = isoStr;
+    if (isManual) {
+      userPinnedDate = true;
+    }
     renderDailyView();
   }
 
   function selectInitialDate() {
+    userPinnedDate = false;
+    const activeTarget = getActiveNextMealTarget();
+    lastAutoTargetKey = `${activeTarget.targetDate}:${activeTarget.mealKey}:${activeTarget.status}`;
+
     if (daysList.length === 0) {
-      selectedDate = getTodayJstIso();
+      selectedDate = activeTarget.targetDate;
       return;
     }
-    const todayIso = getTodayJstIso();
-    const exact = daysList.find((d) => d.date === todayIso);
+    const exact = daysList.find((d) => d.date === activeTarget.targetDate);
     if (exact) {
       selectedDate = exact.date;
       return;
     }
-    const upcoming = daysList.find((d) => d.date >= todayIso);
+    const upcoming = daysList.find((d) => d.date >= activeTarget.targetDate);
     selectedDate = upcoming ? upcoming.date : daysList[0].date;
+  }
+
+  function startMealRolloverWatcher() {
+    setInterval(() => {
+      if (daysList.length === 0) return;
+      const activeTarget = getActiveNextMealTarget();
+      const currentKey = `${activeTarget.targetDate}:${activeTarget.mealKey}:${activeTarget.status}`;
+      if (currentKey !== lastAutoTargetKey) {
+        lastAutoTargetKey = currentKey;
+        if (!userPinnedDate) {
+          selectInitialDate();
+        }
+        renderDailyView();
+      }
+    }, 30000);
   }
 
   async function loadMenuJson(forceReload = false) {
@@ -502,10 +709,9 @@
       $("prev-day-btn").addEventListener("click", () => {
         const idx = daysList.findIndex((d) => d.date === selectedDate);
         if (idx > 0) {
-          selectDate(daysList[idx - 1].date);
+          selectDate(daysList[idx - 1].date, true);
         } else if (selectedDate) {
-          const prev = new Date(parseIsoDate(selectedDate).getTime() - 86400000);
-          selectDate(formatIsoDate(prev));
+          selectDate(addDaysIso(selectedDate, -1), true);
         }
       });
     }
@@ -514,10 +720,9 @@
       $("next-day-btn").addEventListener("click", () => {
         const idx = daysList.findIndex((d) => d.date === selectedDate);
         if (idx >= 0 && idx < daysList.length - 1) {
-          selectDate(daysList[idx + 1].date);
+          selectDate(daysList[idx + 1].date, true);
         } else if (selectedDate) {
-          const next = new Date(parseIsoDate(selectedDate).getTime() + 86400000);
-          selectDate(formatIsoDate(next));
+          selectDate(addDaysIso(selectedDate, 1), true);
         }
       });
     }
@@ -532,7 +737,7 @@
     if ($("date-picker")) {
       $("date-picker").addEventListener("change", (e) => {
         if (e.target.value) {
-          selectDate(e.target.value);
+          selectDate(e.target.value, true);
         }
       });
     }
@@ -541,7 +746,7 @@
       $("quick-days").addEventListener("click", (e) => {
         const btn = e.target.closest(".day-chip");
         if (btn && btn.dataset && btn.dataset.date) {
-          selectDate(btn.dataset.date);
+          selectDate(btn.dataset.date, true);
         }
       });
     }
@@ -556,7 +761,7 @@
       $("monthly-table-body").addEventListener("click", (e) => {
         const btn = e.target.closest(".jump-date-btn");
         if (btn && btn.dataset && btn.dataset.date) {
-          selectDate(btn.dataset.date);
+          selectDate(btn.dataset.date, true);
           switchTab("daily");
         }
       });
@@ -566,5 +771,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     bindEvents();
     loadMenuJson(false);
+    startMealRolloverWatcher();
   });
 })();
