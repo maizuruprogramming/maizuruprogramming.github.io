@@ -17,7 +17,7 @@ DEFAULT_MENU_PDF_URL = (
     "https://www.maizuru-ct.ac.jp/kakuyu/wp-content/uploads/sites/3/2026/10/menu-domitory-2026_11-2.pdf"
 )
 ALLERGY_NOTICE = "PDFファイルを確認してください．"
-USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.2)"
+USER_AGENT = "Mozilla/5.0 (compatible; KakuyuryoMealSite/2.3)"
 JST = timezone(timedelta(hours=9))
 
 ALLERGEN_GLYPH_CHARS = set("卵乳小麦エビカニそば落花生くるみ●○◎・")
@@ -134,7 +134,7 @@ def transform_point(tm: list[float], cm: list[float], rotation: int, page_w: flo
 def merge_same_line_fragments(
     fragments: list[tuple[float, float, str]],
     y_tol: float = 2.8,
-    max_x_gap: float = 32.0,
+    max_x_gap: float = 28.0,
 ) -> list[tuple[float, float, str]]:
     """同一Y座標上の分割されたテキスト断片を結合する."""
     if not fragments:
@@ -176,21 +176,15 @@ def cluster_y_positions(ys: list[float], tol: float = 15.0) -> list[float]:
     return [sum(c) / len(c) for c in clusters]
 
 
-def is_allergen_or_noise_fragment(x: float, txt: str, col_left: float, col_width: float) -> bool:
-    """アレルゲン表のヘッダー文字（卵乳小麦エビカニそば落花生くるみ）や●印、注記を除外する."""
+def is_allergen_or_noise_text(txt: str) -> bool:
+    """アレルゲン見出し文字（卵乳小麦エビカニそば落花生くるみ / 落くそ花るば生み）や●印、注記を除外する."""
     t = txt.strip()
     if not t or t in STATIC_NOISE_TOKENS:
         return True
-    # ● のみの文字列（アレルゲンチェック印）
-    if all(ch in {"●", "○", "◎", "・", " ", " "} for ch in t):
+    compact = t.replace(" ", "").replace(" ", "")
+    if not compact:
         return True
-    # 1文字の縦書きアレルゲン見出し文字（例: 卵, 乳, 小, 麦, エ, ビ, カ, ニ, そ, ば, 落, 花, 生, く, る, み）
-    # 日付列の右半分（アレルゲン列領域）にある単一文字、またはアレルゲン専用文字を除外
-    rel_x = (x - col_left) / max(col_width, 1.0)
-    if len(t) == 1 and t in ALLERGEN_GLYPH_CHARS and rel_x > 0.45:
-        return True
-    # アレルゲン文字だけで構成された断片（例: "卵乳", "小麦", "落花生", "くるみ"）
-    if len(t) <= 3 and all(ch in ALLERGEN_GLYPH_CHARS for ch in t) and rel_x > 0.40:
+    if all(ch in ALLERGEN_GLYPH_CHARS for ch in compact):
         return True
     if t.startswith(("蛋白質", "脂質", "食塩", "◆", "【アレルギー", "★都合により", "舞鶴工業")):
         return True
@@ -218,29 +212,27 @@ def parse_meal_cell(
             calories_found.append(int(cal_m.group(1)))
             continue
 
-        if is_allergen_or_noise_fragment(x, txt, col_left, col_width):
+        if is_allergen_or_noise_text(txt):
             continue
 
         rel_x = (x - col_left) / max(col_width, 1.0)
 
-        # 日付列の左側サブカラムにある単独 "A" / "B" マーカーを分離
-        if txt in {"A", "Ａ", "[A]", "[Ａ]"} and rel_x <= 0.35:
+        # 日付列の左側にある単独 "A" / "B" マーカーを分離
+        if txt in {"A", "Ａ", "[A]", "[Ａ]"} and rel_x <= 0.42:
             ab_markers.append((y, "A"))
             continue
-        if txt in {"B", "Ｂ", "[B]", "[Ｂ]"} and rel_x <= 0.35:
+        if txt in {"B", "Ｂ", "[B]", "[Ｂ]"} and rel_x <= 0.42:
             ab_markers.append((y, "B"))
             continue
 
         # 同一テキスト内に "A ごはん" や "B 食パン" のように結合されている場合も分離
         m_prefix = re.match(r"^([ABＡＢ])\s+(.+)$", txt)
-        if m_prefix and rel_x <= 0.35:
+        if m_prefix and rel_x <= 0.42:
             kind = "A" if m_prefix.group(1) in {"A", "Ａ"} else "B"
             ab_markers.append((y, kind))
-            dish_frags.append((x + 6.0, y, m_prefix.group(2).strip()))
-            continue
-
-        # アレルゲン列領域（列の右端30%以降）のゴミを除外
-        if rel_x > 0.72:
+            rest = m_prefix.group(2).strip()
+            if not is_allergen_or_noise_text(rest):
+                dish_frags.append((x + 6.0, y, rest))
             continue
 
         dish_frags.append((x, y, txt))
@@ -248,13 +240,14 @@ def parse_meal_cell(
     # 同一行（Y差 2.8pt以内）の断片を結合
     merged_lines = merge_same_line_fragments(dish_frags, y_tol=2.8, max_x_gap=26.0)
 
-    # 同一セル内で2行に折り返された料理名（Y差が 10.5pt 未満）を1つの料理名に結合
+    # 同一セル内で2行に折り返された料理名を1つの料理名に結合
+    # Y差が 14.2pt 未満の連続行は同一料理の折り返しとして結合する
     dishes: list[dict] = []
     for x, y, txt in merged_lines:
         clean_t = txt.replace("●", "").strip()
-        if not clean_t or clean_t in {"A", "B", "Ａ", "Ｂ"}:
+        if not clean_t or clean_t in {"A", "B", "Ａ", "Ｂ"} or is_allergen_or_noise_text(clean_t):
             continue
-        if dishes and (dishes[-1]["last_y"] - y) < 10.5:
+        if dishes and (dishes[-1]["last_y"] - y) < 14.2:
             dishes[-1]["text"] += clean_t
             dishes[-1]["last_y"] = y
         else:
@@ -284,7 +277,7 @@ def parse_meal_cell(
             if a_ys:
                 ay = a_ys[0]
                 best_i = min(range(len(dishes)), key=lambda i: abs(dishes[i]["center_y"] - ay))
-                if abs(dishes[best_i]["center_y"] - ay) <= 20.0:
+                if abs(dishes[best_i]["center_y"] - ay) <= 22.0:
                     set_a_name = dishes[best_i]["text"]
                     used_indices.add(best_i)
             if b_ys:
@@ -292,7 +285,7 @@ def parse_meal_cell(
                 candidates = [i for i in range(len(dishes)) if i not in used_indices]
                 if candidates:
                     best_i = min(candidates, key=lambda i: abs(dishes[i]["center_y"] - by))
-                    if abs(dishes[best_i]["center_y"] - by) <= 20.0:
+                    if abs(dishes[best_i]["center_y"] - by) <= 22.0:
                         set_b_name = dishes[best_i]["text"]
                         used_indices.add(best_i)
             for i, d in enumerate(dishes):
@@ -362,7 +355,7 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
 
         header_y = max(d[1] for d in date_headers)
 
-        # 左見出し列の [Ａ] / [Ｂ] のY座標から 朝食・昼食・夕食 の3段の境界を特定
+        # 左見出し列の [Ａ] のY座標から 朝食・昼食・夕食 の3段の境界を特定
         a_ys = cluster_y_positions([y for _, y, txt in lines if txt in {"[Ａ]", "[A]"}])
 
         if len(a_ys) >= 3:
@@ -386,11 +379,11 @@ def extract_days_from_official_pdf(pdf_url: str, target_year: int = 2026, target
             if not is_target:
                 continue
 
-            # 日付ヘッダーテキストは列内で少し右寄りに配置されているため、左端を列幅の22%分左へ取る
+            # 左端列（月曜）の A/B マーカーを取りこぼさないよう左マージンを十分確保
             left_bound = (
                 (date_headers[col_idx - 1][0] + col_x) / 2
                 if col_idx > 0
-                else (col_x - avg_col_width * 0.24)
+                else (col_x - avg_col_width * 0.38)
             )
             right_bound = (
                 (col_x + date_headers[col_idx + 1][0]) / 2
