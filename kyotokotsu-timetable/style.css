@@ -245,3 +245,132 @@ h2 { margin: 0; color: var(--navy); font-size: 23px; line-height: 1.45; font-wei
 
 /* Local-system font stack keeps the timetable usable without external font downloads. */
 body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif; }
+
+/* Smartphone readability improvements (2026-11-22). */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .header-inner, .hero-inner, main > section, .footer-inner {
+    width: min(100% - 28px, 520px);
+  }
+
+  .site-header { height: 64px; }
+  .brand-mark { width: 28px; height: 26px; }
+  .brand-copy strong { font-size: 12px; }
+  .brand-copy small { font-size: 8px; }
+  .official-link { font-size: 11px; }
+
+  .hero-inner { min-height: 300px; }
+  .hero-copy { padding: 36px 0 34px; }
+  .eyebrow { margin-bottom: 14px; font-size: 10px; }
+  h1 { font-size: clamp(30px, 8vw, 36px); line-height: 1.4; }
+  .hero-lead { margin-top: 13px; font-size: 14px; line-height: 1.8; }
+  .hero-meta { flex-wrap: wrap; gap: 9px 16px; margin-top: 19px; font-size: 11px; }
+  .meta-icon { font-size: 16px; }
+
+  .route-section { padding-top: 35px; }
+  .section-heading { align-items: center; gap: 10px; margin-bottom: 15px; }
+  .section-kicker { font-size: 10px; }
+  h2 { font-size: 21px; }
+  .section-hint { max-width: 125px; font-size: 11px; }
+  .route-grid { gap: 10px; }
+  .route-card,
+  .route-card.is-active {
+    min-height: 148px;
+    padding: 13px 12px 11px;
+    border-radius: 12px;
+  }
+  .route-card-top { margin-bottom: 10px; }
+  .route-number { font-size: 10px; }
+  .route-arrow { width: 25px; height: 25px; font-size: 15px; }
+  .route-card strong { min-height: 44px; font-size: 14px; line-height: 1.5; }
+  .route-card small { margin-top: 4px; font-size: 9px; letter-spacing: .025em; }
+  .route-card-bottom { gap: 4px; margin-top: 9px; padding-top: 8px; font-size: 10px; }
+  .route-card-bottom b { font-size: 15px; }
+
+  .timetable-section { padding-top: 40px; }
+  .timetable-title-row { margin-bottom: 15px; }
+  .reservation-pill { padding: 6px 11px; font-size: 11px; }
+  .timetable-panel { padding: 17px 14px 15px; border-radius: 14px; }
+  .selected-route-heading { flex-wrap: wrap; align-items: center; gap: 10px; padding-bottom: 15px; }
+  .selected-route-icon { flex-basis: 44px; width: 44px; height: 44px; font-size: 18px; }
+  .selected-route-label { font-size: 9px; }
+  .selected-route-heading h3 { font-size: 16px; line-height: 1.45; }
+  .revision { font-size: 11px; }
+  .source-button { margin-left: 54px; padding: 8px 11px; font-size: 11px; }
+
+  .direction-switch { margin: 16px 0 15px; padding: 4px; gap: 5px; }
+  .direction-button { min-height: 48px; gap: 7px; font-size: 14px; }
+  .direction-symbol { font-size: 19px; }
+  .filter-area { gap: 12px; padding-bottom: 17px; }
+  .select-wrap, .search-wrap { gap: 7px; }
+  .field-label { font-size: 12px; }
+  .select-control, .search-control { min-height: 50px; padding: 0 13px; border-radius: 9px; }
+  .select-control select { height: 48px; font-size: 15px; }
+  .select-chevron { top: 10px; font-size: 22px; }
+  .search-control input { min-height: 48px; font-size: 15px; }
+  .search-icon { font-size: 24px; }
+  .clear-search { width: 28px; height: 28px; font-size: 18px; }
+
+  .results-heading { align-items: center; margin: 18px 0 12px; }
+  .results-caption { font-size: 9px; }
+  .results-heading h4 { font-size: 15px; line-height: 1.5; }
+  .results-count { min-width: 48px; padding: 5px 10px; font-size: 12px; }
+  .trip-list { grid-template-columns: 1fr; gap: 10px; }
+  .trip-card { border-radius: 12px; }
+  .trip-main { min-height: 94px; gap: 12px; padding: 13px 12px; }
+  .trip-time-block { flex-basis: 104px; }
+  .trip-time { font-size: 32px; line-height: 1.15; }
+  .trip-time-label { margin-top: 5px; font-size: 11px; }
+  .trip-number { margin-bottom: 6px; padding: 4px 8px; font-size: 11px; }
+  .trip-arrival { font-size: 13px; line-height: 1.5; }
+  .trip-arrival small { font-size: 11px; }
+  .detail-button { flex-basis: 42px; width: 42px; height: 42px; font-size: 21px; }
+  .trip-details { padding: 5px 13px 13px; }
+  .stop-timeline { padding-top: 9px; }
+  .timeline-row { min-height: 38px; padding-left: 20px; font-size: 13px; }
+  .timeline-row:after { top: 15px; }
+  .timeline-row.is-selected:after { top: 13px; }
+  .timeline-time { padding-left: 14px; font-size: 14px; }
+  .deadline { margin-top: 10px; padding-top: 10px; font-size: 12px; line-height: 1.6; }
+  .no-results { padding: 25px 12px; font-size: 14px; }
+
+  .timetable-footnote { gap: 10px; margin-top: 14px; padding: 12px; }
+  .footnote-mark { flex-basis: 20px; width: 20px; height: 20px; font-size: 12px; }
+  .timetable-footnote p { font-size: 12px; line-height: 1.75; }
+
+  .info-section { gap: 11px; padding-top: 17px; }
+  .info-card { gap: 12px; padding: 17px 14px; border-radius: 12px; }
+  .info-icon, .contact-icon { flex-basis: 36px; width: 36px; height: 36px; font-size: 18px; }
+  .info-eyebrow { font-size: 9px; }
+  .info-card h3 { margin-bottom: 7px; font-size: 15px; }
+  .info-card p:not(.info-eyebrow) { font-size: 12px; line-height: 1.8; }
+  .important-card a { margin-top: 11px; font-size: 12px; line-height: 1.6; }
+  .reservation-link { min-height: 46px; margin-top: 12px; padding: 10px 13px; font-size: 13px; }
+
+  .source-section { padding: 38px 0 30px; }
+  .source-title { margin-bottom: 14px; }
+  .source-title h2 { font-size: 18px; }
+  .source-list { border-radius: 11px; }
+  .source-list a { min-height: 82px; padding: 14px 27px 12px 12px; }
+  .source-list span { font-size: 12px; line-height: 1.5; }
+  .source-list small { margin-top: 4px; font-size: 10px; }
+  .source-list b { top: 14px; right: 10px; font-size: 15px; }
+  .checked-date { margin-top: 10px; font-size: 10px; }
+  .footer-inner { gap: 5px; padding: 16px 0; font-size: 9px; line-height: 1.6; }
+}
+
+@media (max-width: 360px) {
+  .route-grid { grid-template-columns: 1fr; }
+  .route-card,
+  .route-card.is-active { min-height: 125px; }
+  .route-card strong { min-height: 0; font-size: 15px; }
+  .route-card-bottom { font-size: 11px; }
+  .selected-route-heading { gap: 8px; }
+  .source-button { margin-left: 0; }
+  .trip-time-block { flex-basis: 94px; }
+  .trip-time { font-size: 30px; }
+}
