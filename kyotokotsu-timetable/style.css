@@ -374,3 +374,169 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic Pro
   .trip-time-block { flex-basis: 94px; }
   .trip-time { font-size: 30px; }
 }
+
+/* Global readability and one-tap stop selection (2026-11-22). */
+body { font-size: 17px; line-height: 1.75; }
+.brand-copy strong { font-size: 14px; }
+.brand-copy small { font-size: 10px; }
+.official-link { font-size: 14px; }
+.eyebrow { font-size: 12px; }
+.hero-lead { font-size: 17px; }
+.hero-meta { font-size: 13px; }
+.section-kicker { font-size: 11px; }
+h2 { font-size: 28px; }
+.section-hint { font-size: 14px; }
+.route-card { min-height: 174px; }
+.route-number { font-size: 12px; }
+.route-arrow { width: 28px; height: 28px; font-size: 17px; }
+.route-card strong { font-size: 18px; }
+.route-card small { font-size: 11px; }
+.route-card-bottom { font-size: 13px; }
+.route-card-bottom b { font-size: 18px; }
+.reservation-pill { font-size: 13px; }
+.selected-route-label { font-size: 10px; }
+.selected-route-heading h3 { font-size: 22px; }
+.revision { font-size: 13px; }
+.source-button { padding: 10px 14px; font-size: 13px; }
+.direction-button { min-height: 50px; font-size: 15px; }
+.direction-symbol { font-size: 20px; }
+.field-label { font-size: 14px; }
+.filter-area { grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr); align-items: start; }
+.stop-picker { display: flex; min-width: 0; flex-direction: column; gap: 8px; }
+.stop-picker-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.stop-picker-hint { color: #8a9ba4; font-size: 12px; }
+.stop-choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.stop-choice { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; min-height: 50px; padding: 10px 12px; border: 1px solid #dfe8ec; border-radius: 10px; background: #fbfcfd; color: var(--ink); text-align: left; font-size: 14px; font-weight: 700; line-height: 1.45; cursor: pointer; transition: background .15s ease, border-color .15s ease, color .15s ease; }
+.stop-choice:hover { border-color: var(--teal); background: #f2fbfa; }
+.stop-choice.is-selected { border: 2px solid var(--teal-dark); padding: 9px 11px; background: #eaf8f6; color: var(--navy); }
+.stop-choice-name { min-width: 0; overflow-wrap: anywhere; }
+.stop-choice-mark { display: grid; flex: 0 0 23px; width: 23px; height: 23px; place-items: center; border-radius: 50%; background: #edf2f4; color: #66818e; font-size: 16px; }
+.stop-choice.is-selected .stop-choice-mark { background: var(--teal-dark); color: #fff; }
+
+.stop-rule-note {
+  margin: 2px 0 0;
+  padding: 10px 13px;
+  border-left: 4px solid #d49a36;
+  border-radius: 7px;
+  background: #fff8e9;
+  color: #6e5429;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+.stop-rule-note[hidden] { display: none; }
+.timeline-stop-label { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 8px; min-width: 0; }
+.timeline-rule {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: #fff0e8;
+  color: #9a4c25;
+  font-size: .82em;
+  font-weight: 800;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.search-wrap { min-width: 0; }
+.select-control, .search-control { min-height: 52px; }
+.search-control input { font-size: 16px; }
+.results-caption { font-size: 10px; }
+.results-heading h4 { font-size: 18px; }
+.results-count { min-width: 52px; padding: 5px 11px; font-size: 13px; }
+.trip-time { font-size: 34px; }
+.trip-time-label { font-size: 12px; }
+.trip-number { font-size: 12px; }
+.trip-arrival { font-size: 14px; }
+.trip-arrival small { font-size: 12px; }
+.detail-button { width: 40px; height: 40px; flex-basis: 40px; font-size: 20px; }
+.timeline-row { min-height: 36px; font-size: 13px; }
+.timeline-time { font-size: 14px; }
+.deadline { font-size: 12px; }
+.no-results { font-size: 14px; }
+.timetable-footnote p { font-size: 13px; }
+.info-eyebrow { font-size: 10px; }
+.info-card h3 { font-size: 18px; }
+.info-card p:not(.info-eyebrow) { font-size: 13px; }
+.important-card a, .reservation-link { font-size: 14px; }
+.source-title h2 { font-size: 22px; }
+.source-list span { font-size: 14px; }
+.source-list small, .checked-date { font-size: 12px; }
+.footer-inner { font-size: 11px; }
+
+@media (max-width: 850px) {
+  .filter-area { grid-template-columns: 1fr; }
+  .stop-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 18px; line-height: 1.8; }
+  .header-inner, .hero-inner, main > section, .footer-inner { width: min(100% - 24px, 520px); }
+  .site-header { height: 68px; }
+  .brand-copy strong { font-size: 13px; }
+  .brand-copy small { font-size: 9px; }
+  .official-link { font-size: 13px; }
+  .hero-inner { min-height: 320px; }
+  .eyebrow { font-size: 11px; }
+  h1 { font-size: clamp(34px, 9vw, 40px); line-height: 1.4; }
+  .hero-lead { font-size: 16px; }
+  .hero-meta { font-size: 13px; }
+  h2 { font-size: 24px; }
+  .section-kicker { font-size: 11px; }
+  .section-hint { max-width: 135px; font-size: 12px; }
+  .route-grid { gap: 11px; }
+  .route-card, .route-card.is-active { min-height: 166px; padding: 14px 13px 12px; }
+  .route-number { font-size: 11px; }
+  .route-arrow { width: 27px; height: 27px; font-size: 16px; }
+  .route-card strong { min-height: 50px; font-size: 17px; line-height: 1.5; }
+  .route-card small { font-size: 10px; }
+  .route-card-bottom { font-size: 12px; }
+  .route-card-bottom b { font-size: 17px; }
+  .reservation-pill { font-size: 12px; }
+  .timetable-panel { padding: 19px 15px 16px; }
+  .selected-route-label { font-size: 10px; }
+  .selected-route-heading h3 { font-size: 19px; }
+  .revision { font-size: 12px; }
+  .source-button { padding: 9px 11px; font-size: 12px; }
+  .direction-button { min-height: 54px; font-size: 16px; }
+  .field-label { font-size: 15px; }
+  .stop-picker { gap: 9px; }
+  .stop-picker-heading { gap: 3px 9px; }
+  .stop-picker-hint { font-size: 12px; }
+  .stop-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .stop-choice { min-height: 58px; padding: 11px 11px; border-radius: 11px; font-size: 15px; line-height: 1.4; }
+  .stop-choice.is-selected { padding: 10px 10px; }
+  .stop-choice-mark { flex-basis: 24px; width: 24px; height: 24px; font-size: 16px; }
+  .search-control { min-height: 54px; }
+  .search-control input { min-height: 52px; font-size: 16px; }
+  .results-caption { font-size: 10px; }
+  .results-heading h4 { font-size: 17px; }
+  .results-count { font-size: 13px; }
+  .trip-main { min-height: 104px; padding: 14px 12px; }
+  .trip-time-block { flex-basis: 108px; }
+  .trip-time { font-size: 36px; }
+  .trip-time-label { font-size: 12px; }
+  .trip-number { font-size: 13px; }
+  .trip-arrival { font-size: 14px; }
+  .trip-arrival small { font-size: 12px; }
+  .detail-button { flex-basis: 44px; width: 44px; height: 44px; font-size: 22px; }
+  .timeline-row { min-height: 43px; font-size: 14px; }
+  .timeline-time { font-size: 15px; }
+  .deadline { font-size: 13px; }
+  .no-results { font-size: 15px; }
+  .timetable-footnote p { font-size: 13px; }
+  .info-card h3 { font-size: 17px; }
+  .info-card p:not(.info-eyebrow) { font-size: 13px; }
+  .important-card a, .reservation-link { font-size: 14px; }
+  .source-title h2 { font-size: 20px; }
+  .source-list span { font-size: 13px; }
+  .source-list small, .checked-date { font-size: 11px; }
+  .footer-inner { font-size: 10px; }
+}
+
+@media (max-width: 360px) {
+  .route-grid { grid-template-columns: 1fr; }
+  .stop-choices { grid-template-columns: 1fr; }
+  .stop-choice { min-height: 58px; }
+  .stop-rule-note { font-size: 13px; padding: 9px 11px; }
+}

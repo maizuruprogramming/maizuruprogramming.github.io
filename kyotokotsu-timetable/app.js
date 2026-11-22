@@ -1,6 +1,9 @@
 const ROUTES = {
   umeda: {
     name: '舞鶴～大阪梅田', icon: '大', revision: '時刻表：2018年4月1日改正',
+    // 舞鶴発は舞鶴側4停留所のみ乗車可能。舞鶴行きは大阪側4停留所で降車不可。
+    boardingAllowed: { outbound: ['舞鶴営業所（喜多）', '東舞鶴駅前', '中舞鶴', '西舞鶴駅前'] },
+    alightingProhibited: { inbound: ['新大阪', '千里桃山台', '宝塚IC', '西宮北IC'] },
     url: 'https://www.kyotokotsu.jp/highway/course/maizuru_umeda.html',
     directionLabels: ['大阪行き', '舞鶴行き'],
     directions: {
@@ -117,7 +120,8 @@ let selectedStopIndex = 1;
 let expandedTrip = null;
 
 const routeGrid = document.getElementById('routeGrid');
-const stopSelect = document.getElementById('stopSelect');
+const stopChoices = document.getElementById('stopChoices');
+const stopRuleNote = document.getElementById('stopRuleNote');
 const searchInput = document.getElementById('searchInput');
 const clearSearch = document.getElementById('clearSearch');
 const tripList = document.getElementById('tripList');
@@ -161,17 +165,49 @@ function renderRouteInfo() {
   });
 }
 
-function renderStopSelect() {
-  const stops = currentDirection().stops;
-  stopSelect.innerHTML = '';
+function renderStopChoices() {
+  const direction = currentDirection();
+  const stops = direction.stops;
+  const route = ROUTES[selectedRoute];
+  const allowedBoardingStops = route.boardingAllowed?.[selectedDirection];
+  if (selectedStopIndex >= stops.length || selectedStopIndex < 0 ||
+      (allowedBoardingStops && !allowedBoardingStops.includes(stops[selectedStopIndex]))) {
+    selectedStopIndex = Math.max(0, stops.findIndex(stop => !allowedBoardingStops || allowedBoardingStops.includes(stop)));
+  }
+
+  stopChoices.innerHTML = '';
   stops.forEach((stop, index) => {
-    const option = document.createElement('option');
-    option.value = String(index);
-    option.textContent = stop;
-    stopSelect.appendChild(option);
+    // 乗車できない停留所は、停留所選択ボタンに表示しない。
+    if (allowedBoardingStops && !allowedBoardingStops.includes(stop)) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'stop-choice';
+    button.classList.toggle('is-selected', index === selectedStopIndex);
+    button.setAttribute('aria-pressed', String(index === selectedStopIndex));
+    button.dataset.stopIndex = String(index);
+
+    const name = document.createElement('span');
+    name.className = 'stop-choice-name';
+    name.textContent = stop;
+
+    const mark = document.createElement('span');
+    mark.className = 'stop-choice-mark';
+    mark.setAttribute('aria-hidden', 'true');
+    mark.textContent = index === selectedStopIndex ? '✓' : '›';
+
+    button.append(name, mark);
+    stopChoices.appendChild(button);
   });
-  if (selectedStopIndex >= stops.length || selectedStopIndex < 0) selectedStopIndex = 0;
-  stopSelect.value = String(selectedStopIndex);
+
+  // 路線・方向ごとの乗降ルールを、停留所一覧のすぐ下に表示する。
+  const ruleText = selectedRoute === 'umeda' && selectedDirection === 'outbound'
+    ? '乗車できるのは、舞鶴営業所・東舞鶴駅前・中舞鶴・西舞鶴駅前のみです。'
+    : selectedRoute === 'umeda' && selectedDirection === 'inbound'
+      ? '新大阪・千里桃山台・宝塚IC・西宮北ICでは降車できません。'
+      : '';
+  stopRuleNote.textContent = ruleText;
+  stopRuleNote.hidden = !ruleText;
 }
 
 function terminalForTrip(trip, direction) {
@@ -239,12 +275,29 @@ function createTripCard(trip, index, direction, selectedTime) {
     if (stopIndex === selectedStopIndex) row.classList.add('is-selected');
     if (stopIndex === trip.times.length - 1) row.classList.add('is-terminal');
     if (trip.times[stopIndex] === '—') row.classList.add('is-no-stop');
+    const stopLabel = document.createElement('span');
+    stopLabel.className = 'timeline-stop-label';
     const stopName = document.createElement('span');
+    stopName.className = 'timeline-stop-name';
     stopName.textContent = stop;
+    stopLabel.appendChild(stopName);
+
+    const route = ROUTES[selectedRoute];
+    const cannotBoard = route.boardingAllowed?.[selectedDirection] &&
+      !route.boardingAllowed[selectedDirection].includes(stop);
+    const cannotAlight = route.alightingProhibited?.[selectedDirection]?.includes(stop);
+    const restrictionLabel = cannotBoard ? '乗車不可' : cannotAlight ? '降車不可' : '';
+    if (restrictionLabel) {
+      const rule = document.createElement('span');
+      rule.className = 'timeline-rule';
+      rule.textContent = restrictionLabel;
+      stopLabel.appendChild(rule);
+    }
+
     const stopTime = document.createElement('span');
     stopTime.className = 'timeline-time';
     stopTime.textContent = trip.times[stopIndex] || '—';
-    row.append(stopName, stopTime);
+    row.append(stopLabel, stopTime);
     timeline.appendChild(row);
   });
   details.appendChild(timeline);
@@ -300,7 +353,7 @@ function toMinutes(time) {
 function updateAll({ resetStop = false } = {}) {
   if (resetStop) chooseDefaultStop();
   renderRouteInfo();
-  renderStopSelect();
+  renderStopChoices();
   expandedTrip = null;
   renderTrips();
 }
@@ -320,9 +373,14 @@ document.querySelectorAll('.direction-button').forEach(button => {
   });
 });
 
-stopSelect.addEventListener('change', () => {
-  selectedStopIndex = Number(stopSelect.value);
+stopChoices.addEventListener('click', event => {
+  const button = event.target.closest('[data-stop-index]');
+  if (!button) return;
+  const nextIndex = Number(button.dataset.stopIndex);
+  if (!Number.isInteger(nextIndex) || nextIndex === selectedStopIndex) return;
+  selectedStopIndex = nextIndex;
   expandedTrip = null;
+  renderStopChoices();
   renderTrips();
 });
 searchInput.addEventListener('input', renderTrips);

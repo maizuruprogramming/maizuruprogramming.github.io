@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#123956">
   <meta name="description" content="京都交通の舞鶴発着高速バス4路線の時刻表を、行き先・乗車停留所から見やすく探せる非公式ガイドです。">
   <title>京都交通 高速バス時刻表ガイド</title>
-  <link rel="stylesheet" href="./style.css?v=20261122-3">
+  <link rel="stylesheet" href="./style.css?v=20261122-4">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -86,7 +86,11 @@
         </div>
 
         <div class="filter-area">
-          <label class="select-wrap" for="stopSelect"><span class="field-label">乗車する停留所</span><span class="select-control"><select id="stopSelect"></select><span class="select-chevron" aria-hidden="true">⌄</span></span></label>
+          <div class="stop-picker">
+            <div class="stop-picker-heading"><span class="field-label">乗車する停留所</span><span class="stop-picker-hint">停留所名をタップしてください</span></div>
+            <div class="stop-choices" id="stopChoices" role="group" aria-label="乗車する停留所"></div>
+            <p class="stop-rule-note" id="stopRuleNote" role="note" hidden></p>
+          </div>
           <label class="search-wrap" for="searchInput"><span class="field-label">便・停留所を検索</span><span class="search-control"><span class="search-icon" aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="例：551、伊丹空港" autocomplete="off"><button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア" hidden>×</button></span></label>
         </div>
 
@@ -125,6 +129,6 @@
   </main>
 
   <footer class="site-footer"><div class="footer-inner"><span>KYOTO KOTSU HIGHWAY BUS GUIDE</span><span>Unofficial timetable viewer · 舞鶴発着路線</span></div></footer>
-  <script src="./app.js?v=20261122-2" defer></script>
+  <script src="./app.js?v=20261122-4" defer></script>
 </body>
 </html>
