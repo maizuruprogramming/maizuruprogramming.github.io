@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123956">
+  <meta name="description" content="京都交通の舞鶴発着高速バス4路線の時刻表を、行き先・乗車停留所から見やすく探せる非公式ガイドです。">
+  <title>京都交通 高速バス時刻表ガイド</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="トップへ">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>HIGHWAY BUS</strong><small>MAIZURU ROUTE GUIDE</small></span>
+      </a>
+      <a class="official-link" href="https://www.kyotokotsu.jp/highway/index.html" target="_blank" rel="noopener">京都交通 公式サイト <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> KYOTO KOTSU · HIGHWAY BUS</p>
+          <h1>舞鶴からの高速バスを、<br><em>ひと目で。</em></h1>
+          <p class="hero-lead">行き先と乗車する停留所を選ぶだけ。<br class="mobile-only">知りたい便の時刻をすぐに確認できます。</p>
+          <div class="hero-meta">
+            <span><span class="meta-icon">◎</span> 舞鶴発着 4路線</span>
+            <span><span class="meta-icon">◷</span> 時刻表を一覧化</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="route-line route-line-one"></div>
+          <div class="route-line route-line-two"></div>
+          <div class="route-dot dot-a"></div><div class="route-dot dot-b"></div><div class="route-dot dot-c"></div>
+          <div class="bus-illustration"><span class="bus-window"></span><span class="bus-window second"></span><span class="bus-wheel wheel-a"></span><span class="bus-wheel wheel-b"></span></div>
+          <span class="art-label label-maizuru">MAIZURU</span>
+          <span class="art-label label-destination">YOUR DESTINATION</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="route-section" aria-labelledby="route-heading">
+      <div class="section-heading">
+        <div><p class="section-kicker">01 / ROUTE</p><h2 id="route-heading">行き先を選ぶ</h2></div>
+        <p class="section-hint">路線をタップして時刻表を表示</p>
+      </div>
+      <div class="route-grid" id="routeGrid" aria-label="路線選択">
+        <button class="route-card is-active" type="button" data-route="umeda" aria-pressed="true">
+          <span class="route-card-top"><span class="route-number">01</span><span class="route-arrow">↗</span></span>
+          <strong>大阪・梅田</strong><small>OSAKA UMEDA</small><span class="route-card-bottom">梅田・新大阪方面 <b>→</b></span>
+        </button>
+        <button class="route-card" type="button" data-route="nanba" aria-pressed="false">
+          <span class="route-card-top"><span class="route-number">02</span><span class="route-arrow">↗</span></span>
+          <strong>大阪なんば・伊丹空港</strong><small>NAMBA / ITAMI AIRPORT</small><span class="route-card-bottom">なんば・空港方面 <b>→</b></span>
+        </button>
+        <button class="route-card" type="button" data-route="kobe" aria-pressed="false">
+          <span class="route-card-top"><span class="route-number">03</span><span class="route-arrow">↗</span></span>
+          <strong>神戸三宮・神戸空港</strong><small>KOBE / KOBE AIRPORT</small><span class="route-card-bottom">三宮・空港方面 <b>→</b></span>
+        </button>
+        <button class="route-card" type="button" data-route="kyoto" aria-pressed="false">
+          <span class="route-card-top"><span class="route-number">04</span><span class="route-arrow">↗</span></span>
+          <strong>京都駅</strong><small>KYOTO STATION</small><span class="route-card-bottom">京都駅方面 <b>→</b></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="timetable-section" aria-labelledby="timetable-heading">
+      <div class="section-heading timetable-title-row">
+        <div><p class="section-kicker">02 / TIMETABLE</p><h2 id="timetable-heading">時刻表</h2></div>
+        <span class="reservation-pill"><span aria-hidden="true">●</span> 予約制</span>
+      </div>
+      <div class="timetable-panel">
+        <div class="selected-route-heading">
+          <div class="selected-route-icon" id="selectedRouteIcon" aria-hidden="true">大</div>
+          <div><p class="selected-route-label">SELECTED ROUTE</p><h3 id="selectedRouteName">舞鶴～大阪梅田</h3><p class="revision" id="revisionText">時刻表：2018年4月1日改正</p></div>
+          <a class="source-button" id="officialRouteLink" href="https://www.kyotokotsu.jp/highway/course/maizuru_umeda.html" target="_blank" rel="noopener">公式時刻表 <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="direction-switch" role="group" aria-label="運行方向">
+          <button type="button" class="direction-button is-active" data-direction="outbound" aria-pressed="true"><span class="direction-symbol">↗</span><span id="outboundLabel">大阪行き</span></button>
+          <button type="button" class="direction-button" data-direction="inbound" aria-pressed="false"><span class="direction-symbol">↙</span><span id="inboundLabel">舞鶴行き</span></button>
+        </div>
+
+        <div class="filter-area">
+          <label class="select-wrap" for="stopSelect"><span class="field-label">乗車する停留所</span><span class="select-control"><select id="stopSelect"></select><span class="select-chevron" aria-hidden="true">⌄</span></span></label>
+          <label class="search-wrap" for="searchInput"><span class="field-label">便・停留所を検索</span><span class="search-control"><span class="search-icon" aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="例：551、伊丹空港" autocomplete="off"><button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア" hidden>×</button></span></label>
+        </div>
+
+        <div class="results-heading"><div><span class="results-caption">DEPARTURE TIMES</span><h4 id="stopHeading">東舞鶴駅前からの時刻</h4></div><span class="results-count" id="resultsCount">2便</span></div>
+        <div id="tripList" class="trip-list" aria-live="polite"></div>
+        <p class="no-results" id="noResults" hidden>条件に合う便が見つかりません。停留所や検索語を変更してください。</p>
+
+        <div class="timetable-footnote">
+          <span class="footnote-mark">i</span>
+          <p>「—」は停車・時刻の設定がない箇所です。停留所の通過や運行状況は、乗車前に必ず公式サイトでご確認ください。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section" aria-label="ご利用案内">
+      <div class="info-card important-card">
+        <div class="info-icon">!</div>
+        <div><p class="info-eyebrow">PLEASE CHECK</p><h3>ご利用前にご確認ください</h3><p>このサイトは、京都交通株式会社の公式時刻表から舞鶴発着の4路線を整理した非公式ガイドです。ダイヤ改正・運休・臨時便などをリアルタイムで反映するものではありません。予約・乗車前には必ず公式情報をご確認ください。</p><a href="https://www.kyotokotsu.jp/highway/index.html" target="_blank" rel="noopener">京都交通 高速バス公式ページを見る <span>↗</span></a></div>
+      </div>
+      <div class="info-card contact-card">
+        <div class="contact-icon" aria-hidden="true">予</div>
+        <div><p class="info-eyebrow">RESERVATION</p><h3>高速バスのご予約</h3><p>日本交通の予約案内ページからご確認ください。</p><a class="reservation-link" href="https://www.nihonkotsu.co.jp/reservation/index.html" target="_blank" rel="noopener">日本交通 予約案内を見る <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="source-section">
+      <div class="source-title"><span class="section-kicker">03 / SOURCE</span><h2>公式情報・時刻表の改正日</h2></div>
+      <div class="source-list">
+        <a href="https://www.kyotokotsu.jp/highway/course/maizuru_umeda.html" target="_blank" rel="noopener"><span>大阪梅田線</span><small>2018年4月1日改正</small><b>↗</b></a>
+        <a href="https://www.kyotokotsu.jp/highway/course/maizuru-nanba.html" target="_blank" rel="noopener"><span>なんば・伊丹空港線</span><small>2018年4月1日改正</small><b>↗</b></a>
+        <a href="https://www.kyotokotsu.jp/highway/course/maizuru-kobe.html" target="_blank" rel="noopener"><span>神戸線</span><small>2026年7月18日改正</small><b>↗</b></a>
+        <a href="https://www.kyotokotsu.jp/highway/course/maizuru-kyoto.html" target="_blank" rel="noopener"><span>京都線</span><small>2024年6月1日改正</small><b>↗</b></a>
+      </div>
+      <p class="checked-date">公式サイト掲載内容の確認日：2026年11月22日</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-inner"><span>KYOTO KOTSU HIGHWAY BUS GUIDE</span><span>Unofficial timetable viewer · 舞鶴発着路線</span></div></footer>
+  <script src="./app.js?v=20261122-2" defer></script>
+</body>
+</html>
