@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>おとのカードで おんがくプログラミング</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff8ec; --ink:#3b2f2a; --sub:#7a6a5f; --line:#ead9c2; --panel:#ffffff;
+    --do:#e8524a; --re:#f28c38; --mi:#f2c230; --fa:#5cb85c; --so:#3fb6c9; --la:#4a7fd6; --si:#9a62c9; --do2:#e36aa0;
+    --rest:#c9bfb4; --drum:#8a5a3c; --bass:#55606e; --chord:#2f8f7f; --loop:#f2a33a; --fn:#5b7fd1; --branch:#c0568a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","BIZ UDPGothic","Hiragino Maru Gothic ProN","Noto Sans CJK JP","Noto Sans JP",system-ui,sans-serif;}
+  body{padding:4px 2px 30px}
+  body.mode-e .j-only{display:none!important}
+  body.mode-j .e-only{display:none!important}
+  body.mode-j{--bg:#f2f5fb;--line:#d6deed;--sub:#5d6880}
+  .wrap{max-width:1100px;margin:0 auto}
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:14px}
+  h1{font-size:clamp(20px,3.4vw,26px);margin:0;font-weight:900;letter-spacing:.02em}
+  h1 span{color:var(--do)}
+  .lead{margin:0;color:var(--sub);font-size:15px;flex:1 1 300px}
+  .modebar{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .panel{background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:14px 14px 16px;margin-bottom:14px}
+  .panel h2{margin:0 0 4px;font-size:19px;font-weight:900;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .panel h3{margin:16px 0 6px;font-size:16px;font-weight:900}
+  .hint{margin:0 0 10px;color:var(--sub);font-size:14px;line-height:1.6}
+  .tag{font-size:12px;font-weight:700;background:#f3eadc;color:var(--sub);border-radius:99px;padding:2px 10px}
+  body.mode-j .tag{background:#e6ecf7}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .big{font:inherit;font-weight:900;font-size:20px;border:none;border-radius:16px;padding:12px 26px;cursor:pointer;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .05s}
+  .big:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+  .play{background:#3aa65a} .stop{background:#d9534f}
+  .seg{display:inline-flex;flex-wrap:wrap;background:#f3eadc;border-radius:12px;padding:3px}
+  body.mode-j .seg{background:#e6ecf7}
+  .seg button{font:inherit;font-weight:700;font-size:15px;border:none;background:transparent;border-radius:9px;padding:8px 12px;cursor:pointer;color:var(--sub)}
+  .seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .small{font:inherit;font-weight:700;font-size:14px;border:2px solid var(--line);background:#fff;border-radius:10px;padding:7px 12px;cursor:pointer;color:var(--ink)}
+  .small:hover{filter:brightness(.97)}
+  .label{font-weight:700;font-size:14px;color:var(--sub)}
+  select.sel{font:inherit;font-weight:700;font-size:15px;border:2px solid var(--line);border-radius:10px;padding:6px 8px;background:#fff;color:var(--ink)}
+  input[type=range]{accent-color:#3aa65a;width:150px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* cards */
+  .palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .card{position:relative;width:62px;height:76px;border-radius:12px;border:none;color:#fff;font:inherit;font-weight:900;font-size:22px;cursor:pointer;flex:none;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 3px 0 rgba(0,0,0,.2);user-select:none;-webkit-user-select:none;transition:transform .08s;overflow:hidden;white-space:nowrap}
+  .card small{font-size:11px;font-weight:700;opacity:.92}
+  .card:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+  .card.rest{background:var(--rest)}
+  .card.sharp{background-image:linear-gradient(rgba(0,0,0,.32),rgba(0,0,0,.32))!important}
+  .card.on{transform:translateY(-6px) scale(1.06);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);z-index:1}
+  .palette .card{height:70px;font-size:20px}
+  body.mode-e .palette .card{width:58px}
+  body.mode-j .card{height:66px;font-size:18px;padding:0 2px}
+  body.mode-j .palette .card{height:62px}
+
+  .track{display:flex;flex-wrap:wrap;gap:8px 6px;min-height:88px;padding:8px;border-radius:14px;background:#fbf6ee;border:2px dashed var(--line)}
+  body.mode-j .track{background:#f7f9fd;min-height:82px}
+  .slot-empty{width:58px;height:66px;border-radius:12px;border:2px dashed var(--line);flex:none}
+  body.mode-e .slot-empty{height:76px}
+  .bar{width:2px;align-self:stretch;background:var(--line);margin:0 4px;border-radius:2px}
+  .count{font-size:13px;color:var(--sub)}
+
+  /* function blocks (junior) */
+  .fn{border:3px solid #c9d5f0;border-radius:16px;margin-bottom:10px;background:#fff;cursor:pointer;transition:border-color .15s, box-shadow .15s}
+  .fn.sel{border-color:var(--fn);box-shadow:0 0 0 4px rgba(91,127,209,.18)}
+  .fnhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 10px;background:#eef2fb;border-radius:12px 12px 0 0;font-weight:900}
+  .fn.sel .fnhead{background:var(--fn);color:#fff}
+  .fnhead code{font-size:14px}
+  .fnhead .meta{font-size:13px;font-weight:700;opacity:.85;margin-left:auto}
+  .fn .track{border:none;background:transparent}
+  .song{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px;border-radius:14px;border:2px dashed var(--line);min-height:62px;background:#f7f9fd}
+  .chip{font:inherit;font-weight:900;font-size:16px;border:none;border-radius:12px;padding:10px 14px;color:#fff;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+  .chip.A{background:var(--fn)} .chip.B{background:#3f9e7a}
+  .chip.on{transform:translateY(-4px);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--ink)}
+  .arrow{color:var(--sub);font-weight:900}
+
+  /* loop block */
+  .loopblock{display:flex;border-radius:16px;overflow:hidden;border:3px solid var(--loop);background:#fff4e2}
+  .loopside{background:var(--loop);color:#fff;font-weight:900;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:100px;text-align:center}
+  .loopside .icon{font-size:30px;line-height:1}
+  .loopside select{font:inherit;font-weight:900;font-size:15px;border:none;border-radius:8px;padding:4px 6px;color:var(--ink);max-width:130px}
+  .loopbody{flex:1;padding:8px;min-width:0}
+  .loopbody .track{background:transparent;border-color:#f5cf93}
+  .target{border-radius:14px;cursor:pointer;transition:box-shadow .15s}
+  .target.sel .track{border-style:solid;border-color:var(--loop);background:#fffaf1}
+  .branch{border:3px solid var(--branch);border-radius:14px;overflow:hidden;margin-top:6px;background:#fff}
+  .branch .cond{background:var(--branch);color:#fff;font-weight:900;padding:6px 10px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .branch .cond select{font:inherit;font-weight:900;font-size:14px;border:none;border-radius:8px;padding:3px 6px}
+  .branch .elsehead{background:#f6e3ec;color:var(--branch);font-weight:900;padding:6px 10px}
+  .branch .track{border:none;background:transparent}
+  .branch .target.sel .track{background:#fff7fb;border:2px solid var(--branch)}
+  .round{font-weight:900;font-size:15px;color:#b86e10;min-height:22px;margin-top:4px}
+  .compare{margin-top:10px;font-size:14px;background:#f3eadc;border-radius:12px;padding:8px 12px;line-height:1.7}
+  body.mode-j .compare{background:#e6ecf7}
+  .compare b{font-size:18px}
+  label.chk{display:inline-flex;align-items:center;gap:6px;font-weight:900;cursor:pointer;margin-top:10px}
+  label.chk input{width:20px;height:20px;accent-color:var(--branch)}
+
+  /* code view */
+  .code{background:#1f2433;color:#e6e9f2;border-radius:14px;padding:10px 0;font-size:14px;line-height:1.55;max-height:460px;overflow:auto}
+  .code .ln{padding:0 14px;white-space:pre;transition:background .1s}
+  .code .ln.on{background:#f2c230;color:#1f2433}
+  .code .kw{color:#ff9ac1;font-weight:700} .code .cm{color:#8b93a8} .code .str{color:#9ee6a8} .code .num{color:#ffcf7a}
+  .code .ln.on .kw,.code .ln.on .cm,.code .ln.on .str,.code .ln.on .num{color:#1f2433}
+
+  /* missions */
+  .missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .mission{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fffdf8;display:flex;gap:10px;align-items:flex-start}
+  .mission .no{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center}
+  .mission p{margin:0;font-size:14.5px;line-height:1.6}
+  .mission .kw{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;color:#b86e10}
+  body.mode-j .mission .kw{color:var(--fn)}
+  .samples{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+
+  details.teacher{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 16px}
+  details.teacher summary{font-weight:900;font-size:17px;cursor:pointer}
+  .teacher h3{font-size:16px;margin:16px 0 6px}
+  .teacher p,.teacher li{font-size:14.5px;line-height:1.7}
+  .teacher table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+  .teacher th,.teacher td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  .teacher th{background:#f4f1ea}
+
+  /* 色覚サポート: 明るさの ちがう いろ + ばんごう + しま もよう */
+  body.cb{--do:#D55E00;--re:#E69F00;--mi:#F0E442;--fa:#009E73;--so:#56B4E9;--la:#0072B2;--si:#CC79A7;--do2:#3a3a3a;--drum:#6b3d1e;--bass:#2f3a48;--chord:#00695c;--loop:#E69F00;--fn:#0072B2;--branch:#a83a74}
+  .card .nb{display:none;position:absolute;top:3px;left:6px;font-size:11px;font-weight:900;opacity:.95}
+  body.cb .card .nb{display:block}
+  body.cb .card.lt{color:#1f1f1f}
+  body.cb .card.lt.pat::before{background:repeating-linear-gradient(45deg,rgba(0,0,0,.10) 0 3px,transparent 3px 9px)}
+  body.cb .card span{position:relative}
+  .card.long span{font-size:15px}
+  body.cb .card.pat::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.16) 0 3px,transparent 3px 9px);pointer-events:none}
+  body.cb .card.on{box-shadow:0 0 0 4px #fff,0 0 0 8px #000}
+  .langnote{font-size:12px;color:var(--sub)}
+  @media (max-width:560px){
+    body.mode-e .card{width:52px;height:66px;font-size:19px}
+    body.mode-e .palette .card{width:50px;height:62px}
+    .loopside{min-width:80px}
+    .big{font-size:18px;padding:10px 18px}
+  }
+</style>
+</head>
+<body class="mode-e">
+<div class="wrap">
+
+<header>
+  <h1>🎵 <span class="e-only">おとのカードで </span><span class="j-only">音のカードで </span><span>おんがくプログラミング</span></h1>
+  <p class="lead e-only">カードを ならべて メロディを つくろう。「くりかえし」で ばんそうを のせよう。</p>
+  <p class="lead j-only">関数でフレーズを組み立て、くりかえし＋分岐で伴奏をつくろう。下のコードと音が連動します。</p>
+  <div class="modebar">
+    <div class="seg" id="modeSeg">
+      <button data-mode="e">🎒 しょうがくせい</button>
+      <button data-mode="j">🏫 中学生</button>
+    </div>
+  </div>
+</header>
+
+<div class="panel">
+  <div class="controls">
+    <button class="big play" id="playBtn">▶ <span class="e-only">ならす</span><span class="j-only">再生</span></button>
+    <button class="big stop" id="stopBtn">■ <span class="e-only">とめる</span><span class="j-only">停止</span></button>
+    <span class="label e-only">はやさ</span>
+    <div class="seg e-only" id="tempoSeg">
+      <button data-bpm="76">🐢 ゆっくり</button>
+      <button data-bpm="100">🚶 ふつう</button>
+      <button data-bpm="132">🐇 はやい</button>
+    </div>
+    <span class="label j-only mono" id="tempoLbl">tempo = 100</span>
+    <input class="j-only" type="range" id="tempoRange" min="60" max="180" step="4" value="100" aria-label="テンポ">
+    <span class="label j-only mono">key =</span>
+    <select class="sel j-only mono" id="keySel" aria-label="移調"></select>
+    <div class="seg" id="playSeg">
+      <button data-p="both"><span class="e-only">りょうほう</span><span class="j-only">両方</span></button>
+      <button data-p="mel"><span class="e-only">メロディだけ</span><span class="j-only">メロディのみ</span></button>
+      <button data-p="acc"><span class="e-only">ばんそうだけ</span><span class="j-only">伴奏のみ</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2><span class="e-only">① メロディ</span><span class="j-only">① メロディ</span>
+    <span class="tag e-only">じゅんばんに ならぶ</span><span class="tag j-only">順次 ＋ 関数</span></h2>
+  <div id="melBody"></div>
+</div>
+
+<div class="panel">
+  <h2><span class="e-only">② ばんそう</span><span class="j-only">② 伴奏</span>
+    <span class="tag e-only">くりかえし</span><span class="tag j-only">反復 ＋ 分岐</span></h2>
+  <div id="accBody"></div>
+</div>
+
+<div class="panel j-only">
+  <h2>③ コードで見る <span class="tag">Python風</span></h2>
+  <p class="hint">カードの並びを、プログラムの形で書いたものです。再生すると、いま実行している行が光ります。（数字は音の長さ＝拍数。1 が4分音符）</p>
+  <div class="code mono" id="code"></div>
+</div>
+
+<div class="panel">
+  <h2>🏁 <span class="e-only">ミッション</span><span class="j-only">ミッション</span></h2>
+  <div class="missions e-only" data-blk="e-missions">
+    <div class="mission"><div class="no">1</div><p>「ど・れ・み」を ならべて ならしてみよう。じゅんばんを かえると どうなるかな？<br><span class="kw">じゅんじ（じゅんばん）</span></p></div>
+    <div class="mission"><div class="no">2</div><p>「かえるのうた」の はじめ「どれみふぁ みれど」を つくろう。<br><span class="kw">じゅんじ</span></p></div>
+    <div class="mission"><div class="no">3</div><p>ばんそうに「どん・かっ」を いれて、くりかえしを 4かいに しよう。<br><span class="kw">くりかえし（はんぷく）</span></p></div>
+    <div class="mission"><div class="no">4</div><p>メロディの さいごまで ばんそうが なるように、くりかえしの かずを かえよう。<br><span class="kw">くりかえしの かず</span></p></div>
+    <div class="mission"><div class="no">5</div><p>じぶんだけの メロディと ばんそうを つくって、ともだちに きいてもらおう。<br><span class="kw">つくって つたえる</span></p></div>
+  </div>
+  <div class="missions j-only" data-blk="j-missions">
+    <div class="mission"><div class="no">1</div><p>フレーズAとBを作り、曲を「A A B A」の順に組み立てよう。Aを1音だけ直すと、曲の何か所が変わる？<br><span class="kw">関数（まとめて名前をつける）</span></p></div>
+    <div class="mission"><div class="no">2</div><p>8分音符・付点4分音符・2分音符を混ぜて、リズムに変化をつけよう。カードの幅が長さを表しているよ。<br><span class="kw">音の長さ・リズム</span></p></div>
+    <div class="mission"><div class="no">3</div><p>分岐を使って、伴奏の<b>最後の回だけ</b>「おかず（フィルイン）」にしよう。<br><span class="kw">分岐（if / else）</span></p></div>
+    <div class="mission"><div class="no">4</div><p>条件を <span class="mono">i % 4 == 0</span> にすると、何回目が変わる？ 曲の中でどんな効果があるか説明しよう。<br><span class="kw">剰余（わり算のあまり）</span></p></div>
+    <div class="mission"><div class="no">5</div><p><span class="mono">key</span> を +2 にすると何が起きる？ コードで変わったのは何行？<br><span class="kw">変数・移調</span></p></div>
+    <div class="mission"><div class="no">6</div><p>和音カード C → F → G7 → C で伴奏をつけ、メロディと合う所・ぶつかる所を聴き比べよう。<br><span class="kw">和音（主要三和音）</span></p></div>
+  </div>
+  <div class="samples">
+    <span class="label" style="align-self:center"><span class="e-only">おてほんを よびだす：</span><span class="j-only">お手本を読みこむ：</span></span>
+    <button class="small e-only" data-sample="e-kaeru">🐸 かえるのうた</button>
+    <button class="small e-only" data-sample="e-kira">⭐ きらきらぼし</button>
+    <button class="small j-only" data-sample="j-kira">⭐ きらきらぼし（A B B A＋分岐）</button>
+    <button class="small j-only" data-sample="j-kaeru">🐸 かえるのうた（8ビート）</button>
+    <button class="small j-only" data-sample="j-chord">🎹 和音の練習（C→F→G7→C）</button>
+  </div>
+</div>
+
+<details class="teacher e-only" data-blk="e-teacher">
+  <summary>👩‍🏫 せんせいへ（ねらい・授業の流れ・音楽科との関連）</summary>
+  <h3>ねらい</h3>
+  <ul>
+    <li><b>プログラミング：</b>命令（音のカード）を<b>順番に並べる＝順次</b>、同じ命令のまとまりを<b>繰り返す＝反復</b>を、音を聴きながら体験的に理解する。</li>
+    <li><b>音楽：</b>音楽づくりで、「<b>反復</b>」や「<b>音楽の縦と横との関係</b>」（旋律と伴奏の重なり）といった音楽の仕組みを使って、短いまとまりをつくる。</li>
+  </ul>
+  <h3>対象・時間</h3>
+  <p>小学校1〜4年／45分×2コマ（1コマ目：メロディ、2コマ目：伴奏とくりかえし）。絵カード教材と同じ「押すと並ぶ・並んだカードを押すと消える」操作なので、操作説明は最小限でよい。</p>
+  <h3>授業の流れ（例）</h3>
+  <table>
+    <tr><th>時間</th><th>1コマ目：メロディ（順次）</th><th>2コマ目：伴奏（反復）</th></tr>
+    <tr><td>導入 5分</td><td>先生が「どれみ」「みれど」を鳴らして聴き比べ。「順番が変わると音楽も変わる」</td><td>前時のメロディを鳴らす。「太鼓も一緒に鳴らしたいね」</td></tr>
+    <tr><td>展開① 15分</td><td>ミッション1・2。カード1枚＝1拍。4枚ごとの区切り線を「1小節」として意識させる</td><td>ミッション3。「どん・かっ」を16枚並べるのと、くりかえし×8の違いを画面の「カードの まいすう」で比べる</td></tr>
+    <tr><td>展開② 15分</td><td>「やすみ」カードを使ってフレーズの切れ目をつくる。ペアで聴き合う</td><td>ミッション4。メロディの長さ÷伴奏の長さ＝くりかえしの回数、に気づかせる（中学年）</td></tr>
+    <tr><td>まとめ 10分</td><td>数人の作品を全体で鳴らす。「どこが気に入った？」</td><td>ミッション5。発表会。「くりかえしを使うと何が楽？」を言葉にする</td></tr>
+  </table>
+  <h3>声かけのヒント</h3>
+  <ul>
+    <li>うまくいかないときは「メロディだけ」「ばんそうだけ」で片方ずつ聴かせると、どこを直せばよいか見つけやすい（デバッグの体験）。</li>
+    <li>「ゆっくり」にすると、どのカードが今鳴っているか目で追いやすい。</li>
+    <li>中学年では、身の回りの「くりかえし」（手拍子の曲、校歌の伴奏、毎朝の日課）を探す活動につなげられる。</li>
+  </ul>
+  <h3>音楽の時間との組み合わせ</h3>
+  <ul>
+    <li>鍵盤ハーモニカ・リコーダーで、つくったメロディを実際に演奏してみる。</li>
+    <li>伴奏パターン（どん・かっ）を手拍子や打楽器で演奏し、画面のメロディに合わせる。</li>
+    <li>カードの色はドから順に虹色にしてあるので、色付きの音階カード（紙）と併用すると低学年でも読みやすい。</li>
+  </ul>
+</details>
+
+<details class="teacher j-only" data-blk="j-teacher">
+  <summary>👩‍🏫 先生へ（中学生モード：ねらい・授業の流れ・教科との関連）</summary>
+  <h3>小学生モードからの変化</h3>
+  <table>
+    <tr><th></th><th>小学生モード</th><th>中学生モード</th></tr>
+    <tr><td>音</td><td>ド〜高いド（ひらがな）</td><td>半音（♯）・高いレ／ミまで、音名（C D E…）併記</td></tr>
+    <tr><td>リズム</td><td>すべて1拍</td><td>8分・4分・付点4分・2分音符（カードの幅＝長さ）</td></tr>
+    <tr><td>メロディ</td><td>1列に並べる（順次）</td><td>フレーズA・Bを<b>関数</b>として定義し、呼び出す順番で曲を構成</td></tr>
+    <tr><td>伴奏</td><td>くりかえし</td><td>くりかえし＋<b>分岐</b>（最後の回／1回目／偶数回／4の倍数回）、和音・ベース</td></tr>
+    <tr><td>変数</td><td>—</td><td><span class="mono">tempo</span>（テンポ）、<span class="mono">key</span>（移調）</td></tr>
+    <tr><td>表現</td><td>カードのみ</td><td>カードと連動する Python風コード（実行中の行がハイライト）</td></tr>
+  </table>
+  <h3>ねらい</h3>
+  <ul>
+    <li><b>技術・家庭（技術分野）「D 情報の技術」：</b>順次・分岐・反復の組み合わせ、処理のまとまりに名前をつける（関数）こと、変数を使うと一か所の変更で全体が変わることを、音で確かめながら理解する。ブロック的な操作とテキストのコードを対応させ、テキストプログラミングへの橋渡しにする。</li>
+    <li><b>音楽：</b>構成（反復・変化・対照、A A B A などの形式）、リズム、和音（主要三和音 I・IV・V7）、移調を、つくりながら知覚・感受する。</li>
+  </ul>
+  <h3>授業の流れ（例：50分×2コマ）</h3>
+  <table>
+    <tr><th>時間</th><th>1コマ目：関数と曲の構成</th><th>2コマ目：分岐・変数・和音</th></tr>
+    <tr><td>導入 5分</td><td>お手本「きらきらぼし」を再生し、同じフレーズが何回出てくるか数える（A B B A）</td><td>伴奏の最後だけ変わる曲を聴かせ、「どう書けば最後だけ変えられる？」と問う</td></tr>
+    <tr><td>展開① 20分</td><td>ミッション1・2。Aを直すと曲中の全てのAが変わることを確認し、関数の利点を言語化</td><td>ミッション3・4。if の条件を変えて聴き比べ、<span class="mono">i % 4 == 0</span> と4小節フレーズの関係に気づかせる</td></tr>
+    <tr><td>展開② 15分</td><td>コード欄で「関数を使わない場合の play の数」と比較。ペアで作品を交換し、Bだけ作り替える</td><td>ミッション5・6。key を変えて移調、和音カードで伴奏。コードで変わった行を確認</td></tr>
+    <tr><td>まとめ 10分</td><td>「同じ処理に名前をつけて呼び出す」良さを、音楽の「反復」と結びつけて振り返る</td><td>作品発表。順次・分岐・反復・関数・変数がそれぞれどこに使われているか説明する</td></tr>
+  </table>
+  <h3>指導のヒント</h3>
+  <ul>
+    <li>「メロディのみ／伴奏のみ」で片方ずつ再生すると、ずれや誤りの原因を見つけやすい（デバッグ）。</li>
+    <li>「くりかえし：メロディが終わるまで」を選ぶと、回数を <span class="mono">ceil(メロディの拍数 ÷ パターンの拍数)</span> で計算する式がコードに表示される。数学の「切り上げ」と結びつけられる。</li>
+    <li>パターンの長さ（拍数）が4の倍数でないと、伴奏の区切りが小節線とずれる。わざとずらして「ポリリズム」的な効果を聴く発展も可能。</li>
+    <li>発展：同じ曲を Scratch の「音楽」拡張や Python で書き直す課題につなげられる。</li>
+  </ul>
+</details>
+
+</div>
+
+<template id="enBlocks">
+<div id="e-missions">
+  <div class="mission"><div class="no">1</div><p>Line up "do, re, mi" and play it. What happens if you change the order?<br><span class="kw">sequence (order)</span></p></div>
+  <div class="mission"><div class="no">2</div><p>Make the start of the Frog Song: "do re mi fa mi re do".<br><span class="kw">sequence</span></p></div>
+  <div class="mission"><div class="no">3</div><p>Put "boom, tak" in the backing and set Repeat to 4 times.<br><span class="kw">repeat (loop)</span></p></div>
+  <div class="mission"><div class="no">4</div><p>Change the number of repeats so the backing plays until the melody ends.<br><span class="kw">number of repeats</span></p></div>
+  <div class="mission"><div class="no">5</div><p>Make your own melody and backing, and let a friend listen.<br><span class="kw">create and share</span></p></div>
+</div>
+<div id="j-missions">
+  <div class="mission"><div class="no">1</div><p>Make phrases A and B and build the song in the order "A A B A". If you change one note in A, how many places in the song change?<br><span class="kw">functions (naming a group of steps)</span></p></div>
+  <div class="mission"><div class="no">2</div><p>Mix eighth, dotted quarter and half notes to vary the rhythm. The card width shows the length.<br><span class="kw">note length · rhythm</span></p></div>
+  <div class="mission"><div class="no">3</div><p>Use a branch so that only the <b>last time</b> of the backing plays a fill.<br><span class="kw">branch (if / else)</span></p></div>
+  <div class="mission"><div class="no">4</div><p>Set the condition to <span class="mono">i % 4 == 0</span>. Which times change? Explain the effect in the song.<br><span class="kw">remainder (modulo)</span></p></div>
+  <div class="mission"><div class="no">5</div><p>What happens when <span class="mono">key</span> is +2? How many lines of code changed?<br><span class="kw">variables · transposing</span></p></div>
+  <div class="mission"><div class="no">6</div><p>Add a backing with chords C → F → G7 → C. Listen for where it fits the melody and where it clashes.<br><span class="kw">chords (primary triads)</span></p></div>
+</div>
+<div id="e-teacher">
+  <summary>👩‍🏫 For teachers (aims · lesson flow · links with music class)</summary>
+  <h3>Aims</h3>
+  <ul>
+    <li><b>Programming:</b> understand, by listening, that commands (sound cards) <b>placed in order make a sequence</b>, and that a group of commands can be <b>repeated (loop)</b>.</li>
+    <li><b>Music:</b> in music making, use musical ideas such as <b>repetition</b> and <b>layers</b> (melody and backing sounding together) to make a short piece.</li>
+  </ul>
+  <h3>Grades · time</h3>
+  <p>Grades 1–4 / two 45-minute lessons (1: melody, 2: backing and repeat). The controls are the same as the picture-card app (tap to add, tap a placed card to remove), so little explanation is needed.</p>
+  <h3>Lesson flow (example)</h3>
+  <table>
+    <tr><th>Time</th><th>Lesson 1: melody (sequence)</th><th>Lesson 2: backing (repeat)</th></tr>
+    <tr><td>Intro 5 min</td><td>The teacher plays "do re mi" and "mi re do" to compare. "Change the order and the music changes."</td><td>Play the melody from last time. "Let's add drums too."</td></tr>
+    <tr><td>Activity ① 15 min</td><td>Missions 1–2. One card = one beat. Treat each group of 4 cards (between lines) as one bar.</td><td>Mission 3. Compare placing "boom, tak" 16 times with Repeat × 8 using the card count shown on screen.</td></tr>
+    <tr><td>Activity ② 15 min</td><td>Use "rest" cards to mark the ends of phrases. Listen to each other in pairs.</td><td>Mission 4. Notice that melody length ÷ backing length = number of repeats (grades 3–4).</td></tr>
+    <tr><td>Wrap-up 10 min</td><td>Play a few pieces for the class. "Which part do you like?"</td><td>Mission 5. Presentations. Put into words "What is easier when you use Repeat?"</td></tr>
+  </table>
+  <h3>Tips</h3>
+  <ul>
+    <li>When something goes wrong, play "Melody only" or "Backing only" to find what to fix (debugging).</li>
+    <li>"Slow" makes it easier to follow which card is playing.</li>
+    <li>Grades 3–4 can look for repetition around them (clapping songs, school song backing, daily routines).</li>
+  </ul>
+</div>
+<div id="j-teacher">
+  <summary>👩‍🏫 For teachers (junior high mode: aims · lesson flow · links with subjects)</summary>
+  <h3>What changes from the elementary mode</h3>
+  <table>
+    <tr><th></th><th>Elementary</th><th>Junior high</th></tr>
+    <tr><td>Notes</td><td>do to high do</td><td>Sharps, up to high D/E, letter names (C D E…)</td></tr>
+    <tr><td>Rhythm</td><td>All one beat</td><td>Eighth, quarter, dotted quarter, half (card width = length)</td></tr>
+    <tr><td>Melody</td><td>One row (sequence)</td><td>Phrases A and B defined as <b>functions</b> and called in order</td></tr>
+    <tr><td>Backing</td><td>Repeat</td><td>Repeat + <b>branch</b> (last / first / even / every 4th time), chords and bass</td></tr>
+    <tr><td>Variables</td><td>—</td><td><span class="mono">tempo</span>, <span class="mono">key</span> (transpose)</td></tr>
+    <tr><td>View</td><td>Cards only</td><td>Python-style code linked to the cards (running line highlighted)</td></tr>
+  </table>
+  <h3>Aims</h3>
+  <ul>
+    <li><b>Technology ("Information technology"):</b> combining sequence, branches and loops; naming a group of steps (functions); changing one variable to change the whole piece — all checked by ear. Linking card blocks with text code bridges to text programming.</li>
+    <li><b>Music:</b> perceive form (repetition, variation, contrast, A A B A), rhythm, chords (I, IV, V7) and transposition while composing.</li>
+  </ul>
+  <h3>Lesson flow (example: two 50-minute lessons)</h3>
+  <table>
+    <tr><th>Time</th><th>Lesson 1: functions and song form</th><th>Lesson 2: branches, variables, chords</th></tr>
+    <tr><td>Intro 5 min</td><td>Play the "Twinkle Twinkle" example and count how often the same phrase appears (A B B A).</td><td>Play a song whose backing changes only at the end. "How could we change only the last time?"</td></tr>
+    <tr><td>Activity ① 20 min</td><td>Missions 1–2. Fixing A changes every A in the song: put the benefit of functions into words.</td><td>Missions 3–4. Change the if condition and compare; relate <span class="mono">i % 4 == 0</span> to four-bar phrases.</td></tr>
+    <tr><td>Activity ② 15 min</td><td>Compare the number of play commands without functions. Swap pieces in pairs and rewrite only B.</td><td>Missions 5–6. Change key, add chords, check which lines of code changed.</td></tr>
+    <tr><td>Wrap-up 10 min</td><td>Link "name a group of steps and call it" with repetition in music.</td><td>Presentations: explain where sequence, branches, loops, functions and variables are used.</td></tr>
+  </table>
+  <h3>Tips</h3>
+  <ul>
+    <li>Play "Melody only" / "Backing only" to find mismatches (debugging).</li>
+    <li>"Until the melody ends" shows the formula <span class="mono">ceil(melody beats ÷ pattern beats)</span>, linking to rounding up in math.</li>
+    <li>If the pattern length is not a multiple of 4 beats, it drifts against the bar lines — an advanced "polyrhythm" listening task.</li>
+    <li>Extension: rewrite the same song in Scratch's Music extension or in Python.</li>
+  </ul>
+</div>
+</template>
+
+<script>
+(() => {
+  // ===== language & color-vision support (えカードの 設定、または URL ?lang=en&cb=1) =====
+  const EC = window.__ECARD || {};
+  const EN = EC.lang === 'en' || /[?&#]lang=en/.test(location.href);
+  const CB = !!EC.cb || /[?&#]cb=1/.test(location.href);
+  const T = (ja, en) => EN ? en : ja;
+  const KEEP = (EC.lang ? 1 : 0);
+  // ===== definitions =====
+  const E_NOTES = {
+    do:{t:"ど",s:0,c:"--do"}, re:{t:"れ",s:2,c:"--re"}, mi:{t:"み",s:4,c:"--mi"}, fa:{t:"ふぁ",s:5,c:"--fa"},
+    so:{t:"そ",s:7,c:"--so"}, la:{t:"ら",s:9,c:"--la"}, si:{t:"し",s:11,c:"--si"}, do2:{t:"ど",s:12,c:"--do2",sub:"たかい"},
+    rest:{t:"・",rest:true,sub:"やすみ"}
+  };
+  ["do","re","mi","fa","so","la","si","do2"].forEach((k,i)=>{ E_NOTES[k].nb=i+1; if(i%2) E_NOTES[k].pat=1; if(k==="re"||k==="mi"||k==="so") E_NOTES[k].lt=1; });
+  const E_ACC = {
+    don:{t:"どん",kind:"kick",c:"--drum",sub:"たいこ"}, ka:{t:"かっ",kind:"snare",c:"#b07a52",sub:"たいこ"},
+    chi:{t:"ちっ",kind:"hat",c:"#c9a27e",sub:"シンバル"},
+    bdo:{t:"ど",kind:"bass",s:-12,c:"--bass",sub:"ひくい"}, bfa:{t:"ふぁ",kind:"bass",s:-19,c:"#6b7684",sub:"ひくい"},
+    bso:{t:"そ",kind:"bass",s:-17,c:"#7f8a98",sub:"ひくい"}, rest:{t:"・",rest:true,sub:"やすみ"}
+  };
+  const J_NOTES = {
+    C:{t:"ド",sub:"C",s:0,c:"--do"}, Cs:{t:"ド♯",sub:"C♯",s:1,c:"--do",sharp:1},
+    D:{t:"レ",sub:"D",s:2,c:"--re"}, Ds:{t:"レ♯",sub:"D♯",s:3,c:"--re",sharp:1},
+    E:{t:"ミ",sub:"E",s:4,c:"--mi"}, F:{t:"ファ",sub:"F",s:5,c:"--fa"}, Fs:{t:"ファ♯",sub:"F♯",s:6,c:"--fa",sharp:1},
+    G:{t:"ソ",sub:"G",s:7,c:"--so"}, Gs:{t:"ソ♯",sub:"G♯",s:8,c:"--so",sharp:1},
+    A:{t:"ラ",sub:"A",s:9,c:"--la"}, As:{t:"ラ♯",sub:"A♯",s:10,c:"--la",sharp:1}, B:{t:"シ",sub:"B",s:11,c:"--si"},
+    C5:{t:"ド",sub:"高C",s:12,c:"--do2",hi:1}, D5:{t:"レ",sub:"高D",s:14,c:"--do2",hi:1}, E5:{t:"ミ",sub:"高E",s:16,c:"--do2",hi:1},
+    rest:{t:"休",rest:true,sub:"休符"}
+  };
+  Object.values(J_NOTES).forEach(d=>{ if(d.rest) return; const i=[0,2,4,5,7,9,11].indexOf(((d.s%12)+12)%12 - (d.sharp?1:0)); d.nb=(d.hi?"↑":"")+(i+1)+(d.sharp?"♯":""); if(i%2) d.pat=1; if(d.c==="--re"||d.c==="--mi"||d.c==="--so") d.lt=1; });
+  const J_ACC = {
+    don:{t:"ドン",kind:"kick",c:"--drum",sub:"バスドラ"}, tan:{t:"タン",kind:"snare",c:"#b07a52",sub:"スネア"},
+    chi:{t:"チッ",kind:"hat",c:"#c9a27e",sub:"ハイハット"},
+    bC:{t:"ド",kind:"bass",s:-12,c:"--bass",sub:"ベース"}, bF:{t:"ファ",kind:"bass",s:-19,c:"--bass",sub:"ベース"},
+    bG:{t:"ソ",kind:"bass",s:-17,c:"--bass",sub:"ベース"}, bA:{t:"ラ",kind:"bass",s:-15,c:"--bass",sub:"ベース"},
+    cC:{t:"C",kind:"chord",ch:[0,4,7],c:"--chord",sub:"和音 I"}, cF:{t:"F",kind:"chord",ch:[0,5,9],c:"--chord",sub:"和音 IV"},
+    cG7:{t:"G7",kind:"chord",ch:[-1,2,5,7],c:"--chord",sub:"和音 V7"}, cAm:{t:"Am",kind:"chord",ch:[0,4,9],c:"--chord",sub:"和音 VIm"},
+    rest:{t:"休",rest:true,sub:"休符"}
+  };
+  if (EN) {
+    const SOL = {do:"do",re:"re",mi:"mi",fa:"fa",so:"sol",la:"la",si:"ti",do2:"do"};
+    Object.entries(SOL).forEach(([k,v])=>{ E_NOTES[k].t=v; }); E_NOTES.do2.sub="high"; E_NOTES.rest.sub="rest";
+    Object.assign(E_ACC.don,{t:"boom",sub:"drum"}); Object.assign(E_ACC.ka,{t:"tak",sub:"drum"}); Object.assign(E_ACC.chi,{t:"tss",sub:"cymbal"});
+    Object.assign(E_ACC.bdo,{t:"do",sub:"low"}); Object.assign(E_ACC.bfa,{t:"fa",sub:"low"}); Object.assign(E_ACC.bso,{t:"sol",sub:"low"}); E_ACC.rest.sub="rest";
+    const JS = {C:"do",D:"re",E:"mi",F:"fa",G:"sol",A:"la",B:"ti"};
+    Object.entries(J_NOTES).forEach(([k,d])=>{ if(d.rest){ d.t="rest"; d.sub="rest"; return; } const L=k.replace(/s$|5$/,""); d.t=L+(d.sharp?"♯":""); d.sub=(d.hi?"high ":"")+JS[L]+(d.sharp?"♯":""); });
+    Object.assign(J_ACC.don,{t:"Kick",sub:"bass drum"}); Object.assign(J_ACC.tan,{t:"Snare",sub:"snare"}); Object.assign(J_ACC.chi,{t:"Hat",sub:"hi-hat"});
+    ["bC","bF","bG","bA"].forEach(k=>{ J_ACC[k].t=k.slice(1); J_ACC[k].sub="bass"; });
+    J_ACC.cC.sub="chord I"; J_ACC.cF.sub="chord IV"; J_ACC.cG7.sub="chord V7"; J_ACC.cAm.sub="chord vi"; Object.assign(J_ACC.rest,{t:"rest",sub:"rest"});
+  }
+  const LENS = [{v:.5,label:T("♪ 8分","♪ eighth")},{v:1,label:T("♩ 4分","♩ quarter")},{v:1.5,label:T("♩. 付点4分","♩. dotted")},{v:2,label:T("𝅗𝅥 2分","𝅗𝅥 half")}];
+  const LEN_NAME = EN ? {0.5:"eighth",1:"quarter",1.5:"dotted quarter",2:"half"} : {0.5:"8分",1:"4分",1.5:"付点4分",2:"2分"};
+  const COND = {
+    last:{label:T("最後の回","last time"), code:n=>`i == ${n}`, test:(i,n)=>i===n},
+    first:{label:T("1回目","1st time"), code:()=>`i == 1`, test:i=>i===1},
+    even:{label:T("偶数回（2の倍数）","even times"), code:()=>`i % 2 == 0`, test:i=>i%2===0},
+    mod4:{label:T("4の倍数回","every 4th time"), code:()=>`i % 4 == 0`, test:i=>i%4===0}
+  };
+
+  // ===== state =====
+  const S = {
+    mode:"e", bpm:100, play:"both",
+    e:{mel:[], acc:[], rep:"4"},
+    j:{A:[],B:[],song:["A","A","B","A"],acc:[],fill:[],rep:"end",br:false,cond:"last",key:0,melLen:1,accLen:1,melT:"A",accT:"main"}
+  };
+  try {
+    const s = JSON.parse(localStorage.getItem("otoCard2")||"null");
+    if (s) { if (s.e) Object.assign(S.e, s.e); if (s.j) Object.assign(S.j, s.j); if (s.mode) S.mode=s.mode; if (s.bpm) S.bpm=s.bpm; }
+    else { const o = JSON.parse(localStorage.getItem("otoCard")||"null"); if (o && Array.isArray(o.mel)) { S.e.mel=o.mel; S.e.acc=o.acc||[]; } }
+  } catch(e){}
+  if (location.hash==="#chugaku") S.mode="j"; else if (location.hash==="#shogaku") S.mode="e";
+  const save = () => { try { localStorage.setItem("otoCard2", JSON.stringify({mode:S.mode,bpm:S.bpm,e:S.e,j:S.j})); } catch(e){} };
+
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls, html) => { const d=document.createElement(tag); if(cls) d.className=cls; if(html!=null) d.innerHTML=html; return d; };
+  const col = c => c && c.startsWith("--") ? `var(${c})` : c;
+  const isJ = () => S.mode==="j";
+  const sum = a => a.reduce((x,it)=>x+it.l,0);
+  const norm = it => typeof it==="string" ? {k:it,l:1} : it;
+  const cardW = l => Math.round(Math.max(40, 60*l + 6*(l-1)));
+
+  // ===== audio =====
+  let ctx=null, noiseBuf=null;
+  function ac(){ if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==="suspended") ctx.resume(); return ctx; }
+  function noise(){ if(noiseBuf) return noiseBuf; const c=ac(); noiseBuf=c.createBuffer(1,c.sampleRate*.5,c.sampleRate); const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; return noiseBuf; }
+  const hz = s => 261.63*Math.pow(2,s/12);
+  function tone(out,f,t,dur,type,vol){
+    const c=ac(),o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.value=f;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.015);
+    g.gain.exponentialRampToValueAtTime(vol*.5,t+Math.max(.05,dur*.5)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g).connect(out); o.start(t); o.stop(t+dur+.03);
+  }
+  function drum(out,kind,t){
+    const c=ac();
+    if(kind==="kick"){ const o=c.createOscillator(),g=c.createGain(); o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(45,t+.18);
+      g.gain.setValueAtTime(.9,t); g.gain.exponentialRampToValueAtTime(.001,t+.3); o.connect(g).connect(out); o.start(t); o.stop(t+.32); return; }
+    const s=c.createBufferSource(); s.buffer=noise(); const fl=c.createBiquadFilter(), g=c.createGain();
+    if(kind==="snare"){ fl.type="bandpass"; fl.frequency.value=1800; g.gain.setValueAtTime(.6,t); g.gain.exponentialRampToValueAtTime(.001,t+.16); }
+    else { fl.type="highpass"; fl.frequency.value=7000; g.gain.setValueAtTime(.3,t); g.gain.exponentialRampToValueAtTime(.001,t+.06); }
+    s.connect(fl).connect(g).connect(out); s.start(t); s.stop(t+.2);
+  }
+  function sound(out, def, t, dur, key){
+    if(!def || def.rest) return;
+    if(def.kind==="kick"||def.kind==="snare"||def.kind==="hat") return drum(out,def.kind,t);
+    if(def.kind==="bass") return tone(out,hz(def.s+key),t,dur*.92,"sine",.55);
+    if(def.kind==="chord") { def.ch.forEach(s=>tone(out,hz(s+key),t,dur*.95,"triangle",.13)); return; }
+    tone(out,hz(def.s+key),t,dur*.95,"triangle",.32);
+  }
+  function preview(def, l){ try{ const c=ac(), g=c.createGain(); g.connect(c.destination); sound(g,def,c.currentTime+.01,(l||1)*.5, isJ()?S.j.key:0); }catch(e){} }
+
+  // ===== UI helpers =====
+  function card(def, k, l){
+    const b=el("button","card"+(def.rest?" rest":"")+(def.sharp?" sharp":"")+(def.pat?" pat":"")+(def.lt?" lt":"")+(String(def.t).length>3?" long":""));
+    if(!def.rest) b.style.background=col(def.c);
+    if(l!=null) b.style.width=cardW(l)+"px";
+    b.innerHTML=`${def.nb!=null?`<i class="nb">${def.nb}</i>`:""}<span>${def.t}</span>${def.sub?`<small>${def.sub}</small>`:""}`;
+    b.setAttribute("aria-label", def.t+(def.sub?" "+def.sub:""));
+    return b;
+  }
+  function palette(defs, onAdd, l){
+    const d=el("div","palette");
+    for(const [k,def] of Object.entries(defs)){ const b=card(def,k,l); b.onclick=e=>{ e.stopPropagation(); preview(def,l); onAdd(k); }; d.appendChild(b); }
+    return d;
+  }
+  function track(items, defs, prefix, onRemove, max){
+    const d=el("div","track"); let cum=0;
+    items.forEach((raw,i)=>{
+      const it=norm(raw);
+      if(i>0 && cum%4===0) d.appendChild(el("div","bar"));
+      const b=card(defs[it.k]||defs.rest,it.k,isJ()?it.l:null); b.dataset.hl=prefix+i; b.title=T("押すと消えます","Tap to remove");
+      b.onclick=e=>{ e.stopPropagation(); onRemove(i); }; d.appendChild(b); cum+=it.l;
+    });
+    if(items.length<max) d.appendChild(el("div","slot-empty"));
+    return d;
+  }
+  function seg(opts, cur, onPick){
+    const d=el("div","seg");
+    opts.forEach(o=>{ const b=el("button",null,o.label); b.setAttribute("aria-pressed",String(o.v===cur)); b.onclick=()=>onPick(o.v); d.appendChild(b); });
+    return d;
+  }
+  function btn(label, fn){ const b=el("button","small",label); b.onclick=()=>edit(fn); return b; }
+  function row(...kids){ const d=el("div","controls"); d.style.marginTop="8px"; kids.forEach(k=>k&&d.appendChild(typeof k==="string"?el("span","count",k):k)); return d; }
+  function edit(fn){ stop(); fn(); render(); }
+
+  // ===== render: melody =====
+  function renderMel(){
+    const box=$("melBody"); box.innerHTML="";
+    if(!isJ()){
+      const E=S.e;
+      box.append(
+        el("p","hint",T("うえの カードを おすと、したに ならぶよ。ならんだ カードを おすと けせるよ。","Tap a card above to add it below. Tap a card in the row to remove it.")),
+        palette(E_NOTES, k=>edit(()=>{ if(E.mel.length<32) E.mel.push(k); })),
+        track(E.mel, E_NOTES, "m-A-", i=>edit(()=>E.mel.splice(i,1)), 32),
+        row(btn(T("↩ ひとつ けす","↩ Undo"),()=>E.mel.pop()), btn(T("🗑 ぜんぶ けす","🗑 Clear all"),()=>E.mel=[]),
+            T(`カード ${E.mel.length}まい（${+(E.mel.length/4).toFixed(1)} しょうせつ）`,`${E.mel.length} cards (${+(E.mel.length/4).toFixed(1)} bars)`))
+      );
+      return;
+    }
+    const J=S.j;
+    box.append(
+      el("p","hint",T("カードを押すと、<b>選んでいるフレーズ</b>（青く光っている枠）の最後に追加されます。並んだカードを押すと消せます。カードの幅＝音の長さです。","Tapping a card adds it to the end of the <b>selected phrase</b> (the highlighted frame). Tap a card in a phrase to remove it. Card width = note length.")),
+      row(el("span","label",T("音の長さ","Note length")), seg(LENS, J.melLen, v=>{ J.melLen=v; render(); })),
+      palette(J_NOTES, k=>edit(()=>{ const a=J[J.melT]; if(a.length<24) a.push({k,l:J.melLen}); }), J.melLen)
+    );
+    for(const p of ["A","B"]){
+      const f=el("div","fn"+(J.melT===p?" sel":""));
+      f.onclick=()=>{ if(J.melT!==p){ J.melT=p; render(); } };
+      const b=sum(J[p]);
+      f.append(el("div","fnhead",`🧩 ${T("フレーズ","Phrase ")}${p} <code class="mono">def phrase_${p}():</code><span class="meta">${T(`${J[p].length}音・${b}拍`,`${J[p].length} notes · ${b} beats`)}${J.melT===p?T("　✏️ 編集中","  ✏️ editing"):""}</span>`),
+               track(J[p], J_NOTES, `m-${p}-`, i=>edit(()=>{ J[p].splice(i,1); J.melT=p; }), 24));
+      box.appendChild(f);
+    }
+    box.append(row(btn(T("↩ 1音消す","↩ Undo"),()=>J[J.melT].pop()), btn(T(`🗑 フレーズ${J.melT}を全部消す`,`🗑 Clear phrase ${J.melT}`),()=>J[J.melT]=[])));
+    box.append(el("h3",null,T("🎼 曲の組み立て（関数を呼び出す順番）","🎼 Song order (calling the functions)")));
+    const song=el("div","song");
+    J.song.forEach((p,i)=>{
+      if(i>0) song.appendChild(el("span","arrow","→"));
+      const c=el("button","chip "+p,`${p}<span class="mono" style="font-size:12px;opacity:.85"> ()</span>`); c.dataset.hl="s-"+i; c.title=T("押すと消えます","Tap to remove");
+      c.onclick=()=>edit(()=>J.song.splice(i,1)); song.appendChild(c);
+    });
+    if(!J.song.length) song.appendChild(el("span","count",T("下のボタンでフレーズを呼び出そう","Call a phrase with the buttons below")));
+    const mb=melBeatsJ();
+    box.append(song, row(
+      btn(T("＋ A を呼ぶ","+ Call A"),()=>{ if(J.song.length<8) J.song.push("A"); }),
+      btn(T("＋ B を呼ぶ","+ Call B"),()=>{ if(J.song.length<8) J.song.push("B"); }),
+      btn(T("↩ 1つ消す","↩ Undo"),()=>J.song.pop()),
+      T(`曲の長さ ${mb}拍（${+(mb/4).toFixed(2)} 小節）`,`Song length ${mb} beats (${+(mb/4).toFixed(2)} bars)`)
+    ));
+  }
+  const melBeatsJ = () => S.j.song.reduce((x,p)=>x+sum(S.j[p]),0);
+
+  // ===== render: accompaniment =====
+  function reps(){
+    if(!isJ()){
+      const E=S.e; if(!E.acc.length) return 0;
+      if(E.rep!=="end") return +E.rep;
+      return Math.max(1,Math.ceil((E.mel.length||16)/E.acc.length));
+    }
+    const J=S.j, pb=sum(J.acc); if(!pb) return 0;
+    if(J.rep!=="end") return +J.rep;
+    return Math.max(1,Math.ceil((melBeatsJ()||16)/pb));
+  }
+  function renderAcc(){
+    const box=$("accBody"); box.innerHTML="";
+    if(!isJ()){
+      const E=S.e;
+      const lb=el("div","loopblock");
+      const side=el("div","loopside",`<div class="icon">🔁</div><div>${T("くりかえし","Repeat")}</div>`);
+      const sel=el("select"); sel.setAttribute("aria-label",T("くりかえす かいすう","times to repeat"));
+      [["2",T("2かい","2 times")],["4",T("4かい","4 times")],["8",T("8かい","8 times")],["end",T("メロディが おわるまで","until the melody ends")]].forEach(([v,t])=>{ const o=el("option",null,t); o.value=v; o.selected=E.rep===v; sel.appendChild(o); });
+      sel.onchange=()=>edit(()=>E.rep=sel.value); side.appendChild(sel);
+      const body=el("div","loopbody");
+      body.append(track(E.acc, E_ACC, "a-main-", i=>edit(()=>E.acc.splice(i,1)), 8), Object.assign(el("div","round"),{id:"roundLbl"}));
+      lb.append(side, body);
+      const r=reps(), n=E.acc.length;
+      box.append(
+        el("p","hint",T("「くりかえし」の なかに カードを いれると、なんかいも ならせるよ。","Put cards inside Repeat to play them again and again.")),
+        palette(E_ACC, k=>edit(()=>{ if(E.acc.length<8) E.acc.push(k); })),
+        lb,
+        row(btn(T("↩ ひとつ けす","↩ Undo"),()=>E.acc.pop()), btn(T("🗑 ぜんぶ けす","🗑 Clear all"),()=>E.acc=[])),
+        el("div","compare", n ? T(`🔁 くりかえしを つかうと カード <b>${n}</b>まい ／ つかわないと <b>${n*r}</b>まい いるよ！`,`🔁 With Repeat you need <b>${n}</b> cards / without it you need <b>${n*r}</b>!`) : T("「くりかえし」の なかに カードを いれてみよう。","Try putting cards inside Repeat."))
+      );
+      return;
+    }
+    const J=S.j;
+    box.append(
+      el("p","hint",T("カードを押すと、<b>選んでいる段</b>（枠が光っている方）に追加されます。分岐を使うと、条件に合う回だけ別のパターンを鳴らせます。","Tapping a card adds it to the <b>selected row</b> (the highlighted frame). With a branch, a different pattern plays only on the times that match the condition.")),
+      row(el("span","label",T("音の長さ","Note length")), seg(LENS, J.accLen, v=>{ J.accLen=v; render(); })),
+      palette(J_ACC, k=>edit(()=>{ const a=J.accT==="fill"&&J.br?J.fill:J.acc; if(a.length<16) a.push({k,l:J.accLen}); }), J.accLen)
+    );
+    const n=reps();
+    const lb=el("div","loopblock");
+    const side=el("div","loopside",`<div class="icon">🔁</div><div>${T("くりかえし","Repeat")}</div>`);
+    const sel=el("select"); sel.setAttribute("aria-label",T("くりかえす回数","times to repeat"));
+    [["2",T("2回","2 times")],["4",T("4回","4 times")],["8",T("8回","8 times")],["16",T("16回","16 times")],["end",T("メロディが終わるまで","until the melody ends")]].forEach(([v,t])=>{ const o=el("option",null,t); o.value=v; o.selected=J.rep===v; sel.appendChild(o); });
+    sel.onchange=()=>edit(()=>J.rep=sel.value);
+    side.append(sel, el("div","mono",`<span style="font-size:12px">i = 1 〜 ${n||"?"}</span>`));
+    const body=el("div","loopbody");
+    const mkTarget=(name, items, prefix)=>{
+      const t=el("div","target"+(J.accT===name?" sel":""));
+      t.onclick=()=>{ if(J.accT!==name){ J.accT=name; render(); } };
+      t.appendChild(track(items, J_ACC, prefix, i=>edit(()=>{ items.splice(i,1); J.accT=name; }), 16));
+      return t;
+    };
+    if(!J.br){
+      J.accT="main";
+      body.appendChild(mkTarget("main", J.acc, "a-main-"));
+    } else {
+      const br=el("div","branch");
+      const cond=el("div","cond",T("🔀 もし","🔀 if"));
+      const cs=el("select"); Object.entries(COND).forEach(([k,c])=>{ const o=el("option",null,c.label); o.value=k; o.selected=J.cond===k; cs.appendChild(o); });
+      cs.onchange=()=>edit(()=>J.cond=cs.value);
+      cond.append(cs, el("span",null,T("なら","then")), el("span","mono",`<span style="opacity:.85;font-size:13px">（if ${COND[J.cond].code(n||"n")}）</span>`));
+      br.append(cond, mkTarget("fill", J.fill, "a-fill-"), el("div","elsehead",T("そうでなければ（else）","otherwise (else)")), mkTarget("main", J.acc, "a-main-"));
+      body.appendChild(br);
+    }
+    body.appendChild(Object.assign(el("div","round"),{id:"roundLbl"}));
+    lb.append(side, body);
+    const chk=el("label","chk"); const cb=el("input"); cb.type="checkbox"; cb.checked=J.br;
+    cb.onchange=()=>edit(()=>{ J.br=cb.checked; J.accT=J.br?"fill":"main"; });
+    chk.append(cb, document.createTextNode(T("🔀 分岐（if）を使う","🔀 Use a branch (if)")));
+    const target=J.accT==="fill"&&J.br?J.fill:J.acc;
+    box.append(lb, chk, row(btn(T("↩ 1つ消す","↩ Undo"),()=>target.pop()), btn(T("🗑 選んでいる段を全部消す","🗑 Clear the selected row"),()=>{ if(J.accT==="fill"&&J.br) J.fill=[]; else J.acc=[]; }),
+      T(`パターンの長さ ${sum(J.acc)}拍${J.br?`／おかず ${sum(J.fill)}拍`:""}`,`Pattern ${sum(J.acc)} beats${J.br?` / fill ${sum(J.fill)} beats`:""}`)));
+    // compare
+    const ev=build(), melN=ev.ev.filter(e=>e.tr==="mel").length, accN=ev.ev.filter(e=>e.tr==="acc").length;
+    const fnN=J.A.length+J.B.length+J.song.length, loopN=J.acc.length+(J.br?J.fill.length:0);
+    box.appendChild(el("div","compare",
+      T(`🧩 メロディ：関数を使わないと命令 <b>${melN}</b>個 → 関数を使うと <b>${fnN}</b>個（定義 ${J.A.length+J.B.length}＋呼び出し ${J.song.length}）<br>`+
+      `🔁 伴奏：くりかえしを使わないと命令 <b>${accN}</b>個 → くりかえしを使うと <b>${loopN}</b>個`,
+      `🧩 Melody: <b>${melN}</b> commands without functions → <b>${fnN}</b> with functions (${J.A.length+J.B.length} defined + ${J.song.length} calls)<br>`+
+      `🔁 Backing: <b>${accN}</b> commands without loops → <b>${loopN}</b> with loops`)));
+  }
+
+  // ===== event list =====
+  function build(){
+    const ev=[]; let mb=0;
+    let main, fill=[], defs, rep, br=false, cond="last";
+    if(!isJ()){
+      S.e.mel.forEach((k,i)=>{ ev.push({tr:"mel",t:mb,l:1,def:E_NOTES[k],ids:["m-A-"+i]}); mb+=1; });
+      main=S.e.acc.map(norm); defs=E_ACC; rep=S.e.rep;
+    } else {
+      const J=S.j;
+      J.song.forEach((p,si)=>J[p].forEach((it,i)=>{ ev.push({tr:"mel",t:mb,l:it.l,def:J_NOTES[it.k],ids:[`m-${p}-${i}`,"s-"+si]}); mb+=it.l; }));
+      main=J.acc; fill=J.fill; defs=J_ACC; rep=J.rep; br=J.br; cond=J.cond;
+    }
+    const n=reps(); let t=0;
+    if(sum(main)>0){
+      for(let i=1;i<=n;i++){
+        const useFill = br && COND[cond].test(i,n);
+        const pat = useFill ? fill : main, name = useFill ? "fill" : "main";
+        pat.forEach((it,j)=>{ ev.push({tr:"acc",t,l:it.l,def:defs[it.k],ids:[`a-${name}-${j}`, useFill?"L-if":(br?"L-else":"L-for")],round:i,n}); t+=it.l; });
+        if(!pat.length) t+=0;
+      }
+    }
+    return {ev, melBeats:mb, accBeats:t, total:Math.max(mb,t), n};
+  }
+
+  // ===== code view (junior) =====
+  function renderCode(){
+    if(!isJ()) return;
+    const J=S.j, L=[];
+    const add=(txt,id)=>L.push({txt,id});
+    const fmt=(def,l)=>{
+      if(def.rest) return `rest(${l})`;
+      if(def.kind==="kick"||def.kind==="snare"||def.kind==="hat") return `drum("${def.t}", ${l})`;
+      if(def.kind==="bass") return `bass("${def.t}", ${l})`;
+      if(def.kind==="chord") return `chord("${def.t}", ${l})`;
+      return `play("${def.hi?T("高","high ")+def.t:def.t}", ${l})`;
+    };
+    add(`tempo = ${S.bpm}    # ${T("1分間の拍の数","beats per minute")}`);
+    add(`key = ${J.key}        # ${T("移調：半音いくつ上げるか","transpose: semitones up")}`);
+    add("");
+    for(const p of ["A","B"]){
+      add(`def phrase_${p}():`);
+      if(!J[p].length) add("    pass");
+      J[p].forEach((it,i)=>add(`    ${fmt(J_NOTES[it.k],it.l)}`.padEnd(26)+`# ${LEN_NAME[it.l]}`, `m-${p}-${i}`));
+      add("");
+    }
+    add(T("# ── メロディ ──","# ── melody ──"));
+    if(!J.song.length) add(T("# （まだ呼び出していません）","# (nothing called yet)"));
+    J.song.forEach((p,i)=>add(`phrase_${p}()`, "s-"+i));
+    add("");
+    add(T("# ── 伴奏（メロディと同時にスタート）──","# ── backing (starts with the melody) ──"));
+    const n=reps(), pb=sum(J.acc);
+    if(!pb){ add(T("# （パターンが空です）","# (the pattern is empty)")); }
+    else {
+      if(J.rep==="end"){ add(`n = ceil(${melBeatsJ()||16} / ${pb})   # ${T("メロディの拍数 ÷ パターンの拍数","melody beats ÷ pattern beats")} = ${n}`); add(`for i in range(1, n + 1):`, "L-for"); }
+      else add(`for i in range(1, ${n+1}):    # ${T(`${n}回くりかえす`,`repeat ${n} times`)}`, "L-for");
+      const ind = J.br ? "        " : "    ";
+      if(J.br){
+        add(`    if ${COND[J.cond].code(J.rep==="end"?"n":n)}:`, "L-if");
+        if(!J.fill.length) add(ind+"pass");
+        J.fill.forEach((it,j)=>add(ind+fmt(J_ACC[it.k],it.l), "a-fill-"+j));
+        add("    else:", "L-else");
+      }
+      J.acc.forEach((it,j)=>add(ind+fmt(J_ACC[it.k],it.l), "a-main-"+j));
+    }
+    const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+    const hi=s=>{
+      let [code, ...cm]=s.split("#"); code=esc(code);
+      code=code.replace(/(".*?")/g,'<span class="str">$1</span>')
+               .replace(/\b(def|for|in|if|else|pass|range|ceil)\b/g,'<span class="kw">$1</span>')
+               .replace(/(?<![\w"])(-?\d+(\.\d+)?)(?![\w"])/g,'<span class="num">$1</span>');
+      return code + (cm.length?`<span class="cm">#${esc(cm.join("#"))}</span>`:"");
+    };
+    $("code").innerHTML=L.map(l=>`<div class="ln"${l.id?` data-hl="${l.id}"`:""}>${hi(l.txt)||" "}</div>`).join("");
+  }
+
+  // ===== render all =====
+  function render(){
+    document.body.className="mode-"+S.mode+(CB?" cb":"");
+    document.querySelectorAll("#modeSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===S.mode)));
+    document.querySelectorAll("#tempoSeg button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.bpm===S.bpm)));
+    document.querySelectorAll("#playSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.p===S.play)));
+    $("tempoRange").value=S.bpm; $("tempoLbl").textContent=`tempo = ${S.bpm}`;
+    $("keySel").value=String(S.j.key);
+    renderMel(); renderAcc(); renderCode(); save();
+  }
+
+  // ===== playback =====
+  let playing=null;
+  function clearHL(){ document.querySelectorAll(".on").forEach(x=>x.classList.remove("on")); const r=$("roundLbl"); if(r) r.textContent=""; }
+  function stop(){
+    if(!playing) return;
+    cancelAnimationFrame(playing.raf);
+    try{ playing.gain.gain.setTargetAtTime(0,ctx.currentTime,.02); const g=playing.gain; setTimeout(()=>g.disconnect(),250); }catch(e){}
+    playing=null; clearHL();
+  }
+  function play(){
+    stop();
+    const c=ac(), beat=60/S.bpm, key=isJ()?S.j.key:0;
+    const b=build();
+    const ev=b.ev.filter(e=>S.play==="both"||e.tr===S.play);
+    if(!ev.length) return;
+    const total=Math.max(...ev.map(e=>e.t+e.l));
+    const gain=c.createGain(); gain.connect(c.destination);
+    const t0=c.currentTime+.12;
+    ev.forEach(e=>sound(gain,e.def,t0+e.t*beat,e.l*beat,key));
+    try { window.dispatchEvent(new CustomEvent("music-play", { detail:{ bpm:S.bpm, key, ev:ev.map(e=>({t:e.t,l:e.l,def:e.def})) } })); } catch(e){}
+    let lastStep=-1;
+    const tick=()=>{
+      if(!playing) return;
+      const now=(c.currentTime-t0)/beat;
+      if(now>=total){ setTimeout(stop,250); return; }
+      const step=Math.floor(now*4);
+      if(step!==lastStep && now>=0){
+        lastStep=step;
+        const act=ev.filter(e=>e.t<=now && now<e.t+e.l);
+        const ids=new Set(); act.forEach(e=>e.ids.forEach(i=>ids.add(i)));
+        document.querySelectorAll("[data-hl]").forEach(x=>x.classList.toggle("on",ids.has(x.dataset.hl)));
+        const a=act.find(e=>e.tr==="acc"), r=$("roundLbl");
+        if(r) r.textContent = a ? (isJ()?T(`🔁 i = ${a.round}（${a.round}回目 ／ ${a.n}回）${a.ids[1]==="L-if"?"　🔀 条件に合った！":""}`,`🔁 i = ${a.round} (time ${a.round} of ${a.n})${a.ids[1]==="L-if"?"  🔀 condition matched!":""}`):T(`🔁 ${a.round}かいめ ／ ${a.n}かい`,`🔁 time ${a.round} of ${a.n}`)) : "";
+      }
+      playing.raf=requestAnimationFrame(tick);
+    };
+    playing={gain,raf:requestAnimationFrame(tick)};
+  }
+
+  // ===== samples =====
+  const N = s => s.trim().split(/\s+/).map(x=>{ const [k,l]=x.split(":"); return {k, l:l?+l:1}; });
+  const SAMPLES = {
+    "e-kaeru":()=>{ S.e.mel="do re mi fa mi re do rest mi fa so la so fa mi rest".split(" "); S.e.acc=["don","ka"]; S.e.rep="end"; },
+    "e-kira":()=>{ S.e.mel="do do so so la la so rest fa fa mi mi re re do rest".split(" "); S.e.acc=["bdo","chi","bso","chi"]; S.e.rep="4"; },
+    "j-kira":()=>Object.assign(S.j,{
+      A:N("C C G G A A G:2 F F E E D D C:2"), B:N("G G F F E E D:2"), song:["A","B","B","A"],
+      acc:N("bC chi:0.5 chi:0.5 tan chi"), fill:N("tan:0.5 tan:0.5 tan:0.5 tan:0.5 don don"),
+      rep:"end", br:true, cond:"mod4", key:0, melT:"A", accT:"fill"}),
+    "j-kaeru":()=>Object.assign(S.j,{
+      A:N("C D E F E D C rest"), B:N("E F G A G F E rest"), song:["A","B","A"],
+      acc:N("don:0.5 chi:0.5 tan:0.5 chi:0.5 don:0.5 don:0.5 tan:0.5 chi:0.5"), fill:N("tan:0.5 tan:0.5 tan:0.5 tan:0.5 tan:0.5 tan:0.5 don don:0.5 rest:0.5"),
+      rep:"end", br:true, cond:"last", key:0, melT:"A", accT:"main"}),
+    "j-chord":()=>Object.assign(S.j,{
+      A:N("E G C5:2 A F A:2 G F D B C:2 rest:2"), B:[], song:["A","A"],
+      acc:N("cC:2 cC:2 cF:2 cF:2 cG7:2 cG7:2 cC:2 cC:2"), fill:N("cC:2 cF:2 cG7:2 cC:2 cC:2 cF:2 cG7:2 cC:2"),
+      rep:"end", br:false, cond:"last", key:0, melT:"A", accT:"main"})
+  };
+  document.querySelectorAll("[data-sample]").forEach(b=>b.onclick=()=>edit(SAMPLES[b.dataset.sample]));
+
+  // ===== wiring =====
+  const ks=$("keySel");
+  for(let k=-5;k<=7;k++){ const o=el("option",null,(k>0?"+":"")+k+(k===0?"（そのまま）":"")); o.value=String(k); ks.appendChild(o); }
+  ks.onchange=()=>edit(()=>S.j.key=+ks.value);
+  $("playBtn").onclick=()=>{ try{ play(); }catch(e){} };
+  $("stopBtn").onclick=stop;
+  $("tempoRange").oninput=e=>{ S.bpm=+e.target.value; $("tempoLbl").textContent=`tempo = ${S.bpm}`; };
+  $("tempoRange").onchange=()=>edit(()=>{});
+  document.querySelectorAll("#tempoSeg button").forEach(b=>b.onclick=()=>edit(()=>S.bpm=+b.dataset.bpm));
+  document.querySelectorAll("#playSeg button").forEach(b=>b.onclick=()=>{ S.play=b.dataset.p; render(); });
+  document.querySelectorAll("#modeSeg button").forEach(b=>b.onclick=()=>edit(()=>{
+    S.mode=b.dataset.mode;
+    if(S.mode==="e" && ![76,100,132].includes(S.bpm)) S.bpm=100;
+    if(S.mode==="j" && !S.j.A.length && !S.j.acc.length) SAMPLES["j-kira"]();
+    try{ history.replaceState(null,"",S.mode==="j"?"#chugaku":"#shogaku"); }catch(e){}
+  }));
+  window.addEventListener("hashchange",()=>{ const m=location.hash==="#chugaku"?"j":location.hash==="#shogaku"?"e":null; if(m&&m!==S.mode) edit(()=>S.mode=m); });
+
+  if (CB) document.documentElement.classList.add("cb");
+  if (EN) {
+    document.documentElement.lang = "en"; document.title = "Sound Card Music Coding";
+    const D = {"おとのカードで":"Sound Card","音のカードで":"Sound Card","おんがくプログラミング":"Music Coding",
+      "カードを ならべて メロディを つくろう。「くりかえし」で ばんそうを のせよう。":"Line up cards to make a melody. Add a backing part with Repeat.",
+      "関数でフレーズを組み立て、くりかえし＋分岐で伴奏をつくろう。下のコードと音が連動します。":"Build the song from phrase functions and make the backing with loops + branches. The code below follows the sound.",
+      "🎒 しょうがくせい":"🎒 Elementary","🏫 中学生":"🏫 Junior high","ならす":"Play","再生":"Play","とめる":"Stop","停止":"Stop","はやさ":"Speed",
+      "🐢 ゆっくり":"🐢 Slow","🚶 ふつう":"🚶 Normal","🐇 はやい":"🐇 Fast","りょうほう":"Both","両方":"Both","メロディだけ":"Melody only","メロディのみ":"Melody only","ばんそうだけ":"Backing only","伴奏のみ":"Backing only",
+      "① メロディ":"① Melody","じゅんばんに ならぶ":"in order","順次 ＋ 関数":"sequence + functions","② ばんそう":"② Backing","② 伴奏":"② Backing","くりかえし":"repeat","反復 ＋ 分岐":"loops + branches",
+      "③ コードで見る":"③ See it as code","Python風":"Python-style","ミッション":"Missions",
+      "カードの並びを、プログラムの形で書いたものです。再生すると、いま実行している行が光ります。（数字は音の長さ＝拍数。1 が4分音符）":"This is the card order written as a program. While playing, the running line lights up. (Numbers are lengths in beats; 1 = a quarter note.)",
+      "おてほんを よびだす：":"Load an example:","お手本を読みこむ：":"Load an example:","🐸 かえるのうた":"🐸 Frog Song","⭐ きらきらぼし":"⭐ Twinkle Twinkle",
+      "⭐ きらきらぼし（A B B A＋分岐）":"⭐ Twinkle Twinkle (A B B A + branch)","🐸 かえるのうた（8ビート）":"🐸 Frog Song (8-beat)",
+      "🎹 和音の練習（C→F→G7→C）":"🎹 Chord practice (C→F→G7→C)"};
+    const skip = n => n.closest && n.closest(".missions, details.teacher, #melBody, #accBody, #code");
+    const w = document.createTreeWalker(document.querySelector(".wrap"), NodeFilter.SHOW_TEXT);
+    const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+    nodes.forEach(t => { if (skip(t.parentElement)) return; const k = t.nodeValue.trim(); if (k && D[k] != null) t.nodeValue = t.nodeValue.replace(k, D[k]); });
+    $("tempoRange").setAttribute("aria-label","tempo"); $("keySel").setAttribute("aria-label","transpose");
+    const tpl = document.getElementById("enBlocks");
+    if (tpl) ["e-missions","j-missions","e-teacher","j-teacher"].forEach(id => { const src = tpl.content.getElementById(id), dst = document.querySelector("[data-blk='" + id + "']"); if (src && dst) dst.innerHTML = src.innerHTML; });
+    const ks2 = $("keySel"); [...ks2.options].forEach(o => o.textContent = o.textContent.replace("（そのまま）", " (no change)"));
+  }
+  window.__music = { S, SAMPLES, render, play, stop, edit, build };
+  if(S.mode==="j" && !S.j.A.length && !S.j.acc.length) SAMPLES["j-kira"]();
+  render();
+})();
+</script>
+</body>
+</html>
