@@ -222,13 +222,10 @@
     <span class="label" style="align-self:center"><span class="e-only">おてほんを よびだす：</span><span class="j-only">お手本を読みこむ：</span></span>
     <button class="small e-only" data-sample="e-kaeru">🐸 かえるのうた</button>
     <button class="small e-only" data-sample="e-kira">⭐ きらきらぼし</button>
-    <button class="small e-only" data-sample="e-soran">🌊 ソーラン節（かんたんアレンジ）</button>
     <button class="small j-only" data-sample="j-kira">⭐ きらきらぼし（A B B A＋分岐）</button>
     <button class="small j-only" data-sample="j-kaeru">🐸 かえるのうた（8ビート）</button>
     <button class="small j-only" data-sample="j-chord">🎹 和音の練習（C→F→G7→C）</button>
-    <button class="small j-only" data-sample="j-soran">🌊 ソーラン節（かんたんアレンジ・A B A B＋分岐）</button>
   </div>
-  <p class="langnote" id="soranNote">🌊 ソーラン節（北海道民謡）は、かけ声「ヤーレン ソーラン ソーラン…」の ふんいきを 民謡の音階（ら・ど・れ・み・そ）で まねた かんたんアレンジです。正確な旋律は教科書や楽譜で確かめてください。</p>
 </div>
 
 <details class="teacher e-only" data-blk="e-teacher">
@@ -778,8 +775,6 @@
   const SAMPLES = {
     "e-kaeru":()=>{ S.e.mel="do re mi fa mi re do rest mi fa so la so fa mi rest".split(" "); S.e.acc=["don","ka"]; S.e.rep="end"; },
     "e-kira":()=>{ S.e.mel="do do so so la la so rest fa fa mi mi re re do rest".split(" "); S.e.acc=["bdo","chi","bso","chi"]; S.e.rep="4"; },
-    // ソーラン節(北海道民謡)の かけ声を 民謡の音階で まねた かんたんアレンジ
-    "e-soran":()=>{ S.e.mel="la la rest so la do2 la so la do2 la so mi so la rest".split(" "); S.e.acc=["don","ka","don","don"]; S.e.rep="end"; },
     "j-kira":()=>Object.assign(S.j,{
       A:N("C C G G A A G:2 F F E E D D C:2"), B:N("G G F F E E D:2"), song:["A","B","B","A"],
       acc:N("bC chi:0.5 chi:0.5 tan chi"), fill:N("tan:0.5 tan:0.5 tan:0.5 tan:0.5 don don"),
@@ -787,10 +782,6 @@
     "j-kaeru":()=>Object.assign(S.j,{
       A:N("C D E F E D C rest"), B:N("E F G A G F E rest"), song:["A","B","A"],
       acc:N("don:0.5 chi:0.5 tan:0.5 chi:0.5 don:0.5 don:0.5 tan:0.5 chi:0.5"), fill:N("tan:0.5 tan:0.5 tan:0.5 tan:0.5 tan:0.5 tan:0.5 don don:0.5 rest:0.5"),
-      rep:"end", br:true, cond:"last", key:0, melT:"A", accT:"main"}),
-    "j-soran":()=>Object.assign(S.j,{
-      A:N("A:2 A:0.5 G:0.5 A C5:0.5 A:0.5 G:2 A:0.5 G:0.5 E D:2 rest:2 E:0.5 G:0.5 A:2"), B:N("A:0.5 rest:0.5 A:0.5 rest:0.5 rest:2"), song:["A","B","A","B"],
-      acc:N("don:0.5 don:0.5 tan don tan"), fill:N("tan:0.5 tan:0.5 tan:0.5 tan:0.5 don don"),
       rep:"end", br:true, cond:"last", key:0, melT:"A", accT:"main"}),
     "j-chord":()=>Object.assign(S.j,{
       A:N("E G C5:2 A F A:2 G F D B C:2 rest:2"), B:[], song:["A","A"],
@@ -829,14 +820,13 @@
       "③ コードで見る":"③ See it as code","Python風":"Python-style","ミッション":"Missions",
       "カードの並びを、プログラムの形で書いたものです。再生すると、いま実行している行が光ります。（数字は音の長さ＝拍数。1 が4分音符）":"This is the card order written as a program. While playing, the running line lights up. (Numbers are lengths in beats; 1 = a quarter note.)",
       "おてほんを よびだす：":"Load an example:","お手本を読みこむ：":"Load an example:","🐸 かえるのうた":"🐸 Frog Song","⭐ きらきらぼし":"⭐ Twinkle Twinkle",
-      "🌊 ソーラン節（かんたんアレンジ）":"🌊 Soran Bushi (simple arrangement)","⭐ きらきらぼし（A B B A＋分岐）":"⭐ Twinkle Twinkle (A B B A + branch)","🐸 かえるのうた（8ビート）":"🐸 Frog Song (8-beat)",
-      "🎹 和音の練習（C→F→G7→C）":"🎹 Chord practice (C→F→G7→C)","🌊 ソーラン節（かんたんアレンジ・A B A B＋分岐）":"🌊 Soran Bushi (simple arrangement, A B A B + branch)"};
+      "⭐ きらきらぼし（A B B A＋分岐）":"⭐ Twinkle Twinkle (A B B A + branch)","🐸 かえるのうた（8ビート）":"🐸 Frog Song (8-beat)",
+      "🎹 和音の練習（C→F→G7→C）":"🎹 Chord practice (C→F→G7→C)"};
     const skip = n => n.closest && n.closest(".missions, details.teacher, #melBody, #accBody, #code");
     const w = document.createTreeWalker(document.querySelector(".wrap"), NodeFilter.SHOW_TEXT);
     const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
     nodes.forEach(t => { if (skip(t.parentElement)) return; const k = t.nodeValue.trim(); if (k && D[k] != null) t.nodeValue = t.nodeValue.replace(k, D[k]); });
     $("tempoRange").setAttribute("aria-label","tempo"); $("keySel").setAttribute("aria-label","transpose");
-    $("soranNote").textContent = "🌊 Soran Bushi (a Hokkaido folk song) here is a simple arrangement that imitates the chant \"Yaaren, Soran, Soran…\" with a folk scale (la, do, re, mi, sol). Check the exact melody in a songbook or score.";
     const tpl = document.getElementById("enBlocks");
     if (tpl) ["e-missions","j-missions","e-teacher","j-teacher"].forEach(id => { const src = tpl.content.getElementById(id), dst = document.querySelector("[data-blk='" + id + "']"); if (src && dst) dst.innerHTML = src.innerHTML; });
     const ks2 = $("keySel"); [...ks2.options].forEach(o => o.textContent = o.textContent.replace("（そのまま）", " (no change)"));
