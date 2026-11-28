@@ -86,7 +86,7 @@ const ANSWER_BLOCKS = [
 LEVELS.forEach((lv, i) => { lv.answer = ANSWER_BLOCKS[i]; });
 }
 /*@@ SCALE */
-1.4
+1.3
 /*@@ WORLD */
 /* ========== 5. めいろ（ちいさい・やじるし） ========== */
 let N = 4, CELL = 96;

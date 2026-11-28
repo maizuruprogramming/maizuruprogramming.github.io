@@ -27,7 +27,7 @@ def build(v):
     s = s[:i] + parts['BLOCKS'].strip() + '\n\n\n' + s[j:]
     # ワークスペースの おおきさ
     if 'SCALE' in parts:
-        s = s.replace("zoom: { controls: true, wheel: true, startScale: 1.0 }", "zoom: { controls: true, wheel: true, startScale: " + parts['SCALE'].strip() + " }", 1)
+        s = s.replace("zoom: { controls: true, wheel: true, startScale: 0.95 }", "zoom: { controls: true, wheel: true, startScale: " + parts['SCALE'].strip() + " }", 1)
     s = s.replace("const SAVE_KEY = 'block-maze';", f"const SAVE_KEY = '{v['save']}';", 1)
     # 5〜6：せかい と シミュレーション
     i, j = cut(s, '/* ========== 5. めいろ ========== */', '/* ========== 7. えを かく（ドット絵） ==========')
