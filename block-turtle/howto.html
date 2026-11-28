@@ -163,8 +163,9 @@ const APPS = [
   ['🗝', 'maze-key.html', 'かぎと とびらの めいろ', 'Keys & Doors Maze', 'かぎを ひろって とびらを あける。もっている ものを おぼえて すすむ。', 'Pick up keys and open doors. Remember what you are carrying.', 'めいろの つぎに', 'After the maze'],
   ['👾', 'maze-enemy.html', 'てきを よける めいろ', 'Dodge the Slime Maze', 'うごく スライムを「まつ」で よけて ゴールへ。', 'Dodge the moving slimes by waiting, and reach the goal.', 'めいろの つぎに', 'After the maze'],
   ['🚀', 'space.html', 'うちゅうで ほしあつめ', 'Space Star Hunt', 'ほしを ぜんぶ ひろって ロケットへ。', 'Collect every star and reach the rocket.', 'めいろの つぎに', 'After the maze'],
+  ['🌱', 'farm.html', 'はたけで そだてよう', 'Block Farm', 'たねを まいて みずを やり、みを とる。よく つかう てじゅんに なまえを つけ、とれた かずを かぞえる。', 'Plant, water and harvest. Name steps you use often and count what you harvest.', 'うちゅうの つぎに', 'After Space'],
   ['🧱', 'craft.html', 'こわして つくる ぼうけん', 'Break & Build Quest', 'いしを こわして、みずに はしを かける。', 'Break stone and build bridges over water.', 'もっと むずかしく', 'More challenging'],
-  ['🐍', 'python.html', 'Python版（おえかき・めいろ・うちゅう・こわす・おく・めいろの なかま）', 'Python versions', 'おなじ せかいを、もじの プログラム Python で とく。', 'Solve the same worlds with Python, a text language.', 'ブロックを おえたら', 'After the blocks'],
+  ['🐍', 'python.html', 'Python版（おえかき・めいろ・うちゅう・はたけ・こわす・おく・めいろの なかま）', 'Python versions', 'おなじ せかいを、もじの プログラム Python で とく。', 'Solve the same worlds with Python, a text language.', 'ブロックを おえたら', 'After the blocks'],
   ['🐟', 'aquarium.html', 'おさかな すいぞくかん', 'Aquarium', 'さかなを かいて、プログラムで およがせる。', 'Draw a fish and make it swim with a program.', 'じゆうに つくる', 'Create freely']
 ];
 html += H('apps') + `<div class="grid">` + APPS.map(([ic, href, ja, en, dja, den, lja, len], i) => `
@@ -193,7 +194,7 @@ const blockScreen = `<div class="scr">
 </div>`;
 const BLOCK_LEGEND = [
   ['タイトル', 'Title', 'いま あそんでいる アプリ', 'The app you are playing'],
-  ['ほかの アプリ', 'Other apps', '🐢 おえかき・⛏ めいろ・🚀 うちゅう・🧱 こわす・おく・🐟 すいぞくかん へ いける', 'Go to Drawing, Maze, Space, Break & Build or Aquarium'],
+  ['ほかの アプリ', 'Other apps', '🐢 おえかき・⛏ めいろ・🚀 うちゅう・🌱 はたけ・🧱 こわす・おく・🐟 すいぞくかん へ いける', 'Go to Drawing, Maze, Space, Farm, Break & Build or Aquarium'],
   ['▶ じっこう', '▶ Run', 'くんだ プログラムを うごかす', 'Runs your program'],
   ['↺ もどす', '↺ Restart', 'たんけんかを はじめの ばしょに もどす（ブロックは きえない）', 'Puts the explorer back at the start (your blocks stay)'],
   ['⚙ きのう', '⚙ Settings', 'Python に きりかえる・あそびかた・どうが・かいせつしょ・おと・ことば・ナイトモード・フォント・つぎの ひとへ など', 'Switch to Python, how to play, videos, guide, sound, language, night mode, font, next player and more'],
@@ -233,8 +234,8 @@ const legend = (L) => '<ol class="legend">' + L.map(([ja, en, dja, den], i) => `
 html += H('screen') + `<div class="panel">
   <div style="font-size:18px;color:var(--accent)">🧩 ${esc(tx('ブロックの アプリ（れい：ブロックでめいろ）', 'Block apps (example: Block Maze)'))}</div>
   <div class="scrWrap">${blockScreen}</div>${legend(BLOCK_LEGEND)}
-  <p style="margin:10px 0 0;font-size:14px">${esc(tx('おえかき・うちゅう・こわす・おく も おなじ ならびだよ。おえかきは「もどす」の かわりに「けす」で えを けす。',
-    'Drawing, Space and Break & Build use the same layout. In Drawing, “Clear” erases the picture instead of “Restart”.'))}</p>
+  <p style="margin:10px 0 0;font-size:14px">${esc(tx('おえかき・うちゅう・はたけ・こわす・おく も おなじ ならびだよ。おえかきは「もどす」の かわりに「けす」で えを けす。',
+    'Drawing, Space, Farm and Break & Build use the same layout. In Drawing, “Clear” erases the picture instead of “Restart”.'))}</p>
 </div>
 <div class="panel">
   <div style="font-size:18px;color:var(--accent)">🐍 ${esc(tx('Python版（れい：Pythonで めいろ）', 'Python versions (example: Python Maze)'))}</div>
@@ -266,6 +267,8 @@ const TIPS = [
   ['🧪', 'すこしずつ ためす', 'Test step by step', 'いっきに ぜんぶ つくらず、すこし つないだら ▶ じっこう。どこまで あっているか たしかめよう。', 'Don’t build everything at once. Run after a few blocks to check.'],
   ['🔍', 'まちがいは ヒント', 'Mistakes are hints', 'どこで とまったか、どの ブロックが ひかって いたかを みれば、なおす ばしょが わかる。', 'Where did it stop? Which block was lit? That tells you what to fix.'],
   ['🔁', 'おなじ うごきを さがす', 'Find repeats', 'おなじ うごきが つづいたら「くりかえし」で まとめられるかも。', 'If the same moves repeat, a loop can make it shorter.'],
+  ['⭐', 'なまえを つけて まとめる', 'Name a group of steps', 'なんども つかう かたまりは「じぶんの ブロック」に すると、みじかく よみやすく なるよ（はたけ）。', 'Turn a group of blocks you use again and again into your own block. It gets shorter and easier to read (Farm).'],
+  ['🔢', 'かずを おぼえさせる', 'Let it remember a number', '「へんすう」は かずを おぼえる はこ。とれた かずを かぞえて、ちょうど いい ところで とめられる（はたけ）。', 'A variable is a box that remembers a number. Count what you harvest and stop at the right time (Farm).'],
   ['🤝', 'ともだちと くらべる', 'Compare with friends', 'こたえは 1つじゃない！ ちがう やりかたを みせあって みよう。', 'There is more than one answer. Share different ways!']
 ];
 html += H('tips') + `<div class="grid">` + TIPS.map(([ic, ja, en, dja, den]) => `
@@ -278,13 +281,14 @@ const PYCODE = `<span class="no">1</span>  <span class="fn">forward</span>()
 <span class="no">4</span>  <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="num">2</span>):
 <span class="no">5</span>      <span class="fn">forward</span>()`;
 html += H('python') + `<div class="panel"><div class="pyBox">
-  <div>${esc(tx('おえかき・めいろ・うちゅう・こわす・おく では、「⚙ きのう」→「🐍 Python に きりかえる」で、おなじ せかいを Python で とけるよ。',
-               'In Drawing, Maze, Space and Break & Build, choose “⚙ Settings → 🐍 Switch to Python” to solve the same world with Python.'))}
+  <div>${esc(tx('おえかき・めいろ・うちゅう・はたけ・こわす・おく では、「⚙ きのう」→「🐍 Python に きりかえる」で、おなじ せかいを Python で とけるよ。',
+               'In Drawing, Maze, Space, Farm and Break & Build, choose “⚙ Settings → 🐍 Switch to Python” to solve the same world with Python.'))}
     <ul class="rules">
       <li>${esc(tx('「🧩 ブロック」で くむと、したに Python が でる', 'Build with “🧩 Blocks” and the Python appears below'))}</li>
       <li>${esc(tx('「🐍 Python」タブで じぶんで かける', 'Write it yourself in the “🐍 Python” tab'))}</li>
       <li>${esc(tx('めいれいの あとに「()」、さいごに「:」、なかの ぎょうは スペース 4つ', 'Add “()” after commands, “:” at the end, and 4 spaces inside'))}</li>
       <li>${esc(tx('エラーには ぎょうばんごうが でる。あかい ぎょうを なおそう', 'Errors show a line number. Fix the red line'))}</li>
+      <li>${esc(tx('はたけ では「def なまえ():」で じぶんの めいれいを つくったり、count = 0・count += 1 で かぞえたり できる', 'In Farm, make your own command with “def name():” and count with count = 0 and count += 1'))}</li>
     </ul></div>
   <pre class="code">${PYCODE}</pre>
 </div></div>`;

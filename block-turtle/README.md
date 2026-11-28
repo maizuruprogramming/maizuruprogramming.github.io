@@ -92,6 +92,10 @@
 - 効果音、クリア時の「はい／いいえ」、「⚙ きのう」メニュー、先生モード（`?sensei`）は迷路と同じです。進み具合は迷路とは別に保存されます
 - 解答は [ANSWERS.md](ANSWERS.md) にあります
 
+## 🌱 はたけで そだてよう（farm.html）
+
+たねを まき、みずを やり、みを とる 7ステージ。よく つかう てじゅんに なまえを つける「⭐ じぶんの ブロック」（関数）と、とれた かずを かぞえる「🔢 へんすう」を学びます。ステージ7は、みの ばしょが ちがう はたけ 20こで自動テストします。🐍 Python版（`python-farm.html`）では `def` と変数 `count` も使えます。解答は [ANSWERS.md](ANSWERS.md) にあります。
+
 ## 🧱 こわして つくる ぼうけん（craft.html）
 
 「ブロックでめいろ」の、こわす・おく版（マイクラ風）です。つるはしで石ブロックをこわすと、そのブロックが持ち物に入ります。水の上にブロックを置くと、橋になって渡れます。たからばこに着くとクリアです。
@@ -113,7 +117,7 @@
 
 ## 🎬 かいせつ どうが（videos.html）
 
-おえかき 9題・めいろ・めいろの なかま（やじるし・かぎと とびら・てき）・うちゅう・こわす・おく の全45課題と、Python版の全41ステージ（おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4）に、解説動画（日本語版・英語版、計172本）があります。ほかに、1分の「あそびかた」紹介動画（日本語・英語）があります。
+おえかき 9題・めいろ・めいろの なかま（やじるし・かぎと とびら・てき）・うちゅう・はたけ・こわす・おく の全52課題と、Python版の全48ステージ（おえかき 9・めいろ 5・うちゅう 6・はたけ 7・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4）に、解説動画（日本語版・英語版、計200本）があります。ほかに、1分の「あそびかた」紹介動画（日本語・英語）があります。
 - [videos.html](videos.html) で一覧から再生できます（「⚙ きのう」→「🎬 どうが」からも開けます）。「📚 すべて／🧩 Blockly版／🐍 Python版」で表示を切り替えられます（`videos.html?view=py` なども可）。一覧表は [VIDEOS.md](VIDEOS.md) にあります
 - 内容：タイトル（めあて）→ 盤面の紹介 → かんがえかた → 解答ブロックを1つずつ並べる → 実行（いま動いているブロックが光る）→ クリア！とポイント → 次のステージの予告
 - 字幕と効果音入りです（読み上げの音声はありません）。授業では、先生が説明しながら流すこともできます
@@ -122,13 +126,13 @@
 
 ## 📖 かいせつしょ（guide.html）
 
-全86課題（おえかき 9・めいろ 8・やじるし 6・かぎと とびら 4・てき 4・うちゅう 7・こわす・おく 7、🐍 Python版 おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4）の解説書ページです。Python版は解答をコードで表示します。「⚙ きのう」→「📖 かいせつしょ」から開けます。
+全100課題（おえかき 9・めいろ 8・やじるし 6・かぎと とびら 4・てき 4・うちゅう 7・はたけ 7・こわす・おく 7、🐍 Python版 おえかき 9・めいろ 5・うちゅう 6・はたけ 7・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4）の解説書ページです。Python版は解答をコードで表示します。「⚙ きのう」→「📖 かいせつしょ」から開けます。
 - 各課題に「🎯 めあて」「📝 もんだい」「⚠ つまずきやすい ところ」「学べること（タグ）」を表示します
 - 「💡 ヒントを みる」「📖 こたえと ポイントを みる」は押したときだけ開くので、子どもが見ても答えがすぐには見えません
 - 冒頭に「まなびの つながり」表（順次・反復・条件分岐・状態・タイミング・変数・一般化などが、どの課題で出てくるか）があります。ブロック版と Python版を1つの列にまとめ（7列）、「🔢 ばんごうで みる」（課題番号、押すとその課題へ）と「● で みる」（課題数を●の濃さで表示、押すと番号）を切り替えられます（選択は保存、スマホでは最初は●）
 - 「▶ アプリで ためす」「🎬 かいせつ どうが」「📘 ○○の ほん（PDF）」へのリンク付きです。各課題には「📝 ワークシート」「🎯 めあて・ふりかえり」「✅ チェックカード」「📋 学習指導案」（PDF）もあります
 - 「📚 すべて／🧩 Blockly版／🐍 Python版」で表示を切り替えられます（`guide.html?view=blk` なども可）
-- 📘 本（PDF、日本語・英語）：めいろ（`book/maze-book.pdf`）・おえかき（`book/draw-book.pdf`）・うちゅう（`book/space-book.pdf`）・こわす・おく（`book/craft-book.pdf`）。4冊をまとめた `book/all-books.pdf`（かいせつしょ上部の「📘 ほん ぜんぶ」）もあります。英語版は `book/en/`。第1部は子ども向け（もんだい→ヒント→次のページに こたえ）、第2部は先生向けの指導編。`python3 tools/book/build.py` で作り直せます
+- 📘 本（PDF、日本語・英語）：めいろ（`book/maze-book.pdf`）・おえかき（`book/draw-book.pdf`）・うちゅう（`book/space-book.pdf`）・はたけ（`book/farm-book.pdf`）・こわす・おく（`book/craft-book.pdf`）。5冊をまとめた `book/all-books.pdf`（かいせつしょ上部の「📘 ほん ぜんぶ」）もあります。英語版は `book/en/`。第1部は子ども向け（もんだい→ヒント→次のページに こたえ）、第2部は先生向けの指導編。`python3 tools/book/build.py` で作り直せます
 - 「🖨 いんさつ（こたえ つき）」で、こたえを開いた状態で印刷できます。日本語／英語、ナイトモードにも対応します
 - 内容のデータは `guide-data.js` にあります（アプリのステージ文から自動で作ったものに、めあて・ポイント・つまずきを追加）
 
@@ -144,6 +148,7 @@
 | 🐍 Pythonで おえかき | `python-draw.html` | おだい 9 | `forward(80)` `back(30)` `right(60)` `left(45)` `pen_color('red')` `pen_width(5)` `pen_up()` `pen_down()` `home()` ／ `for i in range(10, 201, 10):` などの変数、`360 / n` `i * 4` などの計算 |
 | 🐍 Pythonで めいろ | `python.html` | 5 | `forward()` `turn_right()` `turn_left()` ／ しらべる：`is_open('front'／'right'／'left')` ／ くりかえす：`while not at_goal():` |
 | 🐍 Pythonで うちゅう | `python-space.html` | 6 | ＋ `pick_up()` ／ しらべる：`has_star()` `is_open(…)` ／ くりかえす：`while not mission_done():` |
+| 🐍 Pythonで はたけ | `python-farm.html` | 7 | ＋ `plant()` `water()` `harvest()` ／ しらべる：`is_ripe()` ／ `def plant_row():` ／ `count = 0`・`count += 1`・`while count < 5:` |
 | 🐍 Pythonで こわす・おく | `python-craft.html` | 7 | ＋ `mine()` `place()` ／ しらべる：`front_is('stone'／'water'／'path')` ／ くりかえす：`while not at_goal():` |
 | 🐍 Pythonで やじるし めいろ | `python-maze-junior.html` | 6 | `up()` `down()` `left()` `right()` ／ くりかえす：`for i in range(〇):` |
 | 🐍 Pythonで かぎと とびら | `python-maze-key.html` | 4 | `forward()` `turn_right()` `turn_left()` `pick_up()` `open_door()` ／ しらべる：`key_here()` `door_ahead()` `is_open(…)` ／ `while not at_goal():` |
@@ -291,6 +296,8 @@ maze-enemy.html       👾 てきを よける めいろ
                         （ちがう部分＝ブロック・ステージ・せかい・え は tools/maze-variants/*.js）。
                         maze.html を直したら、python3 tools/maze-variants/build.py で作り直す
 space.html            🚀 うちゅうで ほしあつめ
+farm.html             🌱 はたけで そだてよう
+farm-world.js         はたけの せかい（ブロック版・Python版で共通）
 craft.html            🧱 こわして つくる ぼうけん
 aquarium.html         🐟 おさかな すいぞくかん
 firebase-config.js    Firebase の設定（からっぽならローカルモード）
@@ -310,6 +317,7 @@ guide-data.js         かいせつしょ の データ
 python-draw.html      🐍 Pythonで おえかき（ブロック ⇄ Python）
 python.html           🐍 Pythonで めいろ（ブロック ⇄ Python）
 python-space.html     🐍 Pythonで うちゅう
+python-farm.html      🐍 Pythonで はたけ
 python-craft.html     🐍 Pythonで こわす・おく
 python-maze-junior.html / python-maze-key.html / python-maze-enemy.html  🐍 めいろの なかま の Python版（tools/maze-variants/build_python.py で作る）
 python-core.js        Python版の共通部品（解釈器・エディタ・ブロック ⇄ Python・実行）
@@ -318,7 +326,7 @@ python.css            Python版の共通デザイン（エディタ・コンソ�
 mobile.css / mobile.js 📱 スマホの配置と「タップで組む」ブロック入力（幅 600px 以下だけ）
 releases.html         📝 リリースノート
 VIDEOS.md             かいせつ どうが の一覧表
-videos/ja/ videos/en/ かいせつ どうが（日本語・英語 各78本）
+videos/ja/ videos/en/ かいせつ どうが（日本語・英語 各102本）
 ```
 
 ## GitHub Pages で公開する

@@ -1,7 +1,7 @@
 """ワークシート（Claude Docs の XML）→ シートごとの PDF を つくる。
 
 つかいかた: python3 tools/worksheets/build.py tools/worksheets/worksheet-ja.xml [en]
-  出力: worksheets/ws0-teacher.pdf … ws8-check.pdf と worksheets/worksheets-all.pdf
+  出力: worksheets/ws0-teacher.pdf … ws9-farm.pdf と worksheets/worksheets-all.pdf
   en を つけると tools/worksheets/en.json で ほんやくして worksheets/en/ に つくる
 """
 import html
@@ -18,7 +18,7 @@ OUT = ROOT / 'worksheets'
 
 # 見出し（じゅんばん）→ ファイル名：先生へ、①〜⑧
 FILES = ['ws0-teacher', 'ws1-goal', 'ws2-draw', 'ws3-maze', 'ws4-arrow',
-         'ws5-space-craft', 'ws6-key-enemy', 'ws7-python', 'ws8-check']
+         'ws5-space-craft', 'ws6-key-enemy', 'ws7-python', 'ws8-check', 'ws9-farm']
 BRAND = {'ja': ('ブロックで プログラミング　ワークシート', '舞鶴工業高等専門学校　井上泰仁'),
          'en': ('Block Programming — Worksheet', 'National Institute of Technology, Maizuru College — Yasuhito Inoue')}
 

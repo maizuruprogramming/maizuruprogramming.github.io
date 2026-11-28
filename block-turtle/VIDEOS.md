@@ -1,13 +1,13 @@
 # 🎬 かいせつ どうが ／ Explanation Videos
 
-ステージごとの解説動画です（1280×720、30fps、字幕＋効果音、1本 30〜60秒）。日本語版と英語版があります。
+ステージごとの解説動画です（1280×720、30fps、字幕＋効果音、1本 30〜90秒）。日本語版と英語版があります。
 ブラウザでは [videos.html](videos.html) からまとめて見られます（言語は ⚙ きのう で切り替え）。
 
 Short explanation videos for every stage (1280×720, 30 fps, captions + sound effects). Watch them all at [videos.html](videos.html).
 
 **動画の流れ / Structure**：タイトル（めあて）→ 盤面の紹介 → かんがえかた（ヒント）→ 解答ブロックを1つずつ並べる → 実行（いま動いているブロックが光る）→ クリア！とポイント → 次のステージの予告
 
-🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（おえかき 9・めいろ 5・うちゅう 6・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4 ＝ 41ステージ × 日英 82本）。
+🐍 Python版は、解答ブロックの代わりに解答の Python コードを1行ずつ表示し、実行中は動いている行を黄色で光らせます（おえかき 9・めいろ 5・うちゅう 6・はたけ 7・こわす・おく 7・やじるし 6・かぎと とびら 4・てき 4 ＝ 48ステージ × 日英 96本）。
 
 ## 🎮 あそびかた ／ 🎮 How to play
 
@@ -84,6 +84,18 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 6 | [ミッション クリアまで](videos/ja/space-06.mp4) | [Until mission complete](videos/en/space-06.mp4) | 46秒 |
 | 7 | [どんな うちゅうでも！](videos/ja/space-07.mp4) | [Any space!](videos/en/space-07.mp4) | 53秒 |
 
+## 🌱 はたけで そだてよう ／ 🌱 Block Farm
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [たねを まこう](videos/ja/farm-01.mp4) | [Plant seeds](videos/en/farm-01.mp4) | 31秒 |
+| 2 | [みずも やろう](videos/ja/farm-02.mp4) | [Water them too](videos/en/farm-02.mp4) | 35秒 |
+| 3 | [くりかえしで 1れつ](videos/ja/farm-03.mp4) | [One row with a loop](videos/en/farm-03.mp4) | 37秒 |
+| 4 | [2れつの はたけ](videos/ja/farm-04.mp4) | [Two rows](videos/en/farm-04.mp4) | 46秒 |
+| 5 | [じぶんの ブロック](videos/ja/farm-05.mp4) | [Make your own block](videos/en/farm-05.mp4) | 62秒 |
+| 6 | [みのったら とる](videos/ja/farm-06.mp4) | [Harvest when ripe](videos/en/farm-06.mp4) | 37秒 |
+| 7 | [5こ とったら おわり](videos/ja/farm-07.mp4) | [Stop at 5](videos/en/farm-07.mp4) | 45秒 |
+
 ## 🧱 こわして つくる ぼうけん ／ 🧱 Break & Build Quest
 
 | ステージ | 日本語 | English | 長さ |
@@ -130,6 +142,18 @@ Short explanation videos for every stage (1280×720, 30 fps, captions + sound ef
 | 4 | [ほしの かいだん](videos/ja/pyspace-04.mp4) | [Star stairs](videos/en/pyspace-04.mp4) | 46秒 |
 | 5 | [if has_star():](videos/ja/pyspace-05.mp4) | [if has_star():](videos/en/pyspace-05.mp4) | 41秒 |
 | 6 | [while not mission_done():](videos/ja/pyspace-06.mp4) | [while not mission_done():](videos/en/pyspace-06.mp4) | 57秒 |
+
+## 🐍 Pythonで はたけ ／ 🐍 Python Farm
+
+| ステージ | 日本語 | English | 長さ |
+|---|---|---|---|
+| 1 | [plant() で たねまき](videos/ja/pyfarm-01.mp4) | [Planting with plant()](videos/en/pyfarm-01.mp4) | 33秒 |
+| 2 | [water() で みずやり](videos/ja/pyfarm-02.mp4) | [Watering with water()](videos/en/pyfarm-02.mp4) | 38秒 |
+| 3 | [for で 1れつ](videos/ja/pyfarm-03.mp4) | [One row with for](videos/en/pyfarm-03.mp4) | 44秒 |
+| 4 | [2れつの はたけ](videos/ja/pyfarm-04.mp4) | [Two rows](videos/en/pyfarm-04.mp4) | 48秒 |
+| 5 | [def で じぶんの めいれい](videos/ja/pyfarm-05.mp4) | [Your own command with def](videos/en/pyfarm-05.mp4) | 77秒 |
+| 6 | [if is_ripe(): と else:](videos/ja/pyfarm-06.mp4) | [if is_ripe(): and else:](videos/en/pyfarm-06.mp4) | 43秒 |
+| 7 | [while count < 5:](videos/ja/pyfarm-07.mp4) | [while count < 5:](videos/en/pyfarm-07.mp4) | 45秒 |
 
 ## 🐍 Pythonで こわす・おく ／ 🐍 Python Break & Build
 

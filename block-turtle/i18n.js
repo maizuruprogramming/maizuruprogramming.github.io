@@ -137,7 +137,7 @@
   };
 
   // ブロックの アプリ ⇄ Python版 の くみあわせ
-  var PY_PAIRS = { 'index.html': 'python-draw.html', 'maze.html': 'python.html', 'space.html': 'python-space.html', 'craft.html': 'python-craft.html',
+  var PY_PAIRS = { 'index.html': 'python-draw.html', 'maze.html': 'python.html', 'space.html': 'python-space.html', 'craft.html': 'python-craft.html', 'farm.html': 'python-farm.html',
     'maze-junior.html': 'python-maze-junior.html', 'maze-key.html': 'python-maze-key.html', 'maze-enemy.html': 'python-maze-enemy.html' };
   // メニューの「🐍 Python に きりかえる」（Python版では「🧩 ブロックに もどる」）の こうもく
   window.pythonMenuItem = function () {
@@ -311,8 +311,8 @@
   };
 
   // 📝 リリースノート：あたらしい バージョンを だしたら、ここと releases.html の いちばん うえを そろえる
-  var RELEASE_VERSION = '1.19';
-  var RELEASE_DATE = '2026-11-09';   // リリースノートの ひづけ（「この アプリに ついて」に だす）
+  var RELEASE_VERSION = '1.21';
+  var RELEASE_DATE = '2026-11-28';   // リリースノートの ひづけ（「この アプリに ついて」に だす）
   window.RELEASE_DATE = RELEASE_DATE;
   window.RELEASE_VERSION = RELEASE_VERSION;
   function releaseSeen() { try { return localStorage.getItem('block-release-seen') === RELEASE_VERSION; } catch (e) { return true; } }
@@ -422,6 +422,7 @@
     { href: 'index.html',    icon: '🐢', ja: 'おえかき',   en: 'Drawing' },
     { href: 'maze.html',     icon: '⛏️', ja: 'めいろ',     en: 'Maze' },
     { href: 'space.html',    icon: '🚀', ja: 'うちゅう',   en: 'Space' },
+    { href: 'farm.html',     icon: '🌱', ja: 'はたけ',     en: 'Farm' },
     { href: 'craft.html',    icon: '🧱', ja: 'こわす・おく', en: 'Break & Build' },
     { href: 'aquarium.html', icon: '🐟', ja: 'すいぞくかん', en: 'Aquarium' }
     // 🎬 どうが・📖 かいせつしょ は「⚙ きのう」メニューから ひらく（ヘッダーには おかない）

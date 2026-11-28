@@ -1,7 +1,7 @@
 """めいろの ほん（PDF）を つくる。
 
-つかいかた: python3 tools/book/build.py [maze,draw,space,craft]
-  → book/{maze,draw,space,craft}-book.pdf と book/en/…（にほんご・English）
+つかいかた: python3 tools/book/build.py [maze,draw,space,farm,craft]
+  → book/{maze,draw,space,farm,craft}-book.pdf と book/en/…（にほんご・English）
 ステージの もんだい・こたえ は guide-data.js、めいろの かたちは 各アプリの map から よむ。
 おえかき・うちゅう・こわす・おく の 盤面の えは tools/book/boards/（capture_boards.py で とる）。
 ぶんしょうは tools/book/content*.py。
@@ -20,8 +20,8 @@ from pypdf import PdfReader, PdfWriter
 sys.path.insert(0, str(Path(__file__).parent))
 import content as C  # noqa: E402
 import content as C_MAZE  # noqa: E402
-import content_draw, content_space, content_craft  # noqa: E402
-BOOKS = {'maze': C_MAZE, 'draw': content_draw, 'space': content_space, 'craft': content_craft}
+import content_draw, content_space, content_craft, content_farm  # noqa: E402
+BOOKS = {'maze': C_MAZE, 'draw': content_draw, 'space': content_space, 'farm': content_farm, 'craft': content_craft}
 BOARDS = Path(__file__).parent / 'boards'
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -327,6 +327,8 @@ def build_body_simple(G, pages):
                 same = t(C.SAME_NOTE).format(n=it['n'])
             if ch['key'] == 'space' and it['n'] == 7:
                 cap += f'<p class="cap">{"れい：うちゅうは じっこうする たびに かわるよ" if L == 0 else "Example: the world changes every time you run"}</p>'
+            if ch['key'] in ('farm', 'pyfarm') and it['n'] == 7:
+                cap += f'<p class="cap">{"れい：テストでは、みの ばしょが ちがう はたけ 20こでも ためすよ" if L == 0 else "Example: the test also uses 20 farms with different ripe spots"}</p>'
             parts.append(stage_pages(G, a, it, None, None, a['name'][lang], same=same, board_html=bh, board_cap=cap))
         parts.append(column(ch))
     entries.append(('outro', 'おわりに' if L == 0 else 'Well done!', 'ch'))
@@ -481,9 +483,9 @@ ALL_TITLE = ('ほん ぜんぶ ― ブロックで プログラミング', 'All 
 
 
 def build_all():
-    """4さつの ほんを 1つに まとめる（ひょうし ＋ もくじ ＋ しおり）。book/all-books.pdf と book/en/all-books.pdf"""
+    """5さつの ほんを 1つに まとめる（ひょうし ＋ もくじ ＋ しおり）。book/all-books.pdf と book/en/all-books.pdf"""
     global L, C
-    order = ['draw', 'maze', 'space', 'craft']   # おえかき → めいろ → うちゅう → こわす・おく
+    order = ['draw', 'maze', 'space', 'farm', 'craft']   # おえかき → めいろ → うちゅう → はたけ → こわす・おく
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page()
@@ -503,7 +505,7 @@ def build_all():
 .cv .tr {{ font-size: 15pt; margin-top: 8mm; }} .cv .sub2 {{ font-size: 10.5pt; color: #7a5a2a; margin-left: 9mm; }}
 .cv .au {{ position: absolute; bottom: 25mm; left: 0; right: 0; text-align: center; color: #5a3a1a; }}
 </style></head><body><div class="cv pg"><h1>{t(ALL_TITLE)}</h1>
-<div class="lead">{"おえかき・めいろ・うちゅう・こわす おく の 4さつ（ブロック と Python）" if L == 0 else "Four books: Drawing, Maze, Space, Break & Build (blocks and Python)"}</div>
+<div class="lead">{"おえかき・めいろ・うちゅう・はたけ・こわす おく の 5さつ（ブロック と Python）" if L == 0 else "Five books: Drawing, Maze, Space, Farm, Break & Build (blocks and Python)"}</div>
 {rows}<p class="cap" style="margin-top:10mm">{"ばんごうは PDF の ページ（それぞれの ほんの ページばんごうは 1 から はじまります）" if L == 0 else "Numbers are PDF pages (each book numbers its own pages from 1)."}</p><div class="au">{t(C_MAZE.AUTHOR)}</div></div></body></html>'''
             tmp = Path('/tmp/all_cover.pdf')
             render(pg, cover, tmp, False)

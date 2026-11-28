@@ -1,10 +1,11 @@
 """本の「もんだい」ページに のせる 盤面の え（スタートの ようす）を アプリから とる。
 開発環境用：Blockly を スタブに かえた ブラウザで 各ページを ひらき、キャンバスを PNG に する。
-つかいかた: python3 tools/book/capture_boards.py  → tools/book/boards/{draw,space,craft,pyspace,pycraft}-N.png
+つかいかた: python3 tools/book/capture_boards.py  → tools/book/boards/{draw,space,craft,farm,pyspace,pycraft,pyfarm}-N.png
 """
 import base64, sys
 from pathlib import Path
 sys.path.insert(0, '/tmp'); sys.path.insert(0, '/tmp/vid')
+import harness
 from harness import page, sync_playwright
 import make_py_videos as MPV
 
@@ -29,12 +30,13 @@ with sync_playwright() as p:
       drawInstant(x, compile(CHALLENGES[9].answer), {color:'#fb8c00', width:2});
       drawInstant(x, compile(CHALLENGES[5].answer), {color:'#1e88e5', width:3});
       return c.toDataURL('image/png');}"""))
-    for key, f in (('space', 'space.html'), ('craft', 'craft.html')):
+    for key, f in (('space', 'space.html'), ('craft', 'craft.html'), ('farm', 'farm.html')):
+        if key == 'farm': harness.STUB = open('/tmp/stub_farm.js').read()   # はたけは JS で つくる ブロックが あるので べつの スタブ
         pg, errs = page(b, f)
         n = pg.evaluate("()=>LEVELS.filter(l=>l.mode!=='free').length")
         for i in range(n): save(f'{key}-{i + 1}.png', pg.evaluate(GRID_SHOT, i))
         print(key, n, errs[:1])
-    for key, f in (('pyspace', 'python-space.html'), ('pycraft', 'python-craft.html')):
+    for key, f in (('pyspace', 'python-space.html'), ('pycraft', 'python-craft.html'), ('pyfarm', 'python-farm.html')):
         pg, errs = MPV.page(b, f, 'ja')
         n = pg.evaluate("()=>LEVELS.length")
         for i in range(n): save(f'{key}-{i + 1}.png', pg.evaluate(PY_SHOT, i))

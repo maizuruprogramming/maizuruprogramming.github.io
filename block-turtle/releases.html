@@ -48,6 +48,19 @@
    あたらしい バージョンを だすときは、この いちばん うえに 1つ たして、
    i18n.js の RELEASE_VERSION も おなじ ばんごうに する（「NEW」の しるしが でる） */
 const RELEASES = [
+  { v: '1.21', date: '2026-11-28', items: [
+    ['fix', '🌱 はたけ（ブロック版）で、ページを ひらくと ブロックが くずれ、ボタンや もんだいの もじが でなかった ふぐあいを なおした（「⭐ じぶんの ブロック」の なまえの せんたくしが、ワークスペースが できる まえに よばれていた）', 'Fixed a bug in 🌱 Block Farm where blocks broke and button and task text did not appear on opening (the name list of “⭐ my block” was read before the workspace existed).'],
+    ['add', '🌱 はたけ と 🐍 Pythonで はたけ の かいせつ どうが（7ほん＋7ほん、にほんご／English）を ついか。かいせつ どうがの ページと かいせつしょの「🎬 かいせつ どうが」から みられる', 'Added explanation videos for 🌱 Block Farm and 🐍 Python Farm (7 + 7, Japanese/English). Watch them on the Videos page or from “🎬 Video” in the Guide.'],
+    ['doc', '📘 はたけの ほん（PDF・にほんご／English、ブロック＋Python、だい2ぶは 指導編）を ついか。「📘 ほん ぜんぶ」を 5さつ（おえかき → めいろ → うちゅう → はたけ → こわす・おく）に。かいせつしょの はたけの かだいに「📘 はたけの ほん」ボタン', 'Added the 📘 Farm book (PDF, Japanese/English, blocks + Python, Part 2 for teachers). “📘 All books” now has five books (Drawing → Maze → Space → Farm → Break & Build). Farm tasks in the Guide have a “📘 Farm book” button.']
+  ] },
+  { v: '1.20', date: '2026-11-28', items: [
+    ['add', '🌱 はたけで そだてよう（7ステージ）：たねを まき、みずを やり、みを とる。よく つかう てじゅんに なまえを つける「⭐ じぶんの ブロック」と、とれた かずを かぞえる「🔢 へんすう」を まなぶ。ステージ7は みの ばしょが ちがう はたけ 20こで テスト', '🌱 Block Farm (7 stages): plant seeds, water them and harvest. Learn ⭐ your own blocks (naming steps you use often) and a 🔢 variable that counts what you harvest. Stage 7 is tested on 20 farms with different ripe spots.'],
+    ['add', '🐍 Pythonで はたけ（7ステージ）：plant()・water()・harvest()・is_ripe() に くわえて、def で じぶんの めいれいを つくり、count = 0・count += 1・while count < 5: で かぞえる', '🐍 Python Farm (7 stages): besides plant(), water(), harvest() and is_ripe(), make your own command with def and count with count = 0, count += 1 and while count < 5:.'],
+    ['imp', 'うえの アプリの リンクに「🌱 はたけ」を ついか。「⚙ きのう」で ブロック版と Python版を いききできる', 'Added “🌱 Farm” to the app links at the top. Switch between the block and Python versions from ⚙ Settings.'],
+    ['imp', 'かいせつしょに はたけ・Pythonで はたけ の 14かだい（こたえの え・コード つき）を ついか（ぜんぶで 16アプリ・100かだい）。「まなびの つながり」に「じぶんの ブロック（関数）」の ぎょうと はたけの れつを ついか', 'Added 14 Farm and Python Farm tasks to the Guide, with answer pictures and code (16 apps and 100 tasks in all). “What you learn where” gets a “Functions (your own blocks)” row and a Farm column.'],
+    ['doc', 'ワークシート⑨（はたけ：じぶんの ブロックと かぞえる へんすう、にほんご／English）と 学習指導案「はたけで そだてよう」（4時間・本時 ステージ5）を ついか。チェックカード⑧に はたけの ぎょうを ついか', 'Added Worksheet 9 (Farm: your own block and a counting variable, Japanese/English) and a lesson plan for Block Farm (4 lessons, Japanese). Added Farm rows to Check card 8.'],
+    ['doc', 'あそびかた・べんきょうの しかた に はたけ と、「なまえを つけて まとめる」「かずを おぼえさせる」の コツを ついか', 'Added Farm and two new tips (“Name a group of steps”, “Let it remember a number”) to How to Play & Learn.']
+  ] },
   { v: '1.19', date: '2026-11-09', items: [
     ['doc', '学習指導案（原案 7本）と ワークシート（にほんご／English）の 書式を あらためた（1 単元と学習指導要領との関連・2 目標と評価規準・3 設定の理由・4 指導と評価の計画・5 本時の学習指導・6 準備・配慮事項と参考資料）', 'Reformatted the lesson plans (7, Japanese) and the worksheets (Japanese/English) to a new layout.'],
     ['imp', 'リリースノートを、バージョンの なかで「かいぜん」「ついか」「しゅうせい」「しりょう」ごとに まとめて ひょうじ', 'Release notes are now grouped by “Improved”, “New”, “Fixed” and “Docs” within each version.'],

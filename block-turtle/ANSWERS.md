@@ -14,10 +14,12 @@
 - ⛏ **ブロックでめいろ**（maze.html）：ステージ 1〜8
 - 🧭 **やじるしの めいろ**（maze-junior.html）：ステージ 1〜6、🗝 **かぎと とびらの めいろ**（maze-key.html）：ステージ 1〜4、👾 **てきを よける めいろ**（maze-enemy.html）：ステージ 1〜4
 - 🚀 **うちゅうで ほしあつめ**（space.html）：ステージ 1〜7
+- 🌱 **はたけで そだてよう**（farm.html）：ステージ 1〜7
 - 🧱 **こわして つくる ぼうけん**（craft.html）：ステージ 1〜7
 - 🐍 **Pythonで おえかき**（python-draw.html）：おだい ①〜⑨
 - 🐍 **Pythonで めいろ**（python.html）：ステージ 1〜5
 - 🐍 **Pythonで うちゅう**（python-space.html）：ステージ 1〜6
+- 🐍 **Pythonで はたけ**（python-farm.html）：ステージ 1〜7
 - 🐍 **Pythonで こわす・おく**（python-craft.html）：ステージ 1〜7
 - 🐍 **Pythonで やじるし めいろ・かぎと とびら・てきを よける**（python-maze-junior.html ／ python-maze-key.html ／ python-maze-enemy.html）：ステージ 1〜6・1〜4・1〜4
 
@@ -324,6 +326,40 @@ https://<ユーザー名>.github.io/<リポジトリ名>/python-craft.html?sense
 
 
 ---
+
+# 🌱 はたけで そだてよう
+
+ロボットで たねを まき、みずを やり、みを とります。
+- みずを やる まえに たねを まかないと「たねが まだ ないよ」で止まります（順序）
+- ステージ5は「⭐ じぶんの ブロック」（関数）、ステージ7は「🔢 とれた かず」（変数）を使います。ステージ7は、実のなる場所が違う畑 20個でも自動テストします
+
+### ステージ1　たねを まこう
+![ステージ1　たねを まこう](images/answers/farm1.png)
+**ポイント**：すすむ・まく・すすむ・まく… と、1マスずつ じゅんばんに。
+
+### ステージ2　みずも やろう
+![ステージ2　みずも やろう](images/answers/farm2.png)
+**ポイント**：まく → みず の じゅん。おなじ ブロックでも ならべかたで けっかが かわる。
+
+### ステージ3　くりかえしで 1れつ
+![ステージ3　くりかえしで 1れつ](images/answers/farm3.png)
+**ポイント**：3つの ブロックを 6かい くりかえす。ぜんぶで 4こ。
+
+### ステージ4　2れつの はたけ
+![ステージ4　2れつの はたけ](images/answers/farm4.png)
+**ポイント**：はしの くさの マスに でてから、みぎ・すすむ・みぎ で となりの れつへ。
+
+### ステージ5　じぶんの ブロック
+![ステージ5　じぶんの ブロック](images/answers/farm5.png)
+**ポイント**：よく つかう かたまりを「じぶんの ブロック」に すると、みじかく よみやすい。
+
+### ステージ6　みのったら とる
+![ステージ6　みのったら とる](images/answers/farm6.png)
+**ポイント**：マスを しらべて、みが あれば とる、なければ みず。
+
+### ステージ7　5こ とったら おわり
+![ステージ7　5こ とったら おわり](images/answers/farm7.png)
+**ポイント**：とった たびに 1 ふやし、5に なったら くりかえしが おわる。
 
 # 🧱 こわして つくる ぼうけん
 
@@ -634,6 +670,119 @@ while not mission_done():
 
 ---
 
+# 🐍 Pythonで はたけ（python-farm.html）
+
+ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
+
+### ステージ1　plant() で たねまき
+
+**ポイント**：forward() と plant() を 1ぎょうずつ じゅんばんに かく。
+
+```python
+forward()
+plant()
+forward()
+plant()
+forward()
+plant()
+```
+
+### ステージ2　water() で みずやり
+
+**ポイント**：plant() → water() の じゅん。ぎょうの じゅんばんが じっこうの じゅんばん。
+
+```python
+forward()
+plant()
+water()
+forward()
+plant()
+water()
+forward()
+plant()
+water()
+```
+
+### ステージ3　for で 1れつ
+
+**ポイント**：for の なかの 3ぎょうは スペース 4つ じさげ。
+
+```python
+for i in range(6):
+    forward()
+    plant()
+    water()
+```
+
+### ステージ4　2れつの はたけ
+
+**ポイント**：1れつめの for → まわる 4ぎょう → 2れつめの for。
+
+```python
+for i in range(4):
+    forward()
+    plant()
+    water()
+forward()
+turn_right()
+forward()
+turn_right()
+for i in range(4):
+    forward()
+    plant()
+    water()
+```
+
+### ステージ5　def で じぶんの めいれい
+
+**ポイント**：def plant_row(): の なかに for を かき、plant_row() で 3かい よぶ。def は よぶ ところより うえに かく。
+
+```python
+def plant_row():
+    for i in range(4):
+        forward()
+        plant()
+        water()
+
+plant_row()
+forward()
+turn_right()
+forward()
+turn_right()
+plant_row()
+forward()
+turn_left()
+forward()
+turn_left()
+plant_row()
+```
+
+### ステージ6　if is_ripe(): と else:
+
+**ポイント**：if is_ripe(): の なかで harvest()、else: の なかで water()。
+
+```python
+for i in range(6):
+    forward()
+    if is_ripe():
+        harvest()
+    else:
+        water()
+```
+
+### ステージ7　while count < 5:
+
+**ポイント**：count = 0 から はじめ、とるたびに count += 1。while count < 5: で 5こで とまる。
+
+```python
+count = 0
+while count < 5:
+    forward()
+    if is_ripe():
+        harvest()
+        count += 1
+```
+
 # 🐍 Pythonで こわす・おく（python-craft.html）
 
 ブロックモードで組むと、下の Python と同じ動きになります。Python モードでは、このコードをそのまま書けば正解です。
@@ -897,10 +1046,12 @@ These images show the English block labels. To see the same blocks in the app, s
 - 🐢 **Block Drawing** (index.html): challenges ①–⑨
 - ⛏ **Block Maze** (maze.html): stages 1–8
 - 🚀 **Space Star Hunt** (space.html): stages 1–7
+- 🌱 **Block Farm** (farm.html): stages 1–7
 - 🧱 **Break & Build Quest** (craft.html): stages 1–7
 - 🐍 **Python Drawing** (python-draw.html): challenges ①–⑨
 - 🐍 **Python Maze** (python.html): stages 1–5
 - 🐍 **Python Space** (python-space.html): stages 1–6
+- 🐍 **Python Farm** (python-farm.html): stages 1–7
 - 🐍 **Python Break & Build** (python-craft.html): stages 1–7
 
 ## 📖 Teacher mode (load the answer blocks)
@@ -1125,6 +1276,40 @@ With the Stage 6 program, the astronaut keeps going around in the same place and
 The Stage 7 program clears any space.
 
 ---
+
+# 🌱 Block Farm
+
+The robot plants seeds, waters them and harvests.
+- Watering before planting stops with “There is no seed yet.” (order matters)
+- Stage 5 uses ⭐ your own block (a function); Stage 7 uses the 🔢 “harvested” variable and is also tested on 20 farms with different ripe spots.
+
+### Stage 1: Plant seeds
+![Stage 1: Plant seeds](images/answers/en/farm1.png)
+**Point**: Move, plant, move, plant… one square at a time.
+
+### Stage 2: Water them too
+![Stage 2: Water them too](images/answers/en/farm2.png)
+**Point**: Plant, then water. The same blocks give a different result in a different order.
+
+### Stage 3: One row with a loop
+![Stage 3: One row with a loop](images/answers/en/farm3.png)
+**Point**: Repeat 3 blocks 6 times: 4 blocks in all.
+
+### Stage 4: Two rows
+![Stage 4: Two rows](images/answers/en/farm4.png)
+**Point**: Step onto the grass at the end, then right, forward, right to the next row.
+
+### Stage 5: Make your own block
+![Stage 5: Make your own block](images/answers/en/farm5.png)
+**Point**: Turning a set of blocks you use often into your own block makes the program short and easy to read.
+
+### Stage 6: Harvest when ripe
+![Stage 6: Harvest when ripe](images/answers/en/farm6.png)
+**Point**: Check the square: harvest if ripe, otherwise water.
+
+### Stage 7: Stop at 5
+![Stage 7: Stop at 5](images/answers/en/farm7.png)
+**Point**: Add 1 each time you harvest; the loop ends when it reaches 5.
 
 # 🧱 Break & Build Quest
 
@@ -1438,6 +1623,119 @@ while not mission_done():
 ```
 
 ---
+
+# 🐍 Python Farm (python-farm.html)
+
+Building with blocks gives the same Python as below. In Python mode, typing this code clears the stage.
+
+### Stage 1: Planting with plant()
+
+**Point**: Write forward() and plant() one line at a time, in order.
+
+```python
+forward()
+plant()
+forward()
+plant()
+forward()
+plant()
+```
+
+### Stage 2: Watering with water()
+
+**Point**: plant() then water(). The order of the lines is the order they run.
+
+```python
+forward()
+plant()
+water()
+forward()
+plant()
+water()
+forward()
+plant()
+water()
+```
+
+### Stage 3: One row with for
+
+**Point**: Indent the 3 lines inside for by 4 spaces.
+
+```python
+for i in range(6):
+    forward()
+    plant()
+    water()
+```
+
+### Stage 4: Two rows
+
+**Point**: First for → 4 lines to turn → second for.
+
+```python
+for i in range(4):
+    forward()
+    plant()
+    water()
+forward()
+turn_right()
+forward()
+turn_right()
+for i in range(4):
+    forward()
+    plant()
+    water()
+```
+
+### Stage 5: Your own command with def
+
+**Point**: Put the for loop inside def plant_row(): and call plant_row() 3 times. Write def above where you call it.
+
+```python
+def plant_row():
+    for i in range(4):
+        forward()
+        plant()
+        water()
+
+plant_row()
+forward()
+turn_right()
+forward()
+turn_right()
+plant_row()
+forward()
+turn_left()
+forward()
+turn_left()
+plant_row()
+```
+
+### Stage 6: if is_ripe(): and else:
+
+**Point**: harvest() inside if is_ripe():, water() inside else:.
+
+```python
+for i in range(6):
+    forward()
+    if is_ripe():
+        harvest()
+    else:
+        water()
+```
+
+### Stage 7: while count < 5:
+
+**Point**: Start with count = 0 and add count += 1 each harvest. while count < 5: stops at 5.
+
+```python
+count = 0
+while count < 5:
+    forward()
+    if is_ripe():
+        harvest()
+        count += 1
+```
 
 # 🐍 Python Break & Build (python-craft.html)
 

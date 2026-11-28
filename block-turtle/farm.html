@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>はたけで そだてよう / Block Farm</title>
+<!-- Blockly 本体・標準ブロック・JavaScript変換（CDN） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/javascript_compressed.js"></script>
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>  <!-- 📜 しゅうりょうしょう -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="mobile.css">  <!-- 📱 スマホの ならび（はば 600px いか） -->
+<style>
+  /* ===== テーマ：はたけ ===== */
+  :root {
+    --page-bg: #3f6b2a repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 16px, transparent 16px 32px);
+    --hdr-bg: linear-gradient(#7cc04a 0 10px, #5a9433 10px 14px, #6b4a2b 14px);
+    --hdr-border: #3b2714; --title-shadow: #2a1a0c; --link: #ffe08a;
+    --btn: #7a5a36; --btn-light: #b08a5c; --btn-dark: #3b2714; --fn: #3c5aa6;
+    --board-ring: #5a3b1d;
+  }
+  .board { box-shadow: 0 0 0 4px var(--board-ring), 0 0 0 6px #000; }
+  #randomRow { display: none; }
+  #farmCount { font-size: 19px; color: #ffe08a; text-shadow: 2px 2px 0 #000; text-align: center; max-width: 400px; line-height: 1.5; }
+  #farmCount.done { color: #b5f07a; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🌱</span><span class="lbl" data-i18n="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="blocklyDiv"></div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText" class="lessonText"></div>
+      <div id="limitText"></div>
+      <button id="hintBtn" data-i18n="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div id="farmCount"></div>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
+    <div class="row">
+      <label><span data-i18n="speed"></span> <input id="speed" type="range" min="1" max="10" value="4"></label>
+    </div>
+    <div id="msg"></div>
+    <div id="info"></div>
+  </div>
+</main>
+
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title" data-i18n="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
+    <div class="btns">
+      <button id="dlgYes" data-i18n="yes"></button>
+      <button id="dlgNo" data-i18n="no"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SAVE_KEY = 'block-farm';
+const store = {
+  get(k)    { try { return JSON.parse(localStorage.getItem(SAVE_KEY + k)); } catch (_) { return null; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+// ひょうじを ひらがなに そろえる（標準ブロックの ことば）
+if (LANG === 'ja') Object.assign(Blockly.Msg, { CONTROLS_REPEAT_TITLE: '%1 かい くりかえす', CONTROLS_REPEAT_INPUT_DO: '' });
+else Object.assign(Blockly.Msg, { CONTROLS_REPEAT_INPUT_DO: '' });
+</script>
+<script src="farm-world.js"></script>  <!-- 🌱 はたけの せかい（Python版と きょうつう） -->
+<script>
+window.SHOW_VAR = true;   // ステージ7で「とれた かず」を ばんめんの うえに だす
+
+/* ========== 1. オリジナルの ブロック ========== */
+Blockly.common.defineBlocksWithJsonArray([
+  { type: 'fm_forward', message0: t('bForward'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'fm_right', message0: t('bRight'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'fm_left', message0: t('bLeft'), previousStatement: null, nextStatement: null, colour: COL.move },
+  { type: 'fm_plant', message0: t('bPlant'), previousStatement: null, nextStatement: null, colour: COL.farm },
+  { type: 'fm_water', message0: t('bWater'), previousStatement: null, nextStatement: null, colour: COL.farm },
+  { type: 'fm_harvest', message0: t('bHarvest'), previousStatement: null, nextStatement: null, colour: COL.farm },
+  { type: 'fm_if_ripe', message0: t('bIfRipe'), message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    previousStatement: null, nextStatement: null, colour: COL.iff },
+  { type: 'fm_ifelse_ripe', message0: t('bIfRipe'), message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }],
+    message2: t('bElse') + ' %1', args2: [{ type: 'input_statement', name: 'ELSE' }],
+    previousStatement: null, nextStatement: null, colour: COL.iff },
+  { type: 'fm_set', message0: t('bSet'), args0: [{ type: 'field_number', name: 'N', value: 0, min: 0, max: 99, precision: 1 }],
+    previousStatement: null, nextStatement: null, colour: COL.vari },
+  { type: 'fm_inc', message0: t('bInc'), previousStatement: null, nextStatement: null, colour: COL.vari },
+  { type: 'fm_while_less', message0: t('bWhile'), args0: [{ type: 'field_number', name: 'N', value: 5, min: 1, max: 99, precision: 1 }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], previousStatement: null, nextStatement: null, colour: COL.loop },
+  { type: 'fm_def', message0: t('bDef'), args0: [{ type: 'field_input', name: 'NAME', text: t('defName') }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], colour: COL.func }
+]);
+// じぶんの ブロックを よぶ：なまえは「つくる」ブロックから えらぶ
+// ワークスペースは あとで つくる（ツールボックスを つくる とちゅうでも よばれるので、まだ ない ときは null）
+let farmWs = null;
+const defNames = () => {
+  const ws = farmWs;
+  const names = ws ? ws.getBlocksByType('fm_def', false).map((b) => b.getFieldValue('NAME')).filter((n) => n && n.trim()) : [];
+  const list = [...new Set(names.length ? names : [t('defName')])];
+  return list.map((n) => [n, n]);
+};
+Blockly.Blocks['fm_call'] = {
+  init() {
+    const [pre, post] = t('bCall').split('%1');
+    const dd = new Blockly.FieldDropdown(function () {
+      const opts = defNames(), v = this.getValue && this.getValue();
+      if (v && !opts.some((o) => o[1] === v)) opts.unshift([v, v]);   // なまえを かえる とちゅうでも きえない ように
+      return opts;
+    });
+    this.appendDummyInput().appendField(pre.trim()).appendField(dd, 'NAME').appendField(post.trim());
+    this.setPreviousStatement(true); this.setNextStatement(true); this.setColour(COL.func);
+  }
+};
+
+/* ========== 2. ブロック → JavaScript ========== */
+const gen = javascript.javascriptGenerator;
+gen.STATEMENT_PREFIX = 'highlight(%1);\n';   // いま うごいている ブロックを光らせる
+gen.addReservedWords('highlight');
+const q = (s) => JSON.stringify(String(s));
+gen.forBlock['fm_forward'] = () => 'forward();\n';
+gen.forBlock['fm_right']   = () => 'turnRight();\n';
+gen.forBlock['fm_left']    = () => 'turnLeft();\n';
+gen.forBlock['fm_plant']   = () => 'plant();\n';
+gen.forBlock['fm_water']   = () => 'water();\n';
+gen.forBlock['fm_harvest'] = () => 'harvest();\n';
+gen.forBlock['fm_if_ripe'] = (b, g) => `if (isRipe()) {\n${g.statementToCode(b, 'DO')}}\n`;
+gen.forBlock['fm_ifelse_ripe'] = (b, g) => `if (isRipe()) {\n${g.statementToCode(b, 'DO')}} else {\n${g.statementToCode(b, 'ELSE')}}\n`;
+gen.forBlock['fm_set'] = (b) => `setCount(${Number(b.getFieldValue('N')) || 0});\n`;
+gen.forBlock['fm_inc'] = () => 'incCount();\n';
+gen.forBlock['fm_while_less'] = (b, g) => `while (countLess(${Number(b.getFieldValue('N')) || 0})) {\n  loopGuard();\n${g.statementToCode(b, 'DO')}}\n`;
+gen.forBlock['fm_def'] = (b, g) => `defBlock(${q(b.getFieldValue('NAME'))}, () => {\n${g.statementToCode(b, 'DO')}});\n`;
+gen.forBlock['fm_call'] = (b) => `callBlock(${q(b.getFieldValue('NAME'))});\n`;
+// 「つくる」ブロックを さきに よみこんでから、ほかの ブロックを うごかす
+function workspaceCode() {
+  if (gen.init) gen.init(workspace);   // へんすうの なまえ などの じゅんび（本物の Blockly）
+  const tops = workspace.getTopBlocks(true);
+  const order = [...tops.filter((b) => b.type === 'fm_def'), ...tops.filter((b) => b.type !== 'fm_def')];
+  let code = '';
+  for (const b of order) { let c = gen.blockToCode(b); if (Array.isArray(c)) c = ''; code += c; }
+  return gen.finish ? gen.finish(code) : code;
+}
+
+/* ========== 3. ステージ ========== */
+const MOVE = ['fm_forward', 'fm_right', 'fm_left'];
+const WORK = ['fm_plant', 'fm_water', 'fm_harvest'];
+const ALL = [...MOVE, ...WORK, 'controls_repeat_ext', 'fm_if_ripe', 'fm_ifelse_ripe', 'fm_def', 'fm_call', 'fm_set', 'fm_inc', 'fm_while_less'];
+const LEVELS = [
+  { title: 'ステージ1　たねを まこう',
+    en: { title: 'Stage 1: Plant seeds', text: 'Plant a seed 🌱 on all 3 soil squares. Move forward, then plant — 3 times.', hint: 'move forward → plant a seed, three times' },
+    text: '3つの つちの マスに たね 🌱 を まこう。「まえに すすむ → たねを まく」を 3かい。',
+    hint: 'まえに すすむ → たねを まく を 3かい ならべよう',
+    blocks: ['fm_forward', 'fm_plant'] },
+  { title: 'ステージ2　みずも やろう',
+    en: { title: 'Stage 2: Water them too', text: 'A sprout comes up when you water a seed 💧. Plant first, then water. What happens if you swap the order?', hint: 'move forward → plant a seed → water, three times' },
+    text: 'たねに みず 💧 を やると めが でるよ。まいてから みず。じゅんばんを かえると どうなるかな？',
+    hint: 'まえに すすむ → たねを まく → みずを やる を 3かい',
+    blocks: ['fm_forward', 'fm_plant', 'fm_water'] },
+  { title: 'ステージ3　くりかえしで 1れつ',
+    en: { title: 'Stage 3: One row with a loop', text: 'Six soil squares in a row. Put "move → plant → water" inside a loop.', hint: 'repeat 6 (move forward → plant a seed → water)' },
+    text: 'つちの マスが 6つ ならんでいるよ。「すすむ → まく → みず」を くりかえしで まとめよう。',
+    hint: '6かい くりかえす（まえに すすむ → たねを まく → みずを やる）',
+    blocks: [...MOVE, 'fm_plant', 'fm_water', 'controls_repeat_ext'], limit: 4 },
+  { title: 'ステージ4　2れつの はたけ',
+    en: { title: 'Stage 4: Two rows', text: 'When you reach the end of a row, turn around and plant the next row too.', hint: 'repeat 4 (…) → forward → turn right → forward → turn right → repeat 4 (…)' },
+    text: 'はしまで いったら ぐるっと まわって、となりの れつも うえよう。',
+    hint: '4かい くりかえす（…）→ すすむ → みぎを むく → すすむ → みぎを むく → 4かい くりかえす（…）',
+    blocks: [...MOVE, 'fm_plant', 'fm_water', 'controls_repeat_ext'], limit: 12 },
+  { title: 'ステージ5　じぶんの ブロック',
+    en: { title: 'Stage 5: Make your own block', text: 'Three rows! Make your own block "plant a row" and use it 3 times. Building the same thing 3 times is too many blocks.', hint: 'In "make my block": repeat 4 (forward → plant → water). Main: my block → forward → right → forward → right → my block → forward → left → forward → left → my block' },
+    text: '3れつの はたけ。「1れつ うえる」を じぶんの ブロックに して、3かい つかおう。おなじ ものを 3かい くむと ブロックが おおすぎるよ。',
+    hint: '「つくる」の なか：4かい くりかえす（すすむ → まく → みず）。うごかす ほう：1れつ うえる → すすむ → みぎ → すすむ → みぎ → 1れつ うえる → すすむ → ひだり → すすむ → ひだり → 1れつ うえる',
+    blocks: [...MOVE, 'fm_plant', 'fm_water', 'controls_repeat_ext', 'fm_def', 'fm_call'], limit: 16 },
+  { title: 'ステージ6　みのったら とる',
+    en: { title: 'Stage 6: Harvest when ripe', text: 'Some plants are ripe 🍅 and some are still green. Harvest the ripe ones, and water the green ones.', hint: 'repeat 6 (forward → if ripe: harvest / else: water)' },
+    text: 'みが なっている ところ 🍅 と、まだ みどりの ところが あるよ。みが なっていたら とる、でなければ みずを やろう。',
+    hint: '6かい くりかえす（すすむ → もし みが なっていたら とる ／ でなければ みずを やる）',
+    blocks: [...MOVE, ...WORK, 'controls_repeat_ext', 'fm_if_ripe', 'fm_ifelse_ripe'], limit: 5 },
+  { title: 'ステージ7　5こ とったら おわり',
+    en: { title: 'Stage 7: Stop at 5', text: 'The basket 🧺 holds only 5. Count with "harvested" and stop at exactly 5. Your program is tested on 20 farms where the ripe spots change!', hint: 'set harvested to 0 → repeat while harvested < 5 (forward → if ripe: harvest → add 1 to harvested)' },
+    text: 'かご 🧺 には 5こ しか はいらない。「とれた かず」で かぞえて、ちょうど 5こで とめよう。みの ばしょが ちがう はたけ 20こでも テストするよ！',
+    hint: 'とれた かず を 0 に する → とれた かず が 5 より すくない あいだ くりかえす（すすむ → もし みが なっていたら：とる → とれた かず を 1 ふやす）',
+    blocks: [...MOVE, ...WORK, 'controls_repeat_ext', 'fm_if_ripe', 'fm_ifelse_ripe', 'fm_set', 'fm_inc', 'fm_while_less'], limit: 6 }
+];
+LEVELS.forEach((lv, i) => Object.assign(lv, FARM[i]));
+
+/* ---------- ステージの こたえ（先生モード ?sensei で よみこめる） ---------- */
+{
+  const chain = (list) => list.reduceRight((next, b) => next ? { ...b, next: { block: next } } : b, null);
+  const b = (type) => () => ({ type });
+  const f = b('fm_forward'), r = b('fm_right'), l = b('fm_left'), p = b('fm_plant'), w = b('fm_water'), h = b('fm_harvest'), inc = b('fm_inc');
+  const repeat = (n, body) => ({ type: 'controls_repeat_ext',
+    inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: n } } }, DO: { block: chain(body) } } });
+  const ifRipe = (yes) => ({ type: 'fm_if_ripe', inputs: { DO: { block: chain(yes) } } });
+  const ifElse = (yes, no) => ({ type: 'fm_ifelse_ripe', inputs: { DO: { block: chain(yes) }, ELSE: { block: chain(no) } } });
+  const name = t('defName');
+  const def = (body) => ({ type: 'fm_def', fields: { NAME: name }, inputs: { DO: { block: chain(body) } } });
+  const call = () => ({ type: 'fm_call', fields: { NAME: name } });
+  const program = (...stacks) => ({ blocks: { languageVersion: 0, blocks: stacks.map((s, i) => ({ ...chain(s), x: 30 + i * 360, y: 30 })) } });
+  const ANSWERS = [
+    program([f(), p(), f(), p(), f(), p()]),
+    program([f(), p(), w(), f(), p(), w(), f(), p(), w()]),
+    program([repeat(6, [f(), p(), w()])]),
+    program([repeat(4, [f(), p(), w()]), f(), r(), f(), r(), repeat(4, [f(), p(), w()])]),
+    program([call(), f(), r(), f(), r(), call(), f(), l(), f(), l(), call()], [def([repeat(4, [f(), p(), w()])])]),
+    program([repeat(6, [f(), ifElse([h()], [w()])])]),
+    program([{ type: 'fm_set', fields: { N: 0 } }, { type: 'fm_while_less', fields: { N: 5 }, inputs: { DO: { block: chain([f(), ifRipe([h(), inc()])]) } } }])
+  ];
+  LEVELS.forEach((lv, i) => { lv.answer = ANSWERS[i]; });
+}
+
+/* ========== 4. ワークスペース ========== */
+const flyout = (types) => ({
+  kind: 'flyoutToolbox',
+  contents: types.map((ty) => ty === 'controls_repeat_ext'
+    ? { kind: 'block', type: ty, inputs: { TIMES: { shadow: { type: 'math_number', fields: { NUM: 3 } } } } }
+    : { kind: 'block', type: ty })
+});
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: flyout(ALL), renderer: 'zelos', theme: farmTheme, trashcan: true,
+  grid: { spacing: 24, length: 2, colour: '#5a4a30', snap: true },
+  zoom: { controls: true, wheel: true, startScale: 0.95 },
+  move: { scrollbars: true, drag: true, wheel: false }
+});
+farmWs = workspace;
+
+let levelIndex = 0, loading = false;
+workspace.addChangeListener((e) => {
+  if (e.isUiEvent || loading) return;
+  store.set('-ws-' + levelIndex, Blockly.serialization.workspaces.save(workspace));
+  updateInfo();
+});
+
+/* ========== 5. ステージの きりかえ ========== */
+const msg = document.getElementById('msg');
+const levelSelect = document.getElementById('levelSelect');
+const clearDialog = document.getElementById('clearDialog');
+let cleared = store.get('-cleared') || [];
+
+function refreshLevelList() {
+  levelSelect.innerHTML = '';
+  LEVELS.forEach((lv, i) => levelSelect.add(new Option((cleared[i] ? '✅ ' : '') + L(lv, 'title'), i)));
+  levelSelect.value = levelIndex;
+}
+function setLevel(i) {
+  levelIndex = i;
+  const lv = LEVELS[i];
+  store.set('-level', i);
+  refreshLevelList();
+  document.getElementById('lessonText').textContent = L(lv, 'text');
+  document.getElementById('limitText').textContent = lv.limit ? t('limit', lv.limit) : '';
+  const hint = document.getElementById('hintText');
+  hint.textContent = L(lv, 'hint'); hint.style.display = 'none';
+  loading = true;
+  workspace.updateToolbox(flyout(lv.blocks));
+  workspace.clear();
+  const saved = store.get('-ws-' + i);
+  if (saved) { try { Blockly.serialization.workspaces.load(saved, workspace); } catch (_) {} }
+  loading = false;
+  loadFarm(lv);
+  resetRobot();
+  updateInfo();
+}
+
+function showClearDialog() {
+  const next = LEVELS[levelIndex + 1];
+  document.getElementById('dlgQuestion').innerHTML =
+    `${t('dlgQuestion')}<br><span style="font-size:15px">${LANG === 'en' ? '(' : '（'}${L(next, 'title')}${LANG === 'en' ? ')' : '）'}</span>`;
+  clearDialog.classList.add('show');
+  document.getElementById('dlgYes').focus();
+}
+let dialogTimer = null;
+function hideClearDialog() { clearTimeout(dialogTimer); dialogTimer = null; clearDialog.classList.remove('show'); }
+function allStagesCleared() { return LEVELS.every((lv, i) => cleared[i]); }
+function showCertificate(thenNext) {
+  Certificate.show({ app: t('appTitle'), icons: ['🌱', '🍅'],
+    onClose: thenNext && levelIndex < LEVELS.length - 1 ? showClearDialog : null });
+}
+function markCleared() {
+  const wasAll = allStagesCleared();
+  cleared[levelIndex] = true;
+  store.set('-cleared', cleared);
+  refreshLevelList();
+  if (!wasAll && allStagesCleared()) { dialogTimer = setTimeout(() => showCertificate(true), 1600); return; }
+  if (levelIndex < LEVELS.length - 1) dialogTimer = setTimeout(showClearDialog, 1600);
+}
+
+/* ========== 6. じっこう ========== */
+function resetRobot() {
+  if (timer) clearTimeout(timer);
+  timer = null;
+  resetFarmView();
+  msg.textContent = ''; msg.className = '';
+  hideClearDialog();
+  workspace.highlightBlock(null);
+  draw();
+}
+function blockCount() { return workspace.getAllBlocks(false).filter((b) => !b.isShadow()).length; }
+function updateInfo(moves) {
+  document.getElementById('info').textContent = t('used', blockCount()) + (moves != null ? t('moves', moves) : '');
+}
+function finish(result, moves) {
+  const lv = LEVELS[levelIndex];
+  updateInfo(moves);
+  if (result.kind !== 'ok') {
+    msg.className = 'ng'; msg.textContent = result.text;
+    if (result.why === 'test') Sound.goalSoSo();
+    else if (result.why !== 'crash' && result.why !== 'miss') Sound.fail();
+    return;
+  }
+  msg.className = 'ok';
+  const n = blockCount();
+  if (lv.limit && n > lv.limit) { msg.textContent = t('overLimit', n, lv.limit); Sound.goalSoSo(); }
+  else if (lv.mode === 'test') { msg.textContent = t('grand'); markCleared(); Sound.grandClear(); }
+  else { msg.textContent = t('stageClear'); markCleared(); Sound.clear(); }
+}
+function run() {
+  Sound.unlock();
+  resetRobot();
+  const { frames, result } = simulate(workspaceCode());
+  window.__lastResult = { frames, result };   // テストよう
+  let i = 0;
+  const moves = () => frames.filter((f) => f.event === 'move' || f.event === 'turn').length;
+  if (window.__instant) {
+    frames.forEach((f, k) => applyFrame(f, k ? frames[k - 1].dir : START.dir));
+    draw(); return finish(result, moves());
+  }
+  const step = () => {
+    if (i < frames.length) {
+      const f = frames[i++];
+      applyFrame(f, i > 1 ? frames[i - 2].dir : START.dir);
+      workspace.highlightBlock(f.id);
+      draw();
+      const speed = Number(document.getElementById('speed').value);
+      timer = setTimeout(step, 650 - speed * 60);
+    } else {
+      timer = null;
+      workspace.highlightBlock(null);
+      finish(result, moves());
+    }
+  };
+  step();
+}
+
+document.getElementById('run').addEventListener('click', run);
+document.getElementById('reset').addEventListener('click', resetRobot);
+levelSelect.addEventListener('change', () => setLevel(Number(levelSelect.value)));
+document.getElementById('hintBtn').addEventListener('click', () => {
+  const h = document.getElementById('hintText');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+});
+document.getElementById('dlgYes').addEventListener('click', () => { hideClearDialog(); setLevel(levelIndex + 1); });
+document.getElementById('dlgNo').addEventListener('click', () => {
+  hideClearDialog(); resetRobot();
+  msg.className = 'ok'; msg.textContent = t('retry');
+});
+document.addEventListener('keydown', (e) => {
+  if (clearDialog.classList.contains('show') && e.key === 'Escape') document.getElementById('dlgNo').click();
+});
+window.addEventListener('resize', () => Blockly.svgResize(workspace));
+
+setLabel(document.getElementById('run'), '▶', t('run'));
+setLabel(document.getElementById('reset'), '↺', t('reset'));
+setLabel(document.getElementById('answerBtn'), '📖', t('answer'));
+buildNav(document.getElementById('nav'));
+applyI18n(t);
+setLevel(Math.min(Number(store.get('-level')) || 0, LEVELS.length - 1));
+
+// 先生モード：URL の さいごに ?sensei を つけると「こたえ」ボタンが でる
+const answerBtn = document.getElementById('answerBtn');
+if (new URLSearchParams(location.search).has('sensei')) answerBtn.style.display = '';
+answerBtn.addEventListener('click', () => {
+  resetRobot(); workspace.clear();
+  Blockly.serialization.workspaces.load(LEVELS[levelIndex].answer, workspace);
+  msg.className = ''; msg.textContent = t('answerLoaded');
+});
+
+// つぎの ひとへ：ぜんぶの ステージの ブロック・クリアきろくを けして ステージ1へ
+function resetForNextPerson() {
+  try {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith(SAVE_KEY + '-ws-') || [SAVE_KEY + '-cleared', SAVE_KEY + '-level'].includes(k))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch (_) {}
+  cleared = [];
+  Certificate.clearName();
+  loading = true; workspace.clear(); loading = false;
+  setLevel(0);
+  msg.className = 'ok'; msg.textContent = t('resetDone');
+}
+
+// ⚙ きのう メニュー
+let resetArmed = null;
+FnMenu(document.getElementById('fnBtn'), [
+  { icon: () => Sound.muted ? '🔇' : '🔊',
+    label: () => Sound.muted ? t('soundOff') : t('soundOn'),
+    onClick: (m) => { Sound.unlock(); Sound.toggle(); m.render(); if (!Sound.muted) Sound.harvest(); } },
+  langMenuItem(),
+  nightMenuItem(),
+  calmMenuItem(),
+  { icon: () => '📜', label: () => t('certItem'), visible: allStagesCleared,
+    onClick: (m) => { m.close(); showCertificate(false); } },
+  { icon: () => resetArmed ? '⚠' : '🔄',
+    label: () => resetArmed ? t('armedItem') : t('nextPerson'),
+    warn: () => !!resetArmed,
+    onClick: (m) => {
+      if (!resetArmed) {
+        msg.className = 'ng'; msg.textContent = t('armedMsg');
+        resetArmed = setTimeout(() => { resetArmed = null; m.render(); }, 4000);
+        m.render();
+        return;
+      }
+      clearTimeout(resetArmed); resetArmed = null;
+      m.close();
+      resetForNextPerson();
+    } }
+]);
+</script>
+<script src="mobile.js"></script>
+</body>
+</html>

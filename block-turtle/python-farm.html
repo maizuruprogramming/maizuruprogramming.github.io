@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pythonで はたけ / Python Farm</title>
+<!-- 🐍 Python版：ブロックで くむと Python に なる。Python は ページの なかの ちいさな かいしゃくき で よみとり、
+     もとの アプリと おなじ せかい・はんてい・ドット絵・こうかおん で うごかす（python-core.js） -->
+<script src="https://unpkg.com/blockly@11/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly@11/blocks_compressed.js"></script>
+<script src="i18n.js"></script>
+<script src="certificate.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="python.css">
+<link rel="stylesheet" href="mobile.css">  <!-- 📱 スマホの ならび（はば 600px いか） -->
+<style>
+  /* ===== テーマ：はたけ ===== */
+  :root {
+    --page-bg: #3f6b2a repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 16px, transparent 16px 32px);
+    --hdr-bg: linear-gradient(#7cc04a 0 10px, #5a9433 10px 14px, #6b4a2b 14px);
+    --hdr-border: #3b2714; --title-shadow: #2a1a0c; --link: #ffe08a;
+    --btn: #7a5a36; --btn-light: #b08a5c; --btn-dark: #3b2714; --fn: #3c5aa6;
+    --board-ring: #5a3b1d;
+  }
+  .board { box-shadow: 0 0 0 4px var(--board-ring), 0 0 0 6px #000; }
+  #farmCount { font-size: 19px; color: #ffe08a; text-shadow: 2px 2px 0 #000; text-align: center; max-width: 400px; line-height: 1.5; }
+  #farmCount.done { color: #b5f07a; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="ico">🐍</span><span class="lbl" id="appTitle"></span></h1>
+  <nav class="nav" id="nav"></nav>
+  <button id="run"></button>
+  <button id="reset" class="sub"></button>
+  <button id="answerBtn" class="sub" style="display:none;"></button>
+  <button id="fnBtn" class="sub2"></button>
+</header>
+<main>
+  <div id="codeSide">
+    <div id="tabs"><button id="tabBlocks" class="on"></button><button id="tabPy" class="off"></button></div>
+    <div id="blocklyDiv"></div>
+    <div id="pyLabel"></div>
+    <div id="editorBox"><div id="lineNo"></div><div id="codeWrap"><pre id="hl" aria-hidden="true"></pre><textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div></div>
+    <div id="palette"></div>
+    <details id="mapBox"><summary id="mapTitle"></summary><table id="mapTable"></table></details>
+    <div id="console"></div>
+  </div>
+  <div id="stage">
+    <div id="lesson" class="panel">
+      <select id="levelSelect"></select>
+      <div id="lessonText" class="lessonText"></div>
+      <button id="hintBtn"></button>
+      <div id="hintText"></div>
+    </div>
+    <div id="farmCount"></div>
+    <canvas id="board" class="board" width="400" height="400"></canvas>
+    <div class="row"><label><span id="speedLbl"></span> <input id="speed" type="range" min="1" max="10" value="5"></label></div>
+    <div id="msg"></div>
+    <div id="info"></div>
+  </div>
+</main>
+<div id="clearDialog" role="dialog" aria-modal="true" aria-labelledby="dlgQuestion">
+  <div class="panel box">
+    <div class="title" id="dlgTitle"></div>
+    <div class="question" id="dlgQuestion"></div>
+    <div class="btns"><button id="dlgYes"></button><button id="dlgNo"></button></div>
+  </div>
+</div>
+<script>
+const SAVE_KEY = 'block-pyfarm';
+// ほぞん（この ブラウザの なかだけ）
+const store = {
+  get(k) { let v = null; try { v = localStorage.getItem(SAVE_KEY + k); } catch (_) { return null; } if (v == null) return null; try { return JSON.parse(v); } catch (_) { return v; } },
+  set(k, v) { try { localStorage.setItem(SAVE_KEY + k, JSON.stringify(v)); } catch (_) {} }
+};
+</script>
+<script src="farm-world.js"></script>  <!-- 🌱 はたけの せかい（ブロック版と きょうつう） -->
+<script>
+STR.ja.pyTitle = 'Pythonで はたけ'; STR.en.pyTitle = 'Python Farm';
+
+/* ========== Python版の せってい ========== */
+const WORLD = {
+  icons: ['🐍', '🍅'], theme: farmTheme, renderer: 'zelos', gridLength: 2, gridColour: '#5a4a30', loopColour: COL.loop,
+  cmds: [
+    { py: 'forward', js: 'forward()', label: t('bForward'), colour: COL.move },
+    { py: 'turn_right', js: 'turnRight()', label: t('bRight'), colour: COL.move },
+    { py: 'turn_left', js: 'turnLeft()', label: t('bLeft'), colour: COL.move },
+    { py: 'plant', js: 'plant()', label: t('bPlant'), colour: COL.farm },
+    { py: 'water', js: 'water()', label: t('bWater'), colour: COL.farm },
+    { py: 'harvest', js: 'harvest()', label: t('bHarvest'), colour: COL.farm }
+  ],
+  conds: [{ py: 'is_ripe', js: () => 'isRipe()', label: t('bIfRipe'), colour: COL.iff }],
+  funcs: true, defName: 'plant_row', funcColour: COL.func,
+  assign: true, varName: 'count', varColour: COL.vari,
+  palette: ['forward()', 'turn_right()', 'turn_left()', 'plant()', 'water()', 'harvest()', 'for i in range(3):',
+    'if is_ripe():', 'else:', 'def plant_row():', 'plant_row()', 'count = 0', 'count += 1', 'while count < 5:'],
+  mapRows: [
+    [COL.move, t('bForward'), 'forward()'], [COL.move, t('bRight'), 'turn_right()'], [COL.move, t('bLeft'), 'turn_left()'],
+    [COL.farm, t('bPlant'), 'plant()'], [COL.farm, t('bWater'), 'water()'], [COL.farm, t('bHarvest'), 'harvest()'],
+    [COL.loop, LANG === 'en' ? 'repeat 〇 times' : '〇かい くりかえす', 'for i in range(〇):'],
+    [COL.iff, t('bIfRipe'), 'if is_ripe():'], [COL.iff, t('bElse'), 'else:'],
+    [COL.func, t('bDef').replace('%1', t('defName')), 'def plant_row():'], [COL.func, t('bCall').replace('%1', t('defName')), 'plant_row()'],
+    [COL.vari, t('bSet').replace('%1', '0'), 'count = 0'], [COL.vari, t('bInc'), 'count += 1'],
+    [COL.loop, t('bWhile').replace('%1', '5'), 'while count < 5:']
+  ],
+  load(lv) { loadFarm(lv); },
+  resetView() { resetFarmView(); draw(); },
+  apply(f, i, frames) { applyFrame(f, i > 1 ? frames[i - 2].dir : START.dir); }
+};
+
+/* ========== Python の ステージ ==========
+   blocks：ブロック モードで つかえる ブロック   start：さいしょの コード   answer：こたえ（先生モード） */
+const MOVE = ['w_forward', 'w_turn_right', 'w_turn_left'];
+const LEVELS = [
+  { title: 'ステージ1　plant() で たねまき',
+    en: { title: 'Stage 1: Planting with plant()', text: 'Move with forward() and plant a seed with plant() on all 3 soil squares.', hint: 'forward() → plant(), three times' },
+    text: 'forward() で すすんで、plant() で たねを まこう。3つの つちの マス ぜんぶに まくよ。',
+    hint: 'forward() → plant() を 3かい',
+    blocks: ['w_forward', 'w_plant'],
+    start: '# つちの マスで plant()\nforward()\n', startEn: '# plant() on a soil square\nforward()\n',
+    answer: 'forward()\nplant()\nforward()\nplant()\nforward()\nplant()\n' },
+  { title: 'ステージ2　water() で みずやり',
+    en: { title: 'Stage 2: Watering with water()', text: 'A sprout comes up when you water() a seed. Write plant() first, then water().', hint: 'forward() → plant() → water(), three times' },
+    text: 'たねに water() で みずを やると めが でるよ。plant() の あとに water() を かこう。',
+    hint: 'forward() → plant() → water() を 3かい',
+    blocks: ['w_forward', 'w_plant', 'w_water'],
+    start: 'forward()\nplant()\n', startEn: 'forward()\nplant()\n',
+    answer: 'forward()\nplant()\nwater()\nforward()\nplant()\nwater()\nforward()\nplant()\nwater()\n' },
+  { title: 'ステージ3　for で 1れつ',
+    en: { title: 'Stage 3: One row with for', text: 'Six soil squares in a row. Repeat “forward() → plant() → water()” with for. Indent the lines inside by 4 spaces.', hint: 'for i in range(6): → (indented) forward(), plant(), water()' },
+    text: 'つちが 6マス ならんでいるよ。「forward() → plant() → water()」を for で くりかえそう。なかの ぎょうは スペース 4つ じさげ。',
+    hint: 'for i in range(6): → （じさげ）forward() と plant() と water()',
+    blocks: [...MOVE, 'w_plant', 'w_water', 'w_repeat'],
+    start: 'for i in range(6):\n    forward()\n', startEn: 'for i in range(6):\n    forward()\n',
+    answer: 'for i in range(6):\n    forward()\n    plant()\n    water()\n' },
+  { title: 'ステージ4　2れつの はたけ',
+    en: { title: 'Stage 4: Two rows', text: 'At the end of the row, turn around and plant the next row too.', hint: 'for (4) → forward(), turn_right(), forward(), turn_right() → for (4)' },
+    text: 'はしまで いったら ぐるっと まわって、となりの れつも うえよう。',
+    hint: 'for i in range(4): … → forward() → turn_right() → forward() → turn_right() → for i in range(4): …',
+    blocks: [...MOVE, 'w_plant', 'w_water', 'w_repeat'],
+    start: 'for i in range(4):\n    forward()\n    plant()\n    water()\n', startEn: 'for i in range(4):\n    forward()\n    plant()\n    water()\n',
+    answer: 'for i in range(4):\n    forward()\n    plant()\n    water()\nforward()\nturn_right()\nforward()\nturn_right()\nfor i in range(4):\n    forward()\n    plant()\n    water()\n' },
+  { title: 'ステージ5　def で じぶんの めいれい',
+    en: { title: 'Stage 5: Your own command with def', text: 'Three rows! Make your own command with “def plant_row():” and call plant_row() 3 times. Write def above the place you use it.', hint: 'def plant_row(): → (indented) for i in range(4): forward(), plant(), water(). Then plant_row() → turn → plant_row() → turn → plant_row()' },
+    text: '3れつの はたけ。「def plant_row():」で じぶんの めいれいを つくって、plant_row() を 3かい つかおう。def は つかう ところより うえに かくよ。',
+    hint: 'def plant_row(): → （じさげ）for i in range(4): forward() plant() water()。そのあと plant_row() → まわる → plant_row() → まわる → plant_row()',
+    blocks: [...MOVE, 'w_plant', 'w_water', 'w_repeat', 'w_def', 'w_call'],
+    start: 'def plant_row():\n    for i in range(4):\n        forward()\n\nplant_row()\n', startEn: 'def plant_row():\n    for i in range(4):\n        forward()\n\nplant_row()\n',
+    answer: 'def plant_row():\n    for i in range(4):\n        forward()\n        plant()\n        water()\n\nplant_row()\nforward()\nturn_right()\nforward()\nturn_right()\nplant_row()\nforward()\nturn_left()\nforward()\nturn_left()\nplant_row()\n' },
+  { title: 'ステージ6　if is_ripe(): と else:',
+    en: { title: 'Stage 6: if is_ripe(): and else:', text: 'is_ripe() checks whether a 🍅 is ripe on your square. harvest() if it is, else water() the green plant.', hint: 'for i in range(6): forward() → if is_ripe(): harvest() → else: water()' },
+    text: 'is_ripe() で いまの マスに みが なっているか しらべられるよ。なっていたら harvest()、そうでなければ water()。',
+    hint: 'for i in range(6): の なかで forward() → if is_ripe(): harvest() → else: water()',
+    blocks: [...MOVE, 'w_plant', 'w_water', 'w_harvest', 'w_repeat', 'w_if_is_ripe', 'w_ifelse_is_ripe'],
+    start: 'for i in range(6):\n    forward()\n', startEn: 'for i in range(6):\n    forward()\n',
+    answer: 'for i in range(6):\n    forward()\n    if is_ripe():\n        harvest()\n    else:\n        water()\n' },
+  { title: 'ステージ7　while count < 5:',
+    en: { title: 'Stage 7: while count < 5:', text: 'The basket 🧺 holds only 5. Count with the variable count and stop at exactly 5. Tested on 20 farms where the ripe spots change!', hint: 'count = 0 → while count < 5: forward() → if is_ripe(): harvest() and count += 1' },
+    text: 'かご 🧺 には 5こ しか はいらない。へんすう count で かぞえて、ちょうど 5こで とめよう。みの ばしょが ちがう はたけ 20こでも テストするよ！',
+    hint: 'count = 0 → while count < 5: の なかで forward() → if is_ripe(): harvest() と count += 1',
+    blocks: [...MOVE, 'w_harvest', 'w_repeat', 'w_if_is_ripe', 'w_ifelse_is_ripe', 'w_set', 'w_add', 'w_while_cmp'],
+    start: 'count = 0\n', startEn: 'count = 0\n',
+    answer: 'count = 0\nwhile count < 5:\n    forward()\n    if is_ripe():\n        harvest()\n        count += 1\n' }
+];
+LEVELS.forEach((lv, i) => Object.assign(lv, FARM[i]));
+</script>
+<script src="python-core.js"></script>
+<script src="mobile.js"></script>
+</body>
+</html>

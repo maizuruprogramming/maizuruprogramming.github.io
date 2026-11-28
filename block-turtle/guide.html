@@ -150,8 +150,8 @@ const S = {
           'This page explains every challenge and stage in the seven block apps (including the three maze variations) and the seven 🐍 Python apps.'],
   lead2: ['「ヒントを みる」「こたえと ポイントを みる」を おすと、ヒントや こたえが ひらきます。まずは じぶんで かんがえてから ひらいてみよう！',
           'Press “Show hint” or “Show answer and key point” to open them. Try to think by yourself first!'],
-  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（おえかき・めいろ・めいろの なかま・うちゅう・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
-            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Drawing, Maze, the maze variations, Space, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
+  teacher: ['先生・保護者の方へ：各課題の「めあて」「学べること」「つまずきやすいところ」を授業の導入やふりかえりにお使いください。解説動画（おえかき・めいろ・めいろの なかま・うちゅう・はたけ・こわす・おく と、Python版）へのリンクもあります。「🖨 いんさつ」で、こたえを開いた状態で印刷できます。各課題の「📝 ワークシート（PDF）」から、児童・生徒用の記入シートを開いて印刷できます（一式：worksheets/worksheets-all.pdf）。「📋 学習指導案」から、45分の授業の学習指導案（原案）を開けます（一式：lesson-plans/lesson-plans-all.pdf）。',
+            'For teachers and parents: use the goal, concepts, and common mistakes for each task to start and review lessons. Links to the explanation videos (Drawing, Maze, the maze variations, Space, Farm, Break & Build and the Python versions) are included. “🖨 Print” prints with all answers open. “📝 Worksheet (PDF)” under each task opens a printable student sheet (full set: worksheets/en/worksheets-all.pdf).'],
   openAll: ['こたえを ぜんぶ ひらく', 'Open all answers'], closeAll: ['ぜんぶ とじる', 'Close all'], print: ['🖨 いんさつ（こたえ つき）', '🖨 Print (with answers)'], book: ['📘 ほん ぜんぶ（PDF）', '📘 All books (PDF)'],
   introVid: ['🎬 この システムの しょうかい どうが（2ふん）', '🎬 System overview video (2 min)'],
   viewAll: ['📚 すべてを みる', '📚 Show all'], viewBlk: ['🧩 Blockly版を みる', '🧩 Show Blockly'], viewPy: ['🐍 Python版を みる', '🐍 Show Python'],
@@ -185,11 +185,11 @@ document.getElementById('toc').innerHTML = G.apps.map((a) => `<a data-kind="${ki
 
 // まなびの つながり（ひょう）
 // ブロック版と Python版を 1つの 列に まとめる。「🔢 ばんごうで みる」⇄「● で みる（ヒートマップ）」を きりかえられる
-const order = ['seq', 'dir', 'loop', 'nest', 'pattern', 'angle', 'count', 'if', 'until', 'state', 'timing', 'var', 'math', 'decomp', 'algo', 'py'];
-const PAIRS = [['draw', 'pydraw'], ['maze', 'python'], ['mazejr', 'pymazejr'], ['mazekey', 'pymazekey'], ['mazeenemy', 'pymazeenemy'], ['space', 'pyspace'], ['craft', 'pycraft']];
+const order = ['seq', 'dir', 'loop', 'nest', 'pattern', 'angle', 'count', 'if', 'until', 'state', 'timing', 'var', 'math', 'decomp', 'func', 'algo', 'py'];
+const PAIRS = [['draw', 'pydraw'], ['maze', 'python'], ['mazejr', 'pymazejr'], ['mazekey', 'pymazekey'], ['mazeenemy', 'pymazeenemy'], ['space', 'pyspace'], ['farm', 'pyfarm'], ['craft', 'pycraft']];
 const APPK = Object.fromEntries(G.apps.map((a) => [a.key, a]));
 const SHORT = { draw: ['おえかき', 'Drawing'], maze: ['めいろ', 'Maze'], mazejr: ['やじるし', 'Arrow'], mazekey: ['かぎと とびら', 'Keys & Doors'],
-  mazeenemy: ['てきを よける', 'Slime'], space: ['うちゅう', 'Space'], craft: ['こわす・おく', 'Break & Build'] };
+  mazeenemy: ['てきを よける', 'Slime'], space: ['うちゅう', 'Space'], farm: ['はたけ', 'Farm'], craft: ['こわす・おく', 'Break & Build'] };
 const hitsOf = (k, c) => APPK[k].items.filter((it) => it.tags.includes(c)).map((it) => it.n);
 const numLinks = (k, ns, cls) => ns.map((n) => `<a class="mn ${cls}" href="#${k}-${n}">${n}</a>`).join('');
 const dotHtml = (n, view, label) => n
@@ -239,12 +239,12 @@ document.getElementById('mapBox').innerHTML = map + '</table></div></div>';
 
 // ワークシート（PDF）：アプリ → シート
 const WS = { draw: 'ws2-draw', maze: 'ws3-maze', mazejr: 'ws4-arrow', mazekey: 'ws6-key-enemy', mazeenemy: 'ws6-key-enemy',
-  space: 'ws5-space-craft', craft: 'ws5-space-craft' };
+  space: 'ws5-space-craft', craft: 'ws5-space-craft', farm: 'ws9-farm' };
 // 学習指導案（PDF・日本語）：アプリ → 指導案
-const LP = { draw: 'lp-draw', mazejr: 'lp-arrow', maze: 'lp-maze', mazekey: 'lp-key-enemy', mazeenemy: 'lp-key-enemy', space: 'lp-space', craft: 'lp-craft' };
+const LP = { draw: 'lp-draw', mazejr: 'lp-arrow', maze: 'lp-maze', mazekey: 'lp-key-enemy', mazeenemy: 'lp-key-enemy', space: 'lp-space', craft: 'lp-craft', farm: 'lp-farm' };
 // 📘 ほん（PDF）：アプリ → ほん
-const BOOKOF = (k) => /draw/.test(k) ? 'draw' : /space/.test(k) ? 'space' : /craft/.test(k) ? 'craft' : 'maze';
-const BOOKNAME = { maze: ['📘 めいろの ほん', '📘 Maze book'], draw: ['📘 おえかきの ほん', '📘 Drawing book'], space: ['📘 うちゅうの ほん', '📘 Space book'], craft: ['📘 ぼうけんの ほん', '📘 Adventure book'] };
+const BOOKOF = (k) => /draw/.test(k) ? 'draw' : /space/.test(k) ? 'space' : /farm/.test(k) ? 'farm' : /craft/.test(k) ? 'craft' : 'maze';
+const BOOKNAME = { maze: ['📘 めいろの ほん', '📘 Maze book'], draw: ['📘 おえかきの ほん', '📘 Drawing book'], space: ['📘 うちゅうの ほん', '📘 Space book'], farm: ['📘 はたけの ほん', '📘 Farm book'], craft: ['📘 ぼうけんの ほん', '📘 Adventure book'] };
 const bookLink = (k) => `<a class="bk" href="${J ? 'book/' : 'book/en/'}${BOOKOF(k)}-book.pdf" target="_blank" rel="noopener">${esc(BOOKNAME[BOOKOF(k)][J ? 0 : 1])}</a>`;
 const WSDIR = J ? 'worksheets/' : 'worksheets/en/';
 const wsFile = (k) => `${WSDIR}${WS[k] || 'ws7-python'}.pdf`;

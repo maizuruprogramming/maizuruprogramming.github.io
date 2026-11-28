@@ -64,6 +64,10 @@ window.GUIDE = {
   "timing": {
    "ja": "タイミング",
    "en": "Timing"
+  },
+  "func": {
+   "ja": "じぶんの ブロック（関数）",
+   "en": "Functions (your own blocks)"
   }
  },
  "apps": [
@@ -1683,6 +1687,303 @@ window.GUIDE = {
    ]
   },
   {
+   "key": "farm",
+   "file": "farm.html",
+   "icon": "🌱",
+   "name": {
+    "ja": "はたけで そだてよう",
+    "en": "Block Farm"
+   },
+   "intro": {
+    "ja": "たねを まき、みずを やり、みを とります。よく つかう てじゅんに なまえを つける「じぶんの ブロック」と、かずを おぼえる「へんすう」を まなびます。",
+    "en": "Plant seeds, water them and harvest. Learn to name steps you use often (your own blocks) and to count with a variable."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/farm1.png",
+      "en": "images/answers/en/farm1.png"
+     },
+     "title": {
+      "ja": "ステージ1　たねを まこう",
+      "en": "Stage 1: Plant seeds"
+     },
+     "text": {
+      "ja": "3つの つちの マスに たね 🌱 を まこう。「まえに すすむ → たねを まく」を 3かい。",
+      "en": "Plant a seed 🌱 on all 3 soil squares. Move forward, then plant — 3 times."
+     },
+     "hint": {
+      "ja": "まえに すすむ → たねを まく を 3かい ならべよう",
+      "en": "move forward → plant a seed, three times"
+     },
+     "goal": {
+      "ja": "じゅんばんに ならべよう",
+      "en": "Put blocks in order"
+     },
+     "point": {
+      "ja": "すすむ・まく・すすむ・まく… と、1マスずつ じゅんばんに。",
+      "en": "Move, plant, move, plant… one square at a time."
+     },
+     "mistake": {
+      "ja": "すすまないで「まく」と、くさの マスに まいて しっぱい。",
+      "en": "Planting before moving puts the seed on grass and fails."
+     },
+     "video": {
+      "ja": "videos/ja/farm-01.mp4",
+      "en": "videos/en/farm-01.mp4"
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq"
+     ],
+     "limit": null,
+     "img": {
+      "ja": "images/answers/farm2.png",
+      "en": "images/answers/en/farm2.png"
+     },
+     "title": {
+      "ja": "ステージ2　みずも やろう",
+      "en": "Stage 2: Water them too"
+     },
+     "text": {
+      "ja": "たねに みず 💧 を やると めが でるよ。まいてから みず。じゅんばんを かえると どうなるかな？",
+      "en": "A sprout comes up when you water a seed 💧. Plant first, then water. What happens if you swap the order?"
+     },
+     "hint": {
+      "ja": "まえに すすむ → たねを まく → みずを やる を 3かい",
+      "en": "move forward → plant a seed → water, three times"
+     },
+     "goal": {
+      "ja": "じゅんばんの たいせつさを しろう",
+      "en": "See why order matters"
+     },
+     "point": {
+      "ja": "まく → みず の じゅん。おなじ ブロックでも ならべかたで けっかが かわる。",
+      "en": "Plant, then water. The same blocks give a different result in a different order."
+     },
+     "mistake": {
+      "ja": "みずを さきに やると「たねが まだ ないよ」で とまる。",
+      "en": "Watering first stops with “There is no seed yet.”"
+     },
+     "video": {
+      "ja": "videos/ja/farm-02.mp4",
+      "en": "videos/en/farm-02.mp4"
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "loop",
+      "pattern"
+     ],
+     "limit": 4,
+     "img": {
+      "ja": "images/answers/farm3.png",
+      "en": "images/answers/en/farm3.png"
+     },
+     "title": {
+      "ja": "ステージ3　くりかえしで 1れつ",
+      "en": "Stage 3: One row with a loop"
+     },
+     "text": {
+      "ja": "つちの マスが 6つ ならんでいるよ。「すすむ → まく → みず」を くりかえしで まとめよう。",
+      "en": "Six soil squares in a row. Put \"move → plant → water\" inside a loop."
+     },
+     "hint": {
+      "ja": "6かい くりかえす（まえに すすむ → たねを まく → みずを やる）",
+      "en": "repeat 6 (move forward → plant a seed → water)"
+     },
+     "goal": {
+      "ja": "くりかえしで みじかく しよう",
+      "en": "Make it shorter with a loop"
+     },
+     "point": {
+      "ja": "3つの ブロックを 6かい くりかえす。ぜんぶで 4こ。",
+      "en": "Repeat 3 blocks 6 times: 4 blocks in all."
+     },
+     "mistake": {
+      "ja": "「すすむ」を くりかえしの そとに だすと、おなじ マスに 2かい まいて しっぱい。",
+      "en": "Putting “move” outside the loop plants twice on one square."
+     },
+     "video": {
+      "ja": "videos/ja/farm-03.mp4",
+      "en": "videos/en/farm-03.mp4"
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "loop",
+      "pattern",
+      "dir"
+     ],
+     "limit": 12,
+     "img": {
+      "ja": "images/answers/farm4.png",
+      "en": "images/answers/en/farm4.png"
+     },
+     "title": {
+      "ja": "ステージ4　2れつの はたけ",
+      "en": "Stage 4: Two rows"
+     },
+     "text": {
+      "ja": "はしまで いったら ぐるっと まわって、となりの れつも うえよう。",
+      "en": "When you reach the end of a row, turn around and plant the next row too."
+     },
+     "hint": {
+      "ja": "4かい くりかえす（…）→ すすむ → みぎを むく → すすむ → みぎを むく → 4かい くりかえす（…）",
+      "en": "repeat 4 (…) → forward → turn right → forward → turn right → repeat 4 (…)"
+     },
+     "goal": {
+      "ja": "れつを かえる うごきを かんがえよう",
+      "en": "Plan the turn to the next row"
+     },
+     "point": {
+      "ja": "はしの くさの マスに でてから、みぎ・すすむ・みぎ で となりの れつへ。",
+      "en": "Step onto the grass at the end, then right, forward, right to the next row."
+     },
+     "mistake": {
+      "ja": "まがる まえに 1マス すすむのを わすれると、うえた マスに もどって しまう。",
+      "en": "Forgetting to step forward before turning puts you back on a planted square."
+     },
+     "video": {
+      "ja": "videos/ja/farm-04.mp4",
+      "en": "videos/en/farm-04.mp4"
+     }
+    },
+    {
+     "n": 5,
+     "tags": [
+      "func",
+      "decomp",
+      "pattern"
+     ],
+     "limit": 16,
+     "img": {
+      "ja": "images/answers/farm5.png",
+      "en": "images/answers/en/farm5.png"
+     },
+     "title": {
+      "ja": "ステージ5　じぶんの ブロック",
+      "en": "Stage 5: Make your own block"
+     },
+     "text": {
+      "ja": "3れつの はたけ。「1れつ うえる」を じぶんの ブロックに して、3かい つかおう。おなじ ものを 3かい くむと ブロックが おおすぎるよ。",
+      "en": "Three rows! Make your own block \"plant a row\" and use it 3 times. Building the same thing 3 times is too many blocks."
+     },
+     "hint": {
+      "ja": "「つくる」の なか：4かい くりかえす（すすむ → まく → みず）。うごかす ほう：1れつ うえる → すすむ → みぎ → すすむ → みぎ → 1れつ うえる → すすむ → ひだり → すすむ → ひだり → 1れつ うえる",
+      "en": "In \"make my block\": repeat 4 (forward → plant → water). Main: my block → forward → right → forward → right → my block → forward → left → forward → left → my block"
+     },
+     "goal": {
+      "ja": "てじゅんに なまえを つけて つかおう",
+      "en": "Name a set of steps and reuse it"
+     },
+     "point": {
+      "ja": "よく つかう かたまりを「じぶんの ブロック」に すると、みじかく よみやすい。",
+      "en": "Turning a set of blocks you use often into your own block makes the program short and easy to read."
+     },
+     "mistake": {
+      "ja": "「つくる」ブロックの なかを からっぽに すると、よんでも なにも おきない。",
+      "en": "If “make my block” is empty, calling it does nothing."
+     },
+     "video": {
+      "ja": "videos/ja/farm-05.mp4",
+      "en": "videos/en/farm-05.mp4"
+     }
+    },
+    {
+     "n": 6,
+     "tags": [
+      "if",
+      "loop"
+     ],
+     "limit": 5,
+     "img": {
+      "ja": "images/answers/farm6.png",
+      "en": "images/answers/en/farm6.png"
+     },
+     "title": {
+      "ja": "ステージ6　みのったら とる",
+      "en": "Stage 6: Harvest when ripe"
+     },
+     "text": {
+      "ja": "みが なっている ところ 🍅 と、まだ みどりの ところが あるよ。みが なっていたら とる、でなければ みずを やろう。",
+      "en": "Some plants are ripe 🍅 and some are still green. Harvest the ripe ones, and water the green ones."
+     },
+     "hint": {
+      "ja": "6かい くりかえす（すすむ → もし みが なっていたら とる ／ でなければ みずを やる）",
+      "en": "repeat 6 (forward → if ripe: harvest / else: water)"
+     },
+     "goal": {
+      "ja": "もし〜なら・でなければ で わけよう",
+      "en": "Choose with if / else"
+     },
+     "point": {
+      "ja": "マスを しらべて、みが あれば とる、なければ みず。",
+      "en": "Check the square: harvest if ripe, otherwise water."
+     },
+     "mistake": {
+      "ja": "「でなければ」を つかわずに、まいかい「とる」と、みどりの マスで しっぱい。",
+      "en": "Harvesting every time without “else” fails on a green plant."
+     },
+     "video": {
+      "ja": "videos/ja/farm-06.mp4",
+      "en": "videos/en/farm-06.mp4"
+     }
+    },
+    {
+     "n": 7,
+     "tags": [
+      "var",
+      "until",
+      "count",
+      "algo"
+     ],
+     "limit": 6,
+     "img": {
+      "ja": "images/answers/farm7.png",
+      "en": "images/answers/en/farm7.png"
+     },
+     "title": {
+      "ja": "ステージ7　5こ とったら おわり",
+      "en": "Stage 7: Stop at 5"
+     },
+     "text": {
+      "ja": "かご 🧺 には 5こ しか はいらない。「とれた かず」で かぞえて、ちょうど 5こで とめよう。みの ばしょが ちがう はたけ 20こでも テストするよ！",
+      "en": "The basket 🧺 holds only 5. Count with \"harvested\" and stop at exactly 5. Your program is tested on 20 farms where the ripe spots change!"
+     },
+     "hint": {
+      "ja": "とれた かず を 0 に する → とれた かず が 5 より すくない あいだ くりかえす（すすむ → もし みが なっていたら：とる → とれた かず を 1 ふやす）",
+      "en": "set harvested to 0 → repeat while harvested < 5 (forward → if ripe: harvest → add 1 to harvested)"
+     },
+     "goal": {
+      "ja": "へんすうで かぞえて とめよう",
+      "en": "Count with a variable and stop"
+     },
+     "point": {
+      "ja": "とった たびに 1 ふやし、5に なったら くりかえしが おわる。",
+      "en": "Add 1 each time you harvest; the loop ends when it reaches 5."
+     },
+     "mistake": {
+      "ja": "「7かい くりかえす」だけだと、みが 6こ いじょう ある はたけで かごが いっぱいに なる。",
+      "en": "“Repeat 7” alone overfills the basket on farms with 6 or more ripe plants."
+     },
+     "video": {
+      "ja": "videos/ja/farm-07.mp4",
+      "en": "videos/en/farm-07.mp4"
+     }
+    }
+   ]
+  },
+  {
    "key": "craft",
    "file": "craft.html",
    "icon": "🧱",
@@ -2801,6 +3102,293 @@ window.GUIDE = {
      "mistake": {
       "ja": "2つの if を elif で つなぐと、ほしを ひろった ときに すすまなく なるよ（それでも クリアは できる）。",
       "en": "If you join the two ifs with elif, you will not move on the turn you pick up a star (it can still clear)."
+     }
+    }
+   ]
+  },
+  {
+   "key": "pyfarm",
+   "file": "python-farm.html",
+   "icon": "🐍",
+   "name": {
+    "ja": "Pythonで はたけ",
+    "en": "Python Farm"
+   },
+   "intro": {
+    "ja": "はたけを Python で。plant()・water()・harvest()・is_ripe() に くわえて、def で じぶんの めいれいを つくり、へんすう count で かぞえます。",
+    "en": "The farm in Python. Besides plant(), water(), harvest() and is_ripe(), make your own command with def and count with the variable count."
+   },
+   "items": [
+    {
+     "n": 1,
+     "tags": [
+      "seq",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "forward()\nplant()\nforward()\nplant()\nforward()\nplant()",
+     "title": {
+      "ja": "ステージ1　plant() で たねまき",
+      "en": "Stage 1: Planting with plant()"
+     },
+     "text": {
+      "ja": "forward() で すすんで、plant() で たねを まこう。3つの つちの マス ぜんぶに まくよ。",
+      "en": "Move with forward() and plant a seed with plant() on all 3 soil squares."
+     },
+     "hint": {
+      "ja": "forward() → plant() を 3かい",
+      "en": "forward() → plant(), three times"
+     },
+     "goal": {
+      "ja": "つちの マスで plant()",
+      "en": "Use plant() on soil"
+     },
+     "point": {
+      "ja": "forward() と plant() を 1ぎょうずつ じゅんばんに かく。",
+      "en": "Write forward() and plant() one line at a time, in order."
+     },
+     "mistake": {
+      "ja": "plant を Plant と かくと NameError（おおもじ・こもじは べつ）。",
+      "en": "Writing Plant instead of plant causes a NameError (capitals matter)."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-01.mp4",
+      "en": "videos/en/pyfarm-01.mp4"
+     }
+    },
+    {
+     "n": 2,
+     "tags": [
+      "seq",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "forward()\nplant()\nwater()\nforward()\nplant()\nwater()\nforward()\nplant()\nwater()",
+     "title": {
+      "ja": "ステージ2　water() で みずやり",
+      "en": "Stage 2: Watering with water()"
+     },
+     "text": {
+      "ja": "たねに water() で みずを やると めが でるよ。plant() の あとに water() を かこう。",
+      "en": "A sprout comes up when you water() a seed. Write plant() first, then water()."
+     },
+     "hint": {
+      "ja": "forward() → plant() → water() を 3かい",
+      "en": "forward() → plant() → water(), three times"
+     },
+     "goal": {
+      "ja": "plant() の あとに water()",
+      "en": "water() after plant()"
+     },
+     "point": {
+      "ja": "plant() → water() の じゅん。ぎょうの じゅんばんが じっこうの じゅんばん。",
+      "en": "plant() then water(). The order of the lines is the order they run."
+     },
+     "mistake": {
+      "ja": "water() を さきに かくと「たねが まだ ないよ」で とまる。",
+      "en": "Writing water() first stops with “There is no seed yet.”"
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-02.mp4",
+      "en": "videos/en/pyfarm-02.mp4"
+     }
+    },
+    {
+     "n": 3,
+     "tags": [
+      "loop",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(6):\n    forward()\n    plant()\n    water()",
+     "title": {
+      "ja": "ステージ3　for で 1れつ",
+      "en": "Stage 3: One row with for"
+     },
+     "text": {
+      "ja": "つちが 6マス ならんでいるよ。「forward() → plant() → water()」を for で くりかえそう。なかの ぎょうは スペース 4つ じさげ。",
+      "en": "Six soil squares in a row. Repeat “forward() → plant() → water()” with for. Indent the lines inside by 4 spaces."
+     },
+     "hint": {
+      "ja": "for i in range(6): → （じさげ）forward() と plant() と water()",
+      "en": "for i in range(6): → (indented) forward(), plant(), water()"
+     },
+     "goal": {
+      "ja": "for で 1れつ",
+      "en": "One row with for"
+     },
+     "point": {
+      "ja": "for の なかの 3ぎょうは スペース 4つ じさげ。",
+      "en": "Indent the 3 lines inside for by 4 spaces."
+     },
+     "mistake": {
+      "ja": "じさげ しない ぎょうは for の そとに なり、1かいしか うごかない。",
+      "en": "A line without indent is outside the loop and runs only once."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-03.mp4",
+      "en": "videos/en/pyfarm-03.mp4"
+     }
+    },
+    {
+     "n": 4,
+     "tags": [
+      "loop",
+      "pattern",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(4):\n    forward()\n    plant()\n    water()\nforward()\nturn_right()\nforward()\nturn_right()\nfor i in range(4):\n    forward()\n    plant()\n    water()",
+     "title": {
+      "ja": "ステージ4　2れつの はたけ",
+      "en": "Stage 4: Two rows"
+     },
+     "text": {
+      "ja": "はしまで いったら ぐるっと まわって、となりの れつも うえよう。",
+      "en": "At the end of the row, turn around and plant the next row too."
+     },
+     "hint": {
+      "ja": "for i in range(4): … → forward() → turn_right() → forward() → turn_right() → for i in range(4): …",
+      "en": "for (4) → forward(), turn_right(), forward(), turn_right() → for (4)"
+     },
+     "goal": {
+      "ja": "for を 2つ つかおう",
+      "en": "Use two for loops"
+     },
+     "point": {
+      "ja": "1れつめの for → まわる 4ぎょう → 2れつめの for。",
+      "en": "First for → 4 lines to turn → second for."
+     },
+     "mistake": {
+      "ja": "まわる ぎょうを じさげ すると、まいかい まわって しまう。",
+      "en": "Indenting the turning lines makes you turn every time."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-04.mp4",
+      "en": "videos/en/pyfarm-04.mp4"
+     }
+    },
+    {
+     "n": 5,
+     "tags": [
+      "func",
+      "decomp",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "def plant_row():\n    for i in range(4):\n        forward()\n        plant()\n        water()\n\nplant_row()\nforward()\nturn_right()\nforward()\nturn_right()\nplant_row()\nforward()\nturn_left()\nforward()\nturn_left()\nplant_row()",
+     "title": {
+      "ja": "ステージ5　def で じぶんの めいれい",
+      "en": "Stage 5: Your own command with def"
+     },
+     "text": {
+      "ja": "3れつの はたけ。「def plant_row():」で じぶんの めいれいを つくって、plant_row() を 3かい つかおう。def は つかう ところより うえに かくよ。",
+      "en": "Three rows! Make your own command with “def plant_row():” and call plant_row() 3 times. Write def above the place you use it."
+     },
+     "hint": {
+      "ja": "def plant_row(): → （じさげ）for i in range(4): forward() plant() water()。そのあと plant_row() → まわる → plant_row() → まわる → plant_row()",
+      "en": "def plant_row(): → (indented) for i in range(4): forward(), plant(), water(). Then plant_row() → turn → plant_row() → turn → plant_row()"
+     },
+     "goal": {
+      "ja": "def で めいれいを つくろう",
+      "en": "Make a command with def"
+     },
+     "point": {
+      "ja": "def plant_row(): の なかに for を かき、plant_row() で 3かい よぶ。def は よぶ ところより うえに かく。",
+      "en": "Put the for loop inside def plant_row(): and call plant_row() 3 times. Write def above where you call it."
+     },
+     "mistake": {
+      "ja": "plant_row() を def より うえで よぶと NameError。def の さいごの「:」を わすれると SyntaxError。",
+      "en": "Calling plant_row() above the def causes a NameError. Forgetting the “:” after def causes a SyntaxError."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-05.mp4",
+      "en": "videos/en/pyfarm-05.mp4"
+     }
+    },
+    {
+     "n": 6,
+     "tags": [
+      "if",
+      "loop",
+      "nest",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "for i in range(6):\n    forward()\n    if is_ripe():\n        harvest()\n    else:\n        water()",
+     "title": {
+      "ja": "ステージ6　if is_ripe(): と else:",
+      "en": "Stage 6: if is_ripe(): and else:"
+     },
+     "text": {
+      "ja": "is_ripe() で いまの マスに みが なっているか しらべられるよ。なっていたら harvest()、そうでなければ water()。",
+      "en": "is_ripe() checks whether a 🍅 is ripe on your square. harvest() if it is, else water() the green plant."
+     },
+     "hint": {
+      "ja": "for i in range(6): の なかで forward() → if is_ripe(): harvest() → else: water()",
+      "en": "for i in range(6): forward() → if is_ripe(): harvest() → else: water()"
+     },
+     "goal": {
+      "ja": "if と else で わけよう",
+      "en": "Choose with if and else"
+     },
+     "point": {
+      "ja": "if is_ripe(): の なかで harvest()、else: の なかで water()。",
+      "en": "harvest() inside if is_ripe():, water() inside else:."
+     },
+     "mistake": {
+      "ja": "else: の じさげを if と そろえないと IndentationError。",
+      "en": "If else: is not lined up with if, you get an IndentationError."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-06.mp4",
+      "en": "videos/en/pyfarm-06.mp4"
+     }
+    },
+    {
+     "n": 7,
+     "tags": [
+      "var",
+      "until",
+      "count",
+      "py"
+     ],
+     "limit": null,
+     "img": null,
+     "code": "count = 0\nwhile count < 5:\n    forward()\n    if is_ripe():\n        harvest()\n        count += 1",
+     "title": {
+      "ja": "ステージ7　while count < 5:",
+      "en": "Stage 7: while count < 5:"
+     },
+     "text": {
+      "ja": "かご 🧺 には 5こ しか はいらない。へんすう count で かぞえて、ちょうど 5こで とめよう。みの ばしょが ちがう はたけ 20こでも テストするよ！",
+      "en": "The basket 🧺 holds only 5. Count with the variable count and stop at exactly 5. Tested on 20 farms where the ripe spots change!"
+     },
+     "hint": {
+      "ja": "count = 0 → while count < 5: の なかで forward() → if is_ripe(): harvest() と count += 1",
+      "en": "count = 0 → while count < 5: forward() → if is_ripe(): harvest() and count += 1"
+     },
+     "goal": {
+      "ja": "へんすうで かぞえよう",
+      "en": "Count with a variable"
+     },
+     "point": {
+      "ja": "count = 0 から はじめ、とるたびに count += 1。while count < 5: で 5こで とまる。",
+      "en": "Start with count = 0 and add count += 1 each harvest. while count < 5: stops at 5."
+     },
+     "mistake": {
+      "ja": "count += 1 を if の そとに かくと、とらなくても かずが ふえる。",
+      "en": "Writing count += 1 outside the if adds to the count even when you did not harvest."
+     },
+     "video": {
+      "ja": "videos/ja/pyfarm-07.mp4",
+      "en": "videos/en/pyfarm-07.mp4"
      }
     }
    ]

@@ -45,6 +45,8 @@ Object.assign(STR.ja, {
   eStep: 'ValueError：range() の 3つめ（ふやす かず）を 0 には できないよ',
   eZero: 'ZeroDivisionError：0 で わる ことは できないよ',
   eRangeArgs: 'TypeError：range() の () の なかは 1〜3こ の かずだよ',
+  eDefTop: 'SyntaxError：def は いちばん ひだり（じさげ なし）に かこう', eDeep: 'RecursionError：じぶんで じぶんを よびつづけて おわらないよ',
+  eDefName: (w) => `SyntaxError：「${w}」は もう ある めいれいの なまえだよ。べつの なまえに しよう`,
   certItem: 'しゅうりょうしょうを みる', dlgTitle: '🎉 ステージ クリア！', dlgQuestion: 'つぎの ステージに いきますか？', yes: 'はい', no: 'いいえ',
   pyRetry: 'もういちど チャレンジ！ べつの かきかたも ためしてみよう', nextPerson: 'つぎの ひとへ', armedItem: 'もういちど おすと リセット',
   armedMsg: '⚠ もういちど「つぎの ひとへ」を おすと、ぜんぶ リセットするよ', resetDone: '✨ リセットしたよ。つぎの ひと、がんばってね！',
@@ -82,6 +84,8 @@ Object.assign(STR.en, {
   eStep: 'ValueError: the 3rd number of range() (the step) cannot be 0',
   eZero: 'ZeroDivisionError: you cannot divide by 0',
   eRangeArgs: 'TypeError: range() takes 1 to 3 numbers',
+  eDefTop: 'SyntaxError: write def at the far left (no indent)', eDeep: 'RecursionError: the function keeps calling itself and never ends',
+  eDefName: (w) => `SyntaxError: “${w}” is already a command name. Choose another name.`,
   certItem: 'View certificate', dlgTitle: '🎉 Stage clear!', dlgQuestion: 'Go to the next stage?', yes: 'Yes', no: 'No',
   pyRetry: 'Try again! Maybe write it a different way.', nextPerson: 'Next player', armedItem: 'Tap again to reset',
   armedMsg: '⚠ Tap "Next player" again to reset everything.', resetDone: '✨ All reset. Good luck, next player!',
@@ -92,6 +96,8 @@ const W = WORLD;
 W.conds = W.conds || [];
 const UNTIL = W.until ? W.until.py : null;      // 「〜まで くりかえす」の しらべる なまえ（ない せかいも ある）
 const EXPRS = !!W.exprs;                         // かず・へんすう・けいさん を つかう せかい（おえかき）
+const FUNCS = !!W.funcs;                         // def で じぶんの めいれいを つくれる せかい（はたけ）
+const ASSIGN = !!W.assign;                       // へんすう = かず ／ += ／ while へんすう < かず が つかえる せかい（はたけ）
 const CMD = new Map(W.cmds.map((c) => [c.py, c]));
 const CONDS = new Map(W.conds.map((c) => [c.py, c]));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -111,6 +117,7 @@ function parse(src) {
   let pos = 0;
   const firstWord = (s) => (s.match(/[A-Za-z_]\w*/) || [s])[0];
   const known = new Set();   // for で つくった へんすう（つかえる なまえ）
+  const funcs = new Set();   // def で つくった めいれい
   // けいさんの しき：かず・へんすう・( )・+ - * / // % **
   function expr(text, no) {
     const toks = []; const re = /\s*(\d+\.\d*|\.\d+|\d+|[A-Za-z_]\w*|\*\*|\/\/|[-+*\/%(),]|\S)/y; let m;
@@ -154,6 +161,10 @@ function parse(src) {
   }
   function cond(text, no) {
     const m = text.match(/^(not\s+)?([A-Za-z_]\w*)\s*\(\s*(?:(['"])(\w*)\3\s*)?\)$/);
+    if (!m && ASSIGN) {   // くらべる：へんすう < かず など
+      const mc = text.match(/^(.+?)\s*(<=|>=|==|!=|<|>)\s*(.+)$/);
+      if (mc) return { cmp: mc[2], a: expr(mc[1].trim(), no), b: expr(mc[3].trim(), no) };
+    }
     if (!m) {
       const w = text.replace(/^not\s+/, '');
       const name = firstWord(w);
@@ -171,7 +182,7 @@ function parse(src) {
     return { not: !!m[1], fn, arg: arg ?? null };
   }
   function header(ln) {
-    if (/^(for|while|if|elif|else)\b/.test(ln.text) && !ln.text.endsWith(':')) throw new PyError(ln.no, t('eColon'));
+    if (/^(for|while|if|elif|else|def)\b/.test(ln.text) && !ln.text.endsWith(':')) throw new PyError(ln.no, t('eColon'));
     return ln.text.replace(/:$/, '').trim();
   }
   function body(ln, indent) {
@@ -188,6 +199,22 @@ function parse(src) {
       pos++;
       const h = header(ln);
       let m;
+      if (FUNCS && /^def\b/.test(h)) {   // def なまえ():
+        if (!(m = h.match(/^def\s+([A-Za-z_]\w*)\s*\(\s*\)$/))) throw new PyError(ln.no, t('eSyntax'));
+        if (indent > 0) throw new PyError(ln.no, t('eDefTop'));
+        if (CMD.has(m[1]) || CONDS.has(m[1]) || m[1] === UNTIL) throw new PyError(ln.no, t('eDefName', m[1]));
+        funcs.add(m[1]);
+        out.push({ type: 'def', no: ln.no, name: m[1], body: body(ln, indent) });
+        continue;
+      }
+      if (ASSIGN && (m = h.match(/^([A-Za-z_]\w*)\s*(\+=|-=|=)\s*([^=].*)$/))) {   // へんすう = しき ／ += ／ -=
+        const name = m[1], op = m[2];
+        if (op !== '=' && !known.has(name)) throw new PyError(ln.no, t('eVar', name));
+        const e = expr(m[3].trim(), ln.no);
+        known.add(name);
+        out.push({ type: 'assign', no: ln.no, name, op, e });
+        continue;
+      }
       if (EXPRS && (m = h.match(/^for\s+([A-Za-z_]\w*)\s+in\s+range\((.*)\)$/))) {
         const parts = splitArgs(m[2]);
         if (parts.length < 1 || parts.length > 3 || parts.some((x) => !x)) throw new PyError(ln.no, t('eRangeArgs'));
@@ -225,10 +252,11 @@ function parse(src) {
           if (!q || !c.opts.some((o) => o[1] === q[2])) throw new PyError(ln.no, t('eArg', name, c.opts.map((o) => `'${o[1]}'`).join(' ')));
           out.push({ type: 'cmd', no: ln.no, cmd: name, arg: q[2] });
         } else if (c) { if (inner) throw new PyError(ln.no, t('eCmdArg', name)); out.push({ type: 'cmd', no: ln.no, cmd: name }); }
+        else if (funcs.has(name)) { if (inner) throw new PyError(ln.no, t('eCmdArg', name)); out.push({ type: 'call', no: ln.no, name }); }
         else if (CONDS.has(name) || name === UNTIL) throw new PyError(ln.no, t('eNotCmd', name));
         else throw new PyError(ln.no, t('eName', name));
       }
-      else if (CMD.has(h)) throw new PyError(ln.no, t('eParen', h));
+      else if (CMD.has(h) || funcs.has(h)) throw new PyError(ln.no, t('eParen', h));
       else throw new PyError(ln.no, t('eName', firstWord(h)));
     }
     return out;
@@ -248,6 +276,7 @@ function pyLine(n) { pyLastLine = n; }
 function pyEnd() { pyFinished = true; }
 function condJs(c) {
   if (c.always) return 'true';
+  if (c.cmp) return `(${exprJs(c.a)} ${c.cmp === '==' ? '===' : c.cmp === '!=' ? '!==' : c.cmp} ${exprJs(c.b)})`;
   const e = c.fn === UNTIL ? W.until.js : CONDS.get(c.fn).js(c.arg);
   return c.not ? `!(${e})` : e;
 }
@@ -274,6 +303,9 @@ function nodeJs(n, d) {
     if (c.opts) return at(n.no) + c.js(c.opts.find((o) => o[1] === n.arg)[2]) + ';\n';
     return at(n.no) + c.js + ';\n';
   }
+  if (n.type === 'def') return `${at(n.no)}function u_${n.name}(){if(++__depth>30)throw new Error(t('eDeep'));try{\n${toJs(n.body, d + 1)}}finally{__depth--;}}\n`;
+  if (n.type === 'call') return `${at(n.no)}u_${n.name}();\n`;
+  if (n.type === 'assign') return `${at(n.no)}v_${n.name}${n.op}${exprJs(n.e)};\n`;
   if (n.type === 'for' && n.args) {   // for へんすう in range(はじめ, おわり, ふやす かず)
     const [a0, a1, a2] = n.args;
     const start = n.args.length === 1 ? '0' : exprJs(a0), end = exprJs(n.args.length === 1 ? a0 : a1), step = a2 ? exprJs(a2) : '1';
@@ -291,7 +323,7 @@ function nodeJs(n, d) {
   }
   return s;
 }
-function compile(prog) { return (PY_VARS.length ? 'let ' + PY_VARS.map((v) => 'v_' + v).join(',') + ';\n' : '') + toJs(prog, 0) + 'pyEnd();\n'; }
+function compile(prog) { return 'let __depth=0;\n' + (PY_VARS.length ? 'let ' + PY_VARS.map((v) => 'v_' + v).join(',') + ';\n' : '') + toJs(prog, 0) + 'pyEnd();\n'; }
 
 /* ========== 3. ブロック ⇄ Python ==========
    ブロック 1こ ＝ Python 1ぎょう。じっこう ちゅうの ぎょうから ブロックを ひからせられる */
@@ -316,6 +348,23 @@ Blockly.common.defineBlocksWithJsonArray([
       previousStatement: null, nextStatement: null, colour: f.colour }
   ])
 ]);
+if (FUNCS) Blockly.common.defineBlocksWithJsonArray([
+  { type: 'w_def', message0: 'def %1 ():', args0: [{ type: 'field_input', name: 'NAME', text: W.defName || 'my_block' }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], colour: W.funcColour },
+  { type: 'w_call', message0: '%1 ()', args0: [{ type: 'field_input', name: 'NAME', text: W.defName || 'my_block' }],
+    previousStatement: null, nextStatement: null, colour: W.funcColour }
+]);
+const CMP_OPS = [['<', '<'], ['<=', '<='], ['>', '>'], ['>=', '>='], ['==', '=='], ['!=', '!=']];
+if (ASSIGN) Blockly.common.defineBlocksWithJsonArray([
+  { type: 'w_set', message0: '%1 = %2', args0: [{ type: 'field_input', name: 'VAR', text: W.varName || 'count' }, { type: 'field_number', name: 'N', value: 0, precision: 1 }],
+    previousStatement: null, nextStatement: null, colour: W.varColour },
+  { type: 'w_add', message0: '%1 += %2', args0: [{ type: 'field_input', name: 'VAR', text: W.varName || 'count' }, { type: 'field_number', name: 'N', value: 1, precision: 1 }],
+    previousStatement: null, nextStatement: null, colour: W.varColour },
+  { type: 'w_while_cmp', message0: 'while %1 %2 %3 :', args0: [{ type: 'field_input', name: 'VAR', text: W.varName || 'count' },
+    { type: 'field_dropdown', name: 'OP', options: CMP_OPS }, { type: 'field_number', name: 'N', value: 5, precision: 1 }],
+    message1: '%1', args1: [{ type: 'input_statement', name: 'DO' }], previousStatement: null, nextStatement: null, colour: W.loopColour }
+]);
+const pyName = (s, def) => /^[A-Za-z_]\w*$/.test(String(s || '').trim()) ? String(s).trim() : def;
 const TYPE2CMD = new Map(W.cmds.map((c) => [BT.cmd(c.py), c.py]));
 const TYPE2COND = new Map(W.conds.flatMap((f) => [[BT.iff(f.py), f], [BT.ifelse(f.py), f]]));
 const condText = (f, arg) => f.opts ? `${f.py}('${arg || f.opts[0][1]}')` : `${f.py}()`;
@@ -363,6 +412,16 @@ function blocksToLines(first, depth, out, scope = []) {
     } else if (b.type === BT.repeat) {
       out.push({ text: `${pad}for i in range(${Math.min(50, Math.max(1, Math.round(Number(f.TIMES) || 1)))}):`, id: b.id });
       sub(inp.DO && inp.DO.block, depth + 1, b.id);
+    } else if (b.type === 'w_def') {
+      out.push({ text: `${pad}def ${pyName(f.NAME, 'my_block')}():`, id: b.id });
+      sub(inp.DO && inp.DO.block, depth + 1, b.id);
+    } else if (b.type === 'w_call') {
+      out.push({ text: `${pad}${pyName(f.NAME, 'my_block')}()`, id: b.id });
+    } else if (b.type === 'w_set' || b.type === 'w_add') {
+      out.push({ text: `${pad}${pyName(f.VAR, 'count')} ${b.type === 'w_set' ? '=' : '+='} ${fmtNum(f.N ?? 0)}`, id: b.id });
+    } else if (b.type === 'w_while_cmp') {
+      out.push({ text: `${pad}while ${pyName(f.VAR, 'count')} ${f.OP || '<'} ${fmtNum(f.N ?? 0)}:`, id: b.id });
+      sub(inp.DO && inp.DO.block, depth + 1, b.id);
     } else if (b.type === BT.until && UNTIL) {
       out.push({ text: `${pad}while not ${UNTIL}():`, id: b.id });
       sub(inp.DO && inp.DO.block, depth + 1, b.id);
@@ -389,6 +448,14 @@ function workspaceToLines() {
   VARMAP = Object.fromEntries((saved.variables || []).map((v) => [v.id, v.name]));
   const tops = (saved.blocks || {}).blocks || [];
   tops.sort((a, b) => (a.y || 0) - (b.y || 0) || (a.x || 0) - (b.x || 0));
+  if (FUNCS) {   // def を さきに かいて、そのあと うごかす ブロック
+    const defs = tops.filter((b) => b.type === 'w_def'), rest = tops.filter((b) => b.type !== 'w_def');
+    const lines = [];
+    defs.forEach((d) => { blocksToLines(d, 0, lines); lines.push({ text: '', id: null }); });
+    if (rest.length) blocksToLines(rest[0], 0, lines);
+    else if (lines.length) lines.pop();
+    return { lines, loose: rest.length > 1 };
+  }
   return { lines: tops.length ? blocksToLines(tops[0], 0, []) : [], loose: tops.length > 1 };
 }
 
@@ -420,6 +487,12 @@ function valueInput(e, no) {
 }
 const usesVar = (list, name) => JSON.stringify(list).includes(`"k":"var","name":"${name}"`);
 function nodeToBlock(n) {
+  if (n.type === 'def') throw new NoBlock(n.no);   // def は いちばん そとがわ だけ（codeToBlocks で わける）
+  if (n.type === 'call') return { type: 'w_call', fields: { NAME: n.name } };
+  if (n.type === 'assign') {
+    if (n.e.k !== 'num' || n.op === '-=') throw new NoBlock(n.no);
+    return { type: n.op === '=' ? 'w_set' : 'w_add', fields: { VAR: n.name, N: n.e.v } };
+  }
   if (n.type === 'cmd') {
     const c = CMD.get(n.cmd);
     if (c.arg === 'num') return { type: BT.cmd(n.cmd), inputs: { N: valueInput(n.arg, n.no) } };
@@ -436,13 +509,17 @@ function nodeToBlock(n) {
       inputs: clean({ FROM: valueInput(from, n.no), TO: valueInput(to, n.no), BY: valueInput({ k: 'num', v: Math.abs(step.v) }, n.no), DO: bodyInput(n.body) }) };
   }
   if (n.type === 'for') return { type: BT.repeat, fields: { TIMES: n.n }, inputs: clean({ DO: bodyInput(n.body) }) };
+  if (n.type === 'while' && n.cond.cmp) {
+    if (!ASSIGN || n.cond.a.k !== 'var' || n.cond.b.k !== 'num') throw new NoBlock(n.no);
+    return { type: 'w_while_cmp', fields: { VAR: n.cond.a.name, OP: n.cond.cmp, N: n.cond.b.v }, inputs: clean({ DO: bodyInput(n.body) }) };
+  }
   if (n.type === 'while') {
     if (!UNTIL || n.cond.always || n.cond.fn !== UNTIL || !n.cond.not) throw new NoBlock(n.no);
     return { type: BT.until, inputs: clean({ DO: bodyInput(n.body) }) };
   }
   const build = (arms, other) => {
     const a = arms[0];
-    if (a.cond.not || !CONDS.has(a.cond.fn)) throw new NoBlock(a.no);
+    if (a.cond.not || a.cond.cmp || !CONDS.has(a.cond.fn)) throw new NoBlock(a.no);
     const fam = CONDS.get(a.cond.fn), rest = arms.length > 1 || other;
     const blk = { type: rest ? BT.ifelse(fam.py) : BT.iff(fam.py), inputs: clean({ DO: bodyInput(a.body) }) };
     if (fam.opts) blk.fields = { ARG: a.cond.arg };
@@ -480,7 +557,7 @@ const wrap = document.getElementById('codeWrap');
 const consoleEl = document.getElementById('console'), msg = document.getElementById('msg'), info = document.getElementById('info');
 let markLine = 0, markKind = '';
 const FN_NAMES = [...W.cmds.map((c) => c.py), ...W.conds.map((c) => c.py), ...(UNTIL ? [UNTIL] : [])];
-const TOKEN = new RegExp(`('[^']*'|"[^"]*")|\\b(for|in|while|if|elif|else|not|pass|True|False|and|or)\\b|\\b(${FN_NAMES.join('|')})\\b|\\b(range|print)\\b|\\b(\\d+)\\b`, 'g');
+const TOKEN = new RegExp(`('[^']*'|"[^"]*")|\\b(for|in|while|if|elif|else|not|pass|True|False|and|or|def)\\b|\\b(${FN_NAMES.join('|')})\\b|\\b(range|print)\\b|\\b(\\d+)\\b`, 'g');
 function colorLine(s) {
   const m = s.match(/^([^#]*?)(#.*)?$/);
   const escT = (x) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');   // ' と " は そのまま（もじれつの いろづけの ため）
@@ -574,9 +651,11 @@ function syncFromBlocks() {
 // Python の もじを ブロックに する（できなければ エラーを なげる）
 function codeToBlocks(src) {
   const parsed = parse(src);
-  const first = nodesToBlocks(parsed.prog);
+  const defs = parsed.prog.filter((n) => n.type === 'def');
+  const first = nodesToBlocks(parsed.prog.filter((n) => n.type !== 'def'));
   if (first) { first.x = 20; first.y = 20; }
-  Blockly.serialization.workspaces.load({ blocks: { languageVersion: 0, blocks: first ? [first] : [] },
+  const defBlocks = defs.map((d, k) => clean({ type: 'w_def', fields: { NAME: d.name }, inputs: clean({ DO: bodyInput(d.body) }), x: first ? 380 : 20, y: 20 + k * 220 }));
+  Blockly.serialization.workspaces.load({ blocks: { languageVersion: 0, blocks: [...(first ? [first] : []), ...defBlocks] },
     variables: parsed.vars.map((v) => ({ name: v, id: 'v_' + v })) }, workspace);
   syncFromBlocks();
 }
