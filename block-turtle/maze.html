@@ -283,9 +283,9 @@ const craftTheme = Blockly.Theme.defineTheme('craft', {
 });
 
 const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: flyout(ALL), renderer: 'geras', theme: craftTheme, trashcan: true,
+  toolbox: flyout(ALL), renderer: 'zelos', theme: craftTheme, trashcan: true,   // ブロックの かたちは ほかの アプリ（おえかき・うちゅう・はたけ）と おなじ まるみ
   grid: { spacing: 24, length: 24, colour: '#3f2e1f', snap: true },
-  zoom: { controls: true, wheel: true, startScale: 1.0 },
+  zoom: { controls: true, wheel: true, startScale: 0.95 },
   move: { scrollbars: true, drag: true, wheel: false }
 });
 
